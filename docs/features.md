@@ -19,6 +19,8 @@ Cột **Ưu tiên**: điền `MVP` (làm trước) hoặc `Sau`. Hiện để tr
 
 ## 1. Daily note
 
+Tham khảo app Cute Calendar: [research/cute-calendar/features.md](research/cute-calendar/features.md).
+
 - Tạo note theo ngày: tiêu đề, nội dung.
 - Gắn tag.
 - Đính kèm ảnh.

@@ -1,5 +1,32 @@
 # Todo
 
+## 2026-10-08 — Khảo sát app Cute Calendar trên điện thoại — ✅ xong
+
+Mục tiêu: chụp mọi màn hình + liệt kê toàn bộ tính năng của Cute Calendar (Samsung, qua `adb`) để làm module Daily note và các module khác tương tự. Sticker/icon/hình ảnh không chép — tự design sau.
+
+**Điều kiện:** `adb devices` thấy điện thoại (bạn bật USB debugging + cho phép máy tính).
+
+**Lưu ở:** `docs/research/cute-calendar/`
+
+- `screenshots/NN-<tên-màn>.png` — đánh số theo thứ tự duyệt.
+- `features.md` — danh sách tính năng theo màn, map sang module personal-hub, link ảnh tương ứng.
+- ⚠️ Repo đang **public**: ảnh có dữ liệu nhật ký/ghi chú thật. Bạn đã chọn vẫn commit. Muốn kín thì đổi repo sang private trên GitHub.
+
+**Kết quả:** 82 ảnh, `features.md` 6 nhóm tính năng + bảng map MVP. 5 mục `[TEST]` đã xoá (tìm "TEST" trong app: không còn).
+
+**Các bước:**
+
+- [x] Tìm package app (`pm list packages`), ghi version.
+- [x] Mở app, chụp màn đầu (`screencap`) + dump giao diện (`uiautomator dump`) để biết nút nào bấm được.
+- [x] Duyệt lần lượt: từng tab dưới → từng menu/nút → màn con → Settings. Mỗi màn: chụp ảnh, ghi tính năng.
+- [x] Màn tạo/sửa (diary, note, event, todo...): chỉ mở, chụp, rồi **Back — không lưu**. Không xoá, không đổi setting, không mua gói.
+- [x] Popup quảng cáo / mua Pro: chụp rồi đóng, không bấm mua.
+- [x] (Bạn cho phép thêm) Test luồng: tạo mục thử tiêu đề bắt đầu `[TEST]` (event, todo, note, diary...), xem luồng sửa/hoàn thành/hiển thị. Cuối buổi **xoá hết mục `[TEST]`**. Vẫn không sửa/xoá dữ liệu thật, không đổi setting.
+- [x] Viết `features.md`: bảng tính năng theo màn + map module + ghi chú tính năng nên đưa vào MVP.
+- [x] Cập nhật `docs/features.md`: link tới `research/cute-calendar/features.md` ở mục Daily note.
+- [x] Commit `docs: add Cute Calendar research` + Co-Authored-By, push `main`.
+- [x] Kiểm tra: số ảnh khớp danh sách màn trong `features.md`, `git status` sạch.
+
 ## 2026-10-08 — Chép skill AI + patterns từ AI_challenge — ✅ xong
 
 Nguồn: `~/Documents/AI_challenge/playbook/`. Đích: `personal-hub/playbook/`. Giữ tên `playbook/` để `sync.sh` chạy được không cần sửa (nó lấy thư mục cha của `skills/` làm gốc).
