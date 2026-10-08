@@ -1,5 +1,46 @@
 # Todo
 
+## 2026-10-08 — Ghi kết quả làm rõ MVP vào docs — ✅ xong
+
+- [x] `docs/features.md`:
+  - Điền cột Ưu tiên: **MVP** = Daily note, Học tập, Chi tiêu, Nhắc nhở, Dashboard. **Sau** = Thể dục, Task hằng ngày, Tùy chỉnh.
+  - Thêm thứ tự làm: Daily note + Học tập trước → Chi tiêu + Dashboard sau.
+  - Viết lại từng module MVP theo tính năng đã chốt; đánh dấu phần "Sau" trong module:
+    - Daily note: Diary (mood, ảnh) + Notes (danh mục, checklist, ghim, tìm kiếm) + Event trên lịch (lặp, nhắc, màu). Sau: vẽ tay, ghi âm, khoá note, PDF.
+    - Học tập: lộ trình, checklist bài học có link + %, nhập lộ trình từ file (CSV/Markdown), streak + thống kê. Sau: từ vựng spaced repetition, Pomodoro.
+    - Chi tiêu: thu/chi, danh mục tự tạo, chụp bill, biểu đồ tháng, đọc bill bằng AI (Claude API qua Go). Sau: ngân sách, nhiều ví.
+    - Dashboard: màn Hôm nay, thống kê học tập, thống kê chi tiêu. Sau: mood, tuỳ chỉnh khối.
+    - Nhắc nhở: thông báo mobile (event, nhắc học, nhắc viết diary); web chỉ hiện trong app.
+  - Thay mục "Chưa quyết định" bằng **"Quyết định"** (bảng: chủ đề → chốt → lý do ngắn):
+    - Nền tảng: web + mobile cùng lúc; mobile Android + iOS.
+    - Người dùng: thiết kế nhiều user, MVP 1 user.
+    - Dữ liệu: online-only, không offline.
+    - Stack: app Expo (React Native, TS) · web Nuxt 3 + Nuxt UI · api Go trên nền Supabase (Postgres, Auth, Storage) · OCR Claude API gọi từ Go.
+- [x] `README.md`: thêm cột Công nghệ vào bảng cấu trúc.
+- [x] Commit `docs: define MVP scope and tech stack` + Co-Authored-By, push `main`.
+
+## 2026-10-08 — Khảo sát app Memrise trên điện thoại — 🔄 đang làm
+
+Mục tiêu: chụp mọi màn hình + liệt kê tính năng của Memrise (`com.memrise.android.memrisecompanion`, Samsung, qua `adb`) để lấy ý tưởng thiết kế cho module **Học tập** (từ vựng, ôn tập, tiến độ). Hình minh hoạ/icon/mascot không chép — tự design sau.
+
+**Lưu ở:** `docs/research/memrise/`
+
+- `screenshots/NN-<tên-màn>.png` — đánh số theo thứ tự duyệt.
+- `features.md` — tính năng theo màn, map sang module personal-hub, link ảnh, gợi ý MVP.
+- ⚠️ Repo **public**: ảnh có thể lộ tên tài khoản, email, tiến độ học. Màn có email (Profile/Settings) → hỏi bạn trước khi commit.
+
+**Các bước:**
+
+- [x] Ghi version app (`dumpsys package`).
+- [x] Mở app, chụp (`screencap`) + `uiautomator dump` để biết nút bấm được.
+- [x] Duyệt lần lượt: từng tab dưới → menu/nút → màn con → Settings. Mỗi màn: chụp, ghi tính năng.
+- [x] Popup mua Pro/quảng cáo: chụp rồi đóng, không bấm mua. Không đổi setting, không xoá, không đăng xuất.
+- [x] Luồng học: mở 1 bài học/ôn tập, chụp từng dạng câu hỏi (flashcard, chọn đáp án, gõ từ, nghe...). **Làm bài thật sẽ đổi tiến độ học của bạn** (xem câu hỏi bên dưới).
+- [x] Viết `features.md`: bảng tính năng theo màn + map module Học tập + ghi chú nên đưa vào MVP.
+- [x] Cập nhật `docs/features.md`: link tới `research/memrise/features.md` ở mục 5. Học tập.
+- [x] Commit `docs: add Memrise research` + Co-Authored-By, push `main`.
+- [x] Kiểm tra: số ảnh khớp danh sách trong `features.md`, `git status` sạch.
+
 ## 2026-10-08 — Khảo sát app Cute Calendar trên điện thoại — ✅ xong
 
 Mục tiêu: chụp mọi màn hình + liệt kê toàn bộ tính năng của Cute Calendar (Samsung, qua `adb`) để làm module Daily note và các module khác tương tự. Sticker/icon/hình ảnh không chép — tự design sau.
