@@ -10,6 +10,7 @@ App quản lý cá nhân "tất cả trong một": daily note, thể dục, task
 | `web/` | Web app |
 | `app/` | Mobile app |
 | `docs/` | Tài liệu: tính năng, thiết kế, kế hoạch |
+| `playbook/` | Skill AI và tài liệu tham khảo cho Claude Code |
 
 ## Tài liệu
 

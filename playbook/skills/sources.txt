@@ -1,0 +1,20 @@
+# Nguồn skill và tài liệu. Chỉ lấy đúng phần cần dùng của mỗi repo.
+#
+# Mỗi dòng: repo | đường dẫn trong repo | đích (tính từ playbook/) | tùy chọn
+# Tùy chọn (không bắt buộc, cách nhau bằng dấu ;):
+#   exclude=a,b        xóa thư mục/file con a, b sau khi copy
+#   categories=a,b     chỉ giữ file .md có category a hoặc b trong frontmatter, sinh index.md mục lục
+#
+# Thêm skill: thêm 1 dòng, chạy ./sync.sh <repo>. Sau đó cập nhật index.md.
+
+ayghri/i-have-adhd                   | skills/i-have-adhd                          | skills/i-have-adhd                                    |
+nextlevelbuilder/ui-ux-pro-max-skill | .claude/skills/ui-ux-pro-max                | skills/ui-ux-pro-max                                  |
+tt-a1i/archify                       | archify                                     | skills/archify                                        | exclude=test
+
+
+ByteByteGoHq/system-design-101       | data/guides                                 | patterns/system-design-101                            | categories=api-web-development,software-architecture,software-development,database-and-storage,caching-performance,security,devops-cicd
+
+# Không lấy file, chỉ ghi cách dùng trong index.md:
+#   headroomlabs-ai/headroom       tool cài qua pip, không phải skill
+#   obra/the-elements-of-style     đã cài global: writing-clearly-and-concisely
+#   obra/superpowers               cài dạng plugin trong .claude/settings.json
