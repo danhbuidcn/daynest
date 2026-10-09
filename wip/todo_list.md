@@ -1,5 +1,9 @@
 # Todo
 
+## 2026-10-09 — `supabase/README.md`: bỏ nhắc Rails — ✅ xong
+
+- [x] Bỏ "(giống Rails)" ở câu đầu; cột "Giống Rails" → "Làm gì": tạo file migration mới / chạy lại migration + test RLS trên DB local (Docker) / so migration local với project thật / áp dụng migration lên project thật. Commit `docs(supabase): drop rails wording` rồi push.
+
 ## 2026-10-09 — DB migrate kiểu Rails, Claude CLI tự chạy được — ✅ xong
 
 (Thay 2 todo "Rút gọn README" và "Quản lý Supabase bằng CLI" — gộp, đã bỏ.)
