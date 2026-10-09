@@ -50,3 +50,4 @@ Cài đặt → Đăng xuất → Đăng nhập
 - [ ] Build từ máy thứ 2 (cùng keystore) cài đè được, không mất phiên đăng nhập.
 - [ ] Bản `versionCode` 2 cài đè bản 1 thành công.
 - [ ] Đổi ngôn ngữ Việt ↔ Anh, chữ đổi ngay; đăng nhập trên máy khác vẫn giữ lựa chọn.
+- [ ] Sửa tên + ảnh, mở lại app vẫn đúng; user A không ghi được ảnh của user B.

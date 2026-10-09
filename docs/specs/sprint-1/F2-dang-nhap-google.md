@@ -28,5 +28,15 @@ Cài đặt → Đăng xuất → xác nhận → Đăng nhập
 ## Mô tả
 
 - Màn Đăng nhập: logo, tên app, 1 nút "Đăng nhập bằng Google".
-- Cài đặt → mục Tài khoản: ảnh, tên, email (lấy từ `profiles`), nút Đăng xuất.
+- Cài đặt → thẻ tài khoản: ảnh, tên, email (lấy từ `profiles`), icon bút. Nút Đăng xuất ở cuối màn Cài đặt.
 - Mất mạng khi đăng nhập → toast "Không có kết nối".
+
+## Sửa tài khoản
+
+- Bấm thẻ tài khoản → màn Sửa tài khoản (route `settings/account`).
+- Sửa được: tên hiển thị, ảnh đại diện. Email lấy từ Google, chỉ xem.
+- Tên: bắt buộc, 1–50 ký tự, cắt khoảng trắng 2 đầu.
+- Ảnh: chọn từ thư viện (`expo-image-picker`), cắt vuông → thu nhỏ 512px JPEG (`expo-image-manipulator`) → tải lên Storage `avatars/{user_id}/avatar.jpg` ([db.md](design/db.md#storage-avatars)).
+- Bấm Lưu → cập nhật `profiles.display_name`, `profiles.avatar_url` → toast "Đã lưu" → quay lại Cài đặt.
+- Lỗi mạng → toast lỗi, ở lại màn, giữ dữ liệu đang nhập.
+- Đăng nhập lại không ghi đè tên/ảnh đã sửa: trigger chỉ chạy khi tạo user lần đầu.

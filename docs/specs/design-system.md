@@ -59,7 +59,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 
 - Bộ `Ionicons` trong `@expo/vector-icons`, kiểu nét (`-outline`); tab đang chọn dùng bản đặc.
 - Cỡ: 24 (tab, dòng cài đặt), 28 (nút `+`).
-- Icon dòng cài đặt đặt trong ô vuông bo 10, nền pastel.
+- Icon dòng cài đặt đặt trong ô vuông bo 10, nền `primarySoft`.
 
 ## Thành phần dùng chung
 
@@ -72,11 +72,22 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Thanh tab | Nền `surface`, cao 64, 4 tab + nút `+` tròn 56 nổi giữa, nền `primary` |
 | Toast | Viên thuốc nền `text`, chữ trắng, hiện đáy màn (trên thanh tab), tự ẩn 2 giây; lỗi có chấm `error` |
 | Hộp xác nhận | Nền mờ `rgba(47,45,51,0.4)`, hộp `surface` bo 24, tiêu đề + mô tả + 2 nút (Huỷ / hành động) |
-| Dòng cài đặt | Icon ô pastel + nhãn + giá trị/`›` bên phải, cao 56, kẻ `border` giữa các dòng |
+| Dòng cài đặt | Icon ô `primarySoft` + icon `primaryDark` (dòng nguy hiểm: `error` nhạt + `error`) + nhãn + giá trị/`›` bên phải, cao 56, kẻ `border` giữa các dòng |
+| Ảnh đại diện mặc định | Hình tròn nền `primary`, chữ cái đầu màu trắng |
+| Thanh tiêu đề màn con | Nút quay lại `‹` bên trái + tiêu đề `title` ở giữa |
+| Ô nhập | Nhãn `caption` ở trên, ô cao 48 bo 16 nền `surface` viền `border` (đang nhập: viền `primary`), gợi ý `caption` `textMuted` ở dưới · ô khoá: nền `bg`, chữ `textMuted`, icon khoá |
 | Hộp chọn | Cùng kiểu Hộp xác nhận (nền mờ, hộp giữa màn bo 24) · tiêu đề + danh sách lựa chọn cao 56, mục đang chọn nền `primarySoft` + dấu ✓ `primary` · bấm là chọn + đóng, không có nút xác nhận |
+
+## Quy tắc đồng bộ
+
+- Mọi màn chỉ dùng token ở file này: màu, cỡ chữ (22 / 17 / 15 / 12), khoảng cách, bo góc. Không dùng mã màu hay cỡ chữ khác (trừ chữ logo).
+- Cùng 1 loại thành phần → cùng kiểu ở mọi màn (tiêu đề màn, thẻ, dòng cài đặt, hộp thoại, toast).
+- Màu điểm nhấn chung là `primary`. Không gán mỗi tab/mục một màu riêng.
+- Màu event chỉ dùng cho event (S3+) và chấm hồng trong logo.
+- Màu `error` chỉ cho lỗi và hành động nguy hiểm (Đăng xuất, Xoá).
 
 ## Logo tạm
 
 - Icon: ô vuông bo tròn nền `primary`, hình **sổ ghi chú** trắng đứng, gáy lò xo bên trái, 3 dòng kẻ `primary`, chấm tròn `event.pink` ở góc phải dưới — vẽ SVG đơn giản.
-- Chữ: "Daynest" Nunito 800, màu `text`.
+- Chữ: "Daynest" Nunito 800, cỡ 30 (riêng logo), màu `text`.
 - Logo thật làm trước khi lên store.
