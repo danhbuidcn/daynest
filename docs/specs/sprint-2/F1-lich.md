@@ -42,9 +42,9 @@ Thuộc: [Sprint 2](index.md).
 
 ```text
 Tab Lịch → chế độ lần cuối (mặc định Tháng)
-  Header: [‹] Tháng 10, 2026 [›] · Hôm nay · chọn chế độ
+  Header: [‹] Tháng 10, 2026 [›] · Hôm nay · thanh chọn chế độ ngay dưới
   Vuốt trái/phải → kỳ sau/trước · bấm tiêu đề → chọn tháng/năm
-  Tháng: bấm ô → sheet ngày
+  Tháng: bấm ô → pop-up ngày
   Tuần/Ngày/Danh sách: bấm event → Chi tiết event
   Kéo xuống → đồng bộ Google (khi bật, [F4](F4-google-calendar.md))
 ```
@@ -60,7 +60,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 - Ngày âm trong ô: mùng 1 và rằm kèm tháng âm (`1/8`, `15/8`), ngày khác chỉ hiện số ngày. Tháng nhuận thêm "N" (vd `1/6N`).
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
-- Sheet ngày ([18](../../research/cute-calendar/screenshots/18-day-tap.png)): "Thứ Sáu, 9/10/2026" · "18/8 năm Bính Ngọ" · tên lễ · danh sách event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event → "Chưa có sự kiện".
+- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm; nội dung theo [Cute 18](../../research/cute-calendar/screenshots/18-day-tap.png)): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · tên lễ · danh sách event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event → "Chưa có sự kiện".
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm

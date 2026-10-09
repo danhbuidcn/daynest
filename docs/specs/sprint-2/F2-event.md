@@ -59,7 +59,7 @@ Thuộc: [Sprint 2](index.md).
 ## Luồng
 
 ```text
-`+` → Event / sheet ngày → `+` → Form tạo → Lưu → đóng form, lịch cập nhật, toast "Đã lưu"
+`+` → Event / pop-up ngày → `+` → Form tạo → Lưu → đóng form, lịch cập nhật, toast "Đã lưu"
 Bấm event → Chi tiết → ⋯ → Sửa → Form sửa → Lưu
                          └ Xoá → (lặp: Chỉ lần này / Tất cả) → xác nhận → xoá
 Đóng form khi đã nhập → hỏi "Bỏ thay đổi?"

@@ -29,10 +29,10 @@ Nguyên tắc: tính năng nào làm ở S2 thì làm trọn phạm vi GĐ1 củ
 
 ```text
 Tab Lịch ─ đổi chế độ: Tháng · Tuần · Ngày · Danh sách
-  ├─ bấm ngày (Tháng) → sheet ngày → bấm event → Chi tiết → Sửa / Xoá
+  ├─ bấm ngày (Tháng) → pop-up ngày → bấm event → Chi tiết → Sửa / Xoá
   │                               └─ `+` → Tạo event (ngày đã chọn)
   └─ kéo xuống → đồng bộ Google (khi bật)
-Nút `+` → sheet: Event · Note
+Nút `+` → pop-up: Sự kiện · Ghi chú
 Tab Quản lý → Notes → bấm note → Editor (Back = tự lưu)
 Cài đặt → Thông báo · Lịch · Google Calendar
 Thông báo nhắc → bấm → Chi tiết event
@@ -42,7 +42,7 @@ Thông báo nhắc → bấm → Chi tiết event
 
 - [Màn hình](design/screens.md)
 - [DB](design/db.md)
-- Mockup: bước 2 (chưa làm).
+- [Mockup](design/mockups.html)
 
 ## Bạn chuẩn bị
 

@@ -5,7 +5,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 - Phong cách: dễ thương, pastel, bo tròn — tinh thần giống Cute Calendar.
 - Không chép sticker, icon, hình minh hoạ của app gốc.
 - Chỉ làm theme sáng. Chế độ tối để sau.
-- Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html).
+- Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html).
 
 ## Màu
 
@@ -23,7 +23,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | `error` | `#E9787B` | Báo lỗi, nút Đăng xuất |
 | `warning` | `#F2B45C` | Cảnh báo |
 
-**6 màu event (S3):**
+**6 màu event (từ S2; dùng cả cho danh mục note):**
 
 | Token | Giá trị |
 | --- | --- |
@@ -78,12 +78,34 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Ô nhập | Nhãn `caption` ở trên, ô cao 48 bo 16 nền `surface` viền `border` (đang nhập: viền `primary`), gợi ý `caption` `textMuted` ở dưới · ô khoá: nền `bg`, chữ `textMuted`, icon khoá |
 | Hộp chọn | Cùng kiểu Hộp xác nhận (nền mờ, hộp giữa màn bo 24) · tiêu đề + danh sách lựa chọn cao 56, mục đang chọn nền `primarySoft` + dấu ✓ `primary` · bấm là chọn + đóng, không có nút xác nhận |
 
+### Thành phần thêm ở S2
+
+| Thành phần | Mô tả |
+| --- | --- |
+| Thanh chọn chế độ | Segmented cao 40, nền `border`, bo 16 · 4 mục Tháng · Danh sách · Tuần · Ngày · mục chọn nền `primary` chữ trắng 700, mục khác chữ `text` |
+| Header lịch | `‹` · tiêu đề `title` ("Tháng 10, 2026") bấm được · `›` · bên phải nút "Hôm nay" (chip `primarySoft`, chữ `primaryDark`) |
+| Ô lịch tháng | Không viền ngoài, kẻ `border` giữa các ô · số dương `body` góc trái trên · ngày âm `caption` `textMuted` góc phải trên (mùng 1 / rằm: `primaryDark`) · tên lễ `caption` `error` 1 dòng · tối đa 3 thanh event + "+N" `caption` `textMuted` |
+| Trạng thái ô | Hôm nay: số trong vòng tròn 24 nền `primary` chữ trắng · đang chọn: nền ô `primarySoft` · ngày tháng khác: mờ 40% · CN + ngày lễ: số `error` |
+| Thanh event | Cao 16, bo 6, nền màu event, chữ `caption` `text` 1 dòng, padding ngang 4 |
+| Thẻ event | Nền `surface`, bo 16, vạch trái 4 màu event · tiêu đề `body` · giờ `caption` `textMuted` · icon trạng thái bên phải |
+| Khối event (xem ngày) | Như thẻ event, cao theo thời lượng (1 giờ = 56), nền màu event nhạt 30% |
+| Icon trạng thái event | Cỡ 14, `textMuted`: lặp (`repeat`), nhắc (`notifications`), Google (`logo-google`), chờ đồng bộ (`time`), chỉ trên Daynest (`phone-portrait`) |
+| Sheet từ đáy | Nền mờ như hộp thoại · tấm `surface` bo trên 24, thanh kéo 36×4 `border` · đầu tấm: Huỷ bỏ (`textMuted`) · tiêu đề `heading` · Hoàn tất (`primaryDark` 700) · dùng cho chọn mốc nhắc |
+| Pop-up có tiêu đề | Như hộp chọn (giữa màn, bo 24) · đầu hộp: ✕ bên trái · tiêu đề `heading` giữa · nút `+` tròn `primary` bên phải (nếu có) · dùng cho pop-up ngày, pop-up `+`, chọn tháng/năm |
+| Công tắc | 44×26, bo 999 · bật nền `primary`, tắt nền `border` · nút tròn trắng 22 có bóng nhẹ |
+| Dòng cài đặt có công tắc | Như dòng cài đặt, bên phải là công tắc thay cho giá trị/`›` |
+| Dòng cảnh báo | Nền `warning` nhạt (`#FDF1DE`), chữ `text`, icon `warning`, bo 16 |
+| Chip danh mục | Cao 32, bo 999, viền `border`, chấm màu danh mục 8 trước chữ · đang chọn: nền `primary` chữ trắng |
+| Thẻ note | Thẻ bo 20, padding 12, vạch trái 4 màu danh mục (không danh mục: `border`) · tiêu đề `heading` 1 dòng · nội dung `body` `textMuted` 3 dòng hoặc "2/5 mục" · ngày sửa `caption` · icon ghim `primaryDark` góc phải trên |
+| Dòng checklist | Cao 44 · ô tick tròn 22 viền `primary` (xong: nền `primary` + ✓ trắng, chữ gạch ngang `textMuted`) · chữ `body` · ✕ `textMuted` |
+| Lưới giờ | Cột giờ 44 `caption` `textMuted` · kẻ `border` mỗi giờ · vạch giờ hiện tại 2px `error` + chấm tròn |
+
 ## Quy tắc đồng bộ
 
 - Mọi màn chỉ dùng token ở file này: màu, cỡ chữ (22 / 17 / 15 / 12), khoảng cách, bo góc. Không dùng mã màu hay cỡ chữ khác (trừ chữ logo).
 - Cùng 1 loại thành phần → cùng kiểu ở mọi màn (tiêu đề màn, thẻ, dòng cài đặt, hộp thoại, toast).
 - Màu điểm nhấn chung là `primary`. Không gán mỗi tab/mục một màu riêng.
-- Màu event chỉ dùng cho event (S3+) và chấm hồng trong logo.
+- Màu event chỉ dùng cho event, danh mục note và chấm hồng trong logo.
 - Màu `error` chỉ cho lỗi và hành động nguy hiểm (Đăng xuất, Xoá).
 - Màn form (sửa, tạo mới): nút hành động chính cố định ở đáy màn, nội dung cuộn phía trên; mở bàn phím thì nút nằm trên bàn phím. Code: `FormScreen`.
 - Màn con: vuốt từ mép trái sang phải để quay lại.

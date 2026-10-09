@@ -1,6 +1,6 @@
 # Màn hình — Sprint 2
 
-Thuộc: [Sprint 2](../index.md). Mockup: bước 2 (chưa làm). Màu, chữ, thành phần: [design-system.md](../../design-system.md).
+Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở bằng trình duyệt). Màu, chữ, thành phần: [design-system.md](../../design-system.md).
 
 | # | Màn | Route | Mục đích | Thành phần chính | Chức năng |
 | --- | --- | --- | --- | --- | --- |
@@ -8,10 +8,10 @@ Thuộc: [Sprint 2](../index.md). Mockup: bước 2 (chưa làm). Màu, chữ, t
 | 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event | [F1](../F1-lich.md) |
 | 3 | Lịch — Ngày | `(tabs)/calendar` | Xem theo giờ | Header · dòng Cả ngày · lưới giờ · vạch giờ hiện tại | [F1](../F1-lich.md) |
 | 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-lich.md) |
-| 5 | Chọn chế độ xem | — | Đổi chế độ | Hộp chọn: Tháng · Tuần · Ngày · Danh sách | [F1](../F1-lich.md) |
+| 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header (giống Cute): Tháng · Danh sách · Tuần · Ngày | [F1](../F1-lich.md) |
 | 6 | Chọn tháng/năm | — | Nhảy nhanh | Hộp: năm ‹ › + lưới 12 tháng | [F1](../F1-lich.md) |
-| 7 | Sheet ngày | — | Event của 1 ngày | Ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-lich.md) |
-| 8 | Sheet `+` | — | Tạo nhanh | 2 nút: Event · Note | [F2](../F2-event.md), [F5](../F5-notes.md) |
+| 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn (như màn 6): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-lich.md) |
+| 8 | Pop-up `+` | — | Tạo nhanh | Hộp giữa màn (như màn 6): 2 nút Sự kiện · Ghi chú | [F2](../F2-event.md), [F5](../F5-notes.md) |
 | 9 | Form event | `event/edit` | Tạo/sửa | ✕ · Lưu · tiêu đề · chi tiết · cả ngày · thời gian · nhắc · lặp · màu | [F2](../F2-event.md), [F3](../F3-nhac-nho.md) |
 | 10 | Chọn lặp | — | Kiểu lặp | Hộp: Không lặp · Ngày · Tuần · Tháng · Năm · **Năm (âm lịch)** · ô N · ngày kết thúc | [F2](../F2-event.md#lặp) |
 | 11 | Chọn mốc nhắc | — | Thêm mốc | Sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất · Đúng giờ … 1 tuần trước, ✓ mốc đang chọn | [F3](../F3-nhac-nho.md#mô-tả) |
@@ -30,5 +30,5 @@ Thuộc: [Sprint 2](../index.md). Mockup: bước 2 (chưa làm). Màu, chữ, t
 
 - Màn có route (9, 13, 17, 18, 20): màn con, vuốt mép trái để quay lại.
 - Hộp chọn / hộp xác nhận: theo design-system (đã có ở S1).
-- Thành phần mới (vẽ ở bước 2, thêm vào design-system): ô lịch tháng, thanh event, thẻ event, sheet từ đáy, công tắc, chip danh mục, thẻ note, dòng checklist.
+- Thành phần mới: [design-system § Thành phần thêm ở S2](../../design-system.md#thành-phần-thêm-ở-s2).
 - Tab Thống kê: vẫn màn trống (S4).

@@ -99,7 +99,7 @@ Tắt "Đồng bộ" → 2 bên độc lập
 ## Mô tả
 
 - Cài đặt: xem [F6](F6-cai-dat.md#google-calendar).
-- Event đã đồng bộ: icon Google nhỏ ở sheet ngày + Chi tiết. Event `pending`: icon đồng hồ nhỏ.
+- Event đã đồng bộ: icon Google nhỏ ở pop-up ngày + Chi tiết. Event `pending`: icon đồng hồ nhỏ.
 
 ## Không làm
 

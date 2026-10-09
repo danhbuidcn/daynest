@@ -1,22 +1,22 @@
 # Todo
 
-## 2026-10-09 — Quy trình release: đính kèm APK vào GitHub Release — ⏳ chờ duyệt
+## 2026-10-09 — Quy trình release: đính kèm APK vào GitHub Release — ✅ xong
 
 Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (không kèm `.aab`). Dùng `gh` CLI.
 
-- [ ] 0. **Bạn làm** (cần sudo + đăng nhập trình duyệt): `sudo apt install gh` → `gh auth login` (GitHub.com, SSH).
-- [ ] 1. `docs/specs/index.md` §4 "Cuối sprint": thêm bước 7 — `gh release create v<version> app/dist/daynest-<version>-<versionCode>.apk --title v<version> --notes "<tóm tắt>"` · chỉ APK, không `.aab`.
-- [ ] 2. `CLAUDE.md` (project): thêm "→ GitHub Release kèm APK (`gh release create`)" vào cuối dòng quy trình release.
-- [ ] 3. Bổ sung release v1.0.1: chạy lệnh ở bước 1 với `daynest-1.0.1-2.apk` (bỏ qua nếu bạn đã tạo tay trên web).
-- [ ] 4. Kiểm tra: `gh release view v1.0.1` có asset `.apk`.
-- [ ] 5. Commit `docs: attach apk to github release` (chỉ `CLAUDE.md`), push. Phần `docs/specs/index.md` đang có sửa đổi S2 chưa commit → đi chung commit spec S2 (bước 1 todo S2 bên dưới), không tách hunk.
+- [x] 0. **Bạn làm** (cần sudo + đăng nhập trình duyệt): `sudo apt install gh` → `gh auth login` (GitHub.com, SSH).
+- [x] 1. `docs/specs/index.md` §4 "Cuối sprint": thêm bước 7 — `gh release create v<version> app/dist/daynest-<version>-<versionCode>.apk --title v<version> --notes "<tóm tắt>"` · chỉ APK, không `.aab`.
+- [x] 2. `CLAUDE.md` (project): thêm "→ GitHub Release kèm APK (`gh release create`)" vào cuối dòng quy trình release.
+- [x] 3. Bổ sung release v1.0.1: chạy lệnh ở bước 1 với `daynest-1.0.1-2.apk` (bỏ qua nếu bạn đã tạo tay trên web).
+- [x] 4. Kiểm tra: `gh release view v1.0.1` có asset `.apk`.
+- [x] 5. Commit `docs: attach apk to github release` (chỉ `CLAUDE.md`), push. Phần `docs/specs/index.md` đang có sửa đổi S2 chưa commit → đi chung commit spec S2 (bước 1 todo S2 bên dưới), không tách hunk.
 
-## 2026-10-09 — S2 bước 2: thiết kế (design system bổ sung + mockup) — 🔄 đang làm
+## 2026-10-09 — S2 bước 2: thiết kế (design system bổ sung + mockup) — ✅ xong
 
 **Input:** spec S2 đã ok (`docs/specs/sprint-2/`), danh sách màn ở `design/screens.md` (23 màn), design system S1. Cùng cách làm mockup S1.
 
 - [x] 1. Commit spec S2 trước (tách khỏi mockup): `docs: add sprint-2 spec` (`docs/specs/sprint-2/`, `docs/specs/index.md`, `docs/index.md`, `wip/todo_list.md`) kèm Co-Authored-By, push.
-- [ ] 2. `docs/specs/design-system.md` — thêm thành phần mới (chỉ token có sẵn, không thêm màu/cỡ chữ):
+- [x] 2. `docs/specs/design-system.md` — thêm thành phần mới (chỉ token có sẵn, không thêm màu/cỡ chữ):
   - ô lịch tháng (số dương, ngày âm, tên lễ, thanh event, "+N", hôm nay, ngày tháng khác, CN/lễ);
   - thanh event (tháng) + thẻ event (tuần/danh sách/sheet ngày) + khối event (xem ngày);
   - thanh chọn chế độ (segmented: Tháng · Danh sách · Tuần · Ngày — giống Cute);
@@ -24,15 +24,16 @@ Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (khôn
   - công tắc + dòng cài đặt có công tắc;
   - chip danh mục, thẻ note, dòng checklist;
   - icon nhỏ trạng thái event: lặp · nhắc · Google · chờ đồng bộ · chỉ trên Daynest.
-- [ ] 3. Vẽ `docs/specs/sprint-2/design/mockups.html` — 1 file, khung điện thoại 360×780, chữ tiếng Việt, mở bằng trình duyệt; chia 4 nhóm:
+- [x] 3. Vẽ `docs/specs/sprint-2/design/mockups.html` — 1 file, khung điện thoại 360×780, chữ tiếng Việt, mở bằng trình duyệt; chia 4 nhóm:
   - **Lịch:** màn 1–7 (tháng có ngày âm + lễ + event mẫu; tuần; ngày; danh sách; chọn chế độ; chọn tháng/năm; sheet ngày);
   - **Event:** màn 8–15 (sheet `+`, form tạo, chọn lặp có "Hằng năm (âm lịch)", sheet mốc nhắc, mẹo pin, chi tiết, hỏi lần lặp, xung đột);
   - **Notes:** màn 16–20 (danh sách, editor có checklist, danh mục, sửa danh mục, thùng rác);
   - **Cài đặt:** màn 21–22 (Cài đặt có nhóm Thông báo / Lịch / Google Calendar ở cả trạng thái tắt và bật; tiến độ đồng bộ).
   - Màn 12 (picker ngày/giờ hệ điều hành): không vẽ.
-- [ ] 4. `design/screens.md` + `sprint-2/index.md`: thêm link mockup, bỏ chữ "bước 2 (chưa làm)"; `F6-cai-dat.md`: bỏ ghi chú "thêm vào design-system ở bước 2".
-- [ ] 5. Kiểm tra: mở `mockups.html` (chụp màn bằng trình duyệt headless) — đủ màn, không vỡ bố cục; chỉ dùng token trong design system; không link hỏng.
-- [ ] 6. Gửi bạn xem. Góp ý thì sửa; ok thì commit `docs: add sprint-2 mockups`, push → sang bước code (todo riêng, chia nhiều bước nhỏ).
+- [x] 4. `design/screens.md` + `sprint-2/index.md`: thêm link mockup, bỏ chữ "bước 2 (chưa làm)"; `F6-cai-dat.md`: bỏ ghi chú "thêm vào design-system ở bước 2".
+- [x] 5. Kiểm tra: mở `mockups.html` (chụp màn bằng trình duyệt headless) — đủ màn, không vỡ bố cục; chỉ dùng token trong design system; không link hỏng.
+- [x] Góp ý của bạn (đã sửa): màn 7, 8 → pop-up giữa màn như màn 6; bỏ chữ "(ngày giỗ)" trong dòng gợi ý lặp âm.
+- [x] 6. Gửi bạn xem. Góp ý thì sửa; ok thì commit `docs: add sprint-2 mockups` (1 dòng, không body, không Co-Authored-By), push → sang bước code (todo riêng, chia nhiều bước nhỏ).
 
 ## 2026-10-09 — S2 spec: mục Nhắc nhở trong form event giống hệt Cute Calendar — ✅ xong
 

@@ -87,6 +87,7 @@ Khi DoD sprint đạt, làm theo thứ tự (todo trong `wip/todo_list.md`, ch�
 4. `cd app && npm run release` → `app/dist/daynest-<version>-<versionCode>.apk|.aab`.
 5. Cài đè lên máy thật (`adb install -r …apk`): vẫn đăng nhập, test luồng chính + chức năng sprint.
 6. Commit `chore(release): v<version>` → gắn tag GitHub: `git tag v<version> && git push origin main v<version>` (bắt buộc mỗi lần release; tag trỏ đúng commit đã build APK).
+7. Tạo GitHub Release kèm APK (bắt buộc; chỉ APK, không `.aab`): `gh release create v<version> app/dist/daynest-<version>-<versionCode>.apk --title v<version> --notes "<tóm tắt>"` → kiểm tra `gh release view v<version>` có asset `.apk`. Cần `gh` đã đăng nhập (cài không cần sudo: tải tarball từ github.com/cli/cli vào `~/.local/bin`).
 
 Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó. Ghi chú đã chốt cho sprint sau:
 

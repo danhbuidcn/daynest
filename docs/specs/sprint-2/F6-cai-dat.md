@@ -43,7 +43,7 @@ Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
 Đăng xuất
 ```
 
-- Dòng công tắc: dùng `SettingRow` + công tắc bên phải (thành phần mới, thêm vào [design-system](../design-system.md#thành-phần-dùng-chung) ở bước 2 — mockup).
+- Dòng công tắc: dùng `SettingRow` + công tắc bên phải ([design-system](../design-system.md#thành-phần-thêm-ở-s2)).
 - Tham khảo: [Cute 70](../../research/cute-calendar/screenshots/70-settings.png), [75](../../research/cute-calendar/screenshots/75-settings-notification.png).
 
 ## Không làm
