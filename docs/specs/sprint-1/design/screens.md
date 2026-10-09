@@ -10,10 +10,10 @@ Thuộc: [Sprint 1](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 4 | Lịch (trống) | `(tabs)/calendar` | Chỗ cho S2 | Tiêu đề "Lịch" | [F1](../F1-khung-app.md) |
 | 5 | Quản lý (trống) | `(tabs)/manage` | Chỗ cho S7–S9 | Tiêu đề "Quản lý" | [F1](../F1-khung-app.md) |
 | 6 | Thống kê (trống) | `(tabs)/stats` | Chỗ cho S9 | Tiêu đề "Thống kê" | [F1](../F1-khung-app.md) |
-| 7 | Cài đặt | `(tabs)/settings` | Tài khoản | Thẻ tài khoản (ảnh, tên, email, icon bút) → nhóm Tài khoản (Đăng nhập bằng Google) → nhóm Ứng dụng (Ngôn ngữ, Phiên bản) → Đăng xuất ở cuối | [F1](../F1-khung-app.md), [F2](../F2-dang-nhap-google.md), [F4](../F4-ky-app-version.md) |
+| 7 | Cài đặt | `(tabs)/settings` | Tài khoản | Thẻ tài khoản (ảnh, tên, email; chỉ xem — icon bút đã bỏ) → nhóm Tài khoản (Đăng nhập bằng Google) → nhóm Ứng dụng (Ngôn ngữ, Phiên bản) → Đăng xuất ở cuối | [F1](../F1-khung-app.md), [F2](../F2-dang-nhap-google.md), [F4](../F4-ky-app-version.md) |
 | 8 | Hộp xác nhận đăng xuất | — | Tránh bấm nhầm | "Đăng xuất?" · Huỷ / Đăng xuất | [F2](../F2-dang-nhap-google.md) |
 | 9 | Chọn ngôn ngữ | — | Đổi ngôn ngữ | Hộp chọn giữa màn (kiểu giống màn 8): English · Tiếng Việt, dấu ✓ ở mục đang chọn; bấm là đổi ngay + đóng, bấm ra ngoài để đóng | [F1](../F1-khung-app.md) |
-| 10 | Sửa tài khoản | `settings/account` | Sửa tên + ảnh | Nút quay lại, ảnh tròn + nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu cố định ở đáy | [F2](../F2-dang-nhap-google.md#sửa-tài-khoản) |
+| 10 | ~~Sửa tài khoản~~ (đã bỏ 2026-10-09 — không sửa tên, ảnh để tiết kiệm Storage) | `settings/account` | Sửa tên + ảnh | Nút quay lại, ảnh tròn + nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu cố định ở đáy | [F2](../F2-dang-nhap-google.md#sửa-tài-khoản) |
 
 - Nút `+` (S1): toast "Đang phát triển".
 - Màn con (vd Sửa tài khoản): vuốt từ mép trái sang phải → về màn trước (Android + iOS).

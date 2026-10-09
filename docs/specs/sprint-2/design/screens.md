@@ -45,7 +45,6 @@ Quy tắc chung: [design-system § Chữ dài](../../design-system.md#chữ-dài
 
 | Field | Giới hạn (nhập trong app) |
 | --- | --- |
-| Tên hiển thị (S1) | 1–50 |
 | Tiêu đề event | 1–100 |
 | Chi tiết event | ≤ 2000 |
 | Tiêu đề note | ≤ 200 |

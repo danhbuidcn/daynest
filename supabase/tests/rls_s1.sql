@@ -1,8 +1,8 @@
--- Sprint 1 RLS test: user A cannot read/update user B data or avatar.
+-- Sprint 1 RLS test: user A cannot read/update user B data; nobody edits profiles or uploads avatars.
 -- Run: npx supabase test db
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(11);
 
 -- 2 fake users -> trigger creates profiles + user_settings
 insert into auth.users (id, email, raw_user_meta_data) values
@@ -20,22 +20,16 @@ set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", 
 select results_eq('select count(*)::int from public.profiles', array[1], 'A sees only 1 profile (own)');
 select results_eq('select count(*)::int from public.user_settings', array[1], 'A sees only 1 user_settings (own)');
 
-select is_empty(
-  $$ update public.profiles set display_name = 'hack' where id = '00000000-0000-0000-0000-00000000000b' returning id $$,
-  'A cannot update B profile');
+select throws_ok(
+  $$ update public.profiles set display_name = 'hack' where id = '00000000-0000-0000-0000-00000000000b' $$,
+  '42501', null, 'A cannot update B profile');
 select is_empty(
   $$ update public.user_settings set language = 'vi' where user_id = '00000000-0000-0000-0000-00000000000b' returning user_id $$,
   'A cannot update B user_settings');
 
-select lives_ok(
+select throws_ok(
   $$ update public.profiles set display_name = 'An', avatar_url = 'x' where id = '00000000-0000-0000-0000-00000000000a' $$,
-  'A can update own name + avatar');
-select throws_ok(
-  $$ update public.profiles set email = 'x@x.dev' where id = '00000000-0000-0000-0000-00000000000a' $$,
-  '42501', null, 'A cannot update email');
-select throws_ok(
-  $$ update public.profiles set display_name = repeat('a', 51) where id = '00000000-0000-0000-0000-00000000000a' $$,
-  '23514', null, 'Name > 50 characters is rejected');
+  '42501', null, 'A cannot edit own name + avatar');
 select throws_ok(
   $$ update public.user_settings set language = 'fr' where user_id = '00000000-0000-0000-0000-00000000000a' $$,
   '23514', null, 'language accepts only en/vi');
@@ -43,12 +37,9 @@ select throws_ok(
   $$ insert into public.profiles (id, display_name, email) values (gen_random_uuid(), 'x', 'x') $$,
   '42501', null, 'App cannot insert profile');
 
-select lives_ok(
-  $$ insert into storage.objects (bucket_id, name) values ('avatars', '00000000-0000-0000-0000-00000000000a/avatar.jpg') $$,
-  'A can write avatar to own folder');
 select throws_ok(
-  $$ insert into storage.objects (bucket_id, name) values ('avatars', '00000000-0000-0000-0000-00000000000b/avatar.jpg') $$,
-  '42501', null, 'A cannot write avatar to B folder');
+  $$ insert into storage.objects (bucket_id, name) values ('avatars', '00000000-0000-0000-0000-00000000000a/avatar.jpg') $$,
+  '42501', null, 'A cannot upload an avatar');
 
 select * from finish();
 rollback;

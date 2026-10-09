@@ -1,5 +1,69 @@
 # Todo
 
+## 2026-10-09 — Bỏ màn Sửa tài khoản (không sửa tên, ảnh) — ✅ xong
+
+**Bạn chốt:** xoá màn Sửa tài khoản; không cho sửa tên, ảnh → tiết kiệm Storage Supabase.
+
+**Đề xuất (cần bạn ok):** tên + ảnh luôn lấy từ Google. Ai đã sửa trước đây → **trả về tên + ảnh Google** (lấy từ `auth.users.raw_user_meta_data`). Không có ảnh Google → ảnh mặc định chữ cái đầu (có sẵn).
+
+**Plan:**
+
+- [x] 1. App:
+  - xoá `src/app/settings/account.tsx` + route trong `_layout.tsx`;
+  - Cài đặt: thẻ tài khoản chỉ hiển thị (bỏ icon bút, không bấm được);
+  - xoá code sửa hồ sơ + tải ảnh (`authService`, `profile.ts`), `validateName.ts` + test, chữ i18n `account.*` (EN + VI);
+  - gỡ `expo-image-picker`, `expo-image-manipulator` (chỉ màn này dùng).
+- [x] 2. DB — migration mới `supabase/db new drop_profile_edit`:
+  - bỏ quyền + policy update `profiles`;
+  - bỏ policy Storage `avatars`;
+  - trả `display_name`, `avatar_url` về giá trị Google cho mọi user.
+  - Xoá file + bucket `avatars`: qua Storage API (Supabase chặn xoá file Storage bằng SQL) — chạy CLI `supabase storage rm` trên project, kiểm tra bucket trống rồi xoá bucket. Nếu CLI không xoá được bucket → nhờ bạn xoá trên Dashboard (1 thao tác).
+  - `supabase/tests/rls_s1.sql`: bỏ test ảnh; thêm test "user không update được `profiles`". Chạy `supabase/db test`.
+- [x] 3. Docs:
+  - S1 `F2-dang-nhap-google.md` mục "Sửa tài khoản", `screens.md` màn 10, `db.md` Storage `avatars`, `F3` → ghi "Đã bỏ (2026-10-09)", giữ lại để truy vết;
+  - S2: `db.md` + `F7` bỏ nhắc `avatars`; `screens.md` bỏ dòng "Tên hiển thị"; Spec tổng §3 bỏ dòng Storage avatar trong "Mục tiêu tải".
+  - `supabase/README.md`, `config.toml`: bỏ phần avatars nếu có.
+- [x] 4. Kiểm tra: `npm run typecheck && npm run lint && npm test`; `supabase/db test`; emulator: Cài đặt hiện tên + ảnh Google, bấm thẻ không mở gì.
+- [x] 5. `supabase/db migrate` lên project thật (bạn ok ở đây là ok bước này) · commit `feat: remove profile editing`, push. Ra máy người dùng ở bản `1.1.0`.
+- Kết quả: typecheck ok, lint 0 lỗi, test 2/2 (bỏ test validateName + avatar), `supabase/db test` 11/11. Project thật: đã xoá 1 file ảnh + bucket `avatars` (CLI `storage rm -r`), migration `20261009102301_drop_profile_edit` đã chạy. Emulator: Cài đặt hiện tên + ảnh Google, thẻ không bấm được. DB local vẫn còn bucket rỗng do migration S1 tạo (Supabase chặn xoá bucket bằng SQL) — không ảnh hưởng.
+
+## 2026-10-09 — S2 code: lộ trình + bước 3 (lịch âm, ngày lễ, lưới tháng) — ✅ đã duyệt, chưa làm (làm tiếp phiên sau)
+
+### Lộ trình code S2 (mỗi bước 1 todo riêng, chạy được trên máy sau mỗi bước)
+
+| Bước | Nội dung | Spec |
+| --- | --- | --- |
+| **3** | Lịch âm + ngày lễ + lưới tháng (chưa có event) | F1 |
+| 4 | Migration S2: mọi bảng mới, RLS + `session_active`, hàm thiết bị, test RLS | db.md |
+| 5 | Giới hạn 2 thiết bị (đăng ký máy, hộp bị đăng xuất, màn Thiết bị đăng nhập) | F7 |
+| 6 | Event: hàm lặp (dương + âm) + ngoại lệ, form, chi tiết, pop-up ngày, pop-up `+`, thanh event trên lưới tháng | F2 |
+| 7 | Xem tuần / ngày / danh sách | F1 |
+| 8 | Nhắc nhở + Cài đặt Thông báo + Lịch | F3, F6 |
+| 9 | Notes: danh sách, editor, checklist, danh mục, tìm kiếm, thùng rác | F5 |
+| 10 | Đồng bộ Google 2 chiều | F4 |
+| 11 | Test tải 100 user, rà chữ dài, DoD → release `1.1.0` | index |
+
+### Bước 3 — Input
+
+- Spec: [F1](../docs/specs/sprint-2/F1-lich.md) (lịch âm, ngày lễ, xem tháng), mockup màn 1, 6.
+- App hiện: tab Lịch là màn trống; `user_settings.week_start` đã có từ S1 (chưa đọc lên app).
+
+### Bước 3 — Output
+
+- Tab Lịch hiện lưới tháng đúng ngày âm + ngày lễ, đổi tháng được, trên máy thật.
+
+### Bước 3 — Plan
+
+- [ ] 1. `src/lib/lunar/`: `toLunar`, `toSolar`, `lunarMonthLength`, `canChiYear` — thuật toán Hồ Ngọc Đức, múi giờ +7, năm 1900–2100, hàm thuần.
+- [ ] 2. `src/lib/holidays/`: danh sách lễ dương + âm trong F1 (tên EN + VI), `holidaysOn(date)`.
+- [ ] 3. `src/lib/calendar/monthGrid.ts`: 42 ngày của tháng theo tuần bắt đầu Thứ 2 / CN.
+- [ ] 4. Test (Jest): Tết 2020–2030 đúng ngày; tháng nhuận 2020 (4), 2023 (2), 2025 (6); đổi dương ↔ âm khớp nhau mọi ngày 1900–2100; lễ âm 2024–2027; Giao thừa tháng Chạp thiếu/đủ; lưới tháng 2 năm nhuận, tuần bắt đầu T2/CN.
+- [ ] 5. Màn Lịch — Tháng (`(tabs)/calendar.tsx` + `src/features/calendar/`): header `‹ Tháng 10, 2026 ›` + chip Hôm nay · thanh chọn chế độ (chỉ Tháng chạy; Tuần/Ngày/Danh sách → toast "Đang phát triển" tới bước 7) · hàng thứ · lưới 6×7 (số dương, ngày âm, mùng 1/rằm kèm tháng, tên lễ, hôm nay, CN/lễ màu `error`, ngày tháng khác mờ) · vuốt trái/phải đổi tháng · bấm tiêu đề → hộp chọn tháng/năm (màn 6) · bấm ô → chọn ngày (pop-up ngày làm ở bước 6).
+- [ ] 6. Đọc `week_start` từ `user_settings` khi đăng nhập (cùng chỗ đọc `language`); chưa có cài đặt hiện ngày âm/lễ (bước 8) → luôn hiện.
+- [ ] 7. i18n EN + VI cho chữ mới (tên tháng, thứ, tên lễ, Hôm nay…).
+- [ ] 8. Kiểm tra: `npm run typecheck && npm run lint && npm test`; emulator: tháng 10/2026 khớp mockup màn 1 (ngày âm, 20/10 lễ), vuốt qua tháng 2/2026 thấy Tết 17/2, đổi ngôn ngữ EN ↔ VI.
+- [ ] 9. Commit `feat(app): lunar month calendar`, push. Không release.
+
 ## 2026-10-09 — App icons match the mockups — ✅ xong
 
 **Input:** you decided every icon in the app must match the mockups (option b). The app uses Ionicons today; mockups draw their own rounded-stroke SVGs, so several icons look different (Calendar and Stats tabs most visibly).

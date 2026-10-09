@@ -1,21 +1,19 @@
 import Constants from 'expo-constants';
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
 import { Card } from '@/components/Card';
 import { ChoiceDialog, ConfirmDialog } from '@/components/Dialog';
-import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { LANGUAGES, type Language } from '@/i18n';
-import { colors, radius, space } from '@/theme';
+import { colors, space } from '@/theme';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
@@ -33,24 +31,17 @@ export default function SettingsScreen() {
     <SafeAreaView edges={['top']} style={styles.screen}>
       <ScreenHeader title={t('settings.title')} />
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable accessibilityRole="button" onPress={() => router.push('/settings/account')}>
-          {({ pressed }) => (
-            <Card style={[styles.account, pressed && { opacity: 0.7 }]}>
-              <Avatar name={profile.displayName} uri={profile.avatarUrl} />
-              <View style={styles.who}>
-                <AppText variant="heading" numberOfLines={1}>
-                  {profile.displayName}
-                </AppText>
-                <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
-                  {profile.email}
-                </AppText>
-              </View>
-              <View style={styles.edit}>
-                <Icon name="pen" size={18} color={colors.primaryDark} />
-              </View>
-            </Card>
-          )}
-        </Pressable>
+        <Card style={styles.account}>
+          <Avatar name={profile.displayName} uri={profile.avatarUrl} />
+          <View style={styles.who}>
+            <AppText variant="heading" numberOfLines={1}>
+              {profile.displayName}
+            </AppText>
+            <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+              {profile.email}
+            </AppText>
+          </View>
+        </Card>
 
         <GroupLabel text={t('settings.account')} />
         <Card>
@@ -109,6 +100,5 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: space.lg, paddingBottom: space.xxl, gap: space.lg },
   account: { padding: space.lg, flexDirection: 'row', alignItems: 'center', gap: 14 },
   who: { flex: 1, minWidth: 0 },
-  edit: { width: 34, height: 34, borderRadius: radius.icon, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   group: { marginHorizontal: space.xs, marginBottom: -space.sm, letterSpacing: 0.6 },
 });

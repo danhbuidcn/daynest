@@ -63,7 +63,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 | User đăng nhập/tháng | ≤ 10.000 | 50.000 MAU | Đủ |
 | Request cùng lúc | ~100 req/s lúc cao điểm | Chịu được khi có index | Đủ |
 | Dung lượng DB | ~10–50 KB/user → 100–500 MB | 500 MB | Sát — theo dõi, gần 500 MB thì tính lại |
-| Storage ảnh | Avatar nén 512 px ~50 KB × 10.000 ≈ 500 MB | 1 GB | Đủ |
+| Storage | Không lưu file (ảnh đại diện lấy từ Google, không cho sửa) | 1 GB | Đủ |
 | Bỏ không 7 ngày bị tạm dừng | — | — | Ổn — app được dùng hằng ngày |
 
 - Giới hạn gói Free ở trên theo hiểu biết lúc viết; kiểm lại trang giá Supabase trước khi lên Play.

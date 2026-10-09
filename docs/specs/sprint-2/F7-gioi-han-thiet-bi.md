@@ -26,7 +26,7 @@ Thuộc: [Sprint 2](index.md).
 
 ### Máy bị đăng xuất dừng ngay
 
-- RLS mọi bảng (cả bảng S1 + Storage `avatars`) thêm điều kiện: phiên hiện tại (`session_id` trong token) còn trong `user_devices` → máy cũ không đọc/ghi được nữa, không đợi token hết hạn.
+- RLS mọi bảng (cả bảng S1) thêm điều kiện: phiên hiện tại (`session_id` trong token) còn trong `user_devices` → máy cũ không đọc/ghi được nữa, không đợi token hết hạn.
 - App hỏi `session_active()` khi: mở app, về foreground, trước khi đồng bộ Google. Ghi bị từ chối (`42501`) → cũng hỏi lại.
 - `false` → đăng xuất (xoá phiên trên máy, huỷ thông báo nhắc — [F3](F3-nhac-nho.md)) → màn Đăng nhập + hộp "Bạn đã bị đăng xuất".
 - `last_seen_at` cập nhật mỗi lần `session_active()` trả `true` (tối đa 1 lần / 5 phút).

@@ -1,10 +1,9 @@
 import { GoogleSignin, isCancelledResponse, isErrorWithCode } from '@react-native-google-signin/google-signin';
-import { File } from 'expo-file-system';
 import { getNetworkStateAsync } from 'expo-network';
 
 import { isLanguage, type Language } from '@/i18n';
 import { supabase } from '@/lib/supabase';
-import { avatarPath, isLocalUri, toProfile, withVersion, type Profile } from './profile';
+import { toProfile, type Profile } from './profile';
 
 export type { Profile } from './profile';
 
@@ -18,7 +17,6 @@ export interface AuthService {
   getSession(): Promise<Profile | null>;
   signIn(): Promise<Profile>;
   signOut(): Promise<void>;
-  updateProfile(patch: { displayName: string; avatarUrl: string | null }): Promise<Profile>;
   getLanguage(): Promise<Language | null>;
   saveLanguage(lang: Language): Promise<void>;
 }
@@ -56,17 +54,6 @@ async function loadProfile(userId: string) {
   return toProfile(data);
 }
 
-async function uploadAvatar(userId: string, localUri: string) {
-  const body = await new File(localUri).arrayBuffer();
-  const path = avatarPath(userId);
-  const { error } = await supabase.storage
-    .from('avatars')
-    .upload(path, body, { contentType: 'image/jpeg', upsert: true });
-  if (error) throw error;
-  const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-  return withVersion(data.publicUrl, Date.now());
-}
-
 export const supabaseAuthService: AuthService = {
   async getSession() {
     const userId = await currentUserId();
@@ -97,23 +84,6 @@ export const supabaseAuthService: AuthService = {
   async signOut() {
     await supabase.auth.signOut();
     await GoogleSignin.signOut().catch(() => {});
-  },
-
-  async updateProfile({ displayName, avatarUrl }) {
-    try {
-      await ensureOnline();
-      const userId = await currentUserId();
-      if (!userId) throw new AuthError('failed');
-      const url = isLocalUri(avatarUrl) ? await uploadAvatar(userId, avatarUrl) : avatarUrl;
-      const { error } = await supabase
-        .from('profiles')
-        .update({ display_name: displayName, avatar_url: url })
-        .eq('id', userId);
-      if (error) throw error;
-      return await loadProfile(userId);
-    } catch (e) {
-      throw classify(e);
-    }
   },
 
   async getLanguage() {

@@ -27,11 +27,13 @@ Thuộc: [F3](../F3-db-supabase.md).
 ## RLS
 
 - Bật RLS cả 2 bảng.
-- `profiles`: select/update khi `id = auth.uid()`. Update chỉ cho cột `display_name`, `avatar_url`.
+- `profiles`: select khi `id = auth.uid()`. ~~Update chỉ cho cột `display_name`, `avatar_url`.~~ (đã bỏ 2026-10-09 — không sửa tên, ảnh để tiết kiệm Storage)
 - `user_settings`: select/update khi `user_id = auth.uid()`.
 - Không cho insert/delete từ app — trigger tạo, xoá theo `auth.users`.
 
-## Storage `avatars`
+## Storage `avatars` — đã bỏ
+
+> (đã bỏ 2026-10-09 — không sửa tên, ảnh để tiết kiệm Storage): bucket + policy đã xoá (migration `drop_profile_edit`, xoá bucket qua Storage API).
 
 - Bucket `avatars`, public read (ảnh hiện ở app không cần token).
 - File: `avatars/{user_id}/avatar.jpg` — ghi đè khi đổi ảnh; URL kèm `?v=<timestamp>` để app không dùng ảnh cache cũ.

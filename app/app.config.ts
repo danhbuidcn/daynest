@@ -31,10 +31,6 @@ const config: ExpoConfig = {
       'expo-splash-screen',
       { image: './assets/splash-icon.png', imageWidth: 120, backgroundColor: '#FAF8F5' },
     ],
-    [
-      'expo-image-picker',
-      { photosPermission: 'Daynest needs access to your photos to set your profile picture.' },
-    ],
   ],
   experiments: { typedRoutes: true },
 };

@@ -18,9 +18,3 @@ export const toProfile = (row: ProfileRow): Profile => ({
   email: row.email,
   avatarUrl: row.avatar_url,
 });
-
-export const avatarPath = (userId: string) => `${userId}/avatar.jpg`;
-
-export const withVersion = (publicUrl: string, version: number) => `${publicUrl}?v=${version}`;
-
-export const isLocalUri = (uri: string | null): uri is string => !!uri && /^(file|content):/.test(uri);

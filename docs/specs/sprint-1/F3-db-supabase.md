@@ -8,7 +8,7 @@ Thuộc: [Sprint 1](index.md).
 
 ## Logic
 
-- Chỉ 2 bảng: `profiles`, `user_settings` + 1 Storage bucket `avatars` (ảnh đại diện). Chi tiết: [design/db.md](design/db.md).
+- Chỉ 2 bảng: `profiles`, `user_settings` + ~~1 Storage bucket `avatars` (ảnh đại diện)~~ (đã bỏ 2026-10-09 — không sửa tên, ảnh để tiết kiệm Storage). Chi tiết: [design/db.md](design/db.md).
 - Migration SQL trong `supabase/migrations/`, chạy bằng Supabase CLI.
 - RLS bật cho mọi bảng: user chỉ đọc/sửa dòng của mình.
 - Trigger khi có user mới trong `auth.users` → tạo dòng `profiles` + `user_settings`.

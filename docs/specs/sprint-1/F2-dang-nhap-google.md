@@ -28,10 +28,12 @@ Cài đặt → Đăng xuất → xác nhận → Đăng nhập
 ## Mô tả
 
 - Màn Đăng nhập: logo, tên app, 1 nút "Đăng nhập bằng Google".
-- Cài đặt → thẻ tài khoản: ảnh, tên, email (lấy từ `profiles`), icon bút. Nút Đăng xuất ở cuối màn Cài đặt.
+- Cài đặt → thẻ tài khoản: ảnh, tên, email (lấy từ `profiles`, luôn theo Google), chỉ để xem. Nút Đăng xuất ở cuối màn Cài đặt.
 - Mất mạng khi đăng nhập / lưu / đổi ngôn ngữ → toast "Không có kết nối" (kiểm tra mạng trước khi gửi).
 
-## Sửa tài khoản
+## Sửa tài khoản — đã bỏ
+
+> **Đã bỏ 2026-10-09:** không cho sửa tên, ảnh (tiết kiệm Storage Supabase). Tên + ảnh luôn lấy từ Google; user đã sửa được trả về giá trị Google (migration `drop_profile_edit`). Phần dưới giữ để truy vết.
 
 - Bấm thẻ tài khoản → màn Sửa tài khoản (route `settings/account`).
 - Sửa được: tên hiển thị, ảnh đại diện. Email lấy từ Google, chỉ xem.

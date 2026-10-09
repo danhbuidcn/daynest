@@ -33,16 +33,5 @@
     "text": "Bạn sẽ cần đăng nhập Google lại để dùng Daynest.",
     "cancel": "Huỷ",
     "confirm": "Đăng xuất"
-  },
-  "account": {
-    "title": "Sửa tài khoản",
-    "name": "Tên hiển thị",
-    "nameHint": "Tối đa 50 ký tự.",
-    "nameRequired": "Bạn chưa nhập tên.",
-    "nameTooLong": "Tên tối đa 50 ký tự.",
-    "email": "Email",
-    "save": "Lưu",
-    "saved": "Đã lưu",
-    "saveError": "Lưu không thành công. Thử lại nhé."
   }
 }

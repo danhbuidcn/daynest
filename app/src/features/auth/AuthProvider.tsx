@@ -8,7 +8,6 @@ type AuthState = {
   profile: Profile | null;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
-  updateProfile: AuthService['updateProfile'];
   saveLanguage: (lang: Language) => Promise<void>;
 };
 
@@ -43,14 +42,6 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
     await service.signOut();
     setProfile(null);
   }, [service]);
-  const updateProfile = useCallback<AuthService['updateProfile']>(
-    async (patch) => {
-      const next = await service.updateProfile(patch);
-      setProfile(next);
-      return next;
-    },
-    [service],
-  );
 
   const saveLanguage = useCallback(
     async (lang: Language) => {
@@ -61,8 +52,8 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
   );
 
   const value = useMemo(
-    () => ({ loading, profile, signIn, signOut, updateProfile, saveLanguage }),
-    [loading, profile, signIn, signOut, updateProfile, saveLanguage],
+    () => ({ loading, profile, signIn, signOut, saveLanguage }),
+    [loading, profile, signIn, signOut, saveLanguage],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
