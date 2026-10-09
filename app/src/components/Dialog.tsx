@@ -1,9 +1,9 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
 import { AppText } from './AppText';
 import { Button } from './Button';
+import { Icon } from './Icon';
 
 function Shell({ visible, onClose, children, compact }: { visible: boolean; onClose: () => void; children: React.ReactNode; compact?: boolean }) {
   return (
@@ -37,7 +37,7 @@ export function ConfirmDialog({
   return (
     <Shell visible={visible} onClose={onCancel}>
       <View style={styles.dangerIcon}>
-        <Ionicons name="log-out-outline" size={28} color={colors.error} />
+        <Icon name="logout" size={28} color={colors.error} />
       </View>
       <AppText variant="heading" style={styles.center}>
         {title}
@@ -90,7 +90,7 @@ export function ChoiceDialog<T extends string>({
             <AppText weight={on ? 'extrabold' : undefined} style={styles.flex}>
               {o.label}
             </AppText>
-            {on ? <Ionicons name="checkmark" size={22} color={colors.primary} /> : null}
+            {on ? <Icon name="check" size={22} color={colors.primary} /> : null}
           </Pressable>
         );
       })}

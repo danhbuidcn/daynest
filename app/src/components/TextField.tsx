@@ -1,9 +1,9 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
 import { colors, radius, space, type as typeScale } from '@/theme';
 import { AppText } from './AppText';
+import { Icon } from './Icon';
 
 export function TextField({
   label,
@@ -34,7 +34,7 @@ export function TextField({
           style={[styles.input, { color: locked ? colors.textMuted : colors.text }]}
           placeholderTextColor={colors.textMuted}
         />
-        {locked ? <Ionicons name="lock-closed-outline" size={18} color={colors.textMuted} /> : null}
+        {locked ? <Icon name="lock" size={18} color={colors.textMuted} /> : null}
       </View>
       {error || hint ? (
         <AppText variant="caption" color={error ? colors.error : colors.textMuted} style={styles.hint}>

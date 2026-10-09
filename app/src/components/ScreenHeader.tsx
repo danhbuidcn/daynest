@@ -1,8 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, space } from '@/theme';
 import { AppText } from './AppText';
+import { Icon } from './Icon';
 
 export function ScreenHeader({ title, onBack }: { title: string; onBack?: () => void }) {
   return (
@@ -10,7 +10,7 @@ export function ScreenHeader({ title, onBack }: { title: string; onBack?: () => 
       <View style={styles.side}>
         {onBack ? (
           <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={onBack} hitSlop={8} style={styles.back}>
-            <Ionicons name="chevron-back" size={24} color={colors.text} />
+            <Icon name="back" size={24} color={colors.text} />
           </Pressable>
         ) : null}
       </View>

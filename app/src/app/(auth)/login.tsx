@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -41,13 +40,14 @@ export default function LoginScreen() {
         label={t('login.google')}
         onPress={onSignIn}
         disabled={busy}
-        icon={<Ionicons name="logo-google" size={18} color={colors.white} />}
+        icon={<View style={styles.gIcon}><AppText variant="caption" weight="extrabold" color={colors.primaryDark}>G</AppText></View>}
       />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  gIcon: { width: 20, height: 20, borderRadius: 10, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
   screen: { flex: 1, backgroundColor: colors.bg, paddingHorizontal: space.xl, paddingBottom: 40 },
   hero: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 },
   tagline: { textAlign: 'center' },

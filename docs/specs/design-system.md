@@ -57,7 +57,8 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 
 ## Icon
 
-- Bộ `Ionicons` trong `@expo/vector-icons`, kiểu nét (`-outline`); tab đang chọn dùng bản đặc.
+- Bộ icon riêng, nét tròn, vẽ bằng SVG: `app/src/components/Icon.tsx` (`react-native-svg`). Path giống hệt mockup (`sprint-*/design/mockups.html`) — thêm icon mới thì thêm cả 2 nơi. Không dùng Ionicons.
+- Tab đang chọn dùng bản đặc (`filled`).
 - Cỡ: 24 (tab, dòng cài đặt), 28 (nút `+`).
 - Icon dòng cài đặt đặt trong ô vuông bo 10, nền `primarySoft`.
 
@@ -89,7 +90,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Thanh event | Cao 16, bo 6, nền màu event, chữ `caption` `text` 1 dòng, padding ngang 4 |
 | Thẻ event | Nền `surface`, bo 16, vạch trái 4 màu event · tiêu đề `body` · giờ `caption` `textMuted` · icon trạng thái bên phải |
 | Khối event (xem ngày) | Như thẻ event, cao theo thời lượng (1 giờ = 56), nền màu event nhạt 30% |
-| Icon trạng thái event | Cỡ 14, `textMuted`: lặp (`repeat`), nhắc (`notifications`), Google (`logo-google`), chờ đồng bộ (`time`), chỉ trên Daynest (`phone-portrait`) |
+| Icon trạng thái event | Cỡ 14, `textMuted`: lặp, nhắc, Google, chờ đồng bộ, chỉ trên Daynest (vẽ theo mockup S2) |
 | Sheet từ đáy | Nền mờ như hộp thoại · tấm `surface` bo trên 24, thanh kéo 36×4 `border` · đầu tấm: Huỷ bỏ (`textMuted`) · tiêu đề `heading` · Hoàn tất (`primaryDark` 700) · dùng cho chọn mốc nhắc |
 | Pop-up có tiêu đề | Như hộp chọn (giữa màn, bo 24) · đầu hộp: ✕ bên trái · tiêu đề `heading` giữa · nút `+` tròn `primary` bên phải (nếu có) · dùng cho pop-up ngày, pop-up `+`, chọn tháng/năm |
 | Công tắc | 44×26, bo 999 · bật nền `primary`, tắt nền `border` · nút tròn trắng 22 có bóng nhẹ |

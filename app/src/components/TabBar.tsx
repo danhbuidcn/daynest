@@ -1,18 +1,16 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors } from '@/theme';
 import { AppText } from './AppText';
+import { Icon, type IconName } from './Icon';
 
-type IconName = keyof typeof Ionicons.glyphMap;
-
-const ICONS: Record<string, [IconName, IconName]> = {
-  calendar: ['calendar-outline', 'calendar'],
-  manage: ['book-outline', 'book'],
-  stats: ['stats-chart-outline', 'stats-chart'],
-  settings: ['settings-outline', 'settings'],
+const ICONS: Record<string, IconName> = {
+  calendar: 'calendar',
+  manage: 'book',
+  stats: 'chart',
+  settings: 'gear',
 };
 
 export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarProps & { onPlus: () => void }) {
@@ -20,7 +18,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
   const items = state.routes.map((route, index) => {
     const focused = state.index === index;
     const { options } = descriptors[route.key];
-    const [outline, filled] = ICONS[route.name] ?? ['ellipse-outline', 'ellipse'];
+    const icon = ICONS[route.name] ?? 'calendar';
     const color = focused ? colors.primary : colors.textMuted;
     return (
       <Pressable
@@ -32,7 +30,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
           if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
         }}
         style={styles.tab}>
-        <Ionicons name={focused ? filled : outline} size={24} color={color} />
+        <Icon name={icon} filled={focused} size={24} color={color} />
         <AppText variant="caption" weight={focused ? 'extrabold' : undefined} color={color}>
           {options.title}
         </AppText>
@@ -43,7 +41,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
   const plus = (
     <View key="plus" style={styles.tab}>
       <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={onPlus} style={styles.fab}>
-        <Ionicons name="add" size={30} color={colors.white} />
+        <Icon name="plus" size={28} color={colors.white} />
       </Pressable>
     </View>
   );

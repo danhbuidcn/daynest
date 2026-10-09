@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { AppText } from '@/components/AppText';
 import { Avatar } from '@/components/Avatar';
 import { Card } from '@/components/Card';
 import { ChoiceDialog, ConfirmDialog } from '@/components/Dialog';
+import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
 import { useToast } from '@/components/Toast';
@@ -46,7 +46,7 @@ export default function SettingsScreen() {
                 </AppText>
               </View>
               <View style={styles.edit}>
-                <Ionicons name="pencil" size={18} color={colors.primaryDark} />
+                <Icon name="pen" size={18} color={colors.primaryDark} />
               </View>
             </Card>
           )}
@@ -54,17 +54,17 @@ export default function SettingsScreen() {
 
         <GroupLabel text={t('settings.account')} />
         <Card>
-          <SettingRow first icon="mail-outline" label={t('settings.signedInWith')} value="Google" />
+          <SettingRow first icon="mail" label={t('settings.signedInWith')} value="Google" />
         </Card>
 
         <GroupLabel text={t('settings.app')} />
         <Card>
-          <SettingRow first icon="globe-outline" label={t('settings.language')} value={currentLabel} onPress={() => setLangOpen(true)} />
-          <SettingRow icon="information-circle-outline" label={t('settings.version')} value={Constants.expoConfig?.version ?? ''} />
+          <SettingRow first icon="globe" label={t('settings.language')} value={currentLabel} onPress={() => setLangOpen(true)} />
+          <SettingRow icon="info" label={t('settings.version')} value={Constants.expoConfig?.version ?? ''} />
         </Card>
 
         <Card>
-          <SettingRow first danger icon="log-out-outline" label={t('settings.logout')} onPress={() => setLogoutOpen(true)} />
+          <SettingRow first danger icon="logout" label={t('settings.logout')} onPress={() => setLogoutOpen(true)} />
         </Card>
       </ScrollView>
 

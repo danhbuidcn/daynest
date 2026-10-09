@@ -4,5 +4,5 @@ import { EmptyState } from '@/components/EmptyState';
 
 export default function ManageScreen() {
   const { t } = useTranslation();
-  return <EmptyState title={t('tabs.manage')} icon="book-outline" />;
+  return <EmptyState title={t('tabs.manage')} icon="book" />;
 }

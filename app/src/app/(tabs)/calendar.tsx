@@ -4,5 +4,5 @@ import { EmptyState } from '@/components/EmptyState';
 
 export default function CalendarScreen() {
   const { t } = useTranslation();
-  return <EmptyState title={t('tabs.calendar')} icon="calendar-outline" />;
+  return <EmptyState title={t('tabs.calendar')} icon="calendar" />;
 }

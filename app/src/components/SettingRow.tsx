@@ -1,10 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
 import { AppText } from './AppText';
-
-type IconName = keyof typeof Ionicons.glyphMap;
+import { Icon, type IconName } from './Icon';
 
 export function SettingRow({
   icon,
@@ -27,7 +25,7 @@ export function SettingRow({
       onPress={onPress}
       style={({ pressed }) => [styles.row, !first && styles.divider, pressed && { opacity: 0.6 }]}>
       <View style={[styles.icon, { backgroundColor: danger ? colors.errorSoft : colors.primarySoft }]}>
-        <Ionicons name={icon} size={20} color={danger ? colors.error : colors.primaryDark} />
+        <Icon name={icon} size={20} color={danger ? colors.error : colors.primaryDark} />
       </View>
       <AppText style={styles.label} color={danger ? colors.error : colors.text}>
         {label}
@@ -37,7 +35,7 @@ export function SettingRow({
           {value}
         </AppText>
       ) : null}
-      {onPress ? <Ionicons name="chevron-forward" size={18} color={colors.textMuted} /> : null}
+      {onPress ? <Icon name="chevron" size={18} color={colors.textMuted} /> : null}
     </Pressable>
   );
 }

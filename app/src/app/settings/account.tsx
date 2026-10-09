@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
@@ -9,6 +8,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/Button';
 import { FormScreen } from '@/components/FormScreen';
+import { Icon } from '@/components/Icon';
 import { TextField } from '@/components/TextField';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -79,7 +79,7 @@ export default function AccountScreen() {
       <Pressable accessibilityRole="button" onPress={onPickAvatar} style={styles.avatarWrap}>
         <Avatar name={name || profile.displayName} uri={avatar} size={96} />
         <View style={styles.cam}>
-          <Ionicons name="camera-outline" size={18} color={colors.primaryDark} />
+          <Icon name="camera" size={18} color={colors.primaryDark} />
         </View>
       </Pressable>
       <TextField

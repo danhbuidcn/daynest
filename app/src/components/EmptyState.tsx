@@ -1,20 +1,20 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, space } from '@/theme';
 import { AppText } from './AppText';
+import { Icon, type IconName } from './Icon';
 import { ScreenHeader } from './ScreenHeader';
 
-export function EmptyState({ title, icon }: { title: string; icon: keyof typeof Ionicons.glyphMap }) {
+export function EmptyState({ title, icon }: { title: string; icon: IconName }) {
   const { t } = useTranslation();
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
       <ScreenHeader title={title} />
       <View style={styles.body}>
         <View style={styles.bubble}>
-          <Ionicons name={icon} size={52} color={colors.primary} />
+          <Icon name={icon} size={52} color={colors.primary} />
         </View>
         <AppText variant="heading" style={styles.center}>
           {t('empty.title', { name: title })}
