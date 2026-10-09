@@ -1,6 +1,6 @@
 # Todo
 
-## 2026-10-09 — S1 bước 1: code giao diện, đăng nhập giả, chạy trên emulator — ✅ xong (10b–10d chờ duyệt)
+## 2026-10-09 — S1 bước 1: code giao diện, đăng nhập giả, chạy trên emulator — ✅ xong
 
 ### Input
 
@@ -56,11 +56,11 @@
   - Đi hết luồng: đăng nhập → 4 tab → `+` → đổi ngôn ngữ → sửa tên/ảnh → tắt mở lại vẫn đăng nhập → đăng xuất.
   - Chụp màn bằng `adb`, so với mockup.
 - [x] 10. Viết `app/README.md`. Cập nhật `build.md`: chốt build bằng local Gradle qua `expo run:android` / `expo prebuild`.
-- [ ] 10b. (thêm, chờ duyệt) Đổi chữ tab trống "Tính năng này đang được phát triển. Bạn quay lại sau nhé!" → "Tính năng đang được phát triển."
+- [x] 10b. Đổi chữ tab trống "Tính năng này đang được phát triển. Bạn quay lại sau nhé!" → "Tính năng đang được phát triển."
   - Sửa ở `vi.json`, `mockups.html`, `screens.md`.
   - `en.json` đổi tương ứng: "This feature is in development."
-- [ ] 10c. (thêm, chờ duyệt) Xoá chip "Đang phát triển" ở 3 tab trống: app (`EmptyState`, key `empty.badge`), `mockups.html`, `screens.md`. Tiêu đề "<Tab> đang phát triển" và dòng mô tả giữ nguyên.
-- [ ] 10d. (thêm, chờ duyệt) Nút cố định đáy + vuốt để back:
+- [x] 10c. Xoá chip "Đang phát triển" ở 3 tab trống: app (`EmptyState`, key `empty.badge`), `mockups.html`, `screens.md`. Tiêu đề "<Tab> đang phát triển" và dòng mô tả giữ nguyên.
+- [x] 10d. Nút cố định đáy + vuốt để back:
   - Màn Sửa tài khoản: nút Lưu cố định ở đáy màn (trên vùng an toàn), nội dung cuộn phía trên; bàn phím mở thì nút đẩy lên trên bàn phím.
   - Tạo thành phần `FormScreen` (tiêu đề + nội dung cuộn + nút đáy) để các màn form sau dùng chung.
   - `design-system.md`: thêm quy tắc "Màn form: nút hành động chính cố định ở đáy". Mockup màn 10 sửa theo.

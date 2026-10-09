@@ -13,9 +13,10 @@ Thuộc: [Sprint 1](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 7 | Cài đặt | `(tabs)/settings` | Tài khoản | Thẻ tài khoản (ảnh, tên, email, icon bút) → nhóm Tài khoản (Đăng nhập bằng Google) → nhóm Ứng dụng (Ngôn ngữ, Phiên bản) → Đăng xuất ở cuối | [F1](../F1-khung-app.md), [F2](../F2-dang-nhap-google.md), [F4](../F4-ky-app-version.md) |
 | 8 | Hộp xác nhận đăng xuất | — | Tránh bấm nhầm | "Đăng xuất?" · Huỷ / Đăng xuất | [F2](../F2-dang-nhap-google.md) |
 | 9 | Chọn ngôn ngữ | — | Đổi ngôn ngữ | Hộp chọn giữa màn (kiểu giống màn 8): English · Tiếng Việt, dấu ✓ ở mục đang chọn; bấm là đổi ngay + đóng, bấm ra ngoài để đóng | [F1](../F1-khung-app.md) |
-| 10 | Sửa tài khoản | `settings/account` | Sửa tên + ảnh | Nút quay lại, ảnh tròn + nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu | [F2](../F2-dang-nhap-google.md#sửa-tài-khoản) |
+| 10 | Sửa tài khoản | `settings/account` | Sửa tên + ảnh | Nút quay lại, ảnh tròn + nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu cố định ở đáy | [F2](../F2-dang-nhap-google.md#sửa-tài-khoản) |
 
 - Nút `+` (S1): toast "Đang phát triển".
-- Tab trống: chip "Đang phát triển" + "Tính năng này đang được phát triển. Bạn quay lại sau nhé!" — không nhắc số sprint.
+- Màn con (vd Sửa tài khoản): vuốt từ mép trái sang phải → về màn trước (Android + iOS).
+- Tab trống: tiêu đề "<Tab> đang phát triển" + "Tính năng đang được phát triển." — không chip, không nhắc số sprint.
 - Cài đặt hiện `version` (vd `1.0.0`). Mỗi bản build cài lên máy tăng `version` để phân biệt.
 - Tham khảo bố cục thanh tab: [Cute Calendar 01](../../../research/cute-calendar/screenshots/01-home.png), [Cài đặt 70](../../../research/cute-calendar/screenshots/70-settings.png).

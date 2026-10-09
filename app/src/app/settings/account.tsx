@@ -4,12 +4,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/Button';
-import { ScreenHeader } from '@/components/ScreenHeader';
+import { FormScreen } from '@/components/FormScreen';
 import { TextField } from '@/components/TextField';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -72,39 +71,33 @@ export default function AccountScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScreenHeader title={t('account.title')} onBack={() => router.back()} />
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={styles.form} keyboardShouldPersistTaps="handled">
-          <Pressable accessibilityRole="button" onPress={onPickAvatar} style={styles.avatarWrap}>
-            <Avatar name={name || profile.displayName} uri={avatar} size={96} />
-            <View style={styles.cam}>
-              <Ionicons name="camera-outline" size={18} color={colors.primaryDark} />
-            </View>
-          </Pressable>
-          <TextField
-            label={t('account.name')}
-            hint={t('account.nameHint')}
-            error={error}
-            value={name}
-            maxLength={NAME_MAX + 10}
-            onChangeText={(v) => {
-              setName(v);
-              setError(null);
-            }}
-          />
-          <TextField label={t('account.email')} value={profile.email} locked />
-          <Button label={t('account.save')} onPress={onSave} disabled={saving} style={styles.save} />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <FormScreen
+      title={t('account.title')}
+      onBack={() => router.back()}
+      footer={<Button label={t('account.save')} onPress={onSave} disabled={saving} />}>
+      <Pressable accessibilityRole="button" onPress={onPickAvatar} style={styles.avatarWrap}>
+        <Avatar name={name || profile.displayName} uri={avatar} size={96} />
+        <View style={styles.cam}>
+          <Ionicons name="camera-outline" size={18} color={colors.primaryDark} />
+        </View>
+      </Pressable>
+      <TextField
+        label={t('account.name')}
+        hint={t('account.nameHint')}
+        error={error}
+        value={name}
+        maxLength={NAME_MAX + 10}
+        onChangeText={(v) => {
+          setName(v);
+          setError(null);
+        }}
+      />
+      <TextField label={t('account.email')} value={profile.email} locked />
+    </FormScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  flex: { flex: 1 },
-  form: { paddingHorizontal: space.lg, paddingTop: space.sm, gap: space.lg },
   avatarWrap: { alignSelf: 'center', marginTop: space.xs, marginBottom: space.sm },
   cam: {
     position: 'absolute',
@@ -120,5 +113,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...shadow,
   },
-  save: { marginTop: space.sm },
 });

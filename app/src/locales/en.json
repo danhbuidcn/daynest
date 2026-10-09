@@ -1,12 +1,19 @@
 {
   "appName": "Daynest",
   "tagline": "Your calendar, to-dos and notes\nin one cozy nest.",
-  "login": { "google": "Sign in with Google", "error": "Sign-in failed. Please try again." },
-  "tabs": { "calendar": "Calendar", "manage": "Manage", "stats": "Stats", "settings": "Settings" },
+  "login": {
+    "google": "Sign in with Google",
+    "error": "Sign-in failed. Please try again."
+  },
+  "tabs": {
+    "calendar": "Calendar",
+    "manage": "Manage",
+    "stats": "Stats",
+    "settings": "Settings"
+  },
   "empty": {
-    "badge": "In development",
     "title": "{{name}} is in development",
-    "text": "This feature is being built. Please check back later!"
+    "text": "This feature is in development."
   },
   "comingSoon": "In development",
   "settings": {

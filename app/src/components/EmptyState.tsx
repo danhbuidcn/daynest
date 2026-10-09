@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, radius, space } from '@/theme';
+import { colors, space } from '@/theme';
 import { AppText } from './AppText';
 import { ScreenHeader } from './ScreenHeader';
 
@@ -16,11 +16,6 @@ export function EmptyState({ title, icon }: { title: string; icon: keyof typeof 
       <View style={styles.body}>
         <View style={styles.bubble}>
           <Ionicons name={icon} size={52} color={colors.primary} />
-        </View>
-        <View style={styles.badge}>
-          <AppText variant="caption" weight="extrabold" color={colors.primaryDark}>
-            {t('empty.badge')}
-          </AppText>
         </View>
         <AppText variant="heading" style={styles.center}>
           {t('empty.title', { name: title })}
@@ -37,7 +32,6 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   body: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md, paddingHorizontal: space.xl, paddingBottom: 80 },
   bubble: { width: 112, height: 112, borderRadius: 40, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-  badge: { backgroundColor: colors.primarySoft, borderRadius: radius.pill, paddingHorizontal: space.md, paddingVertical: space.xs },
   center: { textAlign: 'center' },
   text: { maxWidth: 260 },
 });

@@ -71,7 +71,6 @@
   .empty .bubble svg { width: 52px; height: 52px; }
   .empty h3 { font-size: 17px; font-weight: 700; }
   .empty p { color: var(--muted); font-size: 15px; line-height: 22px; max-width: 240px; }
-  .soon { background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; }
 
   /* Cài đặt */
   .settings { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
@@ -127,7 +126,7 @@
   .input.locked span { flex: 1; }
   .input svg { width: 18px; height: 18px; }
   .hint { font-size: 12px; color: var(--muted); margin: 6px 4px 0; }
-  .edit-form .btn { margin-top: 8px; }
+  .form-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 16px 16px; background: var(--bg); }
   @media (max-width: 400px) { .phone { transform: scale(.9); transform-origin: top left; margin-bottom: -78px; } }
 </style>
 </head>
@@ -169,13 +168,12 @@ const tabbar = (on) => `<nav class="tabbar">
 </nav>`;
 const phone = (inner) => `<div class="phone">${status}${inner}</div>`;
 
-const EMPTY_TEXT = 'Tính năng này đang được phát triển. Bạn quay lại sau nhé!';
+const EMPTY_TEXT = 'Tính năng đang được phát triển.';
 const emptyTab = (title, icon, tab) => phone(`
   <div class="content">
     <div class="screen-title">${title}</div>
     <div class="empty">
       <div class="bubble">${icon}</div>
-      <span class="soon">Đang phát triển</span>
       <h3>${title} đang phát triển</h3>
       <p>${EMPTY_TEXT}</p>
     </div>
@@ -244,14 +242,14 @@ const screens = [
         <div class="opt on"><span class="flag">VI</span><span class="label">Tiếng Việt</span>${I.check}</div>
       </div></div>`)],
 
-  ['10. Sửa tài khoản', 'bấm thẻ tài khoản', phone(`<div class="content">
+  ['10. Sửa tài khoản', 'nút Lưu cố định đáy · vuốt trái → back', phone(`<div class="content">
       <div class="topbar"><span class="back">${I.back}</span><div class="screen-title">Sửa tài khoản</div><span></span></div>
       <div class="edit-form">
         <div class="avatar-edit"><div class="avatar">A</div><span class="cam">${I.cam}</span></div>
         <div class="field"><label>Tên hiển thị</label><div class="input focus">Nguyễn An</div><div class="hint">Tối đa 50 ký tự.</div></div>
         <div class="field"><label>Email</label><div class="input locked"><span>an.nguyen@gmail.com</span>${I.lock}</div></div>
-        <button class="btn btn-primary">Lưu</button>
       </div>
+      <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
     </div>`)],
 ];
 

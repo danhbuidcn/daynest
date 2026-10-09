@@ -85,6 +85,8 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 - Màu điểm nhấn chung là `primary`. Không gán mỗi tab/mục một màu riêng.
 - Màu event chỉ dùng cho event (S3+) và chấm hồng trong logo.
 - Màu `error` chỉ cho lỗi và hành động nguy hiểm (Đăng xuất, Xoá).
+- Màn form (sửa, tạo mới): nút hành động chính cố định ở đáy màn, nội dung cuộn phía trên; mở bàn phím thì nút nằm trên bàn phím. Code: `FormScreen`.
+- Màn con: vuốt từ mép trái sang phải để quay lại.
 
 ## Logo tạm
 

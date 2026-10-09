@@ -1,12 +1,19 @@
 {
   "appName": "Daynest",
   "tagline": "Lịch, việc cần làm và ghi chú\ngọn trong một tổ nhỏ.",
-  "login": { "google": "Đăng nhập bằng Google", "error": "Đăng nhập không thành công. Thử lại nhé." },
-  "tabs": { "calendar": "Lịch", "manage": "Quản lý", "stats": "Thống kê", "settings": "Cài đặt" },
+  "login": {
+    "google": "Đăng nhập bằng Google",
+    "error": "Đăng nhập không thành công. Thử lại nhé."
+  },
+  "tabs": {
+    "calendar": "Lịch",
+    "manage": "Quản lý",
+    "stats": "Thống kê",
+    "settings": "Cài đặt"
+  },
   "empty": {
-    "badge": "Đang phát triển",
     "title": "{{name}} đang phát triển",
-    "text": "Tính năng này đang được phát triển. Bạn quay lại sau nhé!"
+    "text": "Tính năng đang được phát triển."
   },
   "comingSoon": "Đang phát triển",
   "settings": {

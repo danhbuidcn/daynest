@@ -4,10 +4,12 @@ import {
   Nunito_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/nunito';
-import { Stack } from 'expo-router';
+import { Stack, TransitionPresets } from 'expo-router/js-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { LogBox, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { SplashView } from '@/components/SplashView';
@@ -17,6 +19,9 @@ import { loadSavedLanguage } from '@/i18n';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
+
+// Cảnh báo từ JS stack (react-navigation) dùng InteractionManager — không phải code app; chỉ hiện ở bản dev.
+LogBox.ignoreLogs(['InteractionManager has been deprecated']);
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({ Nunito_600SemiBold, Nunito_700Bold, Nunito_800ExtraBold });
@@ -33,14 +38,16 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <AuthProvider>
-        <ToastProvider>
-          <RootStack ready={langLoaded} />
-        </ToastProvider>
-      </AuthProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.root}>
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <AuthProvider>
+          <ToastProvider>
+            <RootStack ready={langLoaded} />
+          </ToastProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -51,7 +58,15 @@ function RootStack({ ready }: { ready: boolean }) {
 
   const signedIn = !!profile;
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+    // JS stack: vuốt từ mép trái sang phải để back trên cả Android và iOS.
+    <Stack
+      screenOptions={{
+        ...TransitionPresets.SlideFromRightIOS,
+        headerShown: false,
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        cardStyle: { backgroundColor: colors.bg },
+      }}>
       <Stack.Protected guard={!signedIn}>
         <Stack.Screen name="(auth)/login" />
       </Stack.Protected>
@@ -62,3 +77,5 @@ function RootStack({ ready }: { ready: boolean }) {
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({ root: { flex: 1 } });
