@@ -26,7 +26,8 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 18b | Chọn để xoá | — | Xoá nhiều | Thanh trên: ✕ · "Đã chọn n" · ô tick tròn mỗi dòng · nút đáy Xoá (n) màu `error` | [F5](../F5-notes.md#danh-mục) |
 | 18c | Xác nhận xoá danh mục | — | Tránh bấm nhầm | Hộp: "Xoá n danh mục?" · "m ghi chú sẽ về Chưa phân loại." · Huỷ / Xoá | [F5](../F5-notes.md#danh-mục) |
 | 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
-| 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · Dọn thùng rác | [F5](../F5-notes.md#thùng-rác) |
+| 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · nút Xoá tất cả (góc trên phải) |
+| 20b | Xác nhận xoá tất cả | — | Tránh bấm nhầm | Hộp: "Xoá vĩnh viễn tất cả?" · số ghi chú · không khôi phục được · Huỷ / Xoá tất cả | [F5](../F5-notes.md#thùng-rác) |
 | 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch · Google Calendar | [F6](../F6-cai-dat.md) |
 | 22 | Đồng bộ Google | — | Tiến độ lần đầu | Hộp: "Đang đồng bộ 120/300" + thanh tiến độ | [F4](../F4-google-calendar.md) |
 | 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |

@@ -48,7 +48,8 @@ Thuộc: [Sprint 2](index.md).
 ### Thùng rác
 
 - Xoá note → vào thùng rác (`deleted_at`), không hỏi xác nhận, toast "Đã chuyển vào thùng rác" + nút **Hoàn tác**.
-- Thùng rác: Khôi phục · Xoá vĩnh viễn (hỏi xác nhận) · "Dọn thùng rác" (xoá vĩnh viễn hết, hỏi xác nhận).
+- Thùng rác: mỗi note có Khôi phục · Xoá vĩnh viễn (hỏi xác nhận).
+- Nút **"Xoá tất cả"** góc trên phải → hộp "Xoá vĩnh viễn tất cả? n ghi chú trong thùng rác sẽ bị xoá và không khôi phục được." · Huỷ / Xoá tất cả. Thùng rác trống → ẩn nút.
 - Note trong thùng rác không hiện ở danh sách và tìm kiếm.
 
 ## Luồng

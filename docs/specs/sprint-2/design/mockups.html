@@ -616,9 +616,16 @@ const catConfirm = `<div class="under">${catSelect}</div>
   </div></div>`;
 const tcard = (n) => `<div>${ncard(n, 'Đã xoá 08/10')}<div class="trow" style="margin-top:8px"><button class="btn btn-secondary">${I.restore}Khôi phục</button><button class="btn btn-danger">Xoá vĩnh viễn</button></div></div>`;
 const trashScreen = `<div class="content">
-  <div class="topbar" style="grid-template-columns:40px 1fr 56px"><span class="back">${I.left}</span><div class="screen-title">Thùng rác</div><span class="b" style="color:var(--error);font-size:15px">Dọn</span></div>
+  <div class="topbar" style="grid-template-columns:40px 1fr 88px"><span class="back">${I.left}</span><div class="screen-title">Thùng rác</div><span class="b" style="color:var(--error);font-size:15px;text-align:right">Xoá tất cả</span></div>
   <div class="trash">${tcard(['', 'Ghi chú nháp', 'Thử định dạng…', '', false])}${tcard(['peach', 'Đi chợ tuần trước', '', '4/4 mục', false])}</div>
 </div>`;
+const trashAll = `<div class="under">${trashScreen}</div>
+  <div class="scrim"><div class="dialog">
+    <div class="dicon err">${I.trash}</div>
+    <h3>Xoá vĩnh viễn tất cả?</h3>
+    <p>2 ghi chú trong thùng rác sẽ bị xoá và không khôi phục được.</p>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá tất cả</button></div>
+  </div></div>`;
 
 // ---- Cài đặt ----
 const settings = (sync, blocked) => `<div class="content">
@@ -744,7 +751,8 @@ const groups = [
     ['18b. Chọn để xoá', 'tick nhiều dòng', phone(catSelect)],
     ['18c. Xác nhận xoá', '', phone(catConfirm)],
     ['19. Sửa danh mục', 'tên + màu', phone(catDialog)],
-    ['20. Thùng rác', 'khôi phục / xoá vĩnh viễn / dọn', phone(trashScreen)],
+    ['20. Thùng rác', 'khôi phục / xoá vĩnh viễn / xoá tất cả', phone(trashScreen)],
+    ['20b. Xoá tất cả', 'hộp xác nhận', phone(trashAll)],
   ]],
   ['Cài đặt', [
     ['21. Cài đặt — đồng bộ tắt', 'thông báo bị chặn', phone(settings(false, true), 'tall')],
