@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Migrate DB kiểu Rails. Dùng: supabase/db <new NAME|test|status|migrate>
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+[ -f supabase/.env ] && { set -a; . supabase/.env; set +a; }
+sb() { npx --yes supabase "$@"; }
+
+remote() {
+  : "${SUPABASE_PROJECT_REF:?Thiếu SUPABASE_PROJECT_REF trong supabase/.env}"
+  : "${SUPABASE_ACCESS_TOKEN:?Thiếu SUPABASE_ACCESS_TOKEN trong supabase/.env}"
+  : "${SUPABASE_DB_PASSWORD:?Thiếu SUPABASE_DB_PASSWORD trong supabase/.env}"
+  [ "$(cat supabase/.temp/project-ref 2>/dev/null)" = "$SUPABASE_PROJECT_REF" ] ||
+    sb link --project-ref "$SUPABASE_PROJECT_REF" -p "$SUPABASE_DB_PASSWORD"
+}
+
+case "${1:-}" in
+  new)     sb migration new "${2:?Dùng: supabase/db new <ten_migration>}" ;;
+  test)    sb start && sb db reset && sb test db ;;
+  status)  remote && sb migration list --linked -p "$SUPABASE_DB_PASSWORD" ;;
+  migrate) remote && sb db push --linked --dry-run -p "$SUPABASE_DB_PASSWORD" &&
+           sb db push --linked --yes -p "$SUPABASE_DB_PASSWORD" ;;
+  *)       echo "Dùng: supabase/db <new NAME|test|status|migrate>"; exit 1 ;;
+esac
