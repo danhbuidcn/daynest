@@ -7,7 +7,6 @@ import { colors, space } from '@/theme';
 import { AppText } from './AppText';
 import { ScreenHeader } from './ScreenHeader';
 
-/** Tab chưa có tính năng: cùng màu `primary` cho mọi tab. */
 export function EmptyState({ title, icon }: { title: string; icon: keyof typeof Ionicons.glyphMap }) {
   const { t } = useTranslation();
   return (

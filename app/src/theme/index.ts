@@ -1,4 +1,4 @@
-// Token — đồng bộ với docs/specs/design-system.md. Màn hình chỉ dùng giá trị ở đây.
+// Tokens, kept in sync with docs/specs/design-system.md. Screens use only these values.
 export const colors = {
   primary: '#5BBE98',
   primaryDark: '#3E9E7A',

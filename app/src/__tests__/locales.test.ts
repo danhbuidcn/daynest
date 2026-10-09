@@ -10,7 +10,7 @@ function keys(obj: object, prefix = ''): string[] {
 }
 
 describe('locales', () => {
-  it('en và vi có cùng bộ key', () => {
+  it('en and vi have the same keys', () => {
     expect(keys(vi).sort()).toEqual(keys(en).sort());
   });
 });

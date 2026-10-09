@@ -18,7 +18,6 @@ import { colors, shadow, space } from '@/theme';
 
 const AVATAR_SIZE = 512;
 
-/** Cắt vuông (picker) → thu nhỏ 512px JPEG. Bước 3: tải lên Storage `avatars`. */
 async function pickAvatar(): Promise<string | null> {
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],

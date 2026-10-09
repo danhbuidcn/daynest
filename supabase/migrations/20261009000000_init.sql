@@ -1,6 +1,6 @@
--- Sprint 1: profiles, user_settings, bucket avatars. Spec: docs/specs/sprint-1/design/db.md
+-- Sprint 1: profiles, user_settings, avatars bucket. Spec: docs/specs/sprint-1/design/db.md
 
--- updated_at tự cập nhật
+-- Keep updated_at current
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -36,7 +36,7 @@ for update to authenticated
 using (id = (select auth.uid()))
 with check (id = (select auth.uid()));
 
--- App chỉ được sửa tên + ảnh; không insert/delete (trigger tạo, xoá theo auth.users).
+-- App may update only name + avatar; no insert/delete (trigger creates, auth.users cascade deletes).
 revoke all on public.profiles from anon, authenticated;
 grant select on public.profiles to authenticated;
 grant update (display_name, avatar_url) on public.profiles to authenticated;
@@ -69,7 +69,7 @@ revoke all on public.user_settings from anon, authenticated;
 grant select on public.user_settings to authenticated;
 grant update (week_start, use_24h, language) on public.user_settings to authenticated;
 
--- User mới → tạo profiles + user_settings. Chỉ chạy lúc tạo user, nên đăng nhập lại không ghi đè tên/ảnh đã sửa.
+-- New user -> create profiles + user_settings. Runs only on user creation, so signing in again never overwrites an edited name/avatar.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -106,8 +106,8 @@ insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_typ
 values ('avatars', 'avatars', true, 2097152, array['image/jpeg'])
 on conflict (id) do nothing;
 
--- Đọc: bucket public (URL công khai). Ghi/xoá: chỉ trong folder của mình.
--- select own cần cho upsert (ghi đè ảnh cũ).
+-- Read: public bucket (public URL). Write/delete: own folder only.
+-- select own is required for upsert (overwriting the old avatar).
 create policy "avatars: select own" on storage.objects
 for select to authenticated
 using (bucket_id = 'avatars' and (storage.foldername(name))[1] = (select auth.uid())::text);

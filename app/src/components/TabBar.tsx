@@ -15,7 +15,6 @@ const ICONS: Record<string, [IconName, IconName]> = {
   settings: ['settings-outline', 'settings'],
 };
 
-/** Thanh tab: 4 tab + nút `+` tròn nổi ở giữa. */
 export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarProps & { onPlus: () => void }) {
   const insets = useSafeAreaInsets();
   const items = state.routes.map((route, index) => {

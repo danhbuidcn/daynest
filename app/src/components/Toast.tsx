@@ -12,7 +12,6 @@ const ToastContext = createContext<ShowToast>(() => {});
 
 const DURATION_MS = 2000;
 
-/** Toast: viên thuốc nền `text`, hiện đáy màn (trên thanh tab), tự ẩn 2 giây. */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const insets = useSafeAreaInsets();
   const [toast, setToast] = useState<{ message: string; kind: ToastKind } | null>(null);

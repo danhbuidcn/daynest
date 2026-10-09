@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { colors, space } from '@/theme';
 import { Logo } from './Logo';
 
-/** Màn Splash: logo + 3 chấm trong lúc kiểm tra phiên. */
 export function SplashView() {
   return (
     <View style={styles.screen}>

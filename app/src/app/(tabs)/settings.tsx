@@ -75,7 +75,7 @@ export default function SettingsScreen() {
         selected={current}
         onSelect={(lang) => {
           setLangOpen(false);
-          // Chữ đổi ngay (lưu trên máy); lưu DB lỗi thì báo, lần sau đổi lại sẽ ghi tiếp.
+          // Text switches immediately (saved on device); if the DB save fails, show a toast; the next change retries.
           saveLanguage(lang).catch(() => toast(t('common.offline'), 'error'));
         }}
         onClose={() => setLangOpen(false)}

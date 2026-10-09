@@ -3,7 +3,6 @@ import { Image, View } from 'react-native';
 import { colors, type as typeScale } from '@/theme';
 import { AppText } from './AppText';
 
-/** Ảnh đại diện; chưa có ảnh → hình tròn nền `primary` + chữ cái đầu. */
 export function Avatar({ name, uri, size = 56 }: { name: string; uri: string | null; size?: number }) {
   const shape = { width: size, height: size, borderRadius: size / 2 };
   if (uri) return <Image source={{ uri }} style={shape} />;

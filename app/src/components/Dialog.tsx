@@ -17,7 +17,6 @@ function Shell({ visible, onClose, children, compact }: { visible: boolean; onCl
   );
 }
 
-/** Hộp xác nhận: icon + tiêu đề + mô tả + Huỷ / hành động. */
 export function ConfirmDialog({
   visible,
   title,
@@ -54,7 +53,6 @@ export function ConfirmDialog({
   );
 }
 
-/** Hộp chọn: bấm 1 dòng là chọn + đóng, không có nút xác nhận. */
 export function ChoiceDialog<T extends string>({
   visible,
   title,

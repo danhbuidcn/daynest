@@ -20,7 +20,7 @@ import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
-// Cảnh báo từ JS stack (react-navigation) dùng InteractionManager — không phải code app; chỉ hiện ở bản dev.
+// Warning comes from JS stack (react-navigation), not app code; dev builds only.
 LogBox.ignoreLogs(['InteractionManager has been deprecated']);
 
 export default function RootLayout() {
@@ -51,14 +51,13 @@ export default function RootLayout() {
   );
 }
 
-/** Guard: chưa đăng nhập → (auth)/login; có phiên → (tabs). */
 function RootStack({ ready }: { ready: boolean }) {
   const { loading, profile } = useAuth();
   if (!ready || loading) return <SplashView />;
 
   const signedIn = !!profile;
   return (
-    // JS stack: vuốt từ mép trái sang phải để back trên cả Android và iOS.
+    // JS stack: swipe from the left edge to go back on both Android and iOS.
     <Stack
       screenOptions={{
         ...TransitionPresets.SlideFromRightIOS,

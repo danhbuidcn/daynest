@@ -1,5 +1,5 @@
-// Bản release ký bằng keystore release. Keystore lấy từ app/.env, scripts/release.sh giải ra file tạm
-// và truyền đường dẫn qua DAYNEST_KEYSTORE_FILE. Không có biến này thì Gradle báo thiếu storeFile khi build release.
+// Signs release builds with the release keystore. scripts/release.sh decodes it from app/.env to a temp file
+// and passes the path via DAYNEST_KEYSTORE_FILE. Without it, Gradle fails with a missing storeFile on release builds.
 const { withAppBuildGradle } = require('expo/config-plugins');
 
 const MARKER = '// daynest-release-signing';
@@ -25,7 +25,7 @@ module.exports = function withReleaseSigning(config) {
       '$1signingConfig signingConfigs.release',
     );
     if (!gradle.includes(MARKER) || !gradle.includes('signingConfig signingConfigs.release')) {
-      throw new Error('withReleaseSigning: không tìm thấy signingConfigs/buildTypes trong app/build.gradle');
+      throw new Error('withReleaseSigning: signingConfigs/buildTypes not found in app/build.gradle');
     }
     cfg.modResults.contents = gradle;
     return cfg;

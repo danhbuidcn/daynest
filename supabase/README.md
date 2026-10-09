@@ -4,6 +4,12 @@ Mỗi thay đổi DB = 1 file trong `migrations/`. Không sửa DB trên dashboa
 
 Lần đầu mỗi máy: `cp supabase/.env.example supabase/.env` → điền.
 
+| Biến | Lấy ở đâu |
+| --- | --- |
+| `SUPABASE_PROJECT_REF` | URL dashboard: `supabase.com/dashboard/project/<ref>` |
+| `SUPABASE_ACCESS_TOKEN` | Supabase → avatar góc phải → Account preferences → Access Tokens → Generate new token |
+| `SUPABASE_DB_PASSWORD` | Project Settings → Database → Database password (quên thì Reset database password) |
+
 | Lệnh | Làm gì |
 | --- | --- |
 | `supabase/db new <ten>` | Tạo file migration mới |

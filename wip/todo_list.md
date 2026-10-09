@@ -1,5 +1,43 @@
 # Todo
 
+## 2026-10-09 — Sửa chữ bị cắt trên Samsung (nút "Đăng xuất", "Tiếng Việt") — ⏳ chờ duyệt
+
+- **Nguyên nhân:** Samsung đo chiều rộng chữ font Nunito thiếu. Từ cuối bị đẩy xuống dòng 2 rồi bị che. Cỡ chữ hệ thống = 1.0, không phải do cài đặt máy.
+- [ ] `AppText`: mặc định `textBreakStrategy="simple"` trên Android (cách sửa phổ biến cho lỗi này).
+- [ ] Chữ chỉ được 1 dòng thì đặt `numberOfLines={1}`: nhãn nút (`Button`), giá trị bên phải dòng cài đặt (`SettingRow`).
+- [ ] Kiểm tra trên điện thoại thật: hộp Đăng xuất, dòng Ngôn ngữ (VI + EN), nút Lưu. Gộp vào bản build 1.0.1 đang test; commit `fix(app): text clipped on samsung` rồi push.
+
+## 2026-10-09 — Cho phép comment code có chọn lọc (tiếng Anh) — ✅ xong (chưa commit)
+
+Đổi quy ước (bạn chốt): **được comment nhưng hạn chế**. Đề xuất tiêu chí: chỉ comment khi giải thích **vì sao** / điều không đọc code mà thấy được, hoặc chia mục trong SQL/script. Không comment lặp lại việc code đã nói. Comment viết tiếng Anh.
+
+- [x] 1. Khôi phục (dịch sang tiếng Anh) các comment đạt tiêu chí:
+  - `supabase/migrations/20261009000000_init.sql`: cả 9 comment (link spec, chia mục, lý do quyền/trigger/storage);
+  - `supabase/tests/rls_s1.sql`: 4 comment (mục đích, cách chạy, 2 user giả, đóng vai user A);
+  - `authService.ts`: mã lỗi `'7'` của Play Services + lỗi supabase-js không phải `Error`; lý do kiểm tra mạng trước khi gửi;
+  - `_layout.tsx`: lý do ẩn cảnh báo InteractionManager; vuốt back trên cả Android/iOS;
+  - `settings.tsx`: đổi ngôn ngữ ngay, lưu DB lỗi thì báo;
+  - `withReleaseSigning.js`: cách keystore được truyền qua `DAYNEST_KEYSTORE_FILE`;
+  - `release.sh`: dòng mô tả + SHA-1 là keystore đã đăng ký OAuth;
+  - `app.config.ts`, `theme/index.ts`: link tới spec (`build.md`, `design-system.md`).
+- [x] 2. **Không khôi phục:** JSDoc mô tả component/hàm (Avatar, Dialog, Toast…), `profile.ts`, `validateName.ts`, `i18n`, `lib/supabase.ts`, `index.tsx`, `eslint.config.js`, tiêu đề mục trong `.gitignore`, `.env.example` (đã sang README), `supabase/config.toml` (comment CLI tự sinh).
+- [x] 3. Kiểm tra: typecheck, lint, `npm test`, `bash -n` 2 script, `supabase/db test`.
+- [x] 4. Cập nhật Claude memory `code-english-no-comments` theo quy ước mới. Chưa commit.
+
+## 2026-10-09 — Xoá comment code, code toàn tiếng Anh — ✅ xong (chưa commit)
+
+Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs dùng tiếng Anh. Docs giữ tiếng Việt (sau này làm thêm bản tiếng Anh).
+
+**Phạm vi:** `app/`, `supabase/`, `.gitignore`. **Không đụng:** `docs/`, `wip/`, `playbook/` (tài liệu tham khảo), các `README.md` / `AGENTS.md` (là docs), `app/src/locales/vi.json` (bản dịch UI), nhãn `'Tiếng Việt'` trong `i18n/index.ts` (tên ngôn ngữ hiển thị cho user).
+
+- [x] 1. Xoá mọi comment trong ~30 file code: `.ts/.tsx/.js/.sh/.sql`, `supabase/db`, `.gitignore`, `.env.example`, `supabase/config.toml` (~220 dòng comment do Supabase CLI sinh). Giữ shebang `#!`.
+- [x] 2. Comment trong 2 file `.env.example` đang là hướng dẫn lấy key → chuyển nội dung sang `app/README.md` / `supabase/README.md` (tiếng Việt) nếu README chưa có, để không mất thông tin.
+- [x] 3. Dịch sang tiếng Anh các chuỗi tiếng Việt còn lại trong code:
+  - lỗi/log: `withReleaseSigning.js`, `scripts/release.sh`, `supabase/db`, `lib/supabase.ts`;
+  - tên test: `__tests__/*.test.ts` (3 file), `supabase/tests/rls_s1.sql`.
+- [x] 4. Kiểm tra: `grep` không còn comment + không còn chữ tiếng Việt ngoài phạm vi loại trừ; `npm run lint`, `npx tsc --noEmit`, `npm test` trong `app/`; `bash -n` 2 script.
+- [x] 5. Lưu quy ước vào Claude memory (để session sau tuân theo). Chưa commit — chờ bạn bảo.
+
 ## 2026-10-09 — S1 bước 4: keystore release, APK cài máy thật — ⏳ đang làm (chốt 1.0.1)
 
 ### Input
@@ -46,12 +84,12 @@
   - `prebuild` → `assembleRelease` + `bundleRelease`;
   - in đường dẫn APK, AAB, version, versionCode.
 - [x] 5. Build `1.0.0 (versionCode 1)`, kiểm tra chữ ký bằng `apksigner verify --print-certs` → SHA-1 release.
-- [ ] 6. Cài lên điện thoại thật (`adb install`) → đăng nhập Google, đổi tên, đổi ngôn ngữ.
-- [ ] 7. Test cài đè:
+- [x] 6. Cài lên điện thoại thật (`adb install`) → đăng nhập Google OK, ngôn ngữ lấy từ DB. Phát hiện chữ bị cắt trên Samsung → todo riêng.
+- [x] 7. Test cài đè:
   - tạm đổi `versionCode` 2 (`1.0.1`), build → `adb install -r` đè lên bản 1 → vẫn đăng nhập, dữ liệu còn;
   - sau đó đặt lại `versionCode` 1? **Không** — giữ 2 vì máy đã có bản 2 (Android không cho hạ `versionCode`) → commit version `1.0.1 (2)`.
-- [ ] 8. Test "máy thứ 2" ngay trên máy này:
-  - `git clone` repo sạch vào thư mục tạm → build bằng cùng keystore → `adb install -r` đè lên → vẫn đăng nhập.
+- [x] 8. Test "máy thứ 2" ngay trên máy này:
+  - `git clone` repo sạch vào thư mục tạm → build bằng cùng keystore → `adb install -r` đè lên → vẫn đăng nhập. ✅ Gộp với mục 7: bản 1.0.1 (2) build từ clone (chỉ chép `app/.env`) cài đè 1.0.0 (1) trên Samsung SM-A556E, giữ phiên + ngôn ngữ.
   - Laptop thật: chép `app/.env` sang rồi `npm run release`.
 - [ ] 9. Cập nhật `design/build.md` (keystore nằm trong `app/.env`, lệnh `npm run release`, SHA-1 release). Tick DoD S1.
 - [ ] 10. Commit `feat(app): release signing and build script` rồi push.

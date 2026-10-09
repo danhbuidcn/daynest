@@ -8,7 +8,6 @@ import { avatarPath, isLocalUri, toProfile, withVersion, type Profile } from './
 
 export type { Profile } from './profile';
 
-/** Lỗi đã phân loại để màn hình chọn thông báo. `cancelled` → không báo gì. */
 export class AuthError extends Error {
   constructor(public kind: 'cancelled' | 'offline' | 'failed', cause?: unknown) {
     super(kind, { cause });
@@ -26,8 +25,8 @@ export interface AuthService {
 
 GoogleSignin.configure({ webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID });
 
-// Google Play Services trả mã '7' (NETWORK_ERROR); fetch của Supabase báo "Network request failed".
-// Lỗi của supabase-js là object thường (không phải Error) → đọc message + details.
+// Google Play Services returns code '7' (NETWORK_ERROR); Supabase fetch reports "Network request failed".
+// supabase-js errors are plain objects (not Error) -> read message + details.
 const errorText = (e: unknown) =>
   e && typeof e === 'object' ? `${(e as { message?: unknown }).message ?? ''} ${(e as { details?: unknown }).details ?? ''}` : String(e);
 const isNetworkError = (e: unknown) =>
@@ -36,7 +35,7 @@ const isNetworkError = (e: unknown) =>
 const classify = (e: unknown) =>
   e instanceof AuthError ? e : new AuthError(isNetworkError(e) ? 'offline' : 'failed', e);
 
-/** Mất mạng thì request lúc treo, lúc báo lỗi chung → kiểm tra trước khi gửi. */
+// Offline requests either hang or fail with a generic error -> check before sending.
 async function ensureOnline() {
   const state = await getNetworkStateAsync().catch(() => null);
   if (state && (state.isConnected === false || state.isInternetReachable === false)) throw new AuthError('offline');
@@ -68,7 +67,6 @@ async function uploadAvatar(userId: string, localUri: string) {
   return withVersion(data.publicUrl, Date.now());
 }
 
-/** Google (native) → idToken → Supabase. Profile + user_settings do trigger DB tạo lần đầu. */
 export const supabaseAuthService: AuthService = {
   async getSession() {
     const userId = await currentUserId();

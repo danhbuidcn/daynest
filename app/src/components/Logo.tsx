@@ -3,7 +3,6 @@ import { Image, StyleSheet, View } from 'react-native';
 import { colors, fonts } from '@/theme';
 import { AppText } from './AppText';
 
-/** Logo tạm: ô sổ ghi chú + chữ "Daynest" (cỡ 30, riêng logo). */
 export function Logo() {
   return (
     <View style={styles.wrap}>

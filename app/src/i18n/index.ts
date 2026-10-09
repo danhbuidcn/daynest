@@ -25,17 +25,13 @@ i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
-/** Đọc ngôn ngữ đã lưu trên máy; chưa có thì giữ mặc định `en`. */
 export async function loadSavedLanguage() {
   try {
     const saved = await AsyncStorage.getItem(STORAGE_KEY);
     if (isLanguage(saved)) await i18n.changeLanguage(saved);
-  } catch {
-    // Không đọc được → dùng mặc định.
-  }
+  } catch {}
 }
 
-/** Đổi ngôn ngữ ngay + lưu trên máy. Bước 3: ghi thêm user_settings.language. */
 export async function setLanguage(lang: Language) {
   await i18n.changeLanguage(lang);
   await AsyncStorage.setItem(STORAGE_KEY, lang);

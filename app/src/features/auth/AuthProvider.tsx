@@ -18,7 +18,6 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
 
-  // Ngôn ngữ trên DB (nếu có) → áp dụng + ghi về máy.
   const syncLanguage = useCallback(async () => {
     const lang = await service.getLanguage().catch(() => null);
     if (lang) await setLanguage(lang);

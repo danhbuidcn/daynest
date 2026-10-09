@@ -1,6 +1,6 @@
 import type { ExpoConfig } from 'expo/config';
 
-// version + versionCode: xem docs/specs/sprint-1/design/build.md
+// version + versionCode: see docs/specs/sprint-1/design/build.md
 const config: ExpoConfig = {
   name: 'Daynest',
   slug: 'daynest',

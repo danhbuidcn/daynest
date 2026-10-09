@@ -4,7 +4,6 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { colors, space } from '@/theme';
 import { AppText } from './AppText';
 
-/** Tiêu đề màn ở giữa; màn con có nút quay lại bên trái. */
 export function ScreenHeader({ title, onBack }: { title: string; onBack?: () => void }) {
   return (
     <View style={styles.bar}>

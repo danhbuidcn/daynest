@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, space } from '@/theme';
 import { ScreenHeader } from './ScreenHeader';
 
-/** Màn form: tiêu đề + nội dung cuộn + nút hành động chính cố định ở đáy (đẩy lên khi mở bàn phím). */
 export function FormScreen({
   title,
   onBack,
