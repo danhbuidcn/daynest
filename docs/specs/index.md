@@ -19,6 +19,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 | Nền tảng | Expo (TypeScript) Android + iOS · chỉ test Android máy thật (không có iPhone) · web (Nuxt) sau |
 | Backend | Supabase (Auth, Postgres + RLS, Storage) · GĐ1 không dùng Go |
 | Online | Online-only · cache chỉ để xem |
+| Ngôn ngữ | EN (mặc định) + VI · đổi trong Cài đặt |
 | Người dùng | Thiết kế nhiều user (`user_id` mọi bảng), GĐ1 dùng 1 user |
 | Google Calendar | Kéo 1 chiều về app · event Google chỉ đọc · không đẩy lên Google |
 | Lịch âm | Tự viết theo thuật toán Hồ Ngọc Đức, múi giờ +7 |

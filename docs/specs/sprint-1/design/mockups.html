@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daynest — Mockup Sprint 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Token — đồng bộ với docs/specs/design-system.md */
+  :root {
+    --primary: #5BBE98; --primary-dark: #3E9E7A; --primary-soft: #E3F5EC;
+    --bg: #FAF8F5; --surface: #FFFFFF; --border: #EFEAE3;
+    --text: #2F2D33; --muted: #8C8794;
+    --error: #E9787B; --error-soft: #FCE8E8; --warning: #F2B45C;
+    --ev-mint: #7FD1B0; --ev-sky: #8CC8EE; --ev-lavender: #B9A6EC;
+    --ev-pink: #F4A6C0; --ev-peach: #F7BE8A; --ev-lemon: #F2D67A;
+    --shadow: 0 4px 12px rgba(47,45,51,.06);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Nunito, system-ui, sans-serif; font-weight: 600; color: var(--text); background: #ECE8E2; padding: 32px 16px 64px; }
+  header.page { max-width: 1200px; margin: 0 auto 28px; }
+  header.page h1 { font-size: 26px; font-weight: 800; }
+  header.page p { color: var(--muted); margin-top: 6px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 36px 28px; justify-content: center; max-width: 1600px; margin: 0 auto; }
+  figure { display: flex; flex-direction: column; gap: 10px; }
+  figcaption { font-weight: 800; font-size: 15px; }
+  figcaption span { color: var(--muted); font-weight: 600; font-size: 13px; margin-left: 6px; }
+
+  /* Khung điện thoại 360×780 */
+  .phone { width: 360px; height: 780px; background: var(--bg); border-radius: 36px; border: 8px solid #2F2D33; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.12); }
+  .status { height: 28px; flex: none; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; font-weight: 700; }
+  .content { flex: 1; overflow: hidden; position: relative; }
+  .screen-title { font-size: 22px; line-height: 28px; font-weight: 800; text-align: center; padding: 14px 16px 12px; }
+
+  /* Thanh tab */
+  .tabbar { flex: none; height: 64px; background: var(--surface); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; box-shadow: 0 -4px 12px rgba(47,45,51,.05); position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; color: var(--muted); }
+  .tab.on { color: var(--primary); font-weight: 800; }
+  .tab svg { width: 24px; height: 24px; }
+  .fab { justify-self: center; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; margin-top: -30px; box-shadow: 0 6px 14px rgba(91,190,152,.45); border: 4px solid var(--bg); }
+  .fab svg { width: 28px; height: 28px; }
+
+  /* Thành phần */
+  .btn { height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; width: 100%; border: 0; font-family: inherit; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1.5px solid var(--border); }
+  .btn-danger { background: var(--error-soft); color: var(--error); }
+  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); }
+  .toast { position: absolute; left: 50%; transform: translateX(-50%); bottom: 16px; background: var(--text); color: #fff; font-size: 13px; padding: 10px 18px; border-radius: 999px; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .toast .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--error); }
+
+  /* Logo tạm */
+  .logo { width: 88px; height: 88px; border-radius: 26px; background: var(--primary); display: grid; place-items: center; box-shadow: 0 10px 22px rgba(91,190,152,.35); }
+  .logo svg { width: 52px; height: 52px; }
+  .wordmark { font-size: 30px; font-weight: 800; letter-spacing: .3px; }
+
+  /* Splash / Login */
+  .center { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .dots { display: flex; gap: 6px; margin-top: 18px; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); opacity: .35; }
+  .dots i:nth-child(2) { opacity: .65; } .dots i:nth-child(3) { opacity: 1; }
+  .login { height: 100%; display: flex; flex-direction: column; padding: 0 24px 40px; }
+  .login .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
+  .tagline { color: var(--muted); font-size: 15px; }
+  .chips { display: flex; gap: 6px; margin-top: 10px; }
+  .chips span { width: 34px; height: 10px; border-radius: 999px; }
+  .g-icon { width: 20px; height: 20px; background: #fff; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--primary-dark); font-size: 13px; }
+  .note { text-align: center; color: var(--muted); font-size: 12px; margin-top: 14px; }
+
+  /* Tab trống */
+  .empty { position: absolute; inset: 60px 24px 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; }
+  .empty .bubble { width: 112px; height: 112px; border-radius: 40px; display: grid; place-items: center; }
+  .empty .bubble svg { width: 52px; height: 52px; }
+  .empty h3 { font-size: 17px; font-weight: 700; }
+  .empty p { color: var(--muted); font-size: 14px; line-height: 20px; max-width: 240px; }
+  .soon { background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; }
+
+  /* Cài đặt */
+  .settings { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+  .account { padding: 16px; display: flex; align-items: center; gap: 14px; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--ev-peach), var(--ev-pink)); display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 22px; flex: none; }
+  .account .name { font-size: 17px; font-weight: 700; }
+  .account .mail { color: var(--muted); font-size: 13px; }
+  .group-label { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .6px; margin: 0 4px -8px; }
+  .row { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .row .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .row .ico svg { width: 20px; height: 20px; }
+  .row .label { flex: 1; }
+  .row .val { color: var(--muted); font-size: 14px; }
+  .row.danger { color: var(--error); }
+  .version { text-align: center; color: var(--muted); font-size: 12px; }
+
+  /* Hộp xác nhận */
+  .scrim { position: absolute; inset: 0; background: rgba(47,45,51,.4); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 5; }
+  .dialog { background: var(--surface); border-radius: 24px; padding: 24px 20px 20px; width: 100%; text-align: center; }
+  .dialog .dicon { width: 56px; height: 56px; border-radius: 20px; background: var(--error-soft); display: grid; place-items: center; margin: 0 auto 14px; }
+  .dialog .dicon svg { width: 28px; height: 28px; }
+  .dialog h3 { font-size: 17px; font-weight: 800; }
+  .dialog p { color: var(--muted); font-size: 14px; line-height: 20px; margin: 6px 0 20px; }
+  .dialog .actions { display: flex; gap: 10px; }
+  .dialog .btn-danger-solid { background: var(--error); color: #fff; }
+  .under { position: absolute; inset: 0; display: flex; flex-direction: column; }
+
+  .scrim.bottom { align-items: flex-end; padding: 0; }
+  .sheet { background: var(--surface); border-radius: 24px 24px 0 0; width: 100%; padding: 10px 16px 28px; }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 999px; background: var(--border); margin: 0 auto 14px; }
+  .sheet h3 { font-size: 17px; font-weight: 800; text-align: center; margin-bottom: 12px; }
+  .opt { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-radius: 16px; font-size: 15px; }
+  .opt .flag { font-size: 13px; font-weight: 800; color: var(--muted); width: 28px; }
+  .opt .label { flex: 1; }
+  .opt.on { background: var(--primary-soft); font-weight: 800; }
+  @media (max-width: 400px) { .phone { transform: scale(.9); transform-origin: top left; margin-bottom: -78px; } }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>Daynest — Mockup Sprint 1</h1>
+  <p>9 màn theo <a href="screens.md">screens.md</a>. Màu, chữ, thành phần theo <a href="../../design-system.md">design-system.md</a>. Khung 360×780 (Android). Theme sáng.</p>
+</header>
+<div class="grid" id="grid"></div>
+
+<script>
+// Icon nét tròn đơn giản (mockup). App thật dùng Ionicons của @expo/vector-icons.
+const I = {
+  logo: '<svg viewBox="0 0 52 52" fill="none"><rect x="12" y="7" width="31" height="39" rx="7" fill="#fff"/><path d="M20 18h16M20 25h16M20 32h10" stroke="#5BBE98" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="38" r="3.5" fill="#F4A6C0"/><g stroke="#3E9E7A" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M9 13h6M9 22h6M9 31h6M9 40h6"/></g></svg>',
+  cal: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M8 3v4M16 3v4" fill="none"/><path d="M3.5 10h17" stroke="${f ? '#fff' : 'currentColor'}"/></svg>`,
+  book: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 21H19v-3" fill="none"/></svg>`,
+  chart: (f) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${f ? 2.6 : 1.8}" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-5"/></svg>`,
+  gear: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M12 2.8l2 1.6 2.5-.4 1 2.4 2.4 1-.4 2.5 1.6 2-1.6 2 .4 2.5-2.4 1-1 2.4-2.5-.4-2 1.6-2-1.6-2.5.4-1-2.4-2.4-1 .4-2.5L2.8 12l1.6-2-.4-2.5 2.4-1 1-2.4 2.5.4z" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="${f ? '#fff' : 'none'}"/></svg>`,
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  logout: (c) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h3a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-3"/><path d="M10 8l-4 4 4 4M6 12h10"/></svg>`,
+  info: (c) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></svg>`,
+  mail: (c) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="3.5"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5" stroke-linecap="round"/></svg>`,
+  globe: (c) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/></svg>`,
+  check: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5BBE98" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#C4BEC9" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+};
+
+const status = '<div class="status"><span>9:41</span><span>● ▲ ▮</span></div>';
+const tabbar = (on) => `<nav class="tabbar">
+  <div class="tab ${on === 'cal' ? 'on' : ''}">${I.cal(on === 'cal')}Lịch</div>
+  <div class="tab ${on === 'man' ? 'on' : ''}">${I.book(on === 'man')}Quản lý</div>
+  <div class="fab">${I.plus}</div>
+  <div class="tab ${on === 'sta' ? 'on' : ''}">${I.chart(on === 'sta')}Thống kê</div>
+  <div class="tab ${on === 'set' ? 'on' : ''}">${I.gear(on === 'set')}Cài đặt</div>
+</nav>`;
+const phone = (inner) => `<div class="phone">${status}${inner}</div>`;
+
+const emptyTab = (title, color, icon, heading, text, toast) => phone(`
+  <div class="content">
+    <div class="screen-title">${title}</div>
+    <div class="empty">
+      <div class="bubble" style="background:${color}33;color:${color}">${icon}</div>
+      <span class="soon">Đang phát triển</span>
+      <h3>${heading}</h3>
+      <p>${text}</p>
+    </div>
+    ${toast ? '<div class="toast">Đang phát triển ✨</div>' : ''}
+  </div>${tabbar(title === 'Lịch' ? 'cal' : title === 'Quản lý' ? 'man' : 'sta')}`);
+
+const settingsBody = `
+  <div class="content">
+    <div class="screen-title">Cài đặt</div>
+    <div class="settings">
+      <div class="card account">
+        <div class="avatar">A</div>
+        <div><div class="name">Nguyễn An</div><div class="mail">an.nguyen@gmail.com</div></div>
+      </div>
+      <div class="group-label">Tài khoản</div>
+      <div class="card">
+        <div class="row"><span class="ico" style="background:#E3F5EC">${I.mail('#3E9E7A')}</span><span class="label">Đăng nhập bằng</span><span class="val">Google</span></div>
+        <div class="row danger"><span class="ico" style="background:#FCE8E8">${I.logout('#E9787B')}</span><span class="label">Đăng xuất</span>${I.chev}</div>
+      </div>
+      <div class="group-label">Ứng dụng</div>
+      <div class="card">
+        <div class="row"><span class="ico" style="background:#E4F1FB">${I.globe('#4F9BCF')}</span><span class="label">Ngôn ngữ</span><span class="val">Tiếng Việt</span>${I.chev}</div>
+        <div class="row"><span class="ico" style="background:#EDE7FB">${I.info('#8B74D6')}</span><span class="label">Phiên bản</span><span class="val">1.0.0 (1)</span></div>
+      </div>
+      <div class="version">Daynest · làm với ♥</div>
+    </div>
+  </div>`;
+
+const screens = [
+  ['1. Splash', 'kiểm tra phiên', phone(`<div class="content"><div class="center">
+      <div class="logo">${I.logo}</div><div class="wordmark">Daynest</div>
+      <div class="dots"><i></i><i></i><i></i></div></div></div>`)],
+
+  ['2. Đăng nhập', 'toast lỗi khi mất mạng', phone(`<div class="content"><div class="login">
+      <div class="hero">
+        <div class="logo">${I.logo}</div>
+        <div class="wordmark">Daynest</div>
+        <div class="tagline">Lịch, việc cần làm và ghi chú<br>gọn trong một tổ nhỏ.</div>
+        <div class="chips"><span style="background:var(--ev-mint)"></span><span style="background:var(--ev-sky)"></span><span style="background:var(--ev-lavender)"></span><span style="background:var(--ev-pink)"></span><span style="background:var(--ev-peach)"></span><span style="background:var(--ev-lemon)"></span></div>
+      </div>
+      <button class="btn btn-primary"><span class="g-icon">G</span>Đăng nhập bằng Google</button>
+      <div class="note">Dữ liệu của bạn được đồng bộ an toàn.</div>
+    </div>
+    <div class="toast" style="bottom:120px"><span class="dot"></span>Không có kết nối</div></div>`)],
+
+  ['3. Thanh tab', 'bấm + → toast "Đang phát triển"', emptyTab('Lịch', '#5BBE98', I.cal(false), 'Lịch đang phát triển', 'Tính năng này đang được phát triển. Bạn quay lại sau nhé!', true)],
+
+  ['4. Lịch (trống)', 'chỗ cho S2', emptyTab('Lịch', '#5BBE98', I.cal(false), 'Lịch đang phát triển', 'Tính năng này đang được phát triển. Bạn quay lại sau nhé!', false)],
+
+  ['5. Quản lý (trống)', 'chỗ cho S7–S9', emptyTab('Quản lý', '#8B74D6', I.book(false), 'Việc cần làm, ghi chú, nhật ký đang phát triển', 'Tính năng này đang được phát triển. Bạn quay lại sau nhé!', false)],
+
+  ['6. Thống kê (trống)', 'chỗ cho S9', emptyTab('Thống kê', '#E6A35C', I.chart(false), 'Thống kê đang phát triển', 'Tính năng này đang được phát triển. Bạn quay lại sau nhé!', false)],
+
+  ['7. Cài đặt', 'tài khoản + version', phone(settingsBody + tabbar('set'))],
+
+  ['8. Xác nhận đăng xuất', 'hộp thoại', phone(`<div class="content" style="position:static"></div>
+      <div class="under" style="top:28px">${settingsBody}${tabbar('set')}</div>
+      <div class="scrim"><div class="dialog">
+        <div class="dicon">${I.logout('#E9787B')}</div>
+        <h3>Đăng xuất?</h3>
+        <p>Bạn sẽ cần đăng nhập Google lại để dùng Daynest.</p>
+        <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Đăng xuất</button></div>
+      </div></div>`)],
+
+  ['9. Chọn ngôn ngữ', 'bảng trượt từ dưới lên', phone(`<div class="content" style="position:static"></div>
+      <div class="under" style="top:28px">${settingsBody}${tabbar('set')}</div>
+      <div class="scrim bottom"><div class="sheet">
+        <div class="grab"></div>
+        <h3>Ngôn ngữ</h3>
+        <div class="opt"><span class="flag">EN</span><span class="label">English</span></div>
+        <div class="opt on"><span class="flag">VI</span><span class="label">Tiếng Việt</span>${I.check}</div>
+      </div></div>`)],
+];
+
+document.getElementById('grid').innerHTML = screens.map(([t, s, html]) =>
+  `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('');
+</script>
+</body>
+</html>

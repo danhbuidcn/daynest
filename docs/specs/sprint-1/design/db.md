@@ -19,6 +19,7 @@ Thuộc: [F3](../F3-db-supabase.md).
 | `user_id` | `uuid` PK | = `auth.users.id` | S1 |
 | `week_start` | `smallint` | `1` (Thứ 2; `0` = CN) | S2 |
 | `use_24h` | `boolean` | `true` | S3 |
+| `language` | `text` · check `in ('en','vi')` | `'en'` | S1 |
 | `created_at`, `updated_at` | `timestamptz` | `now()` | |
 
 - Cột khác (ngày âm, ngày lễ, nhắc diary…) thêm ở sprint dùng nó.

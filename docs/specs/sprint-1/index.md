@@ -49,3 +49,4 @@ Cài đặt → Đăng xuất → Đăng nhập
 - [ ] Bảng `profiles`, `user_settings` có dòng của user; test RLS: user A không đọc được dòng user B.
 - [ ] Build từ máy thứ 2 (cùng keystore) cài đè được, không mất phiên đăng nhập.
 - [ ] Bản `versionCode` 2 cài đè bản 1 thành công.
+- [ ] Đổi ngôn ngữ Việt ↔ Anh, chữ đổi ngay; đăng nhập trên máy khác vẫn giữ lựa chọn.
