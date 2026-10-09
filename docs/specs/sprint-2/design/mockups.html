@@ -707,12 +707,12 @@ const kickedOther = `<div class="under">${monthScreen('')}</div><div class="scri
   <p>Mỗi tài khoản dùng tối đa 2 thiết bị. Samsung SM-A556E (đăng nhập 01/10/2026) đã bị đăng xuất.</p>
   <button class="btn btn-primary">Đã hiểu</button>
 </div></div>`;
-const devRow = (name, a, me) => `<div class="row" style="min-height:68px"><span class="ico">${I.phoneI}</span><span class="label"><span style="display:flex;align-items:center;min-width:0"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</span>${me ? '<span class="tagme">Máy này</span>' : ''}</span><div class="cap muted">${a}</div></span></div>`;
+const devRow = (name, a, me) => `<div class="row" style="min-height:68px"><span class="ico">${I.phoneI}</span><span class="label"><span style="display:flex;align-items:center;min-width:0"><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</span>${me ? '<span class="tagme">Thiết bị đang dùng</span>' : ''}</span><div class="cap muted">${a}</div></span></div>`;
 const devices = `<div class="content">
   <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thiết bị đăng nhập</div><span></span></div>
   <div class="settings">
     <div class="card">${devRow('Google Pixel 8', 'Đăng nhập 05/10/2026 · Dùng lần cuối hôm nay 9:41', true)}${devRow('Samsung Galaxy Tab S9', 'Đăng nhập 08/10/2026 · Dùng lần cuối hôm qua 21:10', false)}</div>
-    <div class="cap muted" style="padding:0 4px">Tối đa 2 thiết bị. Đăng nhập máy thứ 3 sẽ đăng xuất máy đăng nhập sớm nhất.</div>
+    <div class="cap muted" style="padding:0 4px">Tối đa 2 thiết bị. Khi đăng nhập trên thiết bị thứ 3, thiết bị đăng nhập sớm nhất sẽ được đăng xuất.</div>
   </div>
 </div>`;
 
