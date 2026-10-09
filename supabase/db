@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Migrate DB kiểu Rails. Dùng: supabase/db <new NAME|test|status|migrate>
+# Quản lý migration DB. Dùng: supabase/db <new NAME|test|status|migrate>
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
