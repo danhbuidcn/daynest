@@ -10,4 +10,5 @@
 ## Khi xong 1 sprint (DoD đạt) — tự làm, theo todo đã duyệt
 Làm đúng mục "Cuối sprint" trong `docs/specs/index.md` §4:
 tăng version (+MINOR, versionCode +1) → `supabase/db migrate` (nếu có migration) →
-`npm run release` → cài đè máy thật → test → commit `chore(release): v<version>` → tag `v<version>` + push tag lên GitHub (bắt buộc).
+`npm run release` → cài đè máy thật → test → commit `chore(release): v<version>` → tag `v<version>` + push tag lên GitHub (bắt buộc) →
+GitHub Release kèm APK: `gh release create v<version> app/dist/<file>.apk` (bắt buộc, không kèm `.aab`).
