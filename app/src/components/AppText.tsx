@@ -16,7 +16,9 @@ const weightFamily = {
 
 export function AppText({ variant = 'body', color = colors.text, weight, style, ...rest }: Props) {
   return (
+    // Samsung under-measures custom fonts with the default break strategy and clips the last word.
     <Text
+      textBreakStrategy="simple"
       {...rest}
       style={[typeScale[variant], { color }, weight && { fontFamily: weightFamily[weight] }, style]}
     />

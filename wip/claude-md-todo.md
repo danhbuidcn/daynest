@@ -1,4 +1,4 @@
-# Đề xuất tạo `CLAUDE.md` cho project Daynest — ⏳ chờ duyệt
+# Đề xuất tạo `CLAUDE.md` cho project Daynest — ✅ đã duyệt, đã tạo `CLAUDE.md`
 
 Mục đích: Claude ở phiên sau (máy nào cũng vậy) tự làm đúng quy trình khi xong sprint, không cần nhắc lại.
 
@@ -17,3 +17,10 @@ Làm đúng mục "Cuối sprint" trong `docs/specs/index.md` §4:
 tăng version (+MINOR, versionCode +1) → `supabase/db migrate` (nếu có migration) →
 `npm run release` → cài đè máy thật → test → commit `chore(release): v<version>` + tag → push.
 ```
+
+## Đề xuất bổ sung — ⏳ chờ duyệt
+
+Thêm 2 dòng vào danh sách đầu `CLAUDE.md`:
+
+- `Code (app/, supabase/): tiếng Anh; comment ít, chỉ giải thích "vì sao". Docs tiếng Việt.` (quy ước đã chốt ở commit a5b07d9)
+- `Khi debug script có bí mật: không dùng bash -x (đã từng làm lộ mật khẩu keystore ra log).`

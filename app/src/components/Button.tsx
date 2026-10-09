@@ -41,7 +41,7 @@ export function Button({
         style,
       ]}>
       {icon ? <View>{icon}</View> : null}
-      <AppText weight="bold" color={v.fg}>
+      <AppText weight="bold" color={v.fg} numberOfLines={1}>
         {label}
       </AppText>
     </Pressable>

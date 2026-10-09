@@ -54,6 +54,17 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 | S8 | Notes | Quản lý note |
 | S9 | Diary + Thống kê + Cài đặt | Xong GĐ1 |
 
+### Cuối sprint (mọi sprint)
+
+Khi DoD sprint đạt, làm theo thứ tự (todo trong `wip/todo_list.md`, chờ duyệt như mọi việc ghi/sửa):
+
+1. Tick DoD trong `sprint-N/index.md`.
+2. Tăng version trong `app/app.config.ts`: `version` +MINOR, `versionCode` +1 ([build.md](sprint-1/design/build.md#version)).
+3. Có migration mới → `supabase/db migrate`.
+4. `cd app && npm run release` → `app/dist/daynest-<version>-<versionCode>.apk|.aab`.
+5. Cài đè lên máy thật (`adb install -r …apk`): vẫn đăng nhập, test luồng chính + chức năng sprint.
+6. Commit `chore(release): v<version>` → gắn tag GitHub: `git tag v<version> && git push origin main v<version>` (bắt buộc mỗi lần release; tag trỏ đúng commit đã build APK).
+
 Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó. Ghi chú đã chốt cho sprint sau:
 
 ### S2 — Lịch tháng

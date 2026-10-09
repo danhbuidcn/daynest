@@ -32,7 +32,11 @@ export function SettingRow({
       <AppText style={styles.label} color={danger ? colors.error : colors.text}>
         {label}
       </AppText>
-      {value ? <AppText color={colors.textMuted}>{value}</AppText> : null}
+      {value ? (
+        <AppText color={colors.textMuted} numberOfLines={1}>
+          {value}
+        </AppText>
+      ) : null}
       {onPress ? <Ionicons name="chevron-forward" size={18} color={colors.textMuted} /> : null}
     </Pressable>
   );

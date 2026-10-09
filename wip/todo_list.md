@@ -1,11 +1,15 @@
 # Todo
 
-## 2026-10-09 — Sửa chữ bị cắt trên Samsung (nút "Đăng xuất", "Tiếng Việt") — ⏳ chờ duyệt
+## 2026-10-09 — Quy trình release: bắt buộc tag GitHub — ✅ xong
+
+- [x] "Cuối sprint" bước 6 + `CLAUDE.md`: ghi rõ `git tag v<version> && git push origin main v<version>` mỗi lần release. Release S1 gắn tag `v1.0.1`.
+
+## 2026-10-09 — Sửa chữ bị cắt trên Samsung (nút "Đăng xuất", "Tiếng Việt") — ✅ xong
 
 - **Nguyên nhân:** Samsung đo chiều rộng chữ font Nunito thiếu. Từ cuối bị đẩy xuống dòng 2 rồi bị che. Cỡ chữ hệ thống = 1.0, không phải do cài đặt máy.
-- [ ] `AppText`: mặc định `textBreakStrategy="simple"` trên Android (cách sửa phổ biến cho lỗi này).
-- [ ] Chữ chỉ được 1 dòng thì đặt `numberOfLines={1}`: nhãn nút (`Button`), giá trị bên phải dòng cài đặt (`SettingRow`).
-- [ ] Kiểm tra trên điện thoại thật: hộp Đăng xuất, dòng Ngôn ngữ (VI + EN), nút Lưu. Gộp vào bản build 1.0.1 đang test; commit `fix(app): text clipped on samsung` rồi push.
+- [x] `AppText`: mặc định `textBreakStrategy="simple"` trên Android (cách sửa phổ biến cho lỗi này).
+- [x] Chữ chỉ được 1 dòng thì đặt `numberOfLines={1}`: nhãn nút (`Button`), giá trị bên phải dòng cài đặt (`SettingRow`).
+- [x] Kiểm tra trên điện thoại thật: hộp Đăng xuất, dòng Ngôn ngữ (VI + EN), nút Lưu. Gộp vào bản build 1.0.1 đang test; commit `fix(app): text clipped on samsung` rồi push.
 
 ## 2026-10-09 — Cho phép comment code có chọn lọc (tiếng Anh) — ✅ xong (chưa commit)
 
@@ -38,7 +42,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 - [x] 4. Kiểm tra: `grep` không còn comment + không còn chữ tiếng Việt ngoài phạm vi loại trừ; `npm run lint`, `npx tsc --noEmit`, `npm test` trong `app/`; `bash -n` 2 script.
 - [x] 5. Lưu quy ước vào Claude memory (để session sau tuân theo). Chưa commit — chờ bạn bảo.
 
-## 2026-10-09 — S1 bước 4: keystore release, APK cài máy thật — ⏳ đang làm (chốt 1.0.1)
+## 2026-10-09 — S1 bước 4: keystore release, APK cài máy thật — ✅ xong (release v1.0.1)
 
 ### Input
 
@@ -91,24 +95,24 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 - [x] 8. Test "máy thứ 2" ngay trên máy này:
   - `git clone` repo sạch vào thư mục tạm → build bằng cùng keystore → `adb install -r` đè lên → vẫn đăng nhập. ✅ Gộp với mục 7: bản 1.0.1 (2) build từ clone (chỉ chép `app/.env`) cài đè 1.0.0 (1) trên Samsung SM-A556E, giữ phiên + ngôn ngữ.
   - Laptop thật: chép `app/.env` sang rồi `npm run release`.
-- [ ] 9. Cập nhật `design/build.md` (keystore nằm trong `app/.env`, lệnh `npm run release`, SHA-1 release). Tick DoD S1.
-- [ ] 10. Commit `feat(app): release signing and build script` rồi push.
+- [x] 9. Cập nhật `design/build.md` (keystore nằm trong `app/.env`, lệnh `npm run release`, SHA-1 release). Tick DoD S1.
+- [x] 10. Commit `feat(app): release signing and build script` rồi push.
 
 **Thêm (bạn yêu cầu): ghi quy trình release cuối sprint để lần sau tự làm đúng format — chờ duyệt**
 
-- [ ] 11. `docs/specs/index.md` §4: thêm mục ngắn "Cuối sprint" (áp dụng mọi sprint), từng bước:
+- [x] 11. `docs/specs/index.md` §4: thêm mục ngắn "Cuối sprint" (áp dụng mọi sprint), từng bước:
   1. Tick DoD sprint;
   2. tăng version: `version` +MINOR (S2 = `1.1.0`…), `versionCode` +1 trong `app.config.ts`;
   3. `supabase/db migrate` nếu sprint có migration mới;
   4. `npm run release` → `app/dist/daynest-<version>-<versionCode>.apk|.aab`;
   5. cài đè lên máy thật (`adb install -r`), test nhanh luồng chính + luồng của sprint;
   6. commit `chore(release): v<version>` + tag `v<version>`, push.
-- [ ] 12. `design/build.md`:
+- [x] 12. `design/build.md`:
   - keystore trong `app/.env` (alias `daynest_alias`);
   - SHA-1 debug + release;
   - lệnh `npm run release`;
   - máy mới chỉ cần chép `app/.env`.
-- [ ] 13. CLAUDE.md của project (tài liệu governance → theo Rule 7): nội dung dự định ghi ở `wip/claude-md-todo.md`. Bạn ok file đó thì tôi mới tạo `CLAUDE.md`.
+- [x] 13. CLAUDE.md của project (tài liệu governance → theo Rule 7): nội dung dự định ghi ở `wip/claude-md-todo.md`. Bạn ok file đó thì tôi mới tạo `CLAUDE.md`.
 
 
 ## 2026-10-09 — `supabase/db`: comment bỏ nhắc Rails — ✅ xong
