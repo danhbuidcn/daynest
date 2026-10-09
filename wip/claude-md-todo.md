@@ -18,7 +18,7 @@ tăng version (+MINOR, versionCode +1) → `supabase/db migrate` (nếu có migr
 `npm run release` → cài đè máy thật → test → commit `chore(release): v<version>` + tag → push.
 ```
 
-## Đề xuất bổ sung — ⏳ chờ duyệt
+## Đề xuất bổ sung — ✅ đã duyệt, đã thêm vào `CLAUDE.md`
 
 Thêm 2 dòng vào danh sách đầu `CLAUDE.md`:
 
