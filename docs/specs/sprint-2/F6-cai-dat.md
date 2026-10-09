@@ -27,7 +27,7 @@ Thuộc: [Sprint 2](index.md).
   - "Đồng bộ ngay" — bấm → đồng bộ, hiện vòng xoay.
   - "Lần đồng bộ cuối" — vd "Hôm nay 10:20" · có event `pending` → "Còn 3 sự kiện chưa đồng bộ".
 - Lỗi token → dòng cảnh báo "Cần kết nối lại Google" + bấm để kết nối lại.
-- Tắt công tắc → hộp xác nhận "Tắt đồng bộ? Sự kiện ở 2 bên vẫn giữ nguyên, sau đó không còn cập nhật cho nhau."
+- Tắt công tắc → hộp xác nhận "Tắt đồng bộ? Sự kiện đã có vẫn còn ở cả Daynest và Google. Từ giờ, sửa ở bên này sẽ không đổi bên kia."
 
 ## Mô tả
 

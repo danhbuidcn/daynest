@@ -33,7 +33,7 @@ Thuộc: [Sprint 2](index.md).
 3. **Đẩy** mọi event Daynest chưa có `google_event_id` (trừ lặp âm) lên Google.
 4. Lưu `syncToken` + năm đã kéo vào `google_sync_state`.
 
-- Hiện tiến độ "Đang đồng bộ 120/300". Gián đoạn (mất mạng, đóng app) → lần đồng bộ sau làm tiếp phần còn `pending`.
+- Hiện tiến độ: hộp "Đang đồng bộ Google Calendar" · "Đang lấy sự kiện năm 2026 từ Google về Daynest, và gửi sự kiện của Daynest lên Google." · thanh tiến độ "120 / 300". Gián đoạn (mất mạng, đóng app) → lần đồng bộ sau làm tiếp phần còn `pending`.
 - Bật lại sau khi đã tắt: event đã có `google_event_id` được ghép lại, không tạo bản trùng.
 
 ### Đang bật

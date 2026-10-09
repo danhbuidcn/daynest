@@ -1,5 +1,107 @@
 # Todo
 
+## 2026-10-09 — S2 spec: 1 account tối đa 2 thiết bị — ⏳ chờ duyệt
+
+**Bạn chốt:** đăng nhập trên máy thứ 3 → tự đăng xuất máy **đăng nhập sớm nhất**, có thông báo.
+
+**Đề xuất cách làm:**
+
+| Việc | Cách làm |
+| --- | --- |
+| Nhận diện máy | Mỗi lần cài app sinh 1 `device_id` (uuid) lưu trên máy + tên máy (vd "Samsung SM-A556E") |
+| Ghi máy lúc đăng nhập | Bảng `user_devices` (`user_id`, `device_id`, `device_name`, `session_id`, `signed_in_at`, `last_seen_at`) · đăng nhập xong gọi hàm DB `register_device()` |
+| Đá máy cũ | `register_device()` (chạy quyền DB, trong 1 transaction có khoá theo user → 2 máy đăng nhập cùng lúc vẫn đúng) : quá 2 máy → xoá máy `signed_in_at` sớm nhất + xoá phiên Supabase của máy đó (`auth.sessions`) |
+| Máy bị đá dừng ngay | RLS mọi bảng thêm điều kiện: phiên hiện tại (`session_id` trong token) phải còn trong `user_devices` → máy cũ gọi API là bị từ chối, không đợi token hết hạn |
+| Thông báo máy bị đá | Lần gọi API kế tiếp (mở app, về foreground, lưu…) bị từ chối → app đăng xuất, hiện hộp "Bạn đã bị đăng xuất vì tài khoản vừa đăng nhập trên thiết bị khác (tối đa 2 thiết bị)." |
+| Thông báo máy mới | Hộp ngay sau đăng nhập: "Đã đăng xuất <tên máy cũ>" · "Mỗi tài khoản đăng nhập tối đa 2 thiết bị. <Tên máy cũ> (đăng nhập 01/10) đã bị đăng xuất." · nút **Đã hiểu** |
+| Màn xem thiết bị (bạn yêu cầu thêm màn) | Cài đặt → Tài khoản → **Thiết bị đăng nhập** (`settings/devices`): 2 dòng (tên máy · "Đăng nhập 01/10 · Dùng lần cuối hôm nay" · nhãn "Máy này") + chú thích "Tối đa 2 thiết bị. Đăng nhập máy thứ 3 sẽ đăng xuất máy đăng nhập sớm nhất." |
+| Tự đăng xuất | Xoá dòng của máy mình trong `user_devices` |
+| Đăng nhập lại trên cùng máy | Cùng `device_id` → cập nhật dòng cũ, không tính thêm máy |
+
+- Hạn chế: không có server push → máy bị đá chỉ biết khi app mở/gọi API, không báo lúc app đang đóng.
+- Thêm cuối danh sách §6 "Trước khi lên Google Play": không đổi.
+
+**Plan:**
+
+- [ ] 1. Viết `docs/specs/sprint-2/F7-gioi-han-thiet-bi.md` (mục tiêu, logic như bảng trên, luồng, mô tả, test) + thêm dòng F7 vào `sprint-2/index.md` (phạm vi, luồng, DoD: "đăng nhập máy thứ 3 → máy sớm nhất bị đăng xuất, thấy hộp thông báo; máy mới thấy toast").
+- [ ] 2. `design/db.md`: bảng `user_devices`, hàm `register_device()`, điều kiện RLS mới cho mọi bảng; `rls_s2.sql` thêm test máy bị đá không đọc/ghi được.
+- [ ] 3. `design/screens.md` + `mockups.html`: màn 23 hộp "Bạn đã bị đăng xuất…" (máy cũ, trên màn Đăng nhập) · màn 24 hộp "Đã đăng xuất <máy cũ>" (máy mới) · màn 25 "Thiết bị đăng nhập" · Cài đặt thêm dòng "Thiết bị đăng nhập" (nhóm Tài khoản).
+- [ ] 4. `docs/specs/index.md` §2: thêm dòng "Thiết bị: 1 account tối đa 2 thiết bị".
+- [ ] 5. Kiểm tra link + chụp mockup. Commit `docs: limit two devices per account`, push.
+
+## 2026-10-09 — Sửa 2 câu chữ khó hiểu (đồng bộ Google) — ✅ xong
+
+| Chỗ | Cũ | Mới |
+| --- | --- | --- |
+| Hộp "Tắt đồng bộ?" (màn 21c) | Sự kiện ở 2 bên vẫn giữ nguyên, sau đó không còn cập nhật cho nhau. | Sự kiện đã có vẫn còn ở cả Daynest và Google. Từ giờ, sửa ở bên này sẽ không đổi bên kia. |
+| Hộp đang đồng bộ (màn 22) | Kéo sự kiện năm 2026 và đẩy sự kiện Daynest lên lịch chính. | Đang lấy sự kiện năm 2026 từ Google về Daynest, và gửi sự kiện của Daynest lên Google. |
+
+- [x] Sửa trong `F6-cai-dat.md` (dòng hộp xác nhận), `F4-google-calendar.md` (thêm câu cho hộp tiến độ), `mockups.html` (màn 21c, 22).
+- [x] Commit `docs: simplify google sync texts`, push.
+
+## 2026-10-09 — S2 spec: giới hạn ký tự mọi field + cách hiển thị chữ dài — ⏳ chờ duyệt
+
+Bạn yêu cầu: field nào cũng có giới hạn ký tự; chữ dài hiện hết hoặc 1 phần để không vỡ giao diện.
+
+**Giới hạn (nhập trong app):**
+
+| Field | Giới hạn | Đã có trong spec? |
+| --- | --- | --- |
+| Tên hiển thị (S1) | 1–50 | Có |
+| Tiêu đề event | 1–100 | Có |
+| Chi tiết event | ≤ 2000 | Có |
+| Tiêu đề note | ≤ 200 | Có |
+| Nội dung note | ≤ 20.000 | Có |
+| Mục checklist | ≤ 200 / mục, ≤ 100 mục | Có |
+| Tên danh mục | 1–30 | Có |
+| Ô tìm kiếm note | ≤ 100 | **Mới** |
+| Số N lặp | 1–99 | Có |
+
+- Ô nhập dùng `maxLength` (dán chữ dài → tự cắt). Gõ tới ≥ 80% giới hạn → hiện bộ đếm "85/100" dưới ô; chạm giới hạn → đếm màu `error`.
+- Cắt khoảng trắng 2 đầu trước khi lưu; chỉ toàn khoảng trắng = trống.
+- DB `check` cùng giới hạn để chặn ghi sai từ API.
+- **Event từ Google** (không theo giới hạn của app): DB cho tiêu đề ≤ 1000, chi tiết ≤ 8000 (đủ cho gần như mọi event Google); dài hơn → cắt lúc kéo về và đánh dấu chỉ xem (không đẩy bản cắt ngược lên Google). Sửa event Google có tiêu đề > 100 trong app → phải rút gọn ≤ 100 mới lưu được (báo lỗi dưới ô).
+
+**Hiển thị chữ dài:**
+
+| Chỗ hiện | Cách hiện |
+| --- | --- |
+| Thanh event (ô tháng), tên lễ trong ô | 1 dòng, `…` |
+| Thẻ event (tuần, danh sách, pop-up ngày) | Tiêu đề 1 dòng `…` · chi tiết 1 dòng `…` |
+| Khối event (xem ngày) | Tiêu đề xuống dòng vừa chiều cao khối, dư thì `…` |
+| Chi tiết event, editor note | **Hiện hết**, xuống dòng, cuộn màn |
+| Ô tiêu đề trong form event | Tự giãn tối đa 3 dòng, quá thì cuộn trong ô |
+| Ô chi tiết event | Tự giãn tối đa 6 dòng, quá thì cuộn trong ô |
+| Thẻ note | Tiêu đề 1 dòng `…` · nội dung 3 dòng `…` |
+| Mục checklist (editor) | Hiện hết, xuống dòng |
+| Chip danh mục, tên danh mục trong dòng | 1 dòng `…`, chip rộng tối đa 140 |
+| Tên trong hộp xác nhận (vd "Xoá danh mục …?") | Tối đa 2 dòng `…` |
+| Thông báo nhắc (hệ điều hành) | Tiêu đề event cắt 1 dòng do hệ điều hành |
+| Toast | Tối đa 2 dòng |
+
+- Chữ không có khoảng trắng (URL, chuỗi dài) cũng phải xuống dòng/cắt, không tràn ngang.
+
+**Plan:**
+
+- [ ] 1. `design-system.md`: thêm mục "Chữ dài" (quy tắc chung: 1 dòng `…`, N dòng, hiện hết + cuộn; bộ đếm ký tự; không tràn ngang).
+- [ ] 2. `sprint-2/design/screens.md`: thêm bảng "Giới hạn ký tự + hiển thị" (2 bảng trên), F2/F5 trỏ tới bảng này thay vì ghi rải rác (bỏ lặp).
+- [ ] 3. `design/db.md` + `F4-google-calendar.md`: giới hạn DB cho event Google (≤ 1000 / ≤ 8000), cắt + chỉ xem khi dài hơn.
+- [ ] 4. `mockups.html`: thêm 1 màn "Chữ dài" — ô tháng + thẻ event + thẻ note + chip danh mục với chữ dài, và ô tiêu đề có bộ đếm "92/100".
+- [ ] 5. Kiểm tra: chụp mockup, không tràn; không link hỏng. Commit `docs: add field limits and long text rules`, push.
+
+## 2026-10-09 — Mockup màn 18, 19: xoá danh mục qua menu ⋯ — ⏳ chờ duyệt
+
+Bạn chốt: màn 18 có `⋯` góc trên phải để chọn xoá; màn 19 bỏ icon xoá.
+
+- [ ] `mockups.html`:
+  - màn 18: thêm `⋯` góc trên phải → menu "Chọn để xoá"; dòng danh mục không có icon xoá (giữ icon bút);
+  - màn 18b (chế độ chọn): mỗi dòng có ô tick tròn bên trái · thanh trên: ✕ thoát · "Đã chọn 2" · nút đáy **Xoá (2)** màu `error`;
+  - màn 18c: hộp xác nhận "Xoá 2 danh mục? 3 ghi chú sẽ về Chưa phân loại." · Huỷ / Xoá;
+  - màn 19: bỏ nút 🗑, còn Huỷ / Lưu.
+  - đổi chữ "Không danh mục" → **"Chưa phân loại"** ở mọi chỗ (chú thích màn 18, `F5-notes.md` dòng 35 + 75).
+- [ ] `F5-notes.md` (mục Danh mục) + `design/screens.md` (màn 18, 18b, 18c, 19): ghi theo trên.
+- [ ] Commit `docs: delete categories via select mode`, push.
+
 ## 2026-10-09 — Quy trình release: đính kèm APK vào GitHub Release — ✅ xong
 
 Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (không kèm `.aab`). Dùng `gh` CLI.
