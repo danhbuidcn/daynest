@@ -12,7 +12,7 @@ Thuộc: [Sprint 1](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 6 | Thống kê (trống) | `(tabs)/stats` | Chỗ cho S9 | Tiêu đề "Thống kê" | [F1](../F1-khung-app.md) |
 | 7 | Cài đặt | `(tabs)/settings` | Tài khoản | Ảnh, tên, email, nút Đăng xuất, dòng Ngôn ngữ, version app | [F1](../F1-khung-app.md), [F2](../F2-dang-nhap-google.md), [F4](../F4-ky-app-version.md) |
 | 8 | Hộp xác nhận đăng xuất | — | Tránh bấm nhầm | "Đăng xuất?" · Huỷ / Đăng xuất | [F2](../F2-dang-nhap-google.md) |
-| 9 | Chọn ngôn ngữ | — | Đổi ngôn ngữ | Bảng trượt từ dưới lên: English · Tiếng Việt, dấu ✓ ở mục đang chọn | [F1](../F1-khung-app.md) |
+| 9 | Chọn ngôn ngữ | — | Đổi ngôn ngữ | Hộp chọn giữa màn (kiểu giống màn 8): English · Tiếng Việt, dấu ✓ ở mục đang chọn; bấm là đổi ngay + đóng, bấm ra ngoài để đóng | [F1](../F1-khung-app.md) |
 
 - Nút `+` (S1): toast "Đang phát triển".
 - Tab trống: chip "Đang phát triển" + "Tính năng này đang được phát triển. Bạn quay lại sau nhé!" — không nhắc số sprint.

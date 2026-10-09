@@ -73,7 +73,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Toast | Viên thuốc nền `text`, chữ trắng, hiện đáy màn (trên thanh tab), tự ẩn 2 giây; lỗi có chấm `error` |
 | Hộp xác nhận | Nền mờ `rgba(47,45,51,0.4)`, hộp `surface` bo 24, tiêu đề + mô tả + 2 nút (Huỷ / hành động) |
 | Dòng cài đặt | Icon ô pastel + nhãn + giá trị/`›` bên phải, cao 56, kẻ `border` giữa các dòng |
-| Bảng chọn từ dưới lên | Nền mờ như hộp xác nhận, bảng `surface` bo 24 ở 2 góc trên, thanh kéo nhỏ, tiêu đề + danh sách lựa chọn cao 56, mục đang chọn nền `primarySoft` + dấu ✓ `primary` |
+| Hộp chọn | Cùng kiểu Hộp xác nhận (nền mờ, hộp giữa màn bo 24) · tiêu đề + danh sách lựa chọn cao 56, mục đang chọn nền `primarySoft` + dấu ✓ `primary` · bấm là chọn + đóng, không có nút xác nhận |
 
 ## Logo tạm
 
