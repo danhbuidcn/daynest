@@ -570,11 +570,11 @@ const conflict = `<div class="under">${editor}</div>
     <div class="actions"><button class="btn btn-secondary">Tải bản mới</button><button class="btn btn-primary">Ghi đè</button></div>
   </div></div>`;
 const catScreen = `<div class="content">
-  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Danh mục</div><span></span></div>
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Danh mục</div><span class="act">${I.more}</span></div>
   <div class="settings"><div class="card">
     ${cats.map(([c, n], i) => `<div class="row"><span class="cdot ev-${c}" style="width:20px;height:20px"></span><span class="label">${n}</span><span class="val">${[2, 2, 1][i]} ghi chú</span><span class="muted" style="width:20px">${I.pen}</span></div>`).join('')}
   </div>
-  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. Xoá danh mục: ghi chú của nó về "Không danh mục".</div></div>
+  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. Xoá danh mục: ghi chú của nó về "Chưa phân loại".</div></div>
   <div class="form-footer"><button class="btn btn-primary">${I.plusG.replace('currentColor', '#fff')}Thêm danh mục</button></div>
 </div>`;
 const catDialog = `<div class="under">${catScreen}</div>
@@ -582,7 +582,23 @@ const catDialog = `<div class="under">${catScreen}</div>
     <h3 style="margin-bottom:16px">Sửa danh mục</h3>
     <div class="field"><label>Tên</label><div class="input focus">Công việc</div></div>
     <div class="colors" style="padding:16px 0 20px;justify-content:center">${['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'].map((c) => `<span class="cdot ev-${c} ${c === 'lavender' ? 'on' : ''}"></span>`).join('')}</div>
-    <div class="actions"><button class="btn btn-danger" style="flex:0 0 48px">${I.trash}</button><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+const catMenu = `${catScreen}<div class="menu" style="top:84px;width:180px"><div class="del">${I.trash}Chọn để xoá</div></div>`;
+const catSelectBody = (sel) => `<div class="content">
+  <div class="topbar" style="grid-template-columns:40px 1fr 40px"><span class="back">${I.close}</span><div class="screen-title">Đã chọn ${sel.length}</div><span></span></div>
+  <div class="settings"><div class="card">
+    ${cats.map(([c, n], i) => `<div class="row"><span class="tick ${sel.includes(i) ? 'on' : ''}">${sel.includes(i) ? I.checkW : ''}</span><span class="cdot ev-${c}" style="width:20px;height:20px"></span><span class="label">${n}</span><span class="val">${[2, 2, 1][i]} ghi chú</span></div>`).join('')}
+  </div></div>
+  <div class="form-footer"><button class="btn btn-danger-solid">${I.trash.replace('currentColor', '#fff')}Xoá (${sel.length})</button></div>
+</div>`;
+const catSelect = catSelectBody([1, 2]);
+const catConfirm = `<div class="under">${catSelect}</div>
+  <div class="scrim"><div class="dialog">
+    <div class="dicon err">${I.trash}</div>
+    <h3>Xoá 2 danh mục?</h3>
+    <p>3 ghi chú sẽ về Chưa phân loại. Ghi chú không bị xoá.</p>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div>
   </div></div>`;
 const tcard = (n) => `<div>${ncard(n, 'Đã xoá 08/10')}<div class="trow" style="margin-top:8px"><button class="btn btn-secondary">${I.restore}Khôi phục</button><button class="btn btn-danger">Xoá vĩnh viễn</button></div></div>`;
 const trashScreen = `<div class="content">
@@ -664,7 +680,9 @@ const groups = [
     ['16b. Tìm kiếm + xoá', 'gõ không dấu · Hoàn tác', phone(notesSearch)],
     ['17. Editor note', 'Back = tự lưu', phone(editor)],
     ['15. Xung đột', 'dùng chung cho event', phone(conflict)],
-    ['18. Danh mục', '', phone(catScreen)],
+    ['18. Danh mục', 'menu ⋯ mở', phone(catMenu)],
+    ['18b. Chọn để xoá', 'tick nhiều dòng', phone(catSelect)],
+    ['18c. Xác nhận xoá', '', phone(catConfirm)],
     ['19. Sửa danh mục', 'tên + màu', phone(catDialog)],
     ['20. Thùng rác', 'khôi phục / xoá vĩnh viễn / dọn', phone(trashScreen)],
   ]],

@@ -22,8 +22,10 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 15 | Xung đột | — | Sửa ở máy khác | Hộp: "Đã thay đổi ở thiết bị khác" · Tải bản mới · Ghi đè | [F2](../F2-event.md), [F5](../F5-notes.md) |
 | 16 | Quản lý — Notes | `(tabs)/manage` | Danh sách note | Tiêu đề · ô tìm · chip danh mục · lưới 2 cột thẻ note · ⋯ | [F5](../F5-notes.md) |
 | 17 | Editor note | `note/[id]` | Viết note | ‹ · chip danh mục · ⋯ · tiêu đề · nội dung · checklist | [F5](../F5-notes.md) |
-| 18 | Danh mục | `note/categories` | Quản lý danh mục | Danh sách (chấm màu + tên) · thêm · sửa · xoá | [F5](../F5-notes.md#danh-mục) |
-| 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu | [F5](../F5-notes.md#danh-mục) |
+| 18 | Danh mục | `note/categories` | Quản lý danh mục | Danh sách (chấm màu + tên + số ghi chú + icon bút) · `⋯` góc trên phải: Chọn để xoá · nút Thêm danh mục | [F5](../F5-notes.md#danh-mục) |
+| 18b | Chọn để xoá | — | Xoá nhiều | Thanh trên: ✕ · "Đã chọn n" · ô tick tròn mỗi dòng · nút đáy Xoá (n) màu `error` | [F5](../F5-notes.md#danh-mục) |
+| 18c | Xác nhận xoá danh mục | — | Tránh bấm nhầm | Hộp: "Xoá n danh mục?" · "m ghi chú sẽ về Chưa phân loại." · Huỷ / Xoá | [F5](../F5-notes.md#danh-mục) |
+| 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
 | 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · Dọn thùng rác | [F5](../F5-notes.md#thùng-rác) |
 | 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Thông báo · Lịch · Google Calendar | [F6](../F6-cai-dat.md) |
 | 22 | Đồng bộ Google | — | Tiến độ lần đầu | Hộp: "Đang đồng bộ 120/300" + thanh tiến độ | [F4](../F4-google-calendar.md) |

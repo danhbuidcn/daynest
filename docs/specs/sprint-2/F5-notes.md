@@ -32,7 +32,9 @@ Thuộc: [Sprint 2](index.md).
 
 - User tự tạo: tên (1–30 ký tự, không trùng, không phân biệt hoa thường) + 1 trong 6 màu event.
 - Tối đa 30 danh mục. Không có danh mục mặc định.
-- Sửa tên/màu; xoá danh mục → note của nó về "Không danh mục" (không xoá note).
+- Sửa tên/màu: bấm icon bút ở dòng → hộp sửa (chỉ Huỷ / Lưu, không có nút xoá).
+- Xoá: màn Danh mục → `⋯` góc trên phải → "Chọn để xoá" → tick 1 hoặc nhiều danh mục → nút **Xoá (n)** → hộp xác nhận "Xoá n danh mục? m ghi chú sẽ về Chưa phân loại." → note của danh mục đã xoá về **"Chưa phân loại"** (không xoá note).
+- Note không có danh mục: chip trong editor hiện "Chưa phân loại".
 
 ### Danh sách, tìm kiếm, phân trang
 
@@ -65,11 +67,11 @@ Editor ⋯ → Ghim · Danh mục · Xoá
 
 ## Không làm
 
-- Định dạng chữ, ảnh, ghi âm, vẽ tay, nền note, đính kèm, emoji/sticker, khoá note, xuất PDF, chia sẻ, yêu thích, lưu trữ, thẻ, nhắc trong note, chọn nhiều, tự xoá thùng rác sau N ngày.
+- Định dạng chữ, ảnh, ghi âm, vẽ tay, nền note, đính kèm, emoji/sticker, khoá note, xuất PDF, chia sẻ, yêu thích, lưu trữ, thẻ, nhắc trong note, chọn nhiều note, tự xoá thùng rác sau N ngày.
 
 ## Test
 
 - Tự lưu: Back có thay đổi / không thay đổi / note trống; lưu 2 lần cùng `id` → 1 note.
 - Xung đột `updated_at` → hộp hiện.
 - Tìm kiếm có dấu/không dấu; phân trang không lặp, không sót note.
-- Xoá danh mục → note về "Không danh mục"; thùng rác khôi phục / xoá vĩnh viễn.
+- Xoá nhiều danh mục → note về "Chưa phân loại"; thùng rác khôi phục / xoá vĩnh viễn.
