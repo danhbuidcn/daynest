@@ -21,6 +21,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 | Online | Online-only · cache chỉ để xem |
 | Ngôn ngữ | EN (mặc định) + VI · đổi trong Cài đặt |
 | Người dùng | Nhiều user thật (lên Google Play) · mục tiêu 100 dùng cùng lúc, tổng ~10.000 ([§3](#mục-tiêu-tải)) |
+| Thiết bị | 1 tài khoản đăng nhập tối đa 2 thiết bị · máy thứ 3 đăng nhập → máy đăng nhập sớm nhất bị đăng xuất ([S2 F7](sprint-2/F7-gioi-han-thiet-bi.md)) |
 | Google Calendar | Bật đồng bộ → 2 chiều với lịch chính · tắt → độc lập · chỉ kéo năm hiện tại ([S2 F4](sprint-2/F4-google-calendar.md)) |
 | Lịch âm | Tự viết theo thuật toán Hồ Ngọc Đức, múi giờ +7 |
 | Store | Lên Google Play + App Store ([§6](#6-trước-khi-lên-google-play)) · chu kỳ kinh nguyệt cần chính sách quyền riêng tư + khai báo dữ liệu sức khoẻ |

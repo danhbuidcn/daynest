@@ -35,7 +35,7 @@ Thứ tự trên màn Cài đặt (thêm vào giữa nhóm Tài khoản và nhó
 
 ```text
 Thẻ tài khoản
-Tài khoản: Đăng nhập bằng
+Tài khoản: Đăng nhập bằng · Thiết bị đăng nhập (2/2 ›)
 Thông báo: Cho phép thông báo · (cảnh báo bị chặn + Mở cài đặt máy) · chú thích 30 ngày
 Lịch: Tuần bắt đầu từ · Định dạng 24 giờ · Hiện ngày âm · Hiện ngày lễ
 Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
@@ -45,6 +45,8 @@ Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
 
 - Dòng công tắc: dùng `SettingRow` + công tắc bên phải ([design-system](../design-system.md#thành-phần-thêm-ở-s2)).
 - Tham khảo: [Cute 70](../../research/cute-calendar/screenshots/70-settings.png), [75](../../research/cute-calendar/screenshots/75-settings-notification.png).
+
+- Thiết bị đăng nhập: xem [F7](F7-gioi-han-thiet-bi.md).
 
 ## Không làm
 

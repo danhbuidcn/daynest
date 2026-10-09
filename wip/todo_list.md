@@ -1,6 +1,6 @@
 # Todo
 
-## 2026-10-09 — S2 spec: 1 account tối đa 2 thiết bị — ⏳ chờ duyệt
+## 2026-10-09 — S2 spec: 1 account tối đa 2 thiết bị — ✅ xong
 
 **Bạn chốt:** đăng nhập trên máy thứ 3 → tự đăng xuất máy **đăng nhập sớm nhất**, có thông báo.
 
@@ -23,11 +23,11 @@
 
 **Plan:**
 
-- [ ] 1. Viết `docs/specs/sprint-2/F7-gioi-han-thiet-bi.md` (mục tiêu, logic như bảng trên, luồng, mô tả, test) + thêm dòng F7 vào `sprint-2/index.md` (phạm vi, luồng, DoD: "đăng nhập máy thứ 3 → máy sớm nhất bị đăng xuất, thấy hộp thông báo; máy mới thấy toast").
-- [ ] 2. `design/db.md`: bảng `user_devices`, hàm `register_device()`, điều kiện RLS mới cho mọi bảng; `rls_s2.sql` thêm test máy bị đá không đọc/ghi được.
-- [ ] 3. `design/screens.md` + `mockups.html`: màn 23 hộp "Bạn đã bị đăng xuất…" (máy cũ, trên màn Đăng nhập) · màn 24 hộp "Đã đăng xuất <máy cũ>" (máy mới) · màn 25 "Thiết bị đăng nhập" · Cài đặt thêm dòng "Thiết bị đăng nhập" (nhóm Tài khoản).
-- [ ] 4. `docs/specs/index.md` §2: thêm dòng "Thiết bị: 1 account tối đa 2 thiết bị".
-- [ ] 5. Kiểm tra link + chụp mockup. Commit `docs: limit two devices per account`, push.
+- [x] 1. Viết `docs/specs/sprint-2/F7-gioi-han-thiet-bi.md` (mục tiêu, logic như bảng trên, luồng, mô tả, test) + thêm dòng F7 vào `sprint-2/index.md` (phạm vi, luồng, DoD: "đăng nhập máy thứ 3 → máy sớm nhất bị đăng xuất, thấy hộp thông báo; máy mới thấy toast").
+- [x] 2. `design/db.md`: bảng `user_devices`, hàm `register_device()`, điều kiện RLS mới cho mọi bảng; `rls_s2.sql` thêm test máy bị đá không đọc/ghi được.
+- [x] 3. `design/screens.md` + `mockups.html`: màn 23 hộp "Bạn đã bị đăng xuất…" (máy cũ, trên màn Đăng nhập) · màn 24 hộp "Đã đăng xuất <máy cũ>" (máy mới) · màn 25 "Thiết bị đăng nhập" · Cài đặt thêm dòng "Thiết bị đăng nhập" (nhóm Tài khoản).
+- [x] 4. `docs/specs/index.md` §2: thêm dòng "Thiết bị: 1 account tối đa 2 thiết bị".
+- [x] 5. Kiểm tra link + chụp mockup. Commit `docs: limit two devices per account`, push.
 
 ## 2026-10-09 — Sửa 2 câu chữ khó hiểu (đồng bộ Google) — ✅ xong
 

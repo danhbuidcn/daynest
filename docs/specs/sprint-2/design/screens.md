@@ -27,10 +27,13 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 18c | Xác nhận xoá danh mục | — | Tránh bấm nhầm | Hộp: "Xoá n danh mục?" · "m ghi chú sẽ về Chưa phân loại." · Huỷ / Xoá | [F5](../F5-notes.md#danh-mục) |
 | 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
 | 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · Dọn thùng rác | [F5](../F5-notes.md#thùng-rác) |
-| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Thông báo · Lịch · Google Calendar | [F6](../F6-cai-dat.md) |
+| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch · Google Calendar | [F6](../F6-cai-dat.md) |
 | 22 | Đồng bộ Google | — | Tiến độ lần đầu | Hộp: "Đang đồng bộ 120/300" + thanh tiến độ | [F4](../F4-google-calendar.md) |
+| 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |
+| 24 | Đã đăng xuất máy cũ (máy mới) | — | Báo máy mới | Hộp trên Tab Lịch: "Đã đăng xuất <tên máy>" · ngày máy đó đăng nhập · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |
+| 25 | Thiết bị đăng nhập | `settings/devices` | Xem máy đang đăng nhập | Danh sách ≤ 2 máy (tên, ngày đăng nhập, dùng lần cuối, nhãn Máy này) · chú thích | [F7](../F7-gioi-han-thiet-bi.md) |
 
-- Màn có route (9, 13, 17, 18, 20): màn con, vuốt mép trái để quay lại.
+- Màn có route (9, 13, 17, 18, 20, 25): màn con, vuốt mép trái để quay lại.
 - Hộp chọn / hộp xác nhận: theo design-system (đã có ở S1).
 - Thành phần mới: [design-system § Thành phần thêm ở S2](../../design-system.md#thành-phần-thêm-ở-s2).
 - Tab Thống kê: vẫn màn trống (S4).
