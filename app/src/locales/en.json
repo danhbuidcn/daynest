@@ -1,5 +1,8 @@
 {
   "appName": "Daynest",
+  "common": {
+    "offline": "No connection"
+  },
   "tagline": "Your calendar, to-dos and notes\nin one cozy nest.",
   "login": {
     "google": "Sign in with Google",

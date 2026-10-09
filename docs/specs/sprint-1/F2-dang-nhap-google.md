@@ -29,7 +29,7 @@ Cài đặt → Đăng xuất → xác nhận → Đăng nhập
 
 - Màn Đăng nhập: logo, tên app, 1 nút "Đăng nhập bằng Google".
 - Cài đặt → thẻ tài khoản: ảnh, tên, email (lấy từ `profiles`), icon bút. Nút Đăng xuất ở cuối màn Cài đặt.
-- Mất mạng khi đăng nhập → toast "Không có kết nối".
+- Mất mạng khi đăng nhập / lưu / đổi ngôn ngữ → toast "Không có kết nối" (kiểm tra mạng trước khi gửi).
 
 ## Sửa tài khoản
 

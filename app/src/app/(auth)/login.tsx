@@ -9,6 +9,7 @@ import { Button } from '@/components/Button';
 import { Logo } from '@/components/Logo';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { AuthError } from '@/features/auth/authService';
 import { colors, space } from '@/theme';
 
 export default function LoginScreen() {
@@ -21,8 +22,9 @@ export default function LoginScreen() {
     setBusy(true);
     try {
       await signIn();
-    } catch {
-      toast(t('login.error'), 'error');
+    } catch (e) {
+      const kind = e instanceof AuthError ? e.kind : 'failed';
+      if (kind !== 'cancelled') toast(t(kind === 'offline' ? 'common.offline' : 'login.error'), 'error');
       setBusy(false);
     }
   };

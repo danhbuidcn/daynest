@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { mockAuthService, type AuthService, type Profile } from './authService';
+import { setLanguage, type Language } from '@/i18n';
+import { supabaseAuthService, type AuthService, type Profile } from './authService';
 
 type AuthState = {
   loading: boolean;
@@ -8,23 +9,37 @@ type AuthState = {
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: AuthService['updateProfile'];
+  saveLanguage: (lang: Language) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
 
-export function AuthProvider({ children, service = mockAuthService }: { children: ReactNode; service?: AuthService }) {
+export function AuthProvider({ children, service = supabaseAuthService }: { children: ReactNode; service?: AuthService }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
+
+  // Ngôn ngữ trên DB (nếu có) → áp dụng + ghi về máy.
+  const syncLanguage = useCallback(async () => {
+    const lang = await service.getLanguage().catch(() => null);
+    if (lang) await setLanguage(lang);
+  }, [service]);
 
   useEffect(() => {
     service
       .getSession()
-      .then(setProfile)
+      .then(async (p) => {
+        setProfile(p);
+        if (p) await syncLanguage();
+      })
       .catch(() => setProfile(null))
       .finally(() => setLoading(false));
-  }, [service]);
+  }, [service, syncLanguage]);
 
-  const signIn = useCallback(async () => setProfile(await service.signIn()), [service]);
+  const signIn = useCallback(async () => {
+    const p = await service.signIn();
+    await syncLanguage();
+    setProfile(p);
+  }, [service, syncLanguage]);
   const signOut = useCallback(async () => {
     await service.signOut();
     setProfile(null);
@@ -38,9 +53,17 @@ export function AuthProvider({ children, service = mockAuthService }: { children
     [service],
   );
 
+  const saveLanguage = useCallback(
+    async (lang: Language) => {
+      await setLanguage(lang);
+      await service.saveLanguage(lang);
+    },
+    [service],
+  );
+
   const value = useMemo(
-    () => ({ loading, profile, signIn, signOut, updateProfile }),
-    [loading, profile, signIn, signOut, updateProfile],
+    () => ({ loading, profile, signIn, signOut, updateProfile, saveLanguage }),
+    [loading, profile, signIn, signOut, updateProfile, saveLanguage],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

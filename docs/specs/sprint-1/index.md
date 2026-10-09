@@ -44,10 +44,10 @@ Cài đặt → Đăng xuất → Đăng nhập
 ## Xong khi (DoD)
 
 - [ ] Cài APK release lên Android máy thật, đăng nhập Google thành công.
-- [ ] Tắt app mở lại → vẫn đăng nhập.
-- [ ] Đăng xuất → về màn Đăng nhập.
-- [ ] Bảng `profiles`, `user_settings` có dòng của user; test RLS: user A không đọc được dòng user B.
+- [x] Tắt app mở lại → vẫn đăng nhập.
+- [x] Đăng xuất → về màn Đăng nhập.
+- [x] Bảng `profiles`, `user_settings` có dòng của user; test RLS: user A không đọc được dòng user B.
 - [ ] Build từ máy thứ 2 (cùng keystore) cài đè được, không mất phiên đăng nhập.
 - [ ] Bản `versionCode` 2 cài đè bản 1 thành công.
-- [ ] Đổi ngôn ngữ Việt ↔ Anh, chữ đổi ngay; đăng nhập trên máy khác vẫn giữ lựa chọn.
-- [ ] Sửa tên + ảnh, mở lại app vẫn đúng; user A không ghi được ảnh của user B.
+- [x] Đổi ngôn ngữ Việt ↔ Anh, chữ đổi ngay; đăng nhập trên máy khác vẫn giữ lựa chọn.
+- [x] Sửa tên + ảnh, mở lại app vẫn đúng; user A không ghi được ảnh của user B.

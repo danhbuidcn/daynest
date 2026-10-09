@@ -1,5 +1,8 @@
 {
   "appName": "Daynest",
+  "common": {
+    "offline": "Không có kết nối"
+  },
   "tagline": "Lịch, việc cần làm và ghi chú\ngọn trong một tổ nhỏ.",
   "login": {
     "google": "Đăng nhập bằng Google",

@@ -12,13 +12,15 @@ import { Card } from '@/components/Card';
 import { ChoiceDialog, ConfirmDialog } from '@/components/Dialog';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
+import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { LANGUAGES, setLanguage, type Language } from '@/i18n';
+import { LANGUAGES, type Language } from '@/i18n';
 import { colors, radius, space } from '@/theme';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
-  const { profile, signOut } = useAuth();
+  const { profile, signOut, saveLanguage } = useAuth();
+  const toast = useToast();
   const [langOpen, setLangOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -73,7 +75,8 @@ export default function SettingsScreen() {
         selected={current}
         onSelect={(lang) => {
           setLangOpen(false);
-          setLanguage(lang);
+          // Chữ đổi ngay (lưu trên máy); lưu DB lỗi thì báo, lần sau đổi lại sẽ ghi tiếp.
+          saveLanguage(lang).catch(() => toast(t('common.offline'), 'error'));
         }}
         onClose={() => setLangOpen(false)}
       />

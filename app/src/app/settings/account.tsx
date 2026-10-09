@@ -12,6 +12,7 @@ import { FormScreen } from '@/components/FormScreen';
 import { TextField } from '@/components/TextField';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { AuthError } from '@/features/auth/authService';
 import { NAME_MAX, validateName } from '@/features/auth/validateName';
 import { colors, shadow, space } from '@/theme';
 
@@ -64,8 +65,9 @@ export default function AccountScreen() {
       await updateProfile({ displayName: value, avatarUrl: avatar });
       toast(t('account.saved'));
       router.back();
-    } catch {
-      toast(t('account.saveError'), 'error');
+    } catch (e) {
+      const offline = e instanceof AuthError && e.kind === 'offline';
+      toast(t(offline ? 'common.offline' : 'account.saveError'), 'error');
       setSaving(false);
     }
   };
