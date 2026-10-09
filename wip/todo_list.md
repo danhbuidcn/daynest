@@ -1,5 +1,34 @@
 # Todo
 
+## 2026-10-09 — Sprint 1: thiết kế (design system + mockup) — ⏳ chờ duyệt
+
+**Đã chốt:** phong cách dễ thương, pastel, giống tinh thần Cute Calendar. Không chép sticker, icon hay hình của app gốc.
+
+- [ ] Viết `docs/specs/design-system.md`, dùng chung cho mọi sprint, gạch đầu dòng ngắn:
+  - **Màu:**
+    - màu chính pastel, màu nền, màu chữ;
+    - 6 màu event (S3 dùng);
+    - màu báo thành công, lỗi, cảnh báo;
+    - chỉ làm theme sáng, chế độ tối để sau.
+  - **Chữ:**
+    - 1 font sans bo tròn, hỗ trợ đủ tiếng Việt (vd Nunito);
+    - cỡ chữ cho tiêu đề, nội dung, chú thích.
+  - **Khoảng cách và bo góc:** bước 4px; bo góc lớn cho thẻ và nút.
+  - **Icon:** một bộ có sẵn trong Expo (`@expo/vector-icons`), kiểu nét tròn.
+  - **Thành phần dùng chung:** nút chính và nút phụ, thẻ, thanh tab có nút `+` nổi, toast, hộp xác nhận, dòng cài đặt.
+  - **Logo tạm:** chữ "Daynest" kèm 1 icon đơn giản. Logo thật làm trước khi lên store.
+- [ ] Vẽ mockup `docs/specs/sprint-1/design/mockups.html`:
+  - 1 file HTML gồm 8 màn S1, đặt trong khung điện thoại 360×780 (Android), theo `screens.md`;
+  - chữ trên giao diện bằng tiếng Việt;
+  - dùng đúng màu, chữ, thành phần trong design system;
+  - mở bằng trình duyệt, không cần cài gì.
+- [ ] `screens.md`: thêm link tới mockup. `docs/index.md`: thêm dòng cho `design-system.md`.
+- [ ] Kiểm tra:
+  - mở `mockups.html` trong trình duyệt, đủ 8 màn, không lỗi hiển thị;
+  - không còn link hỏng.
+- [ ] Gửi bạn xem mockup. Bạn góp ý thì sửa, ok thì sang bước code S1 (todo riêng).
+- [ ] Commit `docs: add design system and sprint-1 mockups` kèm Co-Authored-By, push.
+
 ## 2026-10-09 — Tổ chức lại docs dạng cây + viết docs Sprint 1 — ✅ xong
 
 **Cây mới:**
@@ -39,7 +68,7 @@ docs/
 - [x] Kiểm tra: không còn link hỏng (grep các đường dẫn `.md`), không còn nội dung trùng giữa các file.
 - [x] Commit `docs: restructure specs as tree, add sprint-1 docs` kèm Co-Authored-By, push. Không add ảnh Memrise.
 
-## 2026-10-09 — Đổi tên thành Daynest + thu hẹp phạm vi — 🔄 đang làm (chờ bạn đổi tên repo GitHub)
+## 2026-10-09 — Đổi tên thành Daynest + thu hẹp phạm vi — ✅ xong
 
 **Đã chốt:**
 - Tên: **Daynest**. Repo `daynest`, package `com.danhbuidcn.daynest`.
@@ -52,8 +81,8 @@ docs/
 - Phạm vi GĐ1 theo spec giữ nguyên.
 - Chi tiêu (gồm đọc bill bằng AI) và chu kỳ kinh nguyệt làm sau GĐ1.
 
-- [ ] **Bạn làm:** đổi tên repo trên GitHub: Settings → Repository name → `daynest`. Máy chưa có `gh` nên tôi không tự đổi được. GitHub tự chuyển hướng URL cũ.
-- [ ] Đổi remote sang `git@github-personal:danhbuidcn/daynest.git`, rồi chạy `git fetch` để kiểm tra.
+- [x] **Bạn làm:** đổi tên repo trên GitHub: Settings → Repository name → `daynest`. Máy chưa có `gh` nên tôi không tự đổi được. GitHub tự chuyển hướng URL cũ.
+- [x] Đổi remote sang `git@github-personal:danhbuidcn/daynest.git`, rồi chạy `git fetch` để kiểm tra.
 - [x] `README.md`:
   - đổi tiêu đề thành `# Daynest`;
   - viết lại mô tả theo 2 phần Ghi chú và Lịch.
@@ -108,7 +137,7 @@ docs/
   - Không add ảnh Memrise.
 - [ ] Kiểm tra:
   - [x] `grep -ri personal-hub` chỉ còn trong các mục cũ của todo;
-  - `git fetch` qua remote mới chạy được.
+  - [x] `git fetch` qua remote mới chạy được.
 - [x] **Bạn làm sau khi đóng phiên (không bắt buộc):** đổi tên thư mục local (bạn đã đổi 2026-10-09) thành `~/Documents/daynest`. Memory của Claude Code gắn với đường dẫn thư mục, nên đổi thư mục thì phải chép thư mục memory sang tên mới.
 
 **Memrise:** giữ lại. Khảo sát Cute Calendar và Memrise là tài liệu tham khảo để thiết kế giao diện và tính năng, không gắn với module Học tập.
@@ -190,7 +219,7 @@ Mục tiêu: chụp mọi màn hình + liệt kê tính năng của Memrise (`co
 - [ ] Commit `docs: add Memrise research` + Co-Authored-By, push `main`.
 - [ ] Kiểm tra: số ảnh khớp danh sách trong `features.md`, `git status` sạch.
 
-**Tiến độ (2026-10-08):** 42 ảnh trong `screenshots/`. Ảnh 01–35 đã lọt vào commit `0efba1b` của phiên khác. Ảnh 36–44 chưa commit.
+**Tiến độ (2026-10-08):** 42 ảnh trong `screenshots/`. Ảnh 01–35 đã lọt vào commit `0efba1b` của phiên khác. Ảnh 36–44 lỡ vào commit `b99ffc3` (2026-10-09); bạn chọn giữ nguyên.
 
 - 01–03: onboarding (màn chào, chọn ngôn ngữ, đăng ký). Bạn đã tự đăng nhập: tài khoản tiếng Trung, cấp 1, 0 điểm.
 - 04–27: Home, Settings, Hoạt động, Từ vựng, Streak, Đổi ngôn ngữ, Cấp độ, Pro, các tab Tình huống/Video/Đối thoại.
