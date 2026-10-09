@@ -98,7 +98,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Dòng cảnh báo | Nền `warning` nhạt (`#FDF1DE`), chữ `text`, icon `warning`, bo 16 |
 | Chip danh mục | Cao 32, bo 999, viền `border`, chấm màu danh mục 8 trước chữ · đang chọn: nền `primary` chữ trắng |
 | Thẻ note | Thẻ bo 20, padding 12, vạch trái 4 màu danh mục (không danh mục: `border`) · tiêu đề `heading` 1 dòng · nội dung `body` `textMuted` 3 dòng hoặc "2/5 mục" · ngày sửa `caption` · icon ghim `primaryDark` góc phải trên |
-| Dòng checklist | Cao 44 · ô tick tròn 22 viền `primary` (xong: nền `primary` + ✓ trắng, chữ gạch ngang `textMuted`) · chữ `body` · ✕ `textMuted` |
+| Dòng checklist | Cao 44 · ô tick **vuông** 22 bo 6 viền `primary` (xong: nền `primary` + ✓ trắng, chữ gạch ngang `textMuted`) · chữ `body` · ✕ `textMuted` |
 | Lưới giờ | Cột giờ 44 `caption` `textMuted` · kẻ `border` mỗi giờ · vạch giờ hiện tại 2px `error` + chấm tròn |
 
 ## Chữ dài
