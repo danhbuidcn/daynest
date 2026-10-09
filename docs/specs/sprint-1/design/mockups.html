@@ -64,7 +64,6 @@
   .login .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
   .tagline { color: var(--muted); font-size: 15px; }
   .g-icon { width: 20px; height: 20px; background: #fff; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--primary-dark); font-size: 12px; }
-  .note { text-align: center; color: var(--muted); font-size: 12px; margin-top: 14px; }
 
   /* Tab trống */
   .empty { position: absolute; inset: 60px 24px 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; }
@@ -211,16 +210,14 @@ const screens = [
       <div class="logo">${I.logo}</div><div class="wordmark">Daynest</div>
       <div class="dots"><i></i><i></i><i></i></div></div></div>`)],
 
-  ['2. Đăng nhập', 'toast lỗi khi mất mạng', phone(`<div class="content"><div class="login">
+  ['2. Đăng nhập', 'Google', phone(`<div class="content"><div class="login">
       <div class="hero">
         <div class="logo">${I.logo}</div>
         <div class="wordmark">Daynest</div>
         <div class="tagline">Lịch, việc cần làm và ghi chú<br>gọn trong một tổ nhỏ.</div>
       </div>
       <button class="btn btn-primary"><span class="g-icon">G</span>Đăng nhập bằng Google</button>
-      <div class="note">Dữ liệu của bạn được đồng bộ an toàn.</div>
-    </div>
-    <div class="toast" style="bottom:120px"><span class="dot"></span>Không có kết nối</div></div>`)],
+    </div></div>`)],
 
   ['3–4. Lịch (trống) + thanh tab', 'chỗ cho S2', emptyTab('Lịch', I.cal(false), 'cal')],
 
@@ -252,7 +249,7 @@ const screens = [
       <div class="edit-form">
         <div class="avatar-edit"><div class="avatar">A</div><span class="cam">${I.cam}</span></div>
         <div class="field"><label>Tên hiển thị</label><div class="input focus">Nguyễn An</div><div class="hint">Tối đa 50 ký tự.</div></div>
-        <div class="field"><label>Email</label><div class="input locked"><span>an.nguyen@gmail.com</span>${I.lock}</div><div class="hint">Email lấy từ Google, không sửa được.</div></div>
+        <div class="field"><label>Email</label><div class="input locked"><span>an.nguyen@gmail.com</span>${I.lock}</div></div>
         <button class="btn btn-primary">Lưu</button>
       </div>
     </div>`)],
