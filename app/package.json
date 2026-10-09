@@ -42,7 +42,8 @@
     "android": "expo run:android",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "release": "scripts/release.sh"
   },
   "private": true,
   "jest": {

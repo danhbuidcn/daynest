@@ -5,7 +5,7 @@ const config: ExpoConfig = {
   name: 'Daynest',
   slug: 'daynest',
   scheme: 'daynest',
-  version: '1.0.0',
+  version: '1.0.1',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'light',
@@ -15,7 +15,7 @@ const config: ExpoConfig = {
   },
   android: {
     package: 'com.danhbuidcn.daynest',
-    versionCode: 1,
+    versionCode: 2,
     adaptiveIcon: {
       backgroundColor: '#5BBE98',
       foregroundImage: './assets/android-icon-foreground.png',
@@ -24,6 +24,7 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
   },
   plugins: [
+    './plugins/withReleaseSigning',
     'expo-router',
     'expo-font',
     [
