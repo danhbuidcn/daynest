@@ -34,3 +34,36 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 - Hộp chọn / hộp xác nhận: theo design-system (đã có ở S1).
 - Thành phần mới: [design-system § Thành phần thêm ở S2](../../design-system.md#thành-phần-thêm-ở-s2).
 - Tab Thống kê: vẫn màn trống (S4).
+
+## Giới hạn ký tự và hiển thị chữ dài
+
+Quy tắc chung: [design-system § Chữ dài](../../design-system.md#chữ-dài).
+
+| Field | Giới hạn (nhập trong app) |
+| --- | --- |
+| Tên hiển thị (S1) | 1–50 |
+| Tiêu đề event | 1–100 |
+| Chi tiết event | ≤ 2000 |
+| Tiêu đề note | ≤ 200 |
+| Nội dung note | ≤ 20.000 |
+| Mục checklist | ≤ 200 / mục, ≤ 100 mục / note |
+| Tên danh mục | 1–30 |
+| Ô tìm kiếm note | ≤ 100 |
+| Số N lặp | 1–99 |
+
+- Event kéo từ Google có thể dài hơn: giới hạn DB riêng ([F4](../F4-google-calendar.md#map-trường)).
+
+| Chỗ hiện | Cách hiện |
+| --- | --- |
+| Thanh event (ô tháng), tên lễ trong ô | 1 dòng `…` |
+| Thẻ event (tuần, danh sách, pop-up ngày) | Tiêu đề 1 dòng `…` · chi tiết 1 dòng `…` |
+| Khối event (xem ngày) | Tiêu đề xuống dòng vừa chiều cao khối, dư thì `…` |
+| Chi tiết event, editor note, mục checklist trong editor | Hiện hết, xuống dòng, cuộn màn |
+| Ô tiêu đề (form event, editor note) | Tự giãn tối đa 3 dòng, quá thì cuộn trong ô |
+| Ô chi tiết event | Tự giãn tối đa 6 dòng, quá thì cuộn trong ô |
+| Thẻ note | Tiêu đề 1 dòng `…` · nội dung 3 dòng `…` |
+| Chip danh mục, tên danh mục trong dòng | 1 dòng `…` · chip rộng tối đa 140 |
+| Tên trong hộp xác nhận (vd "Xoá danh mục …?") | Tối đa 2 dòng `…` |
+| Tên + email ở thẻ tài khoản, tên máy (thiết bị đăng nhập) | 1 dòng `…` |
+| Thông báo nhắc (hệ điều hành) | Hệ điều hành tự cắt |
+| Toast | Tối đa 2 dòng `…` |

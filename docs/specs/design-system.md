@@ -100,6 +100,16 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Dòng checklist | Cao 44 · ô tick tròn 22 viền `primary` (xong: nền `primary` + ✓ trắng, chữ gạch ngang `textMuted`) · chữ `body` · ✕ `textMuted` |
 | Lưới giờ | Cột giờ 44 `caption` `textMuted` · kẻ `border` mỗi giờ · vạch giờ hiện tại 2px `error` + chấm tròn |
 
+## Chữ dài
+
+- Mọi ô nhập có giới hạn ký tự (`maxLength`; dán chữ dài → tự cắt). Gõ tới ≥ 80% giới hạn → bộ đếm `caption` `textMuted` dưới ô bên phải ("85/100"); chạm giới hạn → đếm màu `error`.
+- Cắt khoảng trắng 2 đầu trước khi lưu; chỉ toàn khoảng trắng = trống.
+- Chỗ chật (dòng, thẻ, chip, ô lịch): cắt theo số dòng cố định, cuối dòng `…` (`numberOfLines`).
+- Chỗ đọc chính (chi tiết, editor): hiện hết, xuống dòng, cuộn màn.
+- Ô nhập nhiều dòng: tự giãn tới số dòng tối đa, quá thì cuộn trong ô.
+- Chuỗi không có khoảng trắng (URL…) vẫn phải xuống dòng/cắt, không tràn ngang.
+- Bảng chi tiết từng field: [S2 screens.md](sprint-2/design/screens.md#giới-hạn-ký-tự-và-hiển-thị-chữ-dài).
+
 ## Quy tắc đồng bộ
 
 - Mọi màn chỉ dùng token ở file này: màu, cỡ chữ (22 / 17 / 15 / 12), khoảng cách, bo góc. Không dùng mã màu hay cỡ chữ khác (trừ chữ logo).

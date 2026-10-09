@@ -12,13 +12,15 @@ Thuộc: [Sprint 2](index.md).
 
 | Trường | Quy tắc |
 | --- | --- |
-| Tiêu đề | Bắt buộc, 1–100 ký tự, cắt khoảng trắng 2 đầu |
-| Chi tiết | Không bắt buộc, ≤ 2000 ký tự |
+| Tiêu đề | Bắt buộc |
+| Chi tiết | Không bắt buộc |
 | Cả ngày | Bật → chọn ngày bắt đầu–kết thúc · tắt → chọn ngày + giờ bắt đầu–kết thúc |
 | Thời gian | Kết thúc ≥ bắt đầu, nếu không: báo lỗi dưới ô, khoá Lưu |
 | Màu | 1 trong 6 màu event ([design-system](../design-system.md#màu)), mặc định `mint` |
 | Lặp | Xem [Lặp](#lặp) |
 | Nhắc | Xem [F3](F3-nhac-nho.md) |
+
+- Giới hạn ký tự + cách hiện chữ dài: [screens.md](design/screens.md#giới-hạn-ký-tự-và-hiển-thị-chữ-dài).
 
 - Tạo mới: ngày = ngày đang chọn trên lịch; giờ bắt đầu = giờ tròn kế tiếp, kéo dài 1 giờ; nhắc mặc định 15 phút trước.
 - Event có giờ lưu `timestamptz`; cả ngày lưu `date` (không lệch ngày khi đổi múi giờ).

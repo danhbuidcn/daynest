@@ -69,6 +69,7 @@ Thuộc: [Sprint 2](index.md).
 | Ngoại lệ `override` / `skip` | Sửa / xoá instance (`recurringEventId` + `originalStartTime`) |
 | Lặp năm âm lịch | Không đẩy · nhãn "Chỉ trên Daynest" |
 
+- Chữ dài: tiêu đề > 1000 hoặc chi tiết > 8000 ký tự (giới hạn DB) → cắt lúc kéo về, đánh dấu chỉ xem (`google_readonly`), không đẩy bản cắt ngược lên Google. Tiêu đề 101–1000 ký tự: xem bình thường; sửa trong app phải rút gọn ≤ 100 mới lưu được (báo lỗi dưới ô).
 - `RRULE` Google ngoài kiểu Daynest (vd `BYDAY` nhiều thứ, `BYSETPOS`) → lấy các lần trong năm bằng `events.instances`, lưu từng lần, **chỉ xem** trong app (nhãn "Sửa trên Google Calendar"). `COUNT` → đổi thành ngày kết thúc.
 - Event Google không thuộc user (lời mời từ người khác): sửa/xoá trong app theo quyền Google; Google từ chối → toast lỗi, kéo lại bản gốc.
 

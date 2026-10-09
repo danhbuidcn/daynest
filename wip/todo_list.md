@@ -39,7 +39,7 @@
 - [x] Sửa trong `F6-cai-dat.md` (dòng hộp xác nhận), `F4-google-calendar.md` (thêm câu cho hộp tiến độ), `mockups.html` (màn 21c, 22).
 - [x] Commit `docs: simplify google sync texts`, push.
 
-## 2026-10-09 — S2 spec: giới hạn ký tự mọi field + cách hiển thị chữ dài — ⏳ chờ duyệt
+## 2026-10-09 — S2 spec: giới hạn ký tự mọi field + cách hiển thị chữ dài — ✅ xong
 
 Bạn yêu cầu: field nào cũng có giới hạn ký tự; chữ dài hiện hết hoặc 1 phần để không vỡ giao diện.
 
@@ -83,11 +83,11 @@ Bạn yêu cầu: field nào cũng có giới hạn ký tự; chữ dài hiện 
 
 **Plan:**
 
-- [ ] 1. `design-system.md`: thêm mục "Chữ dài" (quy tắc chung: 1 dòng `…`, N dòng, hiện hết + cuộn; bộ đếm ký tự; không tràn ngang).
-- [ ] 2. `sprint-2/design/screens.md`: thêm bảng "Giới hạn ký tự + hiển thị" (2 bảng trên), F2/F5 trỏ tới bảng này thay vì ghi rải rác (bỏ lặp).
-- [ ] 3. `design/db.md` + `F4-google-calendar.md`: giới hạn DB cho event Google (≤ 1000 / ≤ 8000), cắt + chỉ xem khi dài hơn.
-- [ ] 4. `mockups.html`: thêm 1 màn "Chữ dài" — ô tháng + thẻ event + thẻ note + chip danh mục với chữ dài, và ô tiêu đề có bộ đếm "92/100".
-- [ ] 5. Kiểm tra: chụp mockup, không tràn; không link hỏng. Commit `docs: add field limits and long text rules`, push.
+- [x] 1. `design-system.md`: thêm mục "Chữ dài" (quy tắc chung: 1 dòng `…`, N dòng, hiện hết + cuộn; bộ đếm ký tự; không tràn ngang).
+- [x] 2. `sprint-2/design/screens.md`: thêm bảng "Giới hạn ký tự + hiển thị" (2 bảng trên), F2/F5 trỏ tới bảng này thay vì ghi rải rác (bỏ lặp).
+- [x] 3. `design/db.md` + `F4-google-calendar.md`: giới hạn DB cho event Google (≤ 1000 / ≤ 8000), cắt + chỉ xem khi dài hơn.
+- [x] 4. `mockups.html`: thêm 1 màn "Chữ dài" — ô tháng + thẻ event + thẻ note + chip danh mục với chữ dài, và ô tiêu đề có bộ đếm "92/100".
+- [x] 5. Kiểm tra: chụp mockup, không tràn; không link hỏng. Commit `docs: add field limits and long text rules`, push.
 
 ## 2026-10-09 — Mockup màn 18, 19: xoá danh mục qua menu ⋯ — ✅ xong
 

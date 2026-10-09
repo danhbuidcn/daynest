@@ -23,8 +23,8 @@ Quy tắc chung mọi bảng mới:
 | Cột | Kiểu | Ghi chú |
 | --- | --- | --- |
 | `id`, `user_id` | `uuid` | Như trên |
-| `title` | `text` | 1–100 ký tự |
-| `note` | `text null` | ≤ 2000 |
+| `title` | `text` | DB: 1–1000 ký tự (app nhập ≤ 100; event Google có thể dài hơn) |
+| `note` | `text null` | DB: ≤ 8000 (app nhập ≤ 2000) |
 | `color` | `text` | check in (`mint`,`sky`,`lavender`,`pink`,`peach`,`lemon`) |
 | `all_day` | `boolean` | |
 | `starts_at`, `ends_at` | `timestamptz null` | Event có giờ · `ends_at ≥ starts_at` |

@@ -12,11 +12,13 @@ Thuộc: [Sprint 2](index.md).
 
 | Trường | Quy tắc |
 | --- | --- |
-| Tiêu đề | Không bắt buộc, ≤ 200 ký tự · trống → danh sách hiện dòng đầu nội dung |
-| Nội dung | Text thuần, ≤ 20.000 ký tự |
-| Checklist | 0–100 mục dưới nội dung; mỗi mục: chữ (≤ 200), đã xong / chưa · kéo đổi thứ tự |
+| Tiêu đề | Không bắt buộc · trống → danh sách hiện dòng đầu nội dung |
+| Nội dung | Text thuần |
+| Checklist | Các mục dưới nội dung; mỗi mục: chữ, đã xong / chưa · kéo đổi thứ tự |
 | Danh mục | 0 hoặc 1 danh mục |
 | Ghim | Có / không · note ghim lên đầu danh sách |
+
+- Giới hạn ký tự + cách hiện chữ dài: [screens.md](design/screens.md#giới-hạn-ký-tự-và-hiển-thị-chữ-dài).
 
 - Note "trống" (không tiêu đề, không nội dung, không mục checklist) → không lưu; đang sửa mà xoá hết → hỏi "Xoá note trống?".
 
@@ -30,7 +32,7 @@ Thuộc: [Sprint 2](index.md).
 
 ### Danh mục
 
-- User tự tạo: tên (1–30 ký tự, không trùng, không phân biệt hoa thường) + 1 trong 6 màu event.
+- User tự tạo: tên (không trùng, không phân biệt hoa thường) + 1 trong 6 màu event.
 - Tối đa 30 danh mục. Không có danh mục mặc định.
 - Sửa tên/màu: bấm icon bút ở dòng → hộp sửa (chỉ Huỷ / Lưu, không có nút xoá).
 - Xoá: màn Danh mục → `⋯` góc trên phải → "Chọn để xoá" → tick 1 hoặc nhiều danh mục → nút **Xoá (n)** → hộp xác nhận "Xoá n danh mục? m ghi chú sẽ về Chưa phân loại." → note của danh mục đã xoá về **"Chưa phân loại"** (không xoá note).

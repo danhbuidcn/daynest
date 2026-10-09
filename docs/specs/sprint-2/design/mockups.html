@@ -122,7 +122,7 @@
   .ecard .stripe { width: 4px; flex: none; }
   .ecard .body { flex: 1; padding: 8px 10px; min-width: 0; }
   .ecard .ttl { font-size: 15px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ecard .tm { font-size: 12px; color: var(--muted); }
+  .ecard .tm { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ecard .st { display: flex; gap: 4px; align-items: center; padding-right: 10px; color: var(--muted); }
   .st svg { width: 14px; height: 14px; }
 
@@ -264,6 +264,12 @@
   .account .who { flex: 1; } .account .name { font-size: 17px; font-weight: 700; } .account .mail { color: var(--muted); font-size: 12px; }
   .progress { height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 4px 0 8px; }
   .progress i { display: block; height: 100%; width: 40%; background: var(--primary); border-radius: 999px; }
+  /* Chữ dài */
+  .ncard p, .editor .eb, .cl span { overflow-wrap: anywhere; }
+  .chip { max-width: 140px; } .chip .cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .counter { font-size: 12px; color: var(--muted); text-align: right; margin: 4px 4px 0; }
+  .counter.max { color: var(--error); }
+  .ta { min-height: 48px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--primary); padding: 12px 16px; font-size: 15px; line-height: 22px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   @media (max-width: 400px) { .phone { transform: scale(.9); transform-origin: top left; margin-bottom: -78px; } }
 </style>
 </head>
@@ -655,6 +661,22 @@ const syncOff = `<div class="under">${settings(true, false)}</div>
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Tắt</button></div>
   </div></div>`;
 
+// ---- Chữ dài ----
+const LONG = 'Họp tổng kết dự án chuyển đổi số cho khách hàng lớn khu vực phía Bắc năm 2026';
+const longScreen = `<div class="content" style="padding-top:8px">
+  <div class="topbar"><span></span><div class="screen-title">Chữ dài</div><span></span></div>
+  <div style="padding:0 16px;display:flex;flex-direction:column;gap:12px">
+    <div class="field"><label>Tiêu đề (form event)</label><div class="ta">${LONG} — buổi chiều thứ Sáu</div><div class="counter">92/100</div></div>
+    <div class="field"><label>Ô tháng</label><div class="month" style="grid-template-rows:auto;padding:0;flex:none;background:var(--surface);border-radius:16px">
+      ${[['9', 'lavender', LONG], ['10', 'sky', 'Sinh nhật bạn thân'], ['11', 'peach', LONG]].map(([d, c, t]) => `<div class="cell" style="border:0;height:64px"><div class="top"><span class="d">${d}</span><span class="l">1</span></div><div class="hname">Ngày Phụ nữ Việt Nam</div><div class="bar ev-${c}">${t}</div></div>`).join('')}
+      ${[12, 13, 14, 15].map((d) => `<div class="cell" style="border:0"><div class="top"><span class="d">${d}</span></div></div>`).join('')}
+    </div></div>
+    <div class="field"><label>Thẻ event</label>${ecard('lavender', LONG, 'Phòng họp lớn tầng 12, toà nhà trung tâm thương mại', 'bell', 'repeat', 'google')}</div>
+    <div class="field"><label>Chip danh mục</label><div class="chips" style="padding:0"><span class="chip on">Tất cả</span><span class="chip"><span class="cd ev-mint"></span><span class="cn">Dự án khách hàng lớn</span></span><span class="chip"><span class="cd ev-peach"></span><span class="cn">Cá nhân</span></span></div></div>
+    <div class="field"><label>Thẻ note</label><div class="ngrid" style="padding:0"><div>${ncard(['mint', LONG, 'https://docs.google.com/document/d/1AbCdEfGhIjKlMnOpQrStUvWxYz0123456789/edit?usp=sharing', '', true])}</div><div>${ncard(['', 'Ghi chú', 'Một đoạn rất dài viết liền không ngắt dòng để kiểm tra giao diện không bị tràn ra ngoài thẻ khi hiển thị', '', false])}</div></div></div>
+  </div>
+</div>`;
+
 const groups = [
   ['Lịch', [
     ['1 + 5. Lịch — Tháng', 'thanh chọn chế độ luôn hiện', phone(monthScreen(''))],
@@ -691,6 +713,9 @@ const groups = [
     ['21b. Cài đặt — đồng bộ bật', '', phone(settings(true, false), 'tall')],
     ['21c. Tắt đồng bộ', 'hộp xác nhận', phone(syncOff, 'tall')],
     ['22. Đồng bộ lần đầu', 'tiến độ', phone(syncProgress, 'tall')],
+  ]],
+  ['Kiểm tra chữ dài', [
+    ['Chữ dài', 'cắt 1 dòng / 3 dòng · bộ đếm · không tràn ngang', phone(longScreen)],
   ]],
 ];
 
