@@ -17,7 +17,7 @@ Cột **Ưu tiên**: `MVP` (làm trước) hoặc `Sau`. Chốt ngày 2026-10-08
 | 7 | Thống kê / Dashboard | Tổng quan hôm nay, biểu đồ tuần/tháng | MVP — đợt 2 |
 | 8 | Tùy chỉnh | Bật/tắt module, tự thêm danh mục và trường dữ liệu | Sau |
 
-**Thứ tự làm:** đợt 1 = Daily note + Học tập → đợt 2 = Chi tiêu + Dashboard.
+**Thứ tự làm** (cập nhật 2026-10-09): **Giai đoạn 1** = app lịch kiểu Cute Calendar (Lịch, Event, Todo, Notes, Diary, lịch âm, Google Calendar) trên mobile — spec: [specs/2026-10-09-giai-doan-1-design.md](specs/2026-10-09-giai-doan-1-design.md). Sau đó: Học tập → Chi tiêu + Dashboard → web.
 
 ## 1. Daily note
 
@@ -101,11 +101,12 @@ Tham khảo app Cute Calendar: [research/cute-calendar/features.md](research/cut
 
 | Chủ đề | Chốt | Lý do |
 | --- | --- | --- |
-| Nền tảng | Web + mobile làm cùng lúc | Dùng cả hai hằng ngày |
+| Nền tảng | Mobile trước (GĐ1), web làm sau | Đổi 2026-10-09: giảm khối lượng GĐ1; nhắc nhở cần mobile |
 | Mobile | Android + iOS | Không khoá vào 1 hệ điều hành |
 | Người dùng | Thiết kế nhiều user, MVP chỉ 1 user | Thêm cột user từ đầu rẻ hơn sửa sau |
 | Offline | Không — online-only | Đồng bộ offline tốn công, dễ lỗi |
 | `app/` | React Native + Expo (TypeScript) | Cùng TypeScript với web, có sẵn notification/camera/OTA |
 | `web/` | Nuxt 3 + Nuxt UI | Quen từ dự án khác |
-| `api/` | Go, chạy trên nền Supabase | Go viết logic nghiệp vụ; Supabase lo Postgres, Auth, Storage |
+| `api/` | Go, chạy trên nền Supabase. GĐ1 chưa dùng Go | App gọi thẳng Supabase (RLS) là đủ cho GĐ1; Go cho việc cần server sau này |
 | Đọc bill | Claude API, gọi từ Go | Bill tiếng Việt nhiều định dạng; trả dữ liệu có cấu trúc; API key nằm ở server |
+| Google Calendar | Đồng bộ 1 chiều: app kéo về, event Google chỉ đọc | Mọi thao tác làm trong app; tránh xung đột |
