@@ -36,7 +36,7 @@ Thứ tự trên màn Cài đặt (thêm vào giữa nhóm Tài khoản và nhó
 ```text
 Thẻ tài khoản
 Tài khoản: Đăng nhập bằng · Thiết bị đăng nhập (2/2 ›)
-Thông báo: Cho phép thông báo · (cảnh báo bị chặn + Mở cài đặt máy) · chú thích 30 ngày
+Thông báo: Cho phép thông báo · (cảnh báo bị chặn + Mở cài đặt máy)
 Lịch: Tuần bắt đầu từ · Định dạng 24 giờ · Hiện ngày âm · Hiện ngày lễ
 Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
 Ứng dụng: Ngôn ngữ · Phiên bản

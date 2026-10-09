@@ -26,7 +26,7 @@ Thuộc: [Sprint 2](index.md).
 - Chỉ đặt cho **30 ngày tới**, tối đa **60 thông báo** chờ (giới hạn hệ điều hành; iOS ≤ 64). Quá 60 → lấy 60 mốc gần nhất.
 - Đặt lại toàn bộ (huỷ hết → đặt mới) khi: mở app / về foreground, lưu/xoá event, đồng bộ Google xong, đổi công tắc, đăng nhập. Đăng xuất → huỷ hết.
 - Hàm chọn mốc (`event + khoảng ngày → danh sách {thời điểm, eventId, ngày lần lặp}`) là hàm thuần, có test.
-- Hạn chế: không mở app quá 30 ngày → hết thông báo đã đặt. Ghi rõ trong Cài đặt (dòng chú thích).
+- Hạn chế: không mở app quá 30 ngày → hết thông báo đã đặt (không hiện chú thích trong app).
 - Nội dung thông báo: tiêu đề event · "10:00 – 11:00" hoặc "Cả ngày". Bấm → mở Chi tiết event đúng lần lặp.
 - Android: kênh thông báo "Nhắc sự kiện", mức cao (có tiếng). Dùng exact alarm nếu máy cho; không cho → thông báo có thể trễ vài phút (chấp nhận).
 
