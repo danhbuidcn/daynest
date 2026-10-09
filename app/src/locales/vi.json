@@ -1,0 +1,38 @@
+{
+  "appName": "Daynest",
+  "tagline": "Lịch, việc cần làm và ghi chú\ngọn trong một tổ nhỏ.",
+  "login": { "google": "Đăng nhập bằng Google", "error": "Đăng nhập không thành công. Thử lại nhé." },
+  "tabs": { "calendar": "Lịch", "manage": "Quản lý", "stats": "Thống kê", "settings": "Cài đặt" },
+  "empty": {
+    "badge": "Đang phát triển",
+    "title": "{{name}} đang phát triển",
+    "text": "Tính năng này đang được phát triển. Bạn quay lại sau nhé!"
+  },
+  "comingSoon": "Đang phát triển",
+  "settings": {
+    "title": "Cài đặt",
+    "account": "Tài khoản",
+    "signedInWith": "Đăng nhập bằng",
+    "app": "Ứng dụng",
+    "language": "Ngôn ngữ",
+    "version": "Phiên bản",
+    "logout": "Đăng xuất"
+  },
+  "logoutDialog": {
+    "title": "Đăng xuất?",
+    "text": "Bạn sẽ cần đăng nhập Google lại để dùng Daynest.",
+    "cancel": "Huỷ",
+    "confirm": "Đăng xuất"
+  },
+  "account": {
+    "title": "Sửa tài khoản",
+    "name": "Tên hiển thị",
+    "nameHint": "Tối đa 50 ký tự.",
+    "nameRequired": "Bạn chưa nhập tên.",
+    "nameTooLong": "Tên tối đa 50 ký tự.",
+    "email": "Email",
+    "save": "Lưu",
+    "saved": "Đã lưu",
+    "saveError": "Lưu không thành công. Thử lại nhé."
+  }
+}

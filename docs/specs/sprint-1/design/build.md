@@ -15,7 +15,7 @@ Thuộc: [F4](../F4-ky-app-version.md).
 
 | Trường | Ý nghĩa | Quy tắc |
 | --- | --- | --- |
-| `version` | Số hiện cho người dùng | `MAJOR.MINOR.PATCH`, S1 = `0.1.0`, mỗi sprint +MINOR |
+| `version` | Số hiện cho người dùng | `MAJOR.MINOR.PATCH`, S1 = `1.0.0`, mỗi sprint +MINOR |
 | `android.versionCode` | Số Android so sánh khi cài đè | Số nguyên, bắt đầu `1`, **+1 mỗi bản build phát hành**, không bao giờ giảm |
 
 - Cả 2 nằm trong config app (`app.config.ts`), commit vào git.
@@ -23,8 +23,9 @@ Thuộc: [F4](../F4-ky-app-version.md).
 
 ## Build
 
-- Cách build (local Gradle hay EAS) chốt ở bước code S1; yêu cầu bắt buộc: dùng keystore trên, đọc version từ config.
-- Có script/lệnh duy nhất ghi trong `app/README.md`, chạy giống nhau trên PC và laptop.
+- Chốt: build local bằng Gradle qua `expo prebuild` + `expo run:android` (không dùng EAS). `android/` sinh tự động, không commit.
+- Bản release (bước 4): dùng keystore trên, đọc version từ `app.config.ts`.
+- Có script/lệnh duy nhất ghi trong [`app/README.md`](../../../../app/README.md), chạy giống nhau trên PC và laptop.
 - Ra: APK để cài thử, AAB để lên Google Play.
 
 ## Kiểm tra
