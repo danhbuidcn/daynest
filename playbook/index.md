@@ -1,8 +1,8 @@
 # Playbook
 
-Skill AI và tài liệu tham khảo, chép từ workspace AI_challenge.
+AI skills and reference docs, copied from the AI_challenge workspace.
 
-| Tên | Mô tả |
+| Name | Description |
 | --- | --- |
-| [skills/](skills/index.md) | Skill AI đã lọc: công dụng, khi nào dùng, cách kích hoạt, cách cập nhật (`sync.sh`) |
-| [patterns/](patterns/index.md) | Tài liệu tham khảo: spec-driven development, system design |
+| [skills/](skills/index.md) | Filtered AI skills: purpose, when to use, how to trigger, how to update (`sync.sh`) |
+| [patterns/](patterns/index.md) | Reference docs: spec-driven development, system design |

@@ -1,51 +1,51 @@
 # Spec-Driven Development (SDD)
 
-Ý chính từ bài viết "Code ngày càng rẻ, spec ngày càng đắt giá" (user đọc, ghi 2026-09-28). Cách áp dụng vào workspace: [teamwork.md](../teamwork.md) mục 2.
+Key ideas from the article "Code keeps getting cheaper, specs keep getting more valuable" (read by the user, noted 2026-09-28). How it applies to the workspace: [teamwork.md](../teamwork.md) section 2.
 
-## Ý chính
+## Key ideas
 
-- **Bottleneck dịch chuyển.** Agent viết code rất nhanh. Câu hỏi không còn là "ai code nhanh hơn" mà là "ai mô tả đúng thứ cần xây, đủ rõ để người và AI cùng làm".
-- **Spec là nguồn sự thật chung** xuyên suốt: Idea → Requirements → Spec → Design → Tasks → Code → Test → Release.
-- **Mỗi lần diễn giải lại là mất ý định sản phẩm.** PM nói BA → BA viết → Dev hiểu lại → Dev prompt agent → QA diễn giải lại để test. AI làm nhanh hơn không sửa được việc này, còn làm sai nhanh hơn.
-- **Spec là hợp đồng chung** của team, không riêng BA hay PM. Với agent, spec là hợp đồng giữa người và agent.
-- **SPEC > AGENT.** Tool đổi được (Claude Code, Codex, Cursor…). Ý định sản phẩm không được nằm chết trong chat của 1 tool.
-- **Acceptance criteria không chỉ để đọc:** AC → test case → test tự động / eval → quality gate.
+- **The bottleneck moves.** Agents write code very fast. The question is no longer "who codes faster" but "who describes the right thing to build, clearly enough for people and AI to work on it together".
+- **The spec is the shared source of truth** across: Idea → Requirements → Spec → Design → Tasks → Code → Test → Release.
+- **Every re-interpretation loses product intent.** PM tells BA → BA writes → Dev re-reads → Dev prompts the agent → QA re-interprets to test. Faster AI does not fix this; it just gets things wrong faster.
+- **The spec is the team's shared contract**, not owned only by the BA or PM. With agents, the spec is the contract between people and the agent.
+- **SPEC > AGENT.** Tools change (Claude Code, Codex, Cursor…). Product intent must not die inside one tool's chat.
+- **Acceptance criteria are not just for reading:** AC → test cases → automated tests / evals → quality gate.
 
-## Spec tốt
+## A good spec
 
-| Tiêu chí | Nghĩa |
+| Criterion | Meaning |
 | --- | --- |
-| Clear | Agent không phải đoán |
-| Testable | Biết thế nào là Done |
-| Traceable | Requirement nối được tới code và test |
-| Living | Sản phẩm đổi → spec đổi theo |
+| Clear | The agent does not have to guess |
+| Testable | You know what Done means |
+| Traceable | Requirements link to code and tests |
+| Living | Product changes → spec changes with it |
 
-Smarter, not longer. Anti-pattern: bộ tài liệu khổng lồ không ai cập nhật.
+Smarter, not longer. Anti-pattern: a huge document set nobody updates.
 
-## Vai trò theo SDD
+## Roles in SDD
 
-| Bước | Ai | Output |
+| Step | Who | Output |
 | --- | --- | --- |
 | WHY & WHAT | PM/PO | Problem, user, business outcome, scope, non-goals |
-| Requirements | BA | Scenario, business rule, edge case, acceptance criteria |
-| Design | Designer + Architect | UX flow, system boundary, API/data contract, NFR, quyết định kiến trúc |
-| Implement | Agent + Dev | Nhận spec → chia task → code → chạy test → tạo PR |
-| Verify | QA | AC → test case → test tự động → quality gate |
-| Operate | DevOps/SRE | NFR (performance, security…) truy vết từ spec tới production |
+| Requirements | BA | Scenarios, business rules, edge cases, acceptance criteria |
+| Design | Designer + Architect | UX flow, system boundary, API/data contract, NFRs, architecture decisions |
+| Implement | Agent + Dev | Take the spec → split into tasks → code → run tests → open a PR |
+| Verify | QA | AC → test cases → automated tests → quality gate |
+| Operate | DevOps/SRE | NFRs (performance, security…) traced from spec to production |
 
-## Cách thử
+## How to try it
 
-Không bắt đầu bằng framework lớn. Chọn 1 feature thật, đi: Problem → Requirements → AC → Technical design → Tasks → Agent implement → Tests → PR.
+Do not start with a big framework. Pick one real feature and go: Problem → Requirements → AC → Technical design → Tasks → Agent implements → Tests → PR.
 
-Đo 4 chỉ số, cần giảm:
+Track 4 metrics; they should go down:
 
 - Rework.
-- Hiểu sai requirement.
-- Thời gian tới PR hợp lệ.
-- Lỗi sau release.
+- Misunderstood requirements.
+- Time to a valid PR.
+- Bugs after release.
 
-Không giảm → spec đang tạo thủ tục, chưa tạo đòn bẩy.
+If they do not go down, the spec is creating process, not leverage.
 
-## Giá trị của người dịch lên trên
+## The value moves up
 
-Chọn đúng problem. Ra đúng quyết định. Thiết kế đúng hệ thống. Mô tả ý định đủ rõ. Kiểm chứng output đủ tốt.
+Pick the right problem. Make the right decisions. Design the right system. Describe intent clearly enough. Verify output well enough.

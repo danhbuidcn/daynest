@@ -1,14 +1,14 @@
-# Daynest — ghi chú cho Claude
+# Daynest — notes for Claude
 
 - Spec: `docs/specs/index.md` → `docs/specs/sprint-N/`. Todo: `wip/todo_list.md`.
-- DB: chỉ đổi qua migration — `supabase/db new|test|status|migrate` (xem `supabase/README.md`).
-- App: `app/` — kiểm tra `npm run typecheck && npm run lint && npm test`.
-- Code (`app/`, `supabase/`): tiếng Anh; comment ít, chỉ giải thích "vì sao". Docs tiếng Việt.
-- Bí mật chỉ nằm trong `app/.env`, `supabase/.env` (không commit, không in ra log/chat).
-- Khi debug script có bí mật: không dùng `bash -x` (đã từng làm lộ mật khẩu keystore ra log).
+- DB: change only via migrations — `supabase/db new|test|status|migrate` (see `supabase/README.md`).
+- App: `app/` — check with `npm run typecheck && npm run lint && npm test`.
+- Language: everything outside `docs/` and `wip/` is English (code, READMEs, this file, `playbook/`, commits); `docs/` and `wip/` are Vietnamese. Comments sparse, only to explain "why".
+- Secrets live only in `app/.env`, `supabase/.env` (never commit, never print to logs/chat).
+- When debugging scripts that hold secrets: no `bash -x` (it once leaked the keystore password to the log).
 
-## Khi xong 1 sprint (DoD đạt) — tự làm, theo todo đã duyệt
-Làm đúng mục "Cuối sprint" trong `docs/specs/index.md` §4:
-tăng version (+MINOR, versionCode +1) → `supabase/db migrate` (nếu có migration) →
-`npm run release` → cài đè máy thật → test → commit `chore(release): v<version>` → tag `v<version>` + push tag lên GitHub (bắt buộc) →
-GitHub Release kèm APK: `gh release create v<version> app/dist/<file>.apk` (bắt buộc, không kèm `.aab`).
+## When a sprint is done (DoD met) — do it yourself, per the approved todo
+Follow "Cuối sprint" in `docs/specs/index.md` §4:
+bump version (+MINOR, versionCode +1) → `supabase/db migrate` (if there are migrations) →
+`npm run release` → install over the real device → test → commit `chore(release): v<version>` → tag `v<version>` + push the tag to GitHub (required) →
+GitHub Release with the APK: `gh release create v<version> app/dist/<file>.apk` (required, no `.aab`).

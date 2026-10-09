@@ -1,5 +1,34 @@
 # Todo
 
+## 2026-10-09 — App icons match the mockups — ✅ đã duyệt
+
+**Input:** you decided every icon in the app must match the mockups (option b). The app uses Ionicons today; mockups draw their own rounded-stroke SVGs, so several icons look different (Calendar and Stats tabs most visibly).
+
+- [ ] 1. `npx expo install react-native-svg` (Expo-supported; needed to draw the mockup SVGs).
+- [ ] 2. New `app/src/components/Icon.tsx`: `<Icon name size color filled? />`, paths copied 1:1 from the mockup icon set (`docs/specs/sprint-2/design/mockups.html`, which contains the S1 set). Only icons the app uses now (tabs, plus, back, chevron, check, pencil, camera, lock, logout, mail, globe, info, Google…); later sprints add theirs from the same file.
+- [ ] 3. Replace every Ionicons usage (9 files: `TabBar`, `SettingRow`, `ScreenHeader`, `Dialog`, `EmptyState`, `TextField`, `login`, `settings`, `settings/account`) with `Icon`. Remove `@expo/vector-icons` if nothing else uses it.
+- [ ] 4. `docs/specs/design-system.md` § Icon: replace "Ionicons" with "own SVG set in `components/Icon.tsx`; mockups use the same paths; new icon → add to both".
+- [ ] 5. Check: `npm run typecheck && npm run lint && npm test`; run on emulator, screenshot tab bar, Settings, Login, Edit account and compare with the S1 mockup.
+- [ ] 6. Commit `feat(app): use mockup svg icons`, push. No release (ships with S2 `1.1.0`).
+
+## 2026-10-09 — English everywhere except docs/ and wip/ — ✅ xong
+
+**Input:** you said: follow the rule "no Vietnamese, except the `docs/` folder". Today these files outside `docs/` are still Vietnamese:
+
+| File | Plan |
+| --- | --- |
+| `README.md`, `app/README.md` | Translate to English |
+| `playbook/index.md`, `playbook/patterns/index.md`, `playbook/patterns/spec-driven-development.md` | Translate to English |
+| `CLAUDE.md` | Translate — governance file, separate todo in `wip/claude-md-todo.md` (Rule 7) |
+| `wip/` | Keep Vietnamese (you: "wip là todo không cần dịch") |
+| `app/src/locales/vi.json`, label `'Tiếng Việt'` in `i18n/index.ts` | Keep — Vietnamese UI text by nature |
+
+- [x] 1. Translate the 5 files in the first two rows (same content, same structure).
+- [x] 2. After the `CLAUDE.md` todo is approved: translate `CLAUDE.md` exactly as listed there.
+- [x] 3. Check: grep for Vietnamese characters outside `docs/` → only `vi.json`, the language label and `wip/`.
+- [x] 4. Commit `docs: english outside docs folder`, push.
+- Kết quả grep: còn `vi.json`, nhãn `'Tiếng Việt'`, và tên mục "Cuối sprint" trong `CLAUDE.md` (trích tên mục trong docs). PNG khớp nhầm (file nhị phân).
+
 ## 2026-10-09 — S2 spec: 1 account tối đa 2 thiết bị — ✅ xong
 
 **Bạn chốt:** đăng nhập trên máy thứ 3 → tự đăng xuất máy **đăng nhập sớm nhất**, có thông báo.
