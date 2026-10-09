@@ -1,5 +1,145 @@
 # Todo
 
+## 2026-10-09 — Quy trình release: đính kèm APK vào GitHub Release — ⏳ chờ duyệt
+
+Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (không kèm `.aab`). Dùng `gh` CLI.
+
+- [ ] 0. **Bạn làm** (cần sudo + đăng nhập trình duyệt): `sudo apt install gh` → `gh auth login` (GitHub.com, SSH).
+- [ ] 1. `docs/specs/index.md` §4 "Cuối sprint": thêm bước 7 — `gh release create v<version> app/dist/daynest-<version>-<versionCode>.apk --title v<version> --notes "<tóm tắt>"` · chỉ APK, không `.aab`.
+- [ ] 2. `CLAUDE.md` (project): thêm "→ GitHub Release kèm APK (`gh release create`)" vào cuối dòng quy trình release.
+- [ ] 3. Bổ sung release v1.0.1: chạy lệnh ở bước 1 với `daynest-1.0.1-2.apk` (bỏ qua nếu bạn đã tạo tay trên web).
+- [ ] 4. Kiểm tra: `gh release view v1.0.1` có asset `.apk`.
+- [ ] 5. Commit `docs: attach apk to github release` (chỉ `CLAUDE.md`), push. Phần `docs/specs/index.md` đang có sửa đổi S2 chưa commit → đi chung commit spec S2 (bước 1 todo S2 bên dưới), không tách hunk.
+
+## 2026-10-09 — S2 bước 2: thiết kế (design system bổ sung + mockup) — 🔄 đang làm
+
+**Input:** spec S2 đã ok (`docs/specs/sprint-2/`), danh sách màn ở `design/screens.md` (23 màn), design system S1. Cùng cách làm mockup S1.
+
+- [x] 1. Commit spec S2 trước (tách khỏi mockup): `docs: add sprint-2 spec` (`docs/specs/sprint-2/`, `docs/specs/index.md`, `docs/index.md`, `wip/todo_list.md`) kèm Co-Authored-By, push.
+- [ ] 2. `docs/specs/design-system.md` — thêm thành phần mới (chỉ token có sẵn, không thêm màu/cỡ chữ):
+  - ô lịch tháng (số dương, ngày âm, tên lễ, thanh event, "+N", hôm nay, ngày tháng khác, CN/lễ);
+  - thanh event (tháng) + thẻ event (tuần/danh sách/sheet ngày) + khối event (xem ngày);
+  - thanh chọn chế độ (segmented: Tháng · Danh sách · Tuần · Ngày — giống Cute);
+  - sheet từ đáy (có Huỷ bỏ / tiêu đề / Hoàn tất);
+  - công tắc + dòng cài đặt có công tắc;
+  - chip danh mục, thẻ note, dòng checklist;
+  - icon nhỏ trạng thái event: lặp · nhắc · Google · chờ đồng bộ · chỉ trên Daynest.
+- [ ] 3. Vẽ `docs/specs/sprint-2/design/mockups.html` — 1 file, khung điện thoại 360×780, chữ tiếng Việt, mở bằng trình duyệt; chia 4 nhóm:
+  - **Lịch:** màn 1–7 (tháng có ngày âm + lễ + event mẫu; tuần; ngày; danh sách; chọn chế độ; chọn tháng/năm; sheet ngày);
+  - **Event:** màn 8–15 (sheet `+`, form tạo, chọn lặp có "Hằng năm (âm lịch)", sheet mốc nhắc, mẹo pin, chi tiết, hỏi lần lặp, xung đột);
+  - **Notes:** màn 16–20 (danh sách, editor có checklist, danh mục, sửa danh mục, thùng rác);
+  - **Cài đặt:** màn 21–22 (Cài đặt có nhóm Thông báo / Lịch / Google Calendar ở cả trạng thái tắt và bật; tiến độ đồng bộ).
+  - Màn 12 (picker ngày/giờ hệ điều hành): không vẽ.
+- [ ] 4. `design/screens.md` + `sprint-2/index.md`: thêm link mockup, bỏ chữ "bước 2 (chưa làm)"; `F6-cai-dat.md`: bỏ ghi chú "thêm vào design-system ở bước 2".
+- [ ] 5. Kiểm tra: mở `mockups.html` (chụp màn bằng trình duyệt headless) — đủ màn, không vỡ bố cục; chỉ dùng token trong design system; không link hỏng.
+- [ ] 6. Gửi bạn xem. Góp ý thì sửa; ok thì commit `docs: add sprint-2 mockups`, push → sang bước code (todo riêng, chia nhiều bước nhỏ).
+
+## 2026-10-09 — S2 spec: mục Nhắc nhở trong form event giống hệt Cute Calendar — ✅ xong
+
+~~Thêm cài đặt "Nhắc mặc định" 5/10/15 phút~~ — đã bỏ (hiểu sai: bạn muốn chọn mốc nhắc ngay trong event).
+
+Spec hiện có: chọn mốc trong form (Đúng giờ · 5 · 10 · 15 · 30 phút · 1 giờ · 1 ngày trước), mặc định 15 phút. Còn thiếu so với [Cute 12](../docs/research/cute-calendar/screenshots/12-create-event-more.png), [14](../docs/research/cute-calendar/screenshots/14-event-add-reminder.png):
+
+- [x] `F3-nhac-nho.md` + `F2-event.md`: thêm công tắc **"Cài đặt nhắc nhở"** đầu mục (bật = có nhắc, hiện danh sách mốc; tắt = không nhắc, ẩn danh sách) · mỗi mốc 1 dòng icon đồng hồ + "15 phút trước" + ✕ · "+ Thêm nhắc nhở" mở sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất, danh sách mốc có ✓.
+- [x] `design/screens.md` màn 11: đổi "Hộp chọn" → sheet từ đáy như trên.
+- [x] Khảo sát Cute trên máy thật (bạn cho phép, không lưu gì): danh sách mốc = Đúng giờ · 5 · 10 · 30 phút · 1 · 2 giờ · 1 · 2 ngày · 1 tuần trước (cả ngày dùng chung); mặc định 15 phút (không có trong danh sách); icon `!` = mẹo tắt tối ưu pin + nút Loại trừ → đã cập nhật F3 + thêm màn 11b.
+
+## 2026-10-09 — S2 bước 1: viết spec Sprint 2 + sắp lại danh sách sprint — ✅ xong (bạn đã ok)
+
+### Input
+
+- Bạn chốt: S2 = **Lịch, Event, Notes, Cài đặt thông báo**, giống Cute Calendar.
+- Bạn chốt: **mỗi tính năng làm trọn trong 1 sprint**, không chia nhiều sprint. "Trọn" = toàn bộ phạm vi GĐ1 đã chốt; mục "Sau / Không làm" giữ nguyên ngoài.
+- Bạn chốt: kéo Google Calendar là một phần của Lịch → làm ở S2.
+- Bạn chốt (đổi): **bật đồng bộ → Daynest ↔ Google 2 chiều**; tắt → 2 bên độc lập. Thay quyết định cũ "kéo 1 chiều" (§2 Spec tổng). Chi tiết đã chốt: lịch chính · bật → đẩy hết event có sẵn · tắt → giữ event Google thành event thường · lặp âm không đẩy · thêm lựa chọn "Hằng năm (âm lịch)" cho ngày giỗ (bỏ lặp tháng âm). Xem `F4-google-calendar.md`.
+- Cài đặt: công tắc **Cho phép thông báo**; event chỉ nhắc khi công tắc bật.
+- Bạn chốt: app sẽ **lên Google Play** → thiết kế code mở rộng được, **nhiều user dùng đồng thời không lỗi** (bỏ "GĐ1 dùng 1 user").
+
+### Output
+
+- `docs/specs/sprint-2/` đủ spec + thiết kế màn hình/DB để code. Mockup để bước 2.
+- Bảng sprint §4 trong `docs/specs/index.md` sắp lại theo nguyên tắc "1 tính năng = 1 sprint".
+
+### Context
+
+Phạm vi S2 (gom S2–S6, S8 cũ + phần cài đặt liên quan của S9):
+
+| Phần | Làm | Không làm (đã chốt Sau / Không làm) |
+| --- | --- | --- |
+| Lịch | Xem tháng (lưới 6 tuần, ngày âm, ngày lễ, thanh màu event) / tuần / ngày / danh sách · bấm ngày → sheet event + `+` · nút Hôm nay · vuốt đổi tháng | Thời tiết, sticker, theme, tìm kiếm event |
+| Event | Tiêu đề, chi tiết, cả ngày / giờ, 6 màu · lặp dương ngày/tuần/tháng/năm, mỗi N, ngày kết thúc · lặp âm (ngày giỗ) · sửa/xoá lần lặp "Chỉ lần này" / "Tất cả" · xoá hỏi xác nhận | Vị trí, URL, đếm ngược, báo thức, sao chép |
+| Nhắc | Nhiều mốc (0, 5, 15, 30, 60 phút, 1 ngày) · local notification · đặt cho 30 ngày tới, < 60 thông báo chờ | Âm thanh/rung tuỳ chỉnh |
+| Google Calendar | Kéo 1 chiều (`calendar.readonly`) · `syncToken` · 410 kéo lại · event Google chỉ đọc, không nhắc | Đẩy lên Google |
+| Notes | Tiêu đề, nội dung text, checklist, danh mục (màu), ghim, tìm kiếm · Back tự lưu · thùng rác | Định dạng chữ, ảnh, ghi âm, vẽ, khoá, PDF |
+| Nút `+` | Sheet: Event / Note | Todo, Diary (sprint của nó) |
+| Cài đặt | Cho phép thông báo (tắt → huỷ hết nhắc, bật → đặt lại, xin quyền Android) · tuần bắt đầu từ · 24 giờ · bật/tắt ngày âm, ngày lễ · Google Calendar: kết nối, chọn lịch, Đồng bộ ngay | Giờ nhắc tổng hằng ngày |
+
+Giá trị mặc định đề xuất: tuần bắt đầu **Thứ Hai**, **24 giờ** bật, ngày âm + ngày lễ bật, thông báo bật.
+
+Danh sách sprint mới (GĐ1 = S1–S4):
+
+| Sprint | Chức năng |
+| --- | --- |
+| S1 | Nền móng (đã xong) |
+| S2 | Lịch + Event + Nhắc + Google Calendar + Notes + Cài đặt liên quan |
+| S3 | Todo (tiêu đề, hạn, ghim, subtask, %, lọc) |
+| S4 | Diary (+ nhắc diary hằng ngày) + Thống kê → xong GĐ1 |
+
+Nhiều user + mở rộng (S1 đã có `user_id` + RLS; S2 áp cho mọi bảng mới):
+
+| Vấn đề | Cách làm đề xuất |
+| --- | --- |
+| Lộ dữ liệu giữa user | Mọi bảng: RLS `user_id = auth.uid()` · test RLS từng bảng (như `rls_s1.sql`) |
+| Chậm khi dữ liệu nhiều | Index `(user_id, …)` theo cách truy vấn · chỉ tải theo khoảng ngày đang xem · Notes phân trang |
+| Event lặp phình DB | Lưu 1 dòng quy tắc lặp + ngoại lệ · app tự trải ra các lần (hàm thuần, có test) |
+| Bấm Lưu 2 lần / mạng chập chờn tạo trùng | App tự sinh `id` (uuid) trước khi gửi → gửi lại không tạo dòng mới |
+| 1 user sửa cùng lúc trên 2 máy | Lưu kèm `updated_at` đã đọc; nếu dòng đã đổi ở máy khác → báo "Đã thay đổi ở thiết bị khác", tải lại · không ghi đè im lặng |
+| 2 máy cùng kéo Google | Upsert theo khoá duy nhất `(user_id, google_event_id)` → không trùng event |
+| Múi giờ | Event có giờ lưu `timestamptz`; cả ngày lưu `date`; ngày âm tính theo +7 |
+| Không có server riêng | App gọi thẳng Supabase (đã chốt) → tải do Supabase lo |
+| Code dễ mở rộng | Mỗi tính năng `features/<x>/`: `api` (gọi Supabase) tách khỏi UI · logic thuần ở `lib/` có test · không trạng thái dùng chung giữa user |
+
+Mục tiêu tải (bạn chốt): **100 user dùng cùng lúc, tổng ~10.000 user**.
+
+| Hạng mục | Ước tính | Gói Free Supabase | Kết luận |
+| --- | --- | --- | --- |
+| User đăng nhập/tháng | ≤ 10.000 | 50.000 MAU | Đủ |
+| Request cùng lúc | 100 user × ~1 req/s lúc cao điểm ≈ 100 req/s | Chịu được nếu truy vấn có index, tải theo khoảng ngày | Đủ |
+| Dung lượng DB | ~10–50 KB/user (event, note) → 100–500 MB; event Google có thể nhiều hơn | 500 MB | **Sát giới hạn** |
+| Storage ảnh | Avatar nén ~50 KB × 10.000 ≈ 500 MB | 1 GB | Đủ nếu nén |
+| Project bỏ không 7 ngày | — | Free bị tạm dừng | Ổn — bạn dùng app hằng ngày |
+
+Quyết định đề xuất:
+
+- Bạn chốt: **dùng gói Free**, kể cả khi lên Play. Bạn dùng app mỗi ngày → project không bị tạm dừng. Theo dõi dung lượng DB; gần 500 MB thì tính lại.
+- Bạn chốt: chỉ kéo event Google trong **năm hiện tại** (1/1 → 31/12) để giới hạn số dòng.
+- Avatar nén trước khi tải lên (≤ 512 px, JPEG).
+- Mỗi bảng có index theo cách truy vấn; viết sẵn query mẫu + `explain` trong `design/db.md`.
+- DoD S2 thêm: **test tải** — script giả 100 user đăng nhập + đọc lịch tháng + ghi event đồng thời, không lỗi, p95 < 1 s. Seed 10.000 user giả trên DB local để đo, không chạy trên DB thật.
+
+Ghi riêng mục "Trước khi lên Google Play" (chưa làm ở S2): xoá tài khoản trong app (Play bắt buộc), chính sách quyền riêng tư, khai báo Data safety, Google xác minh OAuth cho scope `calendar.readonly`.
+
+Rủi ro: S2 rất lớn (≈ 5 sprint cũ). Code sẽ chia nhiều bước nhỏ, mỗi bước 1 todo riêng, chạy được trên máy thật sau mỗi bước.
+
+### Plan
+
+- [x] 1. Tạo `docs/specs/sprint-2/index.md`: mục tiêu, bảng phạm vi F1–F6, luồng tổng, "Bạn chuẩn bị" (bật Google Calendar API + scope `calendar.readonly` ở OAuth consent), DoD.
+- [x] 2. Viết 6 file chức năng (mục tiêu, logic, luồng, mô tả — như S1):
+  - `F1-lich.md` — 4 chế độ xem, lịch âm (Hồ Ngọc Đức, +7), ngày lễ cố định, test Tết 2020–2030 + năm nhuận.
+  - `F2-event.md` — form, lặp dương + âm, ngoại lệ.
+  - `F3-nhac-nho.md` — mốc nhắc, lịch đặt thông báo, công tắc Cho phép thông báo.
+  - `F4-google-calendar.md` — kết nối, chọn lịch, đồng bộ.
+  - `F5-notes.md` — danh sách, editor, danh mục, thùng rác, tìm kiếm.
+  - `F6-cai-dat.md` — các mục cài đặt mới + giá trị mặc định.
+- [x] 3. Viết `design/screens.md` (danh sách màn) + `design/db.md` (bảng `events`, `event_exceptions`, `event_reminders`, `google_sync_state`, `notes`, `note_categories`, cột mới `user_settings`, RLS).
+- [x] 4. `docs/specs/index.md`: §1 "GĐ1 = sprint 1–4"; §2 dòng "Người dùng" → nhiều user thật; §3 thêm "Nguyên tắc mở rộng" + "Mục tiêu tải" (2 bảng trên) + mục "Trước khi lên Google Play"; §4 thay bảng sprint; chuyển các "ghi chú đã chốt" S2–S6, S8 vào file F tương ứng (xoá khỏi index, không lặp); sửa ghi chú S7 → S3, S9 → S4.
+- [x] 5. `docs/index.md`: thêm dòng Sprint 2.
+- [x] 6. Kiểm tra: link giữa các file chạy đúng, không lặp nội dung giữa index và F. Không commit — chờ bạn review spec.
+
+Khác plan (do đổi sang đồng bộ 2 chiều / đơn giản hơn): scope `calendar.events` thay `calendar.readonly`; F4 chỉ lịch chính, không "chọn lịch"; không có bảng `event_reminders` (dùng cột `events.reminder_minutes`).
+
+Bước sau (todo riêng, chưa làm): bước 2 mockup → bước 3+ code theo từng phần.
+
 ## 2026-10-09 — Quy trình release: bắt buộc tag GitHub — ✅ xong
 
 - [x] "Cuối sprint" bước 6 + `CLAUDE.md`: ghi rõ `git tag v<version> && git push origin main v<version>` mỗi lần release. Release S1 gắn tag `v1.0.1`.

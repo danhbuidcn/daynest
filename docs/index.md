@@ -22,6 +22,7 @@ docs/
 | [specs/index.md](specs/index.md) | Spec tổng — đọc đầu tiên |
 | [specs/design-system.md](specs/design-system.md) | Design system dùng chung mọi sprint |
 | [specs/sprint-1/](specs/sprint-1/index.md) | Sprint 1: nền móng (khung app, đăng nhập Google, DB, ký app) |
+| [specs/sprint-2/](specs/sprint-2/index.md) | Sprint 2: lịch, event, nhắc, đồng bộ Google, notes |
 | [research/cute-calendar/](research/cute-calendar/features.md) | Tham khảo tính năng + UI app lịch |
 | `research/memrise/` | Tham khảo UI (ảnh chụp màn hình) |
 
