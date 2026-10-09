@@ -19,12 +19,13 @@ Làm app mobile quản lý lịch cá nhân giống Cute Calendar, thêm lịch 
 | Google | Đăng nhập Google, kéo event Google Calendar về (1 chiều) |
 | Cài đặt | Tài khoản, lịch Google, tuỳ chọn lịch, thông báo |
 
-**Ngoài GĐ1:** web (Nuxt), Go API, module Học tập / Chi tiêu / Dashboard, đẩy event lên Google, habit, sticker, theme, font, chế độ tối, định dạng chữ trong note, vẽ tay, ghi âm, khoá note, PDF, widget, thời tiết, offline.
+**Ngoài GĐ1:** web (Nuxt), Go API, Chi tiêu, Chu kỳ kinh nguyệt, đẩy event lên Google, habit, sticker, theme, font, chế độ tối, định dạng chữ trong note, vẽ tay, ghi âm, khoá note, PDF, widget, thời tiết, offline.
 
 ## 2. Quyết định
 
 | Chủ đề | Chốt | Lý do |
 | --- | --- | --- |
+| Tên | **Daynest**, package `com.danhbuidcn.daynest` | Chốt 2026-10-09; package không đổi được sau khi lên store |
 | Nền tảng | Chỉ mobile (Expo, Android + iOS). Web làm sau | Cute Calendar là app mobile; nhắc nhở cần mobile; giảm gần nửa khối lượng |
 | Kiểm thử thiết bị | Chỉ test Android máy thật. iOS build được nhưng không kiểm thật | Không có iPhone |
 | Backend | Supabase (Auth, Postgres + RLS, Storage). **GĐ1 không dùng Go** | App gọi thẳng Supabase là đủ; Go để cho việc cần server sau này |
@@ -208,14 +209,7 @@ Google Sign-In native không chạy trong Expo Go → dùng **development build*
 
 ## 9. Mốc
 
-| Mốc | Nội dung | Xong khi |
-| --- | --- | --- |
-| M1 | Khung Expo + dev build, đăng nhập Google, schema + RLS | Đăng nhập được trên Android, RLS test pass |
-| M2 | `lib/lunar`, `lib/recurrence` (TDD), lịch tháng có ngày âm + ngày lễ | Unit test pass, lịch tháng hiện đúng |
-| M3 | Event: form, lặp, ngoại lệ, nhắc; xem tuần/ngày/danh sách | Tạo/sửa/xoá event lặp, nhận thông báo |
-| M4 | Kéo Google Calendar | Event Google hiện trên lịch, sửa trên Google → kéo về đúng |
-| M5 | Todo, Notes, Diary | Đủ luồng ở mục 5 |
-| M6 | Thống kê, Cài đặt, kiểm thử tổng | Hết checklist test thủ công |
+Chia sprint theo Scrum: xem [backlog.md](../backlog.md).
 
 ## 10. Việc bạn tự làm
 
