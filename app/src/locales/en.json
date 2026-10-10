@@ -177,6 +177,7 @@
     "kitchenGods": "Kitchen Gods"
   },
   "lunar": {
+    "dateWithYear": "{{date}}, year {{year}}",
     "stems": {
       "0": "Giáp",
       "1": "Ất",
@@ -236,6 +237,8 @@
       "singleWeekly": "Weekly",
       "singleMonthly": "Monthly",
       "singleYearly": "Yearly",
+      "singleLunarYearly": "Yearly (lunar)",
+      "lunarDetail": "Every year on {{day}}/{{month}} (lunar)",
       "everyDaily": "Every {{n}} days",
       "everyWeekly": "Every {{n}} weeks",
       "everyMonthly": "Every {{n}} months",
@@ -287,6 +290,7 @@
       "edit": "Edit",
       "delete": "Delete",
       "onlyDaynest": "Daynest only",
+      "allDayReminder": "All day: reminds at {{time}}",
       "deleteTitle": "Delete event?",
       "deleteText": "This cannot be undone.",
       "deleteFailed": "Could not delete. Please try again."

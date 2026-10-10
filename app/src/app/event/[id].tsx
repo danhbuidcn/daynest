@@ -12,7 +12,7 @@ import { Icon, type IconName } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { lunarLabel, occurrenceStartDate, reminderLabel, whenLabel } from '@/features/events/format';
+import { clockLabel, lunarLabel, occurrenceStartDate, reminderLabel, whenLabel } from '@/features/events/format';
 import { OccurrenceActionDialog } from '@/features/events/OccurrenceDialogs';
 import { repeatLabel } from '@/features/events/repeatLabel';
 import { useEventDelete } from '@/features/events/useEventDelete';
@@ -38,17 +38,17 @@ export default function EventDetailScreen() {
   if (!event || !occ) {
     return (
       <SafeAreaView edges={['top']} style={styles.screen}>
-        <ScreenHeader title="" onBack={() => router.back()} />
+        <ScreenHeader title="" onBack={() => router.back()} compact />
       </SafeAreaView>
     );
   }
 
-  const repeat = repeatLabel(t, occ.repeat, event.repeatInterval, occDate);
+  const repeat = repeatLabel(t, occ.repeat, event.repeatInterval, occDate, true);
   const reminders = reminderLabel(t, occ.reminderMinutes);
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
-      <ScreenHeader title="" onBack={() => router.back()} action={<MoreButton onPress={() => setMenuOpen(true)} />} />
+      <ScreenHeader title="" onBack={() => router.back()} compact action={<MoreButton onPress={() => setMenuOpen(true)} />} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.titleRow}>
           <View style={[styles.swatch, { backgroundColor: eventColors[occ.color] }]} />
@@ -57,15 +57,21 @@ export default function EventDetailScreen() {
           </AppText>
         </View>
         <View style={styles.tag}>
-          <Icon name="phone" size={14} color={colors.textMuted} />
-          <AppText variant="caption" color={colors.textMuted}>
+          <Icon name="phone" size={12} color={colors.textMuted} />
+          <AppText variant="caption" weight="extrabold" color={colors.textMuted}>
             {t('events.detail.onlyDaynest')}
           </AppText>
         </View>
-        <Card style={styles.card}>
-          <DetailRow icon="calendar" label={whenLabel(t, occ, settings.use24h, settings.timeZone)} detail={settings.showLunar ? lunarLabel(t, occurrenceStartDate(occ, settings.timeZone)) : undefined} />
+        <Card>
+          <DetailRow first icon="calendar" label={whenLabel(t, occ, settings.use24h, settings.timeZone)} detail={settings.showLunar ? lunarLabel(t, occurrenceStartDate(occ, settings.timeZone)) : undefined} />
           {occ.repeat !== 'none' ? <DetailRow icon="repeat" label={repeat.title} detail={repeat.detail} /> : null}
-          {reminders ? <DetailRow icon="bell" label={reminders} /> : null}
+          {reminders ? (
+            <DetailRow
+              icon="bell"
+              label={reminders}
+              detail={occ.allDay ? t('events.detail.allDayReminder', { time: clockLabel(t, { hour: 9, minute: 0, second: 0 }, settings.use24h) }) : undefined}
+            />
+          ) : null}
           {occ.note ? <DetailRow icon="note" label={occ.note} multiline /> : null}
         </Card>
       </ScrollView>
@@ -93,10 +99,24 @@ export default function EventDetailScreen() {
   );
 }
 
-function DetailRow({ icon, label, detail, multiline }: { icon: IconName; label: string; detail?: string | null; multiline?: boolean }) {
+function DetailRow({
+  icon,
+  label,
+  detail,
+  multiline,
+  first,
+}: {
+  icon: IconName;
+  label: string;
+  detail?: string | null;
+  multiline?: boolean;
+  first?: boolean;
+}) {
   return (
-    <View style={styles.detailRow}>
-      <Icon name={icon} size={20} color={colors.textMuted} />
+    <View style={[styles.detailRow, !first && styles.divider]}>
+      <View style={styles.rowIcon}>
+        <Icon name={icon} size={20} color={colors.primaryDark} />
+      </View>
       <View style={styles.flex}>
         <AppText numberOfLines={multiline ? undefined : 2}>{label}</AppText>
         {detail ? (
@@ -111,21 +131,22 @@ function DetailRow({ icon, label, detail, multiline }: { icon: IconName; label: 
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: space.lg, gap: space.md },
-  titleRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.xs },
-  swatch: { width: 18, height: 18, borderRadius: 6 },
+  content: { paddingHorizontal: space.lg, paddingTop: space.xs, paddingBottom: space.lg, gap: space.md },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.xs, paddingVertical: space.sm },
+  swatch: { width: 20, height: 20, borderRadius: 7 },
   flex: { flex: 1 },
   tag: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
     alignItems: 'center',
     gap: space.xs,
+    height: 24,
     marginHorizontal: space.xs,
     backgroundColor: colors.border,
     borderRadius: radius.pill,
-    paddingHorizontal: space.sm,
-    paddingVertical: 4,
+    paddingHorizontal: 10,
   },
-  card: { padding: space.lg, gap: space.lg },
-  detailRow: { flexDirection: 'row', alignItems: 'flex-start', gap: space.md },
+  detailRow: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, paddingVertical: space.sm },
+  divider: { borderTopWidth: 1, borderTopColor: colors.border },
+  rowIcon: { width: 34, height: 34, borderRadius: radius.icon, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
 });

@@ -177,6 +177,7 @@
     "kitchenGods": "Táo quân"
   },
   "lunar": {
+    "dateWithYear": "{{date}} năm {{year}}",
     "stems": {
       "0": "Giáp",
       "1": "Ất",
@@ -236,6 +237,8 @@
       "singleWeekly": "Hằng tuần",
       "singleMonthly": "Hằng tháng",
       "singleYearly": "Hằng năm",
+      "singleLunarYearly": "Hằng năm (âm lịch)",
+      "lunarDetail": "Mỗi năm vào {{day}}/{{month}} âm lịch",
       "everyDaily": "Mỗi {{n}} ngày",
       "everyWeekly": "Mỗi {{n}} tuần",
       "everyMonthly": "Mỗi {{n}} tháng",
@@ -287,6 +290,7 @@
       "edit": "Sửa",
       "delete": "Xoá",
       "onlyDaynest": "Chỉ trên Daynest",
+      "allDayReminder": "Cả ngày: nhắc lúc {{time}}",
       "deleteTitle": "Xoá sự kiện?",
       "deleteText": "Không thể hoàn tác.",
       "deleteFailed": "Xoá không thành công. Vui lòng thử lại."

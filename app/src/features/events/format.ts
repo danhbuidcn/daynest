@@ -12,6 +12,11 @@ export function dateLabel(t: TFunction, d: SolarDate): string {
   return `${t(`calendar.weekdays.${(jdFromDate(d) + 1) % 7}`)}, ${pad(d.day)}/${pad(d.month)}/${d.year}`;
 }
 
+// "Thứ Tư, 21/10/2026" — event detail (mockup màn 13).
+export function longDateLabel(t: TFunction, d: SolarDate): string {
+  return `${t(`calendar.weekdaysLong.${(jdFromDate(d) + 1) % 7}`)}, ${pad(d.day)}/${pad(d.month)}/${d.year}`;
+}
+
 export function shortDate(d: SolarDate): string {
   return `${pad(d.day)}/${pad(d.month)}/${d.year}`;
 }
@@ -20,7 +25,8 @@ export function shortDate(d: SolarDate): string {
 export function lunarLabel(t: TFunction, d: SolarDate): string {
   const l = toLunar(d);
   const cc = canChiYear(l.year);
-  return `${l.day}/${l.month}${l.leap ? 'N' : ''} · ${t(`lunar.stems.${cc.stem}`)} ${t(`lunar.branches.${cc.branch}`)}`;
+  const year = `${t(`lunar.stems.${cc.stem}`)} ${t(`lunar.branches.${cc.branch}`)}`;
+  return t('lunar.dateWithYear', { date: `${l.day}/${l.month}${l.leap ? 'N' : ''}`, year });
 }
 
 export function clockLabel(t: TFunction, time: TimeOfDay, use24h: boolean): string {
@@ -44,8 +50,8 @@ export function occurrenceStartDate(occ: EventOccurrence, timeZone: string): Sol
 // or "T6, 09/10/2026 – 11/10/2026" for a multi-day all-day event.
 export function whenLabel(t: TFunction, occ: EventOccurrence, use24h: boolean, timeZone: string): string {
   const start = occurrenceStartDate(occ, timeZone);
-  if (occ.allDay && occ.endDate !== occ.startDate) return `${dateLabel(t, start)} – ${shortDate(parseIsoDate(occ.endDate!))}`;
-  return `${dateLabel(t, start)} · ${timeRangeLabel(t, occ, use24h, timeZone)}`;
+  if (occ.allDay && occ.endDate !== occ.startDate) return `${longDateLabel(t, start)} – ${shortDate(parseIsoDate(occ.endDate!))}`;
+  return `${longDateLabel(t, start)} · ${timeRangeLabel(t, occ, use24h, timeZone)}`;
 }
 
 export function reminderLabel(t: TFunction, minutes: number[]): string | null {
