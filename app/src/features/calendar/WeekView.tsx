@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
@@ -30,6 +30,7 @@ export function WeekView({
   onPressOccurrence,
   onPressHoliday,
   onAddAllDay,
+  refreshControl,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -42,6 +43,8 @@ export function WeekView({
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
   onAddAllDay: (d: SolarDate) => void;
+  // Pull down → Google sync (F4); only while syncing is on.
+  refreshControl?: ReactElement<RefreshControlProps>;
 }) {
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
@@ -49,7 +52,7 @@ export function WeekView({
   return (
     <View style={styles.flex}>
       <WeekChips cursor={cursor} weekStart={weekStart} onSelect={onSelectWeek} />
-      <ScrollView contentContainerStyle={styles.rows}>
+      <ScrollView contentContainerStyle={styles.rows} refreshControl={refreshControl}>
         {days.map((d) => {
           const weekday = weekdayOf(d);
           const dayColor = d.isToday ? colors.primaryDark : weekday === 0 || d.holidays.length > 0 ? colors.error : colors.text;

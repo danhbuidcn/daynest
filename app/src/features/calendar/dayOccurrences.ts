@@ -8,10 +8,13 @@ function occurrenceRange(occ: EventOccurrence, timeZone: string): { start: numbe
   if (occ.allDay) {
     return { start: jdFromDate(parseIsoDate(occ.startDate!)), end: jdFromDate(parseIsoDate(occ.endDate!)) };
   }
-  return {
-    start: jdFromDate(todayIn(timeZone, new Date(occ.startsAt!))),
-    end: jdFromDate(todayIn(timeZone, new Date(occ.endsAt!))),
-  };
+  const start = jdFromDate(todayIn(timeZone, new Date(occ.startsAt!)));
+  const endsAt = new Date(occ.endsAt!);
+  const endDay = jdFromDate(todayIn(timeZone, endsAt));
+  // Ending exactly at 00:00 (e.g. 23:00 – 00:00) doesn't reach into the next day.
+  const t = timeOfDayIn(endsAt, timeZone);
+  const atMidnight = t.hour === 0 && t.minute === 0 && t.second === 0;
+  return { start, end: atMidnight && endDay > start ? endDay - 1 : endDay };
 }
 
 // Occurrences whose span covers `day` — a multi-day event shows on every day it covers (F1).

@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,6 +19,8 @@ import { useCalendarNav } from '@/features/calendar/useCalendarNav';
 import { ViewModeBar } from '@/features/calendar/ViewModeBar';
 import { WeekView } from '@/features/calendar/WeekView';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import { syncNow } from '@/features/google/sync';
+import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { useEventsInRange } from '@/features/events/useEvents';
 import { type BarItem } from '@/lib/calendar/eventBars';
 import { isoDate } from '@/lib/calendar/monthGrid';
@@ -37,6 +39,8 @@ export default function CalendarScreen() {
   const [selected, setSelected] = useState<SolarDate | null>(today);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dayDialogDate, setDayDialogDate] = useState<SolarDate | null>(null);
+  const googleSync = useGoogleSync();
+  const [pulling, setPulling] = useState(false);
 
   const display = useMemo<DayDisplay>(
     () => ({ showLunar: settings.showLunar, showHolidays: settings.showHolidays }),
@@ -112,7 +116,18 @@ export default function CalendarScreen() {
       else if (e.translationX >= SWIPE_DISTANCE) go(-1);
     });
 
-  const viewProps = { cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, display, onPressOccurrence, onPressHoliday: setDayDialogDate };
+  const refreshControl = googleSync.enabled ? (
+    <RefreshControl
+      refreshing={pulling}
+      colors={[colors.primary]}
+      onRefresh={() => {
+        setPulling(true);
+        void syncNow().finally(() => setPulling(false));
+      }}
+    />
+  ) : undefined;
+
+  const viewProps = { refreshControl, cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, display, onPressOccurrence, onPressHoliday: setDayDialogDate };
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>

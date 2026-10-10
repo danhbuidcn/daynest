@@ -25,7 +25,11 @@ export type EventInput = {
   reminderMinutes: number[];
 };
 
-export type EventRow = EventInput & { id: string; updatedAt: string };
+export type GoogleStatus = 'none' | 'synced' | 'pending';
+// F4: `linked` = has a Google twin; `readonly` = cut to fit or a recurrence only Google can edit.
+export type GoogleLink = { status: GoogleStatus; linked: boolean; readonly: boolean };
+
+export type EventRow = EventInput & { id: string; updatedAt: string; google?: GoogleLink };
 
 export type EventTableRow = {
   id: string;
@@ -44,10 +48,16 @@ export type EventTableRow = {
   lunar_day: number | null;
   reminder_minutes: number[] | null;
   updated_at: string;
+  google_event_id?: string | null;
+  google_status?: string;
+  google_readonly?: boolean;
 };
 
 export function toEvent(row: EventTableRow): EventRow {
   return {
+    ...(row.google_status !== undefined
+      ? { google: { status: row.google_status as GoogleStatus, linked: !!row.google_event_id, readonly: !!row.google_readonly } }
+      : {}),
     id: row.id,
     updatedAt: row.updated_at,
     title: row.title,

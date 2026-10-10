@@ -114,7 +114,9 @@ Tắt "Đồng bộ" → 2 bên độc lập
 ## Mô tả
 
 - Cài đặt: xem [F6](F6-settings.md#google-calendar).
-- Event đã đồng bộ: icon Google nhỏ ở pop-up ngày + Chi tiết. Event `pending`: icon đồng hồ nhỏ.
+- Event đã đồng bộ: icon Google nhỏ trên thẻ (Tuần, Danh sách, pop-up ngày). Event `pending`: icon đồng hồ nhỏ.
+- Nhãn trên Chi tiết: "Google Calendar" (đã liên kết) · "Chờ đồng bộ" (`pending`) · "Sửa trên Google Calendar" (chỉ xem, ẩn nút Sửa) · "Chỉ trên Daynest" (còn lại, gồm lặp âm).
+- Kéo xuống để đồng bộ: ở xem Tuần, Danh sách, Ngày (xem Tháng không cuộn → dùng "Đồng bộ ngay" hoặc mở app).
 
 ## Không làm
 

@@ -16,6 +16,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SplashView } from '@/components/SplashView';
 import { ToastProvider } from '@/components/Toast';
 import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
+import { useGoogleSyncLifecycle } from '@/features/google/useGoogleSync';
 import { useReminderSync } from '@/features/reminders/useReminderSync';
 import { loadSavedLanguage } from '@/i18n';
 import { colors } from '@/theme';
@@ -60,6 +61,7 @@ export default function RootLayout() {
 function RootStack({ ready }: { ready: boolean }) {
   const { loading, profile } = useAuth();
   useReminderSync();
+  useGoogleSyncLifecycle();
   if (!ready || loading) return <SplashView />;
 
   const signedIn = !!profile;

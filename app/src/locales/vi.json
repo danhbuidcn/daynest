@@ -293,11 +293,20 @@
       "allDayReminder": "Cả ngày: nhắc lúc {{time}}",
       "deleteTitle": "Xoá sự kiện?",
       "deleteText": "Không thể hoàn tác.",
-      "deleteFailed": "Xoá không thành công. Vui lòng thử lại."
+      "deleteFailed": "Xoá không thành công. Vui lòng thử lại.",
+      "google": "Google Calendar",
+      "pending": "Chờ đồng bộ",
+      "editOnGoogle": "Sửa trên Google Calendar",
+      "deleteTextGoogle": "Cũng xoá trên Google Calendar. Không thể hoàn tác."
     },
     "quickAdd": {
       "event": "Sự kiện",
       "note": "Ghi chú"
+    },
+    "reminderCustom": {
+      "minutes": "{{count}} phút trước",
+      "hours": "{{count}} giờ trước",
+      "days": "{{count}} ngày trước"
     }
   },
   "reminders": {
@@ -368,5 +377,22 @@
       "deleteForeverTitle": "Xoá vĩnh viễn ghi chú?",
       "deletedOn": "Đã xoá {{date}}"
     }
+  },
+  "google": {
+    "group": "Google Calendar",
+    "toggle": "Đồng bộ với Google Calendar",
+    "syncNow": "Đồng bộ ngay",
+    "lastSynced": "Lần đồng bộ cuối",
+    "today": "Hôm nay {{time}}",
+    "yesterday": "Hôm qua {{time}}",
+    "reconnect": "Cần kết nối lại Google",
+    "denied": "Cần cho phép truy cập Google Calendar",
+    "syncFailed": "Chưa đồng bộ được. Vui lòng thử lại.",
+    "offTitle": "Tắt đồng bộ?",
+    "offText": "Sự kiện vẫn được giữ ở Daynest và Google, nhưng sẽ không còn được đồng bộ.",
+    "offConfirm": "Tắt",
+    "progressTitle": "Đang đồng bộ Google Calendar",
+    "progressText": "Gồm sự kiện năm {{year}} và các sự kiện lặp lại.",
+    "noTitle": "(Không có tiêu đề)"
   }
 }

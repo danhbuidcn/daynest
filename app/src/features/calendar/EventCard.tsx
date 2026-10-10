@@ -5,6 +5,7 @@ import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
 import { timeRangeLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import { SyncIcon } from '@/features/events/SyncIcon';
 import { colors, eventColors, radius, shadow, space } from '@/theme';
 
 // Week rows and the list view (màn 2, 4): colour stripe · title · time (or note) · repeat/reminder icons.
@@ -47,6 +48,7 @@ export function EventCard({
       <View style={styles.icons}>
         {occurrence.repeat !== 'none' ? <Icon name="repeat" size={14} color={colors.textMuted} /> : null}
         {occurrence.reminderMinutes.length > 0 ? <Icon name="bell" size={14} color={colors.textMuted} /> : null}
+        <SyncIcon occurrence={occurrence} />
       </View>
     </Pressable>
   );

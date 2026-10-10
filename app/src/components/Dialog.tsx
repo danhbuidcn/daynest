@@ -39,6 +39,7 @@ export function DialogShell({
 export function ConfirmDialog({
   visible,
   icon = 'logout',
+  tone = 'danger',
   title,
   text,
   cancelLabel,
@@ -48,6 +49,8 @@ export function ConfirmDialog({
 }: {
   visible: boolean;
   icon?: IconName;
+  // 'warning': not destructive (e.g. "Tắt đồng bộ?", màn 21c) — amber icon, primary button.
+  tone?: 'danger' | 'warning';
   title: string;
   // Empty → title only (e.g. "Xoá vĩnh viễn tất cả?", màn 20b).
   text?: string;
@@ -58,8 +61,8 @@ export function ConfirmDialog({
 }) {
   return (
     <DialogShell visible={visible} onClose={onCancel}>
-      <View style={styles.dangerIcon}>
-        <Icon name={icon} size={28} color={colors.error} />
+      <View style={tone === 'warning' ? [styles.alertIcon, styles.alertIconWarning] : styles.dangerIcon}>
+        <Icon name={icon} size={28} color={tone === 'warning' ? colors.warning : colors.error} />
       </View>
       <AppText variant="heading" style={styles.center}>
         {title}
@@ -73,7 +76,7 @@ export function ConfirmDialog({
       )}
       <View style={styles.actions}>
         <Button label={cancelLabel} variant="secondary" onPress={onCancel} style={styles.flex} />
-        <Button label={confirmLabel} variant="danger" onPress={onConfirm} style={styles.flex} />
+        <Button label={confirmLabel} variant={tone === 'warning' ? 'primary' : 'danger'} onPress={onConfirm} style={styles.flex} />
       </View>
     </DialogShell>
   );

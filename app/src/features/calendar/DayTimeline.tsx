@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { clockLabel } from '@/features/events/format';
@@ -27,6 +27,7 @@ export function DayTimeline({
   timeZone,
   onPressOccurrence,
   onPressHour,
+  refreshControl,
 }: {
   spans: OccurrenceSpan[];
   isToday: boolean;
@@ -35,6 +36,7 @@ export function DayTimeline({
   onPressOccurrence: (o: EventOccurrence) => void;
   // Empty part of an hour row → new event at that hour (F1).
   onPressHour: (hour: number) => void;
+  refreshControl?: ReactElement<RefreshControlProps>;
 }) {
   const { t } = useTranslation();
   const scroll = useRef<ScrollView>(null);
@@ -58,7 +60,7 @@ export function DayTimeline({
   }, [spans, isToday]);
 
   return (
-    <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content}>
+    <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content} refreshControl={refreshControl}>
       {Array.from({ length: 24 }, (_, hour) => (
         <Pressable
           key={hour}

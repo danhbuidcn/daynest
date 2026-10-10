@@ -293,11 +293,20 @@
       "allDayReminder": "All day: reminds at {{time}}",
       "deleteTitle": "Delete event?",
       "deleteText": "This cannot be undone.",
-      "deleteFailed": "Could not delete. Please try again."
+      "deleteFailed": "Could not delete. Please try again.",
+      "google": "Google Calendar",
+      "pending": "Waiting to sync",
+      "editOnGoogle": "Edit in Google Calendar",
+      "deleteTextGoogle": "It will also be deleted from Google Calendar. This cannot be undone."
     },
     "quickAdd": {
       "event": "Event",
       "note": "Note"
+    },
+    "reminderCustom": {
+      "minutes": "{{count}} minutes before",
+      "hours": "{{count}} hours before",
+      "days": "{{count}} days before"
     }
   },
   "reminders": {
@@ -368,5 +377,22 @@
       "deleteForeverTitle": "Delete note permanently?",
       "deletedOn": "Deleted {{date}}"
     }
+  },
+  "google": {
+    "group": "Google Calendar",
+    "toggle": "Sync with Google Calendar",
+    "syncNow": "Sync now",
+    "lastSynced": "Last synced",
+    "today": "Today {{time}}",
+    "yesterday": "Yesterday {{time}}",
+    "reconnect": "Reconnect Google",
+    "denied": "Please allow access to Google Calendar",
+    "syncFailed": "Could not sync. Please try again.",
+    "offTitle": "Turn off sync?",
+    "offText": "Events stay in Daynest and Google, but will no longer sync.",
+    "offConfirm": "Turn off",
+    "progressTitle": "Syncing Google Calendar",
+    "progressText": "Includes events in {{year}} and repeating events.",
+    "noTitle": "(No title)"
   }
 }

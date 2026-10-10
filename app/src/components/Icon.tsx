@@ -55,6 +55,8 @@ const ICONS = {
   folder: () =>
     stroke('<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h4l2 2h6a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5z"/>'),
   restore: () => stroke('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>'),
+  google: () => stroke('<path d="M19 12.2h-7M19 12.2A7 7 0 1 1 16.8 7"/>', 2.4),
+  sync: () => stroke('<path d="M20 11a8 8 0 0 0-14.5-4M4 13a8 8 0 0 0 14.5 4"/><path d="M5 3v4h4M19 21v-4h-4"/>'),
 } satisfies Record<string, (filled: boolean) => string>;
 
 export type IconName = keyof typeof ICONS;

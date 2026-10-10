@@ -2,7 +2,7 @@ import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE, shiftByDays, todayIn } from '@/lib/calendar/timeZone';
 import { jdFromDate, jdToDate, type SolarDate } from '@/lib/lunar';
 import { occurrences as expandOccurrences, type DateRange, type Exception, type RecurrenceRule } from '@/lib/recurrence';
-import type { EventColor, EventRow, RepeatKind } from './event';
+import type { EventColor, EventRow, GoogleLink, RepeatKind } from './event';
 
 export type ExceptionKind = 'skip' | 'override';
 
@@ -37,6 +37,7 @@ export type EventOccurrence = {
   reminderMinutes: number[];
   repeat: RepeatKind;
   isException: boolean;
+  google?: GoogleLink;
 };
 
 function anchorDate(event: EventRow, timeZone: string): SolarDate {
@@ -118,6 +119,7 @@ export function occurrencesForEvent(
       reminderMinutes: event.reminderMinutes,
       repeat: event.repeat,
       isException: false,
+      google: event.google,
       ...shiftedFields(event, date, startAnchor, durationDays, timeZone),
     };
     return override ? withOverride(base, override) : base;

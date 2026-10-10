@@ -13,6 +13,7 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { GoogleSettings } from '@/features/google/GoogleSettings';
 import { CalendarSettings } from '@/features/settings/CalendarSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
@@ -70,6 +71,9 @@ export default function SettingsScreen() {
 
         <GroupLabel text={t('settings.calendar')} />
         <CalendarSettings />
+
+        <GroupLabel text={t('google.group')} />
+        <GoogleSettings />
 
         <GroupLabel text={t('settings.app')} />
         <Card>

@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { lunarLabel } from '@/features/events/format';
@@ -23,6 +23,7 @@ export function DayView({
   onPressOccurrence,
   onPressHoliday,
   onAddAt,
+  refreshControl,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -34,6 +35,8 @@ export function DayView({
   onPressHoliday: (d: SolarDate) => void;
   // Tapping an empty hour (hour) or the "Cả ngày" row (null) opens the event form for it.
   onAddAt: (d: SolarDate, hour: number | null) => void;
+  // Pull down → Google sync (F4); only while syncing is on.
+  refreshControl?: ReactElement<RefreshControlProps>;
 }) {
   const { t } = useTranslation();
   const day = useMemo(() => dayDetails(cursor, today, display), [cursor, today, display]);
@@ -83,6 +86,7 @@ export function DayView({
         timeZone={timeZone}
         onPressOccurrence={onPressOccurrence}
         onPressHour={(hour) => onAddAt(cursor, hour)}
+        refreshControl={refreshControl}
       />
     </View>
   );

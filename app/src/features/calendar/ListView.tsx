@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { clockLabel } from '@/features/events/format';
@@ -27,6 +27,7 @@ export function ListView({
   onSelectDay,
   onPressOccurrence,
   onPressHoliday,
+  refreshControl,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -38,6 +39,8 @@ export function ListView({
   onSelectDay: (d: SolarDate) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
+  // Pull down → Google sync (F4); only while syncing is on.
+  refreshControl?: ReactElement<RefreshControlProps>;
 }) {
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
@@ -59,7 +62,7 @@ export function ListView({
           {t('events.dayDialog.empty')}
         </AppText>
       ) : (
-        <ScrollView contentContainerStyle={styles.agenda}>
+        <ScrollView contentContainerStyle={styles.agenda} refreshControl={refreshControl}>
           {day.holidays.map((h) => (
             <View key={h} style={styles.row}>
               <View style={styles.times}>

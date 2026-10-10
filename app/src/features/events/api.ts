@@ -29,7 +29,7 @@ export async function fetchEvents(fromIso: string, toIso: string): Promise<Event
   const { data, error } = await supabase
     .from('events')
     .select(
-      'id, title, note, color, all_day, starts_at, ends_at, start_date, end_date, repeat, repeat_interval, repeat_until, lunar_month, lunar_day, reminder_minutes, updated_at',
+      'id, title, note, color, all_day, starts_at, ends_at, start_date, end_date, repeat, repeat_interval, repeat_until, lunar_month, lunar_day, reminder_minutes, updated_at, google_event_id, google_status, google_readonly',
     )
     .is('deleted_at', null)
     .lte('span_start', toIso)

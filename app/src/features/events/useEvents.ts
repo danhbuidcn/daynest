@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuth } from '@/features/auth/AuthProvider';
+import * as googleSync from '@/features/google/sync';
 import { resyncReminders } from '@/features/reminders/reminderSync';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
@@ -64,7 +65,10 @@ export function useSaveEvent() {
           ? api.updateEvent(vars.id, vars.updatedAt, vars.input, { clearExceptions: vars.clearExceptions })
           : api.createEvent(vars.input),
       ),
-    onSuccess: invalidate,
+    onSuccess: (row) => {
+      googleSync.afterEventSaved(row.id);
+      return invalidate();
+    },
   });
 }
 
@@ -72,7 +76,7 @@ export function useDeleteEvent() {
   const guard = useForbiddenGuard();
   const invalidate = useInvalidateEvents();
   return useMutation({
-    mutationFn: (id: string) => guard(() => api.deleteEvent(id)),
+    mutationFn: (id: string) => guard(() => googleSync.deleteEvent(id)),
     onSuccess: invalidate,
   });
 }
@@ -85,6 +89,9 @@ export function useSetOccurrenceException() {
   const invalidate = useInvalidateEvents();
   return useMutation({
     mutationFn: (vars: SetExceptionVars) => guard(() => api.upsertException(vars.eventId, vars.occurrenceDate, vars.kind, vars.override)),
-    onSuccess: invalidate,
+    onSuccess: (_, vars) => {
+      googleSync.afterExceptionSaved(vars.eventId, vars.occurrenceDate);
+      return invalidate();
+    },
   });
 }

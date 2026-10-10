@@ -4,6 +4,7 @@ import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { clockParts, timeOfDayIn, todayIn, type TimeOfDay } from '@/lib/calendar/timeZone';
 import { canChiYear, jdFromDate, toLunar, type SolarDate } from '@/lib/lunar';
 import type { EventOccurrence } from './occurrences';
+import { REMINDER_OPTIONS } from './reminderOptions';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -54,6 +55,14 @@ export function whenLabel(t: TFunction, occ: EventOccurrence, use24h: boolean, t
   return `${longDateLabel(t, start)} · ${timeRangeLabel(t, occ, use24h, timeZone)}`;
 }
 
+// Reminders pulled from Google can be any number of minutes, not just Daynest's options (F4).
+export function oneReminderLabel(t: TFunction, m: number): string {
+  if ((REMINDER_OPTIONS as number[]).includes(m)) return t(`events.reminderOptions.${m}`);
+  if (m % 1440 === 0) return t('events.reminderCustom.days', { count: m / 1440 });
+  if (m % 60 === 0) return t('events.reminderCustom.hours', { count: m / 60 });
+  return t('events.reminderCustom.minutes', { count: m });
+}
+
 export function reminderLabel(t: TFunction, minutes: number[]): string | null {
-  return minutes.length > 0 ? minutes.map((m) => t(`events.reminderOptions.${m}`)).join(' · ') : null;
+  return minutes.length > 0 ? minutes.map((m) => oneReminderLabel(t, m)).join(' · ') : null;
 }

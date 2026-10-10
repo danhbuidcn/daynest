@@ -5,6 +5,7 @@ import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
 import { timeRangeLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import { SyncIcon } from '@/features/events/SyncIcon';
 import { colors, eventColors, radius, space } from '@/theme';
 
 export function HolidayRow({ title }: { title: string }) {
@@ -47,6 +48,7 @@ export function EventListRow({
       </View>
       {occurrence.repeat !== 'none' ? <Icon name="repeat" size={14} color={colors.textMuted} /> : null}
       {occurrence.reminderMinutes.length > 0 ? <Icon name="bell" size={14} color={colors.textMuted} /> : null}
+      <SyncIcon occurrence={occurrence} />
     </Pressable>
   );
 }

@@ -9,6 +9,7 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { BatteryTipDialog } from '@/features/reminders/BatteryTipDialog';
 import { colors, space } from '@/theme';
 import { withReminderOn, type FormState } from '../eventFormState';
+import { oneReminderLabel } from '../format';
 import { ReminderPicker } from '../ReminderPicker';
 import { MAX_REMINDERS } from '../reminderOptions';
 import { FormRow } from './FormRow';
@@ -45,7 +46,7 @@ export function ReminderSection({ form, onChange }: { form: FormState; onChange:
               key={m}
               icon="clock"
               indent
-              label={t(`events.reminderOptions.${m}`)}
+              label={oneReminderLabel(t, m)}
               trailing={
                 <Pressable
                   accessibilityRole="button"

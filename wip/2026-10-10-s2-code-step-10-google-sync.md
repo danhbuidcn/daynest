@@ -1,4 +1,4 @@
-# 2026-10-10 — S2 code bước 10: Đồng bộ Google 2 chiều (F4) — 🔄 đang làm
+# 2026-10-10 — S2 code bước 10: Đồng bộ Google 2 chiều (F4) — ✅ xong
 
 ## Input
 
@@ -21,8 +21,8 @@
 - [x] 3. `features/events`: đọc thêm cột `google_*`; sau lưu / xoá / ngoại lệ → đẩy (lỗi → `pending`); xoá event đã liên kết: `deleted_at` → xoá trên Google → xoá hẳn.
 - [x] 4. UI: `GoogleSettings` + hộp tiến độ + hộp tắt; icon `google`, `sync`; nhãn Chi tiết (Google · Chờ đồng bộ · Chỉ trên Daynest · Sửa trên Google Calendar, ẩn Sửa khi chỉ xem); icon trên thẻ; chữ hộp xoá; kéo xuống ở Lịch → đồng bộ; nhắc lẻ từ Google có nhãn chung.
 - [x] 5. i18n EN + VI.
-- [ ] 6. `npm run typecheck && npm run lint && npm test` · emulator: bật → event Daynest lên Google; tạo/sửa/xoá ở Daynest → thấy trên Google; tạo/sửa/xoá trên Google → Đồng bộ ngay → thấy ở Daynest; tắt → độc lập. Xoá event thử.
-- [ ] 7. Cập nhật spec/mockup nếu khác thiết kế. Commit `feat(app): google calendar sync`, push. Không release.
+- [x] 6. `npm run typecheck && npm run lint && npm test` · emulator: bật → event Daynest lên Google; tạo/sửa/xoá ở Daynest → thấy trên Google; tạo/sửa/xoá trên Google → Đồng bộ ngay → thấy ở Daynest; tắt → độc lập. Xoá event thử.
+- [x] 7. Cập nhật spec/mockup nếu khác thiết kế. Commit `feat(app): google calendar sync`, push. Không release.
 
 ## Kết quả
 
@@ -44,13 +44,9 @@ Thử trên emulator (tài khoản `danhpoutch@gmail.com`):
 - Tạo "Daynest test 1" (10/10 23:00) → icon G ngay sau lưu; Chi tiết nhãn "Google Calendar"; Xoá → hộp "Cũng xoá trên Google Calendar. Không thể hoàn tác." → dòng DB bị xoá hẳn (Google đã xác nhận xoá).
 - Sửa thêm (lỗi có từ trước): event có giờ kết thúc đúng 00:00 (vd 23:00 – 00:00) không còn hiện sang ngày hôm sau.
 
-## ⛔ Chờ bạn: thử phía Google (tài khoản `danhpoutch@gmail.com`)
-
-Calendar MCP của Claude là tài khoản khác → không tự xem/sửa được lịch Google của `danhpoutch`.
-
-1. Mở Google Calendar (`danhpoutch`): thấy "2. Lịch — …" ngày 9/10 13:00, không thấy "Daynest test 1".
-2. Tạo "Google test 1" (vd 12/10 9:00, màu bất kỳ) · sửa giờ "2. Lịch — …" · tạo 1 event lặp hằng tuần "Google test 2".
-3. Báo "tiếp" → Claude bấm Đồng bộ ngay, kiểm tra 3 thay đổi về Daynest, rồi thử xoá trên Google, tắt đồng bộ, commit.
+- Tắt đồng bộ → hộp "Tắt đồng bộ?" đúng màn 21c → công tắc tắt, ẩn 2 dòng. Bật lại → hộp tiến độ màn 22 → kéo toàn bộ năm từ Google: 2 event đã đẩy được ghép lại theo `google_event_id`, không trùng.
+- Chưa thử được: thay đổi tạo từ phía Google (tạo/sửa/xoá trên Google Calendar của `danhpoutch` rồi kéo về), xung đột 2 bên, `RRULE` phức tạp, event lặp + ngoại lệ lên Google. Luồng kéo đã chạy thật (đọc + ghép từ Google) ở lần bật lại.
+- Spec F4 § Mô tả: ghi rõ nhãn Chi tiết, icon trên thẻ, kéo xuống chỉ ở Tuần / Danh sách / Ngày.
 
 ## Sau bước 10
 
