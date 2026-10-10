@@ -36,7 +36,7 @@ flowchart LR
     GSI["Google Sign-In SDK<br/>token Google"]
   end
 
-  subgraph Supabase["Supabase (gói Free)"]
+  subgraph Supabase["Supabase"]
     Auth["Auth<br/>JWT + refresh token"]
     REST["PostgREST<br/>REST + RPC"]
     PG[("Postgres<br/>RLS mọi bảng")]
@@ -63,6 +63,34 @@ flowchart LR
 | Supabase Auth | Đổi `idToken` Google → phiên Supabase (JWT có `session_id`) | Không lưu token Google |
 | Postgres + RLS | Lưu dữ liệu, chặn truy cập chéo user, chặn máy đã bị đăng xuất | Không có logic nghiệp vụ ngoài vài hàm (`register_device`…) |
 | Google Calendar | Lịch chính của user, đồng bộ 2 chiều khi bật | Không webhook, không đồng bộ nền |
+
+### RLS là gì
+
+**RLS (Row Level Security)** = luật phân quyền **theo từng dòng** của Postgres, gắn vào bảng. Mỗi lệnh `select / insert / update / delete` đều bị Postgres lọc qua luật này, dù gọi từ đâu.
+
+Vì sao cần: app không có server riêng, key Supabase (`anon key`) nằm trong app nên ai cũng lấy được. Bảo mật không dựa vào app mà dựa vào RLS ở DB: có key cũng chỉ chạm được dòng của chính mình.
+
+```mermaid
+flowchart LR
+  Req["App gửi: select * from events<br/>kèm JWT của user A"] --> PGR["PostgREST"]
+  PGR -->|"đặt auth.uid() = A<br/>từ JWT"| Policy{"Luật RLS của bảng events"}
+  Policy -->|"user_id = A và<br/>phiên còn hiệu lực"| Keep["Trả về"]
+  Policy -->|"dòng của user khác<br/>hoặc máy đã bị đăng xuất"| Drop["Bị loại, như không tồn tại"]
+```
+
+Luật thật của bảng `events` (migration S2):
+
+```sql
+create policy "events: all own" on public.events
+for all to authenticated
+using (user_id = (select auth.uid()) and (select public.session_active()))      -- được đọc / sửa / xoá dòng nào
+with check (user_id = (select auth.uid()) and (select public.session_active())); -- được ghi dòng mới ra sao
+```
+
+- `auth.uid()`: id user lấy từ JWT, app không tự khai được.
+- `session_active()`: phiên của máy còn trong `user_devices` → máy bị đá (mục 6) mất quyền ngay.
+- `using`: lọc dòng khi đọc / sửa / xoá. `with check`: chặn ghi dòng mang `user_id` của người khác.
+- Vi phạm khi ghi → lỗi `42501`. Đọc dòng không được phép → không lỗi, chỉ không thấy.
 
 ## 2. Các lớp trong app
 
@@ -336,7 +364,7 @@ flowchart TD
 
 ### 9.1. Hai tài khoản khác nhau
 
-Không bao giờ thấy hay sửa được dữ liệu của nhau — RLS chặn ở DB, không phụ thuộc app.
+Không bao giờ thấy hay sửa được dữ liệu của nhau — RLS chặn ở DB, không phụ thuộc app ([RLS là gì](#rls-là-gì)).
 
 ```mermaid
 flowchart LR
@@ -463,7 +491,7 @@ flowchart LR
 
 ## 12. Xử lý traffic
 
-Mục tiêu: 100 user cùng lúc, tổng ~10.000 user, Supabase gói Free ([Spec tổng §3](index.md#mục-tiêu-tải)).
+Mục tiêu: 100 user cùng lúc, tổng ~10.000 user ([Spec tổng §3](index.md#mục-tiêu-tải) · gói Supabase: [supabase-plans.md](supabase-plans.md)).
 
 ```mermaid
 flowchart LR

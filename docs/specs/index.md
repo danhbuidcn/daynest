@@ -58,6 +58,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 ### Mục tiêu tải
 
 - 100 user dùng cùng lúc, tổng ~10.000 user, gói Free Supabase.
+- So sánh các gói Supabase + gói nên dùng: [supabase-plans.md](supabase-plans.md).
 
 | Hạng mục | Ước tính | Gói Free | Kết luận |
 | --- | --- | --- | --- |
