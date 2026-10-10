@@ -13,12 +13,26 @@ Thuộc: [Sprint 2](index.md).
 | --- | --- |
 | Đồng bộ khi nào | Chỉ khi bật trong Cài đặt; mặc định tắt |
 | Lịch Google | Lịch chính (primary) của tài khoản Google đăng nhập |
-| Kéo về | Chỉ event trong **năm hiện tại** (1/1 → 31/12) |
-| Lúc bật | Đẩy **hết** event Daynest đang có lên Google |
+| Phạm vi đồng bộ (2 chiều) | Event của **năm hiện tại** + event **lặp lại** còn lần diễn ra trong năm hiện tại (dù bắt đầu từ năm trước) — xem [Phạm vi](#phạm-vi) |
+| Lúc bật | Đẩy event Daynest **trong phạm vi** lên Google |
 | Lúc tắt | Event lấy từ Google **giữ lại** thành event thường của Daynest |
 | Event lặp âm (ngày giỗ) | **Không đẩy** lên Google, chỉ ở Daynest |
 
 ## Logic
+
+### Phạm vi
+
+Event thuộc phạm vi khi có ít nhất 1 lần diễn ra trong năm hiện tại (1/1 → 31/12):
+
+| Loại | Thuộc phạm vi khi |
+| --- | --- |
+| Không lặp | Có ngày nằm trong năm hiện tại (event nhiều ngày: chỉ cần chạm năm) |
+| Lặp dương | Bắt đầu ≤ 31/12 năm nay **và** (không có ngày kết thúc **hoặc** kết thúc ≥ 1/1 năm nay) → đồng bộ **cả chuỗi** (1 quy tắc lặp), kể cả các lần ở năm khác |
+| Lặp âm | Không đồng bộ (chỉ ở Daynest) |
+
+- Kéo về: `events.list` với `timeMin`/`timeMax` của năm và `singleEvents=false` → Google tự trả cả event lặp bắt đầu từ năm trước nhưng còn lần trong năm nay.
+- Event đã liên kết (có `google_event_id`) vẫn đồng bộ khi sửa/xoá, dù sửa ra ngoài phạm vi.
+- Event mới ngoài phạm vi (vd tạo cho năm sau) → chưa đẩy; sang năm đó thì đẩy.
 
 ### Quyền + token
 
@@ -29,22 +43,22 @@ Thuộc: [Sprint 2](index.md).
 ### Bật đồng bộ (lần đầu hoặc bật lại)
 
 1. Xin scope. Từ chối → công tắc về tắt, toast "Cần cho phép truy cập Google Calendar".
-2. **Kéo** event lịch chính trong năm hiện tại (`timeMin` 1/1, `timeMax` 1/1 năm sau, `singleEvents=false`) → upsert vào Daynest theo `google_event_id`.
-3. **Đẩy** mọi event Daynest chưa có `google_event_id` (trừ lặp âm) lên Google.
+2. **Kéo** event lịch chính trong [phạm vi](#phạm-vi) (`timeMin` 1/1, `timeMax` 1/1 năm sau, `singleEvents=false`) → upsert vào Daynest theo `google_event_id`.
+3. **Đẩy** event Daynest trong phạm vi, chưa có `google_event_id` (trừ lặp âm) lên Google.
 4. Lưu `syncToken` + năm đã kéo vào `google_sync_state`.
 
-- Hiện tiến độ: hộp "Đang đồng bộ Google Calendar" · "Đang lấy sự kiện năm 2026 từ Google về Daynest, và gửi sự kiện của Daynest lên Google." · thanh tiến độ "120 / 300". Gián đoạn (mất mạng, đóng app) → lần đồng bộ sau làm tiếp phần còn `pending`.
+- Hiện tiến độ: hộp "Đang đồng bộ Google Calendar" · "Gồm sự kiện năm 2026 và các sự kiện lặp lại." · thanh tiến độ "120 / 300". Gián đoạn (mất mạng, đóng app) → lần đồng bộ sau làm tiếp phần còn `pending`.
 - Bật lại sau khi đã tắt: event đã có `google_event_id` được ghép lại, không tạo bản trùng.
 
 ### Đang bật
 
 | Chiều | Khi nào | Cách làm |
 | --- | --- | --- |
-| Daynest → Google | Ngay sau khi lưu/xoá event vào DB | `insert` / `patch` / `delete` trên Google. Lỗi → đánh dấu `pending`, đẩy lại ở lần đồng bộ sau |
-| Google → Daynest | Mở app / về foreground (nếu lần kéo trước > 5 phút) · kéo xuống ở Lịch · "Đồng bộ ngay" | `events.list` với `syncToken` → chỉ lấy phần thay đổi. `cancelled` → xoá ở Daynest. Event ngoài năm hiện tại → bỏ qua |
+| Daynest → Google | Ngay sau khi lưu/xoá event vào DB (event trong phạm vi hoặc đã liên kết) | `insert` / `patch` / `delete` trên Google. Lỗi → đánh dấu `pending`, đẩy lại ở lần đồng bộ sau |
+| Google → Daynest | Mở app / về foreground (nếu lần kéo trước > 5 phút) · kéo xuống ở Lịch · "Đồng bộ ngay" | `events.list` với `syncToken` → chỉ lấy phần thay đổi. `cancelled` → xoá ở Daynest. Event ngoài phạm vi → bỏ qua |
 
 - `410 Gone` (token hết hạn) → kéo lại toàn bộ năm, ghép theo `google_event_id`.
-- Sang năm mới → kéo toàn bộ năm mới.
+- Sang năm mới → kéo toàn bộ phạm vi năm mới + đẩy event Daynest mới vào phạm vi.
 - Mỗi lần kéo xong → đặt lại thông báo ([F3](F3-reminders.md)), làm mới lịch.
 
 ### Không trùng, không mất (nhiều máy)
@@ -91,7 +105,7 @@ Thuộc: [Sprint 2](index.md).
 ## Luồng
 
 ```text
-Cài đặt → Google Calendar → bật "Đồng bộ" → xin quyền → kéo năm nay + đẩy hết → "Đã đồng bộ lúc 10:20"
+Cài đặt → Google Calendar → bật "Đồng bộ" → xin quyền → kéo + đẩy event năm nay và event lặp → "Đã đồng bộ lúc 10:20"
 Lưu event (đang bật) → DB → Google
 Mở app / kéo xuống / Đồng bộ ngay → kéo thay đổi từ Google → lịch + thông báo cập nhật
 Tắt "Đồng bộ" → 2 bên độc lập
@@ -104,10 +118,11 @@ Tắt "Đồng bộ" → 2 bên độc lập
 
 ## Không làm
 
-- Lịch Google khác ngoài lịch chính, nhiều tài khoản Google, đẩy event lặp âm, kéo event ngoài năm hiện tại, sửa event có `RRULE` phức tạp, đồng bộ nền khi app đóng, push từ Google (webhook).
+- Lịch Google khác ngoài lịch chính, nhiều tài khoản Google, đẩy event lặp âm, đồng bộ event không lặp ngoài năm hiện tại, sửa event có `RRULE` phức tạp, đồng bộ nền khi app đóng, push từ Google (webhook).
 
 ## Test
 
 - Hàm map 2 chiều (`lib/google/`): cả ngày (ngày cuối +1), có giờ, màu, nhắc cả ngày, `RRULE` đơn giản + phức tạp + `COUNT`, instance ngoại lệ.
+- Hàm phạm vi: không lặp trong/ngoài năm, nhiều ngày vắt qua 31/12, lặp bắt đầu năm trước còn/hết lần trong năm nay, lặp âm.
 - Luật "sửa sau cùng thắng"; ghép lại khi bật lại; `id` đẩy trùng → `409` coi như xong.
 - Máy thật: tạo/sửa/xoá ở Daynest → thấy trên Google; tạo/sửa/xoá trên Google → kéo về thấy; tắt → sửa 1 bên, bên kia không đổi.

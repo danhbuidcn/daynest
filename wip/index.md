@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Google: chỉ đồng bộ năm hiện tại + event lặp | ✅ xong | [2026-10-10-google-sync-scope.md](2026-10-10-google-sync-scope.md) |
 | 2026-10-10 | Rút gọn chữ hộp "Tắt đồng bộ?" | ✅ xong | [2026-10-10-shorten-sync-off-text.md](2026-10-10-shorten-sync-off-text.md) |
 | 2026-10-10 | Màn 21b: bỏ dòng "Còn N sự kiện chưa đồng bộ" | ✅ xong | [2026-10-10-drop-unsynced-count.md](2026-10-10-drop-unsynced-count.md) |
 | 2026-10-10 | Chia `wip/` thành 1 file / việc | ✅ xong | [2026-10-10-split-wip.md](2026-10-10-split-wip.md) |
