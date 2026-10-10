@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 23: rút gọn chữ hộp "Bạn đã bị đăng xuất" | ✅ xong | [2026-10-10-kicked-dialog-text.md](2026-10-10-kicked-dialog-text.md) |
 | 2026-10-10 | Hộp "Tắt đồng bộ?": câu trang trọng hơn + quy tắc câu chữ | ✅ xong | [2026-10-10-formal-sync-off-text.md](2026-10-10-formal-sync-off-text.md) |
 | 2026-10-10 | Xoá danh mục thì xoá luôn ghi chú bên trong | ✅ xong | [2026-10-10-delete-category-deletes-notes.md](2026-10-10-delete-category-deletes-notes.md) |
 | 2026-10-10 | Màn 20b: bỏ dòng mô tả hộp "Xoá vĩnh viễn tất cả?" | ✅ xong | [2026-10-10-trash-dialog-text.md](2026-10-10-trash-dialog-text.md) |

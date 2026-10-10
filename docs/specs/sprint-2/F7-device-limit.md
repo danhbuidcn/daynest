@@ -51,7 +51,7 @@ Cài đặt → Tài khoản → Thiết bị đăng nhập → xem 2 máy
 
 ## Mô tả
 
-- Máy cũ (màn 23): hộp trên màn Đăng nhập · icon thiết bị · "Bạn đã bị đăng xuất" · "Tài khoản vừa đăng nhập trên thiết bị khác. Mỗi tài khoản dùng tối đa 2 thiết bị." · nút **Đã hiểu**.
+- Máy cũ (màn 23): hộp trên màn Đăng nhập · icon thiết bị · "Bạn đã bị đăng xuất" · "Tài khoản đã đăng nhập trên thiết bị khác." · nút **Đã hiểu**.
 - Máy mới (màn 24): hộp trên Tab Lịch ngay sau đăng nhập · "Đã đăng xuất <tên máy>" · "Mỗi tài khoản dùng tối đa 2 thiết bị. <Tên máy> (đăng nhập 01/10/2026) đã bị đăng xuất." · nút **Đã hiểu**.
 - Thiết bị đăng nhập (màn 25, `settings/devices`): mỗi máy 1 dòng — icon · tên máy · "Đăng nhập 01/10/2026 · Dùng lần cuối hôm nay 9:20" · nhãn "Thiết bị đang dùng" · chú thích "Tối đa 2 thiết bị. Khi đăng nhập trên thiết bị thứ 3, thiết bị đăng nhập sớm nhất sẽ bị đăng xuất."
 - Cài đặt → nhóm Tài khoản thêm dòng "Thiết bị đăng nhập" · giá trị "2/2" · `›`.
