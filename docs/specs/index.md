@@ -79,7 +79,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 
 ### Cuối sprint (mọi sprint)
 
-Khi DoD sprint đạt, làm theo thứ tự (todo trong `wip/todo_list.md`, chờ duyệt như mọi việc ghi/sửa):
+Khi DoD sprint đạt, làm theo thứ tự (todo: 1 file mới trong `wip/`, thêm dòng vào `wip/index.md`, chờ duyệt như mọi việc ghi/sửa):
 
 1. Tick DoD trong `sprint-N/index.md`.
 2. Tăng version trong `app/app.config.ts`: `version` +MINOR, `versionCode` +1 ([build.md](sprint-1/design/build.md#version)).

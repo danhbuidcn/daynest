@@ -1,6 +1,6 @@
 # Daynest — notes for Claude
 
-- Spec: `docs/specs/index.md` → `docs/specs/sprint-N/`. Todo: `wip/todo_list.md`.
+- Spec: `docs/specs/index.md` → `docs/specs/sprint-N/`. Todo: `wip/index.md` → one file per task `wip/<date>-<english-slug>.md`.
 - DB: change only via migrations — `supabase/db new|test|status|migrate` (see `supabase/README.md`).
 - App: `app/` — check with `npm run typecheck && npm run lint && npm test`.
 - Language: everything outside `docs/` and `wip/` is English (code, READMEs, this file, `playbook/`, commits); `docs/` and `wip/` are Vietnamese. Comments sparse, only to explain "why".

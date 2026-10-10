@@ -1,0 +1,36 @@
+# 2026-10-09 — Màn Cài đặt: bỏ dòng chân trang, chuyển Đăng xuất xuống cuối — ✅ xong
+
+- [x] `mockups.html` (màn 7, 8, 9 vì cùng nền Cài đặt):
+  - xoá dòng "Daynest · làm với ♥";
+  - chuyển dòng Đăng xuất ra khỏi nhóm Tài khoản, đặt thành 1 thẻ riêng ở cuối màn, dưới nhóm Ứng dụng;
+  - nhóm Tài khoản còn dòng "Đăng nhập bằng Google".
+- [x] `screens.md` màn 7: ghi thứ tự: tài khoản → Ứng dụng (Ngôn ngữ, Phiên bản) → Đăng xuất ở cuối.
+- [x] Sửa tài khoản: cho sửa tên hiển thị và ảnh đại diện. Email lấy từ Google, chỉ xem.
+  - `F2-google-sign-in.md`, thêm mục Sửa tài khoản:
+    - Bấm thẻ tài khoản (có icon bút) → mở màn Sửa tài khoản.
+    - Tên bắt buộc, 1–50 ký tự, cắt khoảng trắng 2 đầu.
+    - Ảnh: chọn từ thư viện (`expo-image-picker`), cắt vuông, thu nhỏ 512px JPEG (`expo-image-manipulator`), tải lên Storage.
+    - Bấm Lưu: cập nhật `profiles.display_name`, `profiles.avatar_url`, toast "Đã lưu", quay lại Cài đặt.
+    - Lỗi mạng: toast lỗi, ở lại màn.
+    - Đăng nhập lại không ghi đè tên/ảnh đã sửa, vì trigger chỉ chạy lần đầu.
+  - `design/db.md`:
+    - thêm Storage bucket `avatars` (public read), file `avatars/{user_id}/avatar.jpg`;
+    - RLS: user chỉ ghi/xoá trong folder `{user_id}` của mình;
+    - `profiles.avatar_url` ghi rõ: ảnh Google lúc đầu, ảnh tự tải sau khi sửa.
+  - `F3-supabase-db.md`: thêm bucket vào phạm vi migration.
+  - `screens.md`: màn 7 thẻ tài khoản có icon bút; thêm màn 10 "Sửa tài khoản": ảnh tròn kèm nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu, nút quay lại.
+  - `mockups.html`: thẻ tài khoản có icon bút; thêm màn 10.
+  - `sprint-1/index.md` DoD: thêm "Sửa tên + ảnh, mở lại app vẫn đúng; user A không ghi được ảnh của user B."
+- [x] Bỏ toast "Đang phát triển ✨" ở màn Lịch (màn 3).
+  - Màn 3 lúc đó trùng màn 4 → gộp thành 1 khung "3–4. Lịch (trống) + thanh tab" trong mockup. `screens.md` giữ dòng 3 (thanh tab là thành phần chung).
+  - Nút `+` ở S1 vẫn hiện toast "Đang phát triển", bỏ ✨, theo F1. Chỉ không vẽ toast trong mockup.
+- [x] Đồng bộ mọi màn — chỉ dùng token trong `design-system.md`, không dùng mã màu hay cỡ chữ ngoài token:
+  - **Màu tab trống:** ô minh hoạ của Lịch, Quản lý, Thống kê cùng dùng nền `primarySoft` + icon `primary`. Bỏ tím `#8B74D6`, cam `#E6A35C`.
+  - **Màu icon dòng cài đặt:** mọi dòng dùng nền `primarySoft` + icon `primaryDark`, riêng Đăng xuất dùng `error`. Bỏ xanh dương, tím.
+  - **Màu ảnh đại diện mặc định:** nền `primary` thay gradient cam-hồng.
+  - **Cỡ chữ:** chỉ dùng 4 cỡ token: 22 (title), 17 (heading), 15 (body), 12 (caption). Đổi các chỗ 13–14px (mô tả tab trống, email, giá trị dòng cài đặt, toast, mô tả hộp thoại, mã EN/VI) sang 15 hoặc 12.
+  - **Độ đậm tiêu đề:** tiêu đề hộp thoại và tiêu đề tab trống cùng dùng 700, theo token `heading`.
+  - **Tiêu đề tab trống ngắn, 1 dòng:** "Lịch đang phát triển", "Quản lý đang phát triển", "Thống kê đang phát triển".
+- [x] Dòng Phiên bản chỉ hiện `1.0.0` (bỏ `(versionCode)`): sửa `mockups.html` và `screens.md` ("Cài đặt hiện `version`").
+- [x] `design-system.md`: thêm mục "Quy tắc đồng bộ": mọi màn chỉ dùng token màu, cỡ chữ, khoảng cách, bo góc; màu event chỉ dùng cho event; icon dòng cài đặt cùng 1 kiểu màu.
+- [x] Kiểm tra: chụp mockup, so từng màn: cùng font Nunito, cùng màu nền, cùng cỡ tiêu đề, không còn mã màu ngoài token (grep `#` trong phần màn hình). Không có link hỏng. Commit `docs: settings layout, account editing, consistent mockups` rồi push.
