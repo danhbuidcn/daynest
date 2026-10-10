@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | S2 code bước 8: Nhắc nhở + Cài đặt Thông báo, Lịch (F3, F6) | ✅ xong | [2026-10-10-s2-code-step-8-reminders-settings.md](2026-10-10-s2-code-step-8-reminders-settings.md) |
 | 2026-10-10 | S2 code bước 7: xem Tuần / Ngày / Danh sách (F1) | ✅ xong | [2026-10-10-s2-code-step-7-week-day-list.md](2026-10-10-s2-code-step-7-week-day-list.md) |
 | 2026-10-10 | Cảnh báo email khi Supabase dùng ≥ 80% gói | ❌ huỷ | [2026-10-10-supabase-usage-alert.md](2026-10-10-supabase-usage-alert.md) |
 | 2026-10-10 | Spec kiến trúc bằng biểu đồ Mermaid | ✅ xong | [2026-10-10-architecture-diagrams.md](2026-10-10-architecture-diagrams.md) |

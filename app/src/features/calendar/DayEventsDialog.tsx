@@ -16,6 +16,7 @@ export function DayEventsDialog({
   visible,
   date,
   holidays,
+  showLunar,
   occurrences,
   use24h,
   timeZone,
@@ -26,6 +27,7 @@ export function DayEventsDialog({
   visible: boolean;
   date: SolarDate;
   holidays: HolidayId[];
+  showLunar: boolean;
   occurrences: EventOccurrence[];
   use24h: boolean;
   timeZone: string;
@@ -43,9 +45,11 @@ export function DayEventsDialog({
             <AppText variant="heading" style={styles.center} numberOfLines={1}>
               {dateLabel(t, date)}
             </AppText>
-            <AppText variant="caption" color={colors.textMuted} style={styles.center}>
-              {lunarLabel(t, date)}
-            </AppText>
+            {showLunar ? (
+              <AppText variant="caption" color={colors.textMuted} style={styles.center}>
+                {lunarLabel(t, date)}
+              </AppText>
+            ) : null}
           </View>
         }
         onClose={onClose}

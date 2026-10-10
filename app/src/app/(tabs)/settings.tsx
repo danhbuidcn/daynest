@@ -13,6 +13,8 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { CalendarSettings } from '@/features/settings/CalendarSettings';
+import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
 import { colors, space } from '@/theme';
 
@@ -62,6 +64,12 @@ export default function SettingsScreen() {
             onPress={() => router.push('/settings/devices')}
           />
         </Card>
+
+        <GroupLabel text={t('settings.notifications')} />
+        <NotificationSettings />
+
+        <GroupLabel text={t('settings.calendar')} />
+        <CalendarSettings />
 
         <GroupLabel text={t('settings.app')} />
         <Card>

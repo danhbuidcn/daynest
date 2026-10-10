@@ -26,12 +26,15 @@ export function DayTimeline({
   use24h,
   timeZone,
   onPressOccurrence,
+  onPressHour,
 }: {
   spans: OccurrenceSpan[];
   isToday: boolean;
   use24h: boolean;
   timeZone: string;
   onPressOccurrence: (o: EventOccurrence) => void;
+  // Empty part of an hour row → new event at that hour (F1).
+  onPressHour: (hour: number) => void;
 }) {
   const { t } = useTranslation();
   const scroll = useRef<ScrollView>(null);
@@ -57,11 +60,15 @@ export function DayTimeline({
   return (
     <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content}>
       {Array.from({ length: 24 }, (_, hour) => (
-        <View key={hour} style={styles.hour}>
+        <Pressable
+          key={hour}
+          accessibilityRole="button"
+          onPress={() => onPressHour(hour)}
+          style={({ pressed }) => [styles.hour, pressed && styles.hourPressed]}>
           <AppText variant="caption" color={colors.textMuted} style={styles.hourLabel}>
             {clockLabel(t, { hour, minute: 0, second: 0 }, use24h)}
           </AppText>
-        </View>
+        </Pressable>
       ))}
       <View style={styles.blocks} pointerEvents="box-none">
         {blocks.map((b) => {
@@ -113,6 +120,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { paddingTop: TOP_PAD, paddingBottom: space.lg, marginHorizontal: space.lg },
   hour: { height: HOUR_HEIGHT, borderTopWidth: 1, borderTopColor: colors.border },
+  hourPressed: { backgroundColor: colors.primarySoft },
   hourLabel: { width: LABEL_WIDTH - 4, marginTop: -8, backgroundColor: colors.bg },
   blocks: { position: 'absolute', top: 0, bottom: 0, left: LABEL_WIDTH + 6, right: 0 },
   block: { position: 'absolute', paddingRight: 4 },

@@ -29,16 +29,20 @@ export const NOTE_MAX = 2000;
 
 const MIDNIGHT: TimeOfDay = { hour: 0, minute: 0, second: 0 };
 
-// New event: the given day, next full hour, 1 hour long, one "15 minutes before" reminder (F2, F3).
-export function newFormState(date: SolarDate, timeZone: string, now: Date = new Date()): FormState {
-  const hour = (timeOfDayIn(now, timeZone).hour + 1) % 24;
+// Where a new event starts: an hour tapped in the Day view, or its "Cả ngày" row (F1).
+export type NewEventSlot = { hour?: number; allDay?: boolean };
+
+// New event: the given day, next full hour (or the tapped one), 1 hour long, one "15 minutes
+// before" reminder (F2, F3). Starting at 23:00 ends at 00:00 the next day.
+export function newFormState(date: SolarDate, timeZone: string, now: Date = new Date(), slot: NewEventSlot = {}): FormState {
+  const hour = slot.hour ?? (timeOfDayIn(now, timeZone).hour + 1) % 24;
   return {
     title: '',
     note: '',
-    allDay: false,
+    allDay: slot.allDay ?? false,
     startDate: date,
     startTime: { hour, minute: 0, second: 0 },
-    endDate: date,
+    endDate: hour === 23 && !slot.allDay ? jdToDate(jdFromDate(date) + 1) : date,
     endTime: { hour: (hour + 1) % 24, minute: 0, second: 0 },
     color: 'mint',
     reminderOn: true,

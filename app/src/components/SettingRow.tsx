@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
@@ -11,6 +12,7 @@ export function SettingRow({
   onPress,
   danger,
   first,
+  trailing,
 }: {
   icon: IconName;
   label: string;
@@ -18,6 +20,8 @@ export function SettingRow({
   onPress?: () => void;
   danger?: boolean;
   first?: boolean;
+  // Right-side control (a Switch) instead of value + chevron.
+  trailing?: ReactNode;
 }) {
   return (
     <Pressable
@@ -35,7 +39,8 @@ export function SettingRow({
           {value}
         </AppText>
       ) : null}
-      {onPress ? <Icon name="chevron" size={18} color={colors.textMuted} /> : null}
+      {trailing}
+      {onPress && !trailing ? <Icon name="chevron" size={18} color={colors.textMuted} /> : null}
     </Pressable>
   );
 }

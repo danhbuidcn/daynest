@@ -31,7 +31,22 @@
     "app": "App",
     "language": "Language",
     "version": "Version",
-    "logout": "Sign out"
+    "logout": "Sign out",
+    "notifications": "Notifications",
+    "allowNotifications": "Allow notifications",
+    "blocked": "Notifications are blocked on this device.",
+    "openSystemSettings": "Open device settings",
+    "calendar": "Calendar",
+    "weekStart": "Week starts on",
+    "monday": "Monday",
+    "sunday": "Sunday",
+    "timeZone": "Time zone",
+    "searchTimeZone": "Search time zones",
+    "noTimeZone": "No time zone found",
+    "use24h": "24-hour time",
+    "showLunar": "Show lunar dates",
+    "showHolidays": "Show holidays",
+    "saveFailed": "Could not save. Please try again."
   },
   "logoutDialog": {
     "title": "Sign out?",
@@ -280,5 +295,13 @@
       "event": "Event",
       "note": "Note"
     }
+  },
+  "reminders": {
+    "channel": "Event reminders",
+    "offInSettings": "Notifications are turned off in Settings",
+    "batteryTitle": "Keep reminders on time",
+    "batteryText": "On some devices, reminders may not work while battery optimization is on. Please turn off battery optimization for Daynest.",
+    "later": "Later",
+    "exclude": "Exclude"
   }
 }

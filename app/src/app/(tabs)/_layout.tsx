@@ -7,6 +7,7 @@ import { TabBar } from '@/components/TabBar';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { QuickAddDialog } from '@/features/calendar/QuickAddDialog';
+import { useNotificationTap } from '@/features/reminders/useNotificationTap';
 import { clockLabel } from '@/features/events/format';
 import { isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
@@ -18,6 +19,7 @@ export default function TabsLayout() {
   const router = useRouter();
   const { settings } = useAuth();
   const [quickAddOpen, setQuickAddOpen] = useState(false);
+  useNotificationTap();
 
   // Weekday, date and the current time, taken when the popup opens (mockup screen 8).
   const quickAddTitle = useMemo(() => {

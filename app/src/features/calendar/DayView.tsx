@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { lunarLabel } from '@/features/events/format';
@@ -8,7 +8,7 @@ import type { EventOccurrence } from '@/features/events/occurrences';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
 import { byStartTime, occurrenceKey, occurrencesOnDay, timedSpansOnDay } from './dayOccurrences';
-import { dayDetails } from './dayInfo';
+import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayTimeline, LABEL_WIDTH } from './DayTimeline';
 import { EventBar } from './EventBar';
 
@@ -19,19 +19,24 @@ export function DayView({
   occurrences,
   use24h,
   timeZone,
+  display,
   onPressOccurrence,
   onPressHoliday,
+  onAddAt,
 }: {
   cursor: SolarDate;
   today: SolarDate;
   occurrences: EventOccurrence[];
   use24h: boolean;
   timeZone: string;
+  display: DayDisplay;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
+  // Tapping an empty hour (hour) or the "Cả ngày" row (null) opens the event form for it.
+  onAddAt: (d: SolarDate, hour: number | null) => void;
 }) {
   const { t } = useTranslation();
-  const day = useMemo(() => dayDetails(cursor, today), [cursor, today]);
+  const day = useMemo(() => dayDetails(cursor, today, display), [cursor, today, display]);
   const onDay = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(byStartTime), [occurrences, cursor, timeZone]);
   const allDay = onDay.filter((o) => o.allDay);
   const spans = useMemo(() => timedSpansOnDay(occurrences, cursor, timeZone), [occurrences, cursor, timeZone]);
@@ -39,10 +44,15 @@ export function DayView({
 
   return (
     <View style={styles.flex}>
-      <AppText variant="caption" color={colors.textMuted} style={styles.lunar}>
-        {lunarLabel(t, cursor)}
-      </AppText>
-      <View style={styles.allDay}>
+      {day.showLunar ? (
+        <AppText variant="caption" color={colors.textMuted} style={styles.lunar}>
+          {lunarLabel(t, cursor)}
+        </AppText>
+      ) : null}
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => onAddAt(cursor, null)}
+        style={({ pressed }) => [styles.allDay, pressed && styles.pressed]}>
         <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip" style={styles.allDayLabel}>
           {t('events.form.allDay')}
         </AppText>
@@ -65,8 +75,15 @@ export function DayView({
             —
           </AppText>
         )}
-      </View>
-      <DayTimeline spans={spans} isToday={day.isToday} use24h={use24h} timeZone={timeZone} onPressOccurrence={onPressOccurrence} />
+      </Pressable>
+      <DayTimeline
+        spans={spans}
+        isToday={day.isToday}
+        use24h={use24h}
+        timeZone={timeZone}
+        onPressOccurrence={onPressOccurrence}
+        onPressHour={(hour) => onAddAt(cursor, hour)}
+      />
     </View>
   );
 }
@@ -83,6 +100,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  pressed: { backgroundColor: colors.primarySoft },
   allDayLabel: { width: LABEL_WIDTH },
   allDayList: { flex: 1, maxHeight: 96 },
   allDayItems: { gap: space.xs },

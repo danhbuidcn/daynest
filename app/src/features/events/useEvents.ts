@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuth } from '@/features/auth/AuthProvider';
+import { resyncReminders } from '@/features/reminders/reminderSync';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
 import type { DateRange } from '@/lib/recurrence';
@@ -45,7 +46,10 @@ function useForbiddenGuard() {
 
 function useInvalidateEvents() {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: [EVENTS_KEY] });
+  return () => {
+    void resyncReminders();
+    return queryClient.invalidateQueries({ queryKey: [EVENTS_KEY] });
+  };
 }
 
 export type SaveEventVars = { id?: string; updatedAt?: string; input: EventInput; clearExceptions?: boolean };

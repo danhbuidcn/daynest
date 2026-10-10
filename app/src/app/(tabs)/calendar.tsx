@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AlertDialog } from '@/components/Dialog';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
-import { dayDetails, monthDays, type DayInfo } from '@/features/calendar/dayInfo';
+import { dayDetails, monthDays, type DayDisplay, type DayInfo } from '@/features/calendar/dayInfo';
 import { DayEventsDialog } from '@/features/calendar/DayEventsDialog';
 import { occurrencesOnDay } from '@/features/calendar/dayOccurrences';
 import { DayView } from '@/features/calendar/DayView';
@@ -38,9 +38,13 @@ export default function CalendarScreen() {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dayDialogDate, setDayDialogDate] = useState<SolarDate | null>(null);
 
+  const display = useMemo<DayDisplay>(
+    () => ({ showLunar: settings.showLunar, showHolidays: settings.showHolidays }),
+    [settings.showLunar, settings.showHolidays],
+  );
   const days = useMemo(
-    () => (mode === 'month' ? monthDays(cursor.year, cursor.month, settings.weekStart, today) : []),
-    [mode, cursor.year, cursor.month, settings.weekStart, today],
+    () => (mode === 'month' ? monthDays(cursor.year, cursor.month, settings.weekStart, today, display) : []),
+    [mode, cursor.year, cursor.month, settings.weekStart, today, display],
   );
   const { occurrences } = useEventsInRange(nav.range, settings.timeZone);
 
@@ -94,6 +98,11 @@ export default function CalendarScreen() {
     router.push({ pathname: '/event/[id]', params: { id: o.eventId, occurrenceDate: o.occurrenceDate } });
   };
 
+  const onAddAt = (d: SolarDate, hour: number | null) => {
+    const params = hour === null ? { date: isoDate(d), allDay: '1' } : { date: isoDate(d), hour: String(hour) };
+    router.push({ pathname: '/event/edit', params });
+  };
+
   const swipe = Gesture.Pan()
     .runOnJS(true)
     .activeOffsetX([-20, 20])
@@ -103,7 +112,7 @@ export default function CalendarScreen() {
       else if (e.translationX >= SWIPE_DISTANCE) go(-1);
     });
 
-  const viewProps = { cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, onPressOccurrence, onPressHoliday: setDayDialogDate };
+  const viewProps = { cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, display, onPressOccurrence, onPressHoliday: setDayDialogDate };
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
@@ -117,9 +126,9 @@ export default function CalendarScreen() {
           ) : mode === 'week' ? (
             <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} />
           ) : mode === 'day' ? (
-            <DayView {...viewProps} />
+            <DayView {...viewProps} onAddAt={onAddAt} />
           ) : (
-            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} onAddDay={setDayDialogDate} />
+            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} />
           )}
         </View>
       </GestureDetector>
@@ -137,7 +146,8 @@ export default function CalendarScreen() {
         <DayEventsDialog
           visible
           date={dayDialogDate}
-          holidays={dayDetails(dayDialogDate, today).holidays}
+          holidays={dayDetails(dayDialogDate, today, display).holidays}
+          showLunar={settings.showLunar}
           occurrences={dayDialogOccurrences}
           use24h={settings.use24h}
           timeZone={settings.timeZone}

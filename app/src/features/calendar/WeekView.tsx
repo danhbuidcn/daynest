@@ -10,7 +10,7 @@ import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
 import { byStartTime, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
-import { dayDetails, lunarDayMonth } from './dayInfo';
+import { dayDetails, type DayDisplay } from './dayInfo';
 import { EventCard, HolidayCard } from './EventCard';
 import { WeekChips } from './WeekChips';
 
@@ -24,6 +24,7 @@ export function WeekView({
   occurrences,
   use24h,
   timeZone,
+  display,
   onSelectWeek,
   onPressOccurrence,
   onPressHoliday,
@@ -34,12 +35,13 @@ export function WeekView({
   occurrences: EventOccurrence[];
   use24h: boolean;
   timeZone: string;
+  display: DayDisplay;
   onSelectWeek: (deltaWeeks: number) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
-  const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today)), [cursor, weekStart, today]);
+  const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
 
   return (
     <View style={styles.flex}>
@@ -60,7 +62,7 @@ export function WeekView({
                   {String(d.day).padStart(2, '0')}
                 </AppText>
                 <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
-                  {lunarDayMonth(d.lunar)}
+                  {d.lunarDayMonth}
                 </AppText>
               </View>
               {empty ? (

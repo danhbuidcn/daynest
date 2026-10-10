@@ -38,7 +38,7 @@ const NO_DATE = { year: 1900, month: 1, day: 1 };
 // Màn 9 — create: `?date=YYYY-MM-DD` · edit: `?eventId=…&occurrenceDate=YYYY-MM-DD`.
 export default function EventFormScreen() {
   const { settings } = useAuth();
-  const params = useLocalSearchParams<{ eventId?: string; occurrenceDate?: string; date?: string }>();
+  const params = useLocalSearchParams<{ eventId?: string; occurrenceDate?: string; date?: string; hour?: string; allDay?: string }>();
   const isEdit = !!params.eventId;
   const occDate = params.occurrenceDate ? parseIsoDate(params.occurrenceDate) : NO_DATE;
 
@@ -47,9 +47,12 @@ export default function EventFormScreen() {
   const occurrence = isEdit ? loaded.occurrences.find((o) => o.eventId === params.eventId && o.occurrenceDate === params.occurrenceDate) : undefined;
 
   const initial = useMemo<FormState | null>(() => {
-    if (!isEdit) return newFormState(params.date ? parseIsoDate(params.date) : todayIn(settings.timeZone), settings.timeZone);
+    if (!isEdit) {
+      const slot = { hour: params.hour ? Number(params.hour) : undefined, allDay: params.allDay === '1' };
+      return newFormState(params.date ? parseIsoDate(params.date) : todayIn(settings.timeZone), settings.timeZone, new Date(), slot);
+    }
     return baseEvent && occurrence ? formStateFromOccurrence(baseEvent, occurrence, settings.timeZone) : null;
-  }, [isEdit, baseEvent, occurrence, params.date, settings.timeZone]);
+  }, [isEdit, baseEvent, occurrence, params.date, params.hour, params.allDay, settings.timeZone]);
 
   if (!initial) return null;
   return <EventForm key={params.eventId ?? 'create'} initial={initial} baseEvent={baseEvent} occurrence={occurrence} />;

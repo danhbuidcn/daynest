@@ -8,6 +8,7 @@ import {
   type AuthService,
   type DeviceRow,
   type Profile,
+  type SettingsPatch,
   type UserSettings,
 } from './authService';
 
@@ -18,6 +19,8 @@ type AuthState = {
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
   saveLanguage: (lang: Language) => Promise<void>;
+  // F6 — applies right away; a failed save puts the old values back and rethrows (caller toasts).
+  saveSettings: (patch: SettingsPatch) => Promise<void>;
   // F7 — 2-device limit.
   kickedOut: boolean;
   dismissKickedOut: () => void;
@@ -119,6 +122,25 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
     [service],
   );
 
+  const settingsRef = useRef(settings);
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
+  const saveSettings = useCallback(
+    async (patch: SettingsPatch) => {
+      const previous = settingsRef.current;
+      setSettings({ ...previous, ...patch });
+      try {
+        await service.saveSettings(patch);
+      } catch (e) {
+        const rollback = Object.fromEntries(Object.keys(patch).map((k) => [k, previous[k as keyof SettingsPatch]]));
+        setSettings((s) => ({ ...s, ...rollback }));
+        throw e;
+      }
+    },
+    [service],
+  );
+
   const dismissKickedOut = useCallback(() => setKickedOut(false), []);
   const dismissNewDeviceName = useCallback(() => setNewDeviceName(null), []);
   const listDevices = useCallback(() => service.listDevices(), [service]);
@@ -138,6 +160,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
       signIn,
       signOut,
       saveLanguage,
+      saveSettings,
       kickedOut,
       dismissKickedOut,
       newDeviceName,
@@ -152,6 +175,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
       signIn,
       signOut,
       saveLanguage,
+      saveSettings,
       kickedOut,
       dismissKickedOut,
       newDeviceName,

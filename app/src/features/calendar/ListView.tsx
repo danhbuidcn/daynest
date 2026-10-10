@@ -11,7 +11,7 @@ import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
 import { byStartTime, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
-import { dayDetails } from './dayInfo';
+import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayStrip } from './DayStrip';
 import { EventCard, HolidayCard } from './EventCard';
 
@@ -23,8 +23,8 @@ export function ListView({
   occurrences,
   use24h,
   timeZone,
+  display,
   onSelectDay,
-  onAddDay,
   onPressOccurrence,
   onPressHoliday,
 }: {
@@ -34,14 +34,14 @@ export function ListView({
   occurrences: EventOccurrence[];
   use24h: boolean;
   timeZone: string;
+  display: DayDisplay;
   onSelectDay: (d: SolarDate) => void;
-  onAddDay: (d: SolarDate) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
-  const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today)), [cursor, weekStart, today]);
-  const day = days.find((d) => d.day === cursor.day && d.month === cursor.month) ?? dayDetails(cursor, today);
+  const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
+  const day = days.find((d) => d.day === cursor.day && d.month === cursor.month) ?? dayDetails(cursor, today, display);
   const events = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(byStartTime), [occurrences, cursor, timeZone]);
   const clock = (iso: string) => clockLabel(t, timeOfDayIn(new Date(iso), timeZone), use24h);
   const empty = events.length === 0 && day.holidays.length === 0;
@@ -53,7 +53,6 @@ export function ListView({
         selected={cursor}
         hasItems={(d) => d.holidays.length > 0 || occurrencesOnDay(occurrences, d, timeZone).length > 0}
         onSelect={onSelectDay}
-        onAdd={onAddDay}
       />
       {empty ? (
         <AppText color={colors.textMuted} style={styles.empty}>

@@ -2,6 +2,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
+import { resyncReminders } from '@/features/reminders/reminderSync';
+import { requestPermission } from '@/lib/notifications/scheduler';
 import * as api from './api';
 import type { EventRow } from './event';
 import { changesSeriesAnchor, toEventInput, type FormState } from './eventFormState';
@@ -41,6 +43,12 @@ export function useEventFormSave({
     try {
       await write();
       onSaved();
+      // F3: the first event saved with reminders is when the OS permission gets asked for.
+      if (form.reminderOn && form.reminderMinutes.length > 0 && settings.notificationsEnabled) {
+        void requestPermission()
+          .then((s) => (s === 'granted' ? resyncReminders() : undefined))
+          .catch(() => {});
+      }
     } catch (e) {
       if (e instanceof api.ConflictError) setConflictOpen(true);
       else if (e instanceof api.ForbiddenError) await recheckSession();

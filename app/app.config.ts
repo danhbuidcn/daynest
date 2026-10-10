@@ -22,12 +22,15 @@ const config: ExpoConfig = {
       monochromeImage: './assets/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
+    // F3: exact reminder times when the OS allows it (otherwise Android may delay them a few minutes).
+    permissions: ['android.permission.SCHEDULE_EXACT_ALARM'],
   },
   plugins: [
     './plugins/withReleaseSigning',
     'expo-router',
     'expo-font',
     '@react-native-community/datetimepicker',
+    ['expo-notifications', { icon: './assets/android-icon-monochrome.png', color: '#5BBE98' }],
     [
       'expo-splash-screen',
       { image: './assets/splash-icon.png', imageWidth: 120, backgroundColor: '#FAF8F5' },

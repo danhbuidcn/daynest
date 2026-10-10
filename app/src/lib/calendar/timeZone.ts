@@ -39,7 +39,7 @@ export function timeOfDayIn(date: Date, timeZone: string = DEFAULT_TIME_ZONE): T
 }
 
 // Minutes to add to a UTC instant to get `timeZone`'s wall-clock time at that instant.
-function tzOffsetMinutesAt(date: Date, timeZone: string): number {
+export function tzOffsetMinutesAt(date: Date, timeZone: string): number {
   try {
     const parts = new Intl.DateTimeFormat('en-US', {
       timeZone,

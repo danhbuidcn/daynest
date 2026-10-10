@@ -157,7 +157,6 @@
   .ds { position: relative; height: 60px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
   .ds i { font-style: normal; font-size: 12px; color: var(--muted); } .ds b { font-size: 17px; font-weight: 800; } .ds em { font-style: normal; font-size: 12px; color: var(--muted); }
   .ds.on { background: var(--primary); color: #fff; } .ds.on i, .ds.on em { color: #fff; }
-  .ds .plus { position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; background: #fff; color: var(--primary); display: grid; place-items: center; font-weight: 800; font-size: 14px; line-height: 1; }
   .ds .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
   .agenda { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
   .ag { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: stretch; }
@@ -414,8 +413,8 @@ const weekScreen = `<div class="content">${calHead('Tuần 5 – 11/10')}${seg('
 // ---- Ngày ----
 const H0 = 8;
 const blk = (c, ttl, tm, from, to, l = 50, r = 0) => `<div class="block" style="top:${(from - H0) * 56 + 8}px;height:${(to - from) * 56 - 4}px;left:${l}px;right:${r}px;background:color-mix(in srgb, var(--${c}) 30%, var(--surface));border-color:var(--${c})"><div class="ttl">${ttl}</div><div class="tm">${tm}</div></div>`;
-const dayScreen = `<div class="content">${calHead('Thứ Sáu, 9/10')}${seg('Ngày')}
-  <div class="dayhead"><span class="cap muted">29/8 năm Bính Ngọ</span><span class="cap muted">Kéo xuống để đồng bộ</span></div>
+const dayScreen = () => `<div class="content">${calHead('Thứ Sáu, 9/10')}${seg('Ngày')}
+  <div class="dayhead"><span class="cap muted">29/8 năm Bính Ngọ</span></div>
   <div class="allday"><span class="cap muted">Cả ngày</span><span class="cap muted">—</span></div>
   <div class="hours">${Array.from({ length: 10 }, (_, i) => `<div class="hr"><span>${String(H0 + i).padStart(2, '0')}:00</span><i></i></div>`).join('')}
     ${blk('lavender', 'Họp nhóm', '10:00 – 11:00 · Google', 10, 11, 50, 110)}
@@ -430,7 +429,7 @@ const strip = [['T2', 5, ''], ['T3', 6, 'dot'], ['T4', 7, ''], ['T5', 8, ''], ['
 const lunarOf = { 5: '25/8', 6: '26/8', 7: '27/8', 8: '28/8', 9: '29/8', 10: '1/9', 11: '2/9' };
 const ag = (a, b, c, ttl, tm, ...s) => `<div class="ag"><div class="times"><b>${a}</b>${b}</div>${ecard(c, ttl, tm, ...s)}</div>`;
 const listScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg('Danh sách')}
-  <div class="daystrip">${strip.map(([w, d, f]) => `<div class="ds ${f === 'on' ? 'on' : ''}"><i>${w}</i><b>${d}</b><em>${lunarOf[d]}</em>${f === 'on' ? '<span class="plus">+</span>' : ''}${f === 'dot' ? '<span class="dot"></span>' : ''}</div>`).join('')}</div>
+  <div class="daystrip">${strip.map(([w, d, f]) => `<div class="ds ${f === 'on' ? 'on' : ''}"><i>${w}</i><b>${d}</b><em>${lunarOf[d]}</em>${f === 'dot' ? '<span class="dot"></span>' : ''}</div>`).join('')}</div>
   <div class="agenda">
     ${ag('10:00', '11:00', 'lavender', 'Họp nhóm', 'Phòng họp tầng 3', 'google')}
     ${ag('15:00', '15:30', 'lemon', 'Khám răng', 'Nha khoa Kim', 'bell')}
@@ -491,6 +490,10 @@ const eventForm = (o) => `<div class="content">
 </div>`;
 const formA = eventForm({ head: 'Sự kiện mới', title: 'Khám răng', detail: 'Nha khoa Kim, 12 Lý Thường Kiệt', allDay: false, start: 'T6, 09/10/2026', end: 'T6, 09/10/2026', t1: '15:00', t2: '15:30', rem: ['15 phút trước'], repeat: 'Không lặp lại', color: 'lemon', colorName: 'Vàng chanh' });
 const formB = eventForm({ head: 'Sự kiện mới', title: 'Giỗ ông nội', detail: 'Thêm chi tiết', allDay: true, start: 'T4, 21/10/2026', end: 'T4, 21/10/2026', rem: ['1 ngày trước', 'Đúng giờ'], repeat: 'Hằng năm (âm lịch) · 12/9 âm', color: 'peach', colorName: 'Cam đào' });
+
+// Màn Ngày: bấm 1 giờ trống / dòng Cả ngày → form event (màn 9) điền sẵn.
+const formSlot = eventForm({ head: 'Sự kiện mới', title: '<span class="muted">Tiêu đề</span>', detail: 'Thêm chi tiết', allDay: false, start: 'T6, 09/10/2026', end: 'T6, 09/10/2026', t1: '13:00', t2: '14:00', rem: ['15 phút trước'], repeat: 'Không lặp lại', color: 'mint', colorName: 'Xanh bạc hà' });
+const formSlotAllDay = eventForm({ head: 'Sự kiện mới', title: '<span class="muted">Tiêu đề</span>', detail: 'Thêm chi tiết', allDay: true, start: 'T6, 09/10/2026', end: 'T6, 09/10/2026', rem: ['15 phút trước'], repeat: 'Không lặp lại', color: 'mint', colorName: 'Xanh bạc hà' });
 
 // ---- Chọn lặp ----
 const repeatDialog = `<div class="under">${formB}</div>
@@ -679,6 +682,14 @@ const settings = (sync, blocked) => `<div class="content">
     <div class="card"><div class="row danger"><span class="ico">${I.logout}</span><span class="label">Đăng xuất</span>${I.chev}</div></div>
   </div>
 </div>${tabbar('set')}`;
+// ---- Chọn múi giờ ----
+const zones = ['Myanmar (GMT+6:30)', 'Thái Lan (GMT+7)', 'Việt Nam (GMT+7)', 'Campuchia (GMT+7)', 'Lào (GMT+7)', 'Indonesia (Jakarta) (GMT+7)', 'Malaysia (GMT+8)', 'Singapore (GMT+8)', 'Philippines (GMT+8)'];
+const zonePicker = `<div class="under">${settings(false, false)}</div>
+  <div class="scrim" style="padding:12px"><div class="dialog" style="padding:16px 12px 12px;height:85%;display:flex;flex-direction:column">
+    <h3 style="margin-bottom:12px">Múi giờ</h3>
+    <div style="height:44px;border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--muted);margin-bottom:8px"><span style="width:18px;height:18px;display:grid">${I.search}</span>Tìm múi giờ</div>
+    <div style="overflow:hidden">${zones.map((z) => `<div class="opt ${z.startsWith('Việt') ? 'on' : ''}" style="height:52px"><span class="label">${z}</span>${z.startsWith('Việt') ? I.check : ''}</div>`).join('')}</div>
+  </div></div>`;
 const syncProgress = `<div class="under">${settings(true, false)}</div>
   <div class="scrim"><div class="dialog">
     <div class="dicon">${I.sync}</div>
@@ -741,7 +752,9 @@ const groups = [
   ['Lịch', [
     ['1 + 5. Lịch — Tháng', 'thanh chọn chế độ luôn hiện', phone(monthScreen(''))],
     ['2. Lịch — Tuần', 'mỗi ngày 1 hàng', phone(weekScreen)],
-    ['3. Lịch — Ngày', 'trùng giờ xếp cạnh nhau', phone(dayScreen)],
+    ['3. Lịch — Ngày', 'trùng giờ xếp cạnh nhau', phone(dayScreen())],
+    ['3b. Ngày → bấm giờ trống', 'bấm ô 13:00 → form event (màn 9) điền sẵn 13:00 – 14:00', phone(formSlot)],
+    ['3c. Ngày → bấm Cả ngày', 'bấm dòng Cả ngày → form event, Cả ngày bật', phone(formSlotAllDay)],
     ['4. Lịch — Danh sách', 'thanh ngày ngang', phone(listScreen)],
     ['6. Chọn tháng/năm', 'bấm tiêu đề', phone(monthPicker)],
     ['7a. Chọn ngày trống', 'bấm ô 14/10 → hiện + giữa ô', phone(monthScreen('14/10'))],
@@ -774,6 +787,7 @@ const groups = [
     ['21. Cài đặt — đồng bộ tắt', 'thông báo bị chặn', phone(settings(false, true), 'tall')],
     ['21b. Cài đặt — đồng bộ bật', '', phone(settings(true, false), 'tall')],
     ['21c. Tắt đồng bộ', 'hộp xác nhận', phone(syncOff, 'tall')],
+    ['21d. Chọn múi giờ', 'ô tìm kiếm + danh sách, ✓ dòng đang chọn', phone(zonePicker, 'tall')],
     ['22. Đồng bộ lần đầu', 'tiến độ', phone(syncProgress, 'tall')],
   ]],
   ['Thiết bị', [

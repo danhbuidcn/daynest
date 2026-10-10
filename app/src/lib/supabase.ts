@@ -16,6 +16,9 @@ export const supabase = createClient(url, key, {
     persistSession: true,
     detectSessionInUrl: false,
   },
+  // Android's HTTP layer caches GET responses: an unchanged query URL (settings, the same event
+  // range) returned data from before the last write. Always go to the server.
+  global: { headers: { 'Cache-Control': 'no-cache' } },
 });
 
 AppState.addEventListener('change', (state) => {

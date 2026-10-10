@@ -42,6 +42,13 @@ const ICONS = {
   moon: () => stroke('<path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/>'),
   clock: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
   note: () => stroke('<path d="M6 3.5h9l4 4V20a.5.5 0 0 1-.5.5h-12A.5.5 0 0 1 6 20z"/><path d="M14.5 3.5V8H19M9 12h7M9 16h5"/>'),
+  alert: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5M12 16h.01"/>'),
+  warn: () => stroke('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'),
+  battery: () => stroke('<rect x="3" y="7" width="16" height="10" rx="3"/><path d="M21 10.5v3M7 10.5v3M10.5 10.5v3"/>'),
+  week: () => stroke('<rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M12 14h2M16 14h.5"/>'),
+  time24: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12h4"/>'),
+  flag: () => stroke('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
+  search: () => stroke('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>'),
 } satisfies Record<string, (filled: boolean) => string>;
 
 export type IconName = keyof typeof ICONS;

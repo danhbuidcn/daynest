@@ -6,9 +6,15 @@ export type DayDetails = SolarDate & {
   lunar: LunarDate;
   lunarLabel: string;
   lunarKey: boolean;
+  lunarDayMonth: string;
+  showLunar: boolean;
   holidays: HolidayId[];
   isToday: boolean;
 };
+
+// F6 "Hiện ngày âm" / "Hiện ngày lễ": hidden parts come back empty so views need no extra checks.
+export type DayDisplay = { showLunar: boolean; showHolidays: boolean };
+export const SHOW_ALL: DayDisplay = { showLunar: true, showHolidays: true };
 
 export type DayInfo = GridDay & DayDetails;
 
@@ -23,20 +29,29 @@ export function lunarDayMonth(lunar: LunarDate): string {
   return `${lunar.day}/${lunar.month}${lunar.leap ? 'N' : ''}`;
 }
 
-export function dayDetails(d: SolarDate, today: SolarDate): DayDetails {
+export function dayDetails(d: SolarDate, today: SolarDate, display: DayDisplay = SHOW_ALL): DayDetails {
   const lunar = toLunar(d);
+  const { showLunar, showHolidays } = display;
   return {
     year: d.year,
     month: d.month,
     day: d.day,
     lunar,
-    lunarLabel: lunarLabel(lunar),
-    lunarKey: lunar.day === 1 || lunar.day === 15,
-    holidays: holidaysOn(d, lunar),
+    lunarLabel: showLunar ? lunarLabel(lunar) : '',
+    lunarKey: showLunar && (lunar.day === 1 || lunar.day === 15),
+    lunarDayMonth: showLunar ? lunarDayMonth(lunar) : '',
+    showLunar,
+    holidays: showHolidays ? holidaysOn(d, lunar) : [],
     isToday: sameDay(d, today),
   };
 }
 
-export function monthDays(year: number, month: number, weekStart: WeekStart, today: SolarDate): DayInfo[] {
-  return monthGrid(year, month, weekStart).map((d) => ({ ...d, ...dayDetails(d, today) }));
+export function monthDays(
+  year: number,
+  month: number,
+  weekStart: WeekStart,
+  today: SolarDate,
+  display: DayDisplay = SHOW_ALL,
+): DayInfo[] {
+  return monthGrid(year, month, weekStart).map((d) => ({ ...d, ...dayDetails(d, today, display) }));
 }

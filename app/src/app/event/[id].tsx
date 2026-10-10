@@ -63,7 +63,7 @@ export default function EventDetailScreen() {
           </AppText>
         </View>
         <Card style={styles.card}>
-          <DetailRow icon="calendar" label={whenLabel(t, occ, settings.use24h, settings.timeZone)} detail={lunarLabel(t, occurrenceStartDate(occ, settings.timeZone))} />
+          <DetailRow icon="calendar" label={whenLabel(t, occ, settings.use24h, settings.timeZone)} detail={settings.showLunar ? lunarLabel(t, occurrenceStartDate(occ, settings.timeZone)) : undefined} />
           {occ.repeat !== 'none' ? <DetailRow icon="repeat" label={repeat.title} detail={repeat.detail} /> : null}
           {reminders ? <DetailRow icon="bell" label={reminders} /> : null}
           {occ.note ? <DetailRow icon="note" label={occ.note} multiline /> : null}

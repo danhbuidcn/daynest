@@ -31,7 +31,22 @@
     "app": "Ứng dụng",
     "language": "Ngôn ngữ",
     "version": "Phiên bản",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "notifications": "Thông báo",
+    "allowNotifications": "Cho phép thông báo",
+    "blocked": "Thông báo đang bị chặn trên máy.",
+    "openSystemSettings": "Mở cài đặt máy",
+    "calendar": "Lịch",
+    "weekStart": "Tuần bắt đầu từ",
+    "monday": "Thứ Hai",
+    "sunday": "Chủ nhật",
+    "timeZone": "Múi giờ",
+    "searchTimeZone": "Tìm múi giờ",
+    "noTimeZone": "Không tìm thấy múi giờ",
+    "use24h": "Định dạng 24 giờ",
+    "showLunar": "Hiện ngày âm",
+    "showHolidays": "Hiện ngày lễ",
+    "saveFailed": "Chưa lưu được. Vui lòng thử lại."
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
@@ -280,5 +295,13 @@
       "event": "Sự kiện",
       "note": "Ghi chú"
     }
+  },
+  "reminders": {
+    "channel": "Nhắc sự kiện",
+    "offInSettings": "Thông báo đang tắt trong Cài đặt",
+    "batteryTitle": "Để nhắc nhở chạy đúng giờ",
+    "batteryText": "Trên một số máy, nhắc nhở có thể không chạy nếu bật tối ưu hoá pin. Hãy tắt tối ưu hoá pin cho Daynest.",
+    "later": "Để sau",
+    "exclude": "Loại trừ"
   }
 }

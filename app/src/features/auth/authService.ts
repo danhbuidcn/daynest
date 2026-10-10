@@ -10,8 +10,35 @@ import { toProfile, type Profile } from './profile';
 
 export type { Profile } from './profile';
 
-export type UserSettings = { language: Language | null; weekStart: WeekStart; timeZone: string; use24h: boolean };
-export const DEFAULT_SETTINGS: UserSettings = { language: null, weekStart: 1, timeZone: DEFAULT_TIME_ZONE, use24h: true };
+export type UserSettings = {
+  language: Language | null;
+  weekStart: WeekStart;
+  timeZone: string;
+  use24h: boolean;
+  notificationsEnabled: boolean;
+  showLunar: boolean;
+  showHolidays: boolean;
+};
+export const DEFAULT_SETTINGS: UserSettings = {
+  language: null,
+  weekStart: 1,
+  timeZone: DEFAULT_TIME_ZONE,
+  use24h: true,
+  notificationsEnabled: true,
+  showLunar: true,
+  showHolidays: true,
+};
+// Everything F6 lets the Settings screen change; language has its own path (saved on device first).
+export type SettingsPatch = Partial<Omit<UserSettings, 'language'>>;
+
+const SETTING_COLUMNS: Record<keyof SettingsPatch, string> = {
+  weekStart: 'week_start',
+  timeZone: 'time_zone',
+  use24h: 'use_24h',
+  notificationsEnabled: 'notifications_enabled',
+  showLunar: 'show_lunar',
+  showHolidays: 'show_holidays',
+};
 
 // F7 — max 2 devices per account; signing in on a 3rd kicks the earliest one out.
 export type KickedDevice = { name: string; signedInAt: string };
@@ -30,6 +57,7 @@ export interface AuthService {
   signOut(): Promise<void>;
   getSettings(): Promise<UserSettings>;
   saveLanguage(lang: Language): Promise<void>;
+  saveSettings(patch: SettingsPatch): Promise<void>;
   checkSessionActive(): Promise<boolean>;
   touchDevice(): Promise<void>;
   listDevices(): Promise<DeviceRow[]>;
@@ -156,7 +184,7 @@ export const supabaseAuthService: AuthService = {
     if (!userId) return DEFAULT_SETTINGS;
     const { data } = await supabase
       .from('user_settings')
-      .select('language, week_start, time_zone, use_24h')
+      .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays')
       .eq('user_id', userId)
       .single();
     return {
@@ -164,6 +192,9 @@ export const supabaseAuthService: AuthService = {
       weekStart: data?.week_start === 0 ? 0 : 1,
       timeZone: data?.time_zone ?? DEFAULT_TIME_ZONE,
       use24h: data?.use_24h ?? true,
+      notificationsEnabled: data?.notifications_enabled ?? true,
+      showLunar: data?.show_lunar ?? true,
+      showHolidays: data?.show_holidays ?? true,
     };
   },
 
@@ -172,6 +203,17 @@ export const supabaseAuthService: AuthService = {
     const userId = await currentUserId();
     if (!userId) return;
     const { error } = await supabase.from('user_settings').update({ language: lang }).eq('user_id', userId);
+    if (error) throw classify(error);
+  },
+
+  async saveSettings(patch) {
+    await ensureOnline();
+    const userId = await currentUserId();
+    if (!userId) return;
+    const row = Object.fromEntries(
+      Object.entries(patch).map(([key, value]) => [SETTING_COLUMNS[key as keyof SettingsPatch], value]),
+    );
+    const { error } = await supabase.from('user_settings').update(row).eq('user_id', userId);
     if (error) throw classify(error);
   },
 };
