@@ -22,7 +22,7 @@ Thuộc: [Sprint 2](index.md).
   2. Chưa có → thêm dòng.
   3. Còn > 2 dòng → xoá dòng `signed_in_at` sớm nhất + xoá phiên Supabase của máy đó (`auth.sessions` → refresh token hết hiệu lực).
   4. Trả về tên + ngày đăng nhập của máy bị đăng xuất (nếu có).
-- Có máy bị đăng xuất → máy mới hiện hộp "Đã đăng xuất <tên máy>".
+- Có máy bị đăng xuất → máy mới hiện hộp "Đã đăng xuất thiết bị cũ".
 
 ### Máy bị đăng xuất dừng ngay
 
@@ -52,7 +52,7 @@ Cài đặt → Tài khoản → Thiết bị đăng nhập → xem 2 máy
 ## Mô tả
 
 - Máy cũ (màn 23): hộp trên màn Đăng nhập · icon thiết bị · "Bạn đã bị đăng xuất" · "Tài khoản đã đăng nhập trên thiết bị khác." · nút **Đã hiểu**.
-- Máy mới (màn 24): hộp trên Tab Lịch ngay sau đăng nhập · "Đã đăng xuất <tên máy>" · "<Tên máy> đã bị đăng xuất." · nút **Đã hiểu**.
+- Máy mới (màn 24): hộp trên Tab Lịch ngay sau đăng nhập · "Đã đăng xuất thiết bị cũ" · "<Tên máy> đã bị đăng xuất." · nút **Đã hiểu**.
 - Thiết bị đăng nhập (màn 25, `settings/devices`): mỗi máy 1 dòng — icon · tên máy · "Đăng nhập 01/10/2026 · Dùng lần cuối hôm nay 9:20" · nhãn "Thiết bị đang dùng" · chú thích "Tối đa 2 thiết bị. Khi đăng nhập trên thiết bị thứ 3, thiết bị đăng nhập sớm nhất sẽ bị đăng xuất."
 - Cài đặt → nhóm Tài khoản thêm dòng "Thiết bị đăng nhập" · giá trị "2/2" · `›`.
 
