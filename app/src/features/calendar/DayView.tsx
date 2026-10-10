@@ -41,7 +41,7 @@ export function DayView({
         {lunarLabel(t, cursor)}
       </AppText>
       <View style={styles.allDay}>
-        <AppText variant="caption" color={colors.textMuted} numberOfLines={1} style={styles.allDayLabel}>
+        <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip" style={styles.allDayLabel}>
           {t('events.form.allDay')}
         </AppText>
         {hasAllDay ? (

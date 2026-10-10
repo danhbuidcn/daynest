@@ -75,10 +75,10 @@ export function ListView({
                   </AppText>
                 ) : (
                   <>
-                    <AppText weight="bold" style={styles.right} numberOfLines={1}>
+                    <AppText weight="bold" style={styles.right} numberOfLines={1} ellipsizeMode="clip">
                       {clock(o.startsAt!)}
                     </AppText>
-                    <AppText variant="caption" color={colors.textMuted} style={styles.right} numberOfLines={1}>
+                    <AppText variant="caption" color={colors.textMuted} style={styles.right} numberOfLines={1} ellipsizeMode="clip">
                       {clock(o.endsAt!)}
                     </AppText>
                   </>

@@ -84,9 +84,9 @@ export function DayTimeline({
                 pressed && styles.pressed,
               ]}>
               <View style={[styles.blockInner, { backgroundColor: color + BLOCK_ALPHA, borderLeftColor: color }]}>
-                <AppText numberOfLines={1}>{occ.title}</AppText>
+                <AppText numberOfLines={1} ellipsizeMode="clip">{occ.title}</AppText>
                 {b.height >= 45 ? (
-                  <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+                  <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
                     {`${clockLabel(t, timeOfDayIn(new Date(occ.startsAt!), timeZone), use24h)} – ${clockLabel(t, timeOfDayIn(new Date(occ.endsAt!), timeZone), use24h)}`}
                   </AppText>
                 ) : null}

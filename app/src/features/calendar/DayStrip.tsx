@@ -41,7 +41,7 @@ export function DayStrip({
             <AppText variant="heading" weight="extrabold" color={numberColor}>
               {d.day}
             </AppText>
-            <AppText variant="micro" color={muted} numberOfLines={1}>
+            <AppText variant="micro" color={muted} numberOfLines={1} ellipsizeMode="clip">
               {lunarDayMonth(d.lunar)}
             </AppText>
             <View style={[styles.dot, hasItems(d) && { backgroundColor: on ? colors.white : colors.primary }]} />

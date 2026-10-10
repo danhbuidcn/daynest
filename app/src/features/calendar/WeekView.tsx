@@ -57,7 +57,7 @@ export function WeekView({
                 <AppText variant="heading" weight="extrabold" color={dayColor}>
                   {String(d.day).padStart(2, '0')}
                 </AppText>
-                <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted} numberOfLines={1}>
+                <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
                   {lunarDayMonth(d.lunar)}
                 </AppText>
               </View>

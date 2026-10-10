@@ -13,7 +13,7 @@ export function HolidayRow({ title }: { title: string }) {
     <View style={styles.row}>
       <View style={[styles.dot, { backgroundColor: colors.error }]} />
       <View style={styles.flex}>
-        <AppText numberOfLines={1}>{title}</AppText>
+        <AppText numberOfLines={1} ellipsizeMode="clip">{title}</AppText>
         <AppText variant="caption" color={colors.textMuted}>
           {t('events.dayDialog.holiday')}
         </AppText>
@@ -40,8 +40,8 @@ export function EventListRow({
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.row}>
       <View style={[styles.dot, { backgroundColor: eventColors[occurrence.color] }]} />
       <View style={styles.flex}>
-        <AppText numberOfLines={1}>{occurrence.title}</AppText>
-        <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+        <AppText numberOfLines={1} ellipsizeMode="clip">{occurrence.title}</AppText>
+        <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
           {occurrence.note ? `${time} · ${occurrence.note}` : time}
         </AppText>
       </View>

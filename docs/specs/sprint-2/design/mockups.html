@@ -115,7 +115,7 @@
   .scrim.big { padding: 12px; }
   .dialog.big { max-height: 85%; }
   .cell.out { opacity: .4; }
-  .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
   .more { font-size: 12px; line-height: 14px; color: var(--muted); padding-left: 2px; }
   .ev-mint { background: var(--mint); } .ev-sky { background: var(--sky); } .ev-lavender { background: var(--lavender); }
   .ev-pink { background: var(--pink); } .ev-peach { background: var(--peach); } .ev-lemon { background: var(--lemon); }
@@ -124,8 +124,8 @@
   .ecard { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: stretch; overflow: hidden; }
   .ecard .stripe { width: 4px; flex: none; }
   .ecard .body { flex: 1; padding: 8px 10px; min-width: 0; }
-  .ecard .ttl { font-size: 15px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .ecard .tm { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ecard .ttl { font-size: 15px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .ecard .tm { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: clip; }
   .ecard .st { display: flex; gap: 4px; align-items: center; padding-right: 10px; color: var(--muted); }
   .st svg { width: 14px; height: 14px; }
 
@@ -376,7 +376,7 @@ const EV = {
   '23/10': [['sky', 'Đi Đà Lạt']], '24/10': [['sky', 'Đi Đà Lạt']], '25/10': [['sky', 'Đi Đà Lạt']],
   '2/10': [['lavender', 'Nộp báo cáo']], '17/10': [['lemon', 'Cắt tóc']],
 };
-const HOL = { '20/10': 'Phụ nữ VN', '1/11': '' };
+const HOL = { '20/10': 'Phụ nữ', '1/11': '' };
 const monthView = (selKey) => days.map((x) => {
   const key = `${x.d}/${x.m}`, evs = EV[key] || [], hol = HOL[key];
   const lkey = x.ld === 1 || x.ld === 15;

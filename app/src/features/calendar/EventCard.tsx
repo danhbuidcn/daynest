@@ -33,8 +33,8 @@ export function EventCard({
       style={({ pressed }) => [styles.card, pressed && styles.pressed, style]}>
       <View style={[styles.stripe, { backgroundColor: eventColors[occurrence.color] }]} />
       <View style={styles.body}>
-        <AppText numberOfLines={1}>{occurrence.title}</AppText>
-        <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+        <AppText numberOfLines={1} ellipsizeMode="clip">{occurrence.title}</AppText>
+        <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
           {subtitle ?? time}
         </AppText>
       </View>
@@ -52,10 +52,10 @@ export function HolidayCard({ title, style }: { title: string; style?: StyleProp
   return (
     <View style={[styles.card, styles.holiday, style]} accessibilityLabel={`${title}, ${t('events.dayDialog.holiday')}`}>
       <View style={styles.body}>
-        <AppText color={colors.white} numberOfLines={1}>
+        <AppText color={colors.white} numberOfLines={1} ellipsizeMode="clip">
           {title}
         </AppText>
-        <AppText variant="caption" color={colors.white} numberOfLines={1}>
+        <AppText variant="caption" color={colors.white} numberOfLines={1} ellipsizeMode="clip">
           {t('events.dayDialog.holiday')}
         </AppText>
       </View>
