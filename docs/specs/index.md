@@ -28,6 +28,8 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 
 ## 3. Kiến trúc
 
+Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traffic): [architecture.md](architecture.md).
+
 ```text
 [Expo app] ──supabase-js──▶ [Supabase: Auth · Postgres (RLS) · Storage]
      └──REST (token Google)──▶ [Google Calendar API] (đọc + ghi, khi bật đồng bộ)
