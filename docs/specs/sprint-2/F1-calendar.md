@@ -45,8 +45,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
   Header: [‹] Tháng 10, 2026 [›] · Hôm nay · thanh chọn chế độ ngay dưới
   Vuốt trái/phải → kỳ sau/trước · bấm tiêu đề → chọn tháng/năm
   Tháng: bấm ô có event/lễ → pop-up ngày · bấm ô trống → chọn ô, hiện nút `+` giữa ô → bấm `+` → pop-up ngày
-  Tuần: bấm event → form sửa event (màn 9)
-  Ngày/Danh sách: bấm event → Chi tiết event
+  Tuần/Ngày/Danh sách: bấm event → Chi tiết event
   Kéo xuống → đồng bộ Google (khi bật, [F4](F4-google-calendar.md))
 ```
 
@@ -55,7 +54,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 | Chế độ | Bố cục |
 | --- | --- |
 | Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ · ngày lễ hiện thành 1 thanh như thanh event (nền `error`, chữ trắng, không bấm được) xếp đầu · tối đa 3 thanh (kể cả thanh lễ) + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` |
-| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event, nhiều event quá 1 hàng thì cuộn ngang trong hàng đó · bấm thẻ event → form sửa event (màn 9), không qua Chi tiết · bấm hàng ngày (ngoài thẻ) → form event (màn 9) điền sẵn ngày đó, Cả ngày bật |
+| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event, nhiều event quá 1 hàng thì cuộn ngang trong hàng đó · bấm hàng ngày (ngoài thẻ) → form event (màn 9) điền sẵn ngày đó, Cả ngày bật |
 | Ngày | Dòng "Cả ngày" + lưới giờ 0–23 · event là khối theo giờ, trùng giờ xếp cạnh nhau · vạch giờ hiện tại · bấm 1 giờ trống → form event (màn 9) điền sẵn ngày + giờ đó (1 tiếng) · bấm dòng "Cả ngày" (chỗ trống) → form event, Cả ngày bật |
 | Danh sách | Thanh chọn ngày ngang (1 tuần) · danh sách event ngày đã chọn theo giờ |
 
@@ -63,7 +62,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
 - Chọn ô trống (giống app lịch cài sẵn trên máy): lần bấm đầu chỉ chọn ô và hiện nút `+` tròn `primary` đặt chính giữa ô (cả chiều ngang lẫn dọc); bấm `+` mới mở pop-up ngày. Ô có event hoặc ngày lễ: bấm là mở pop-up ngay.
 - Pop-up ngày (hộp giữa màn, cỡ lớn: cách mép 12, cao tối đa 85% màn, danh sách cuộn): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · danh sách event — ngày lễ xếp đầu (chấm `error`, không bấm được), rồi event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event/lễ → "Chưa có sự kiện".
-- Chế độ xem lần cuối được nhớ trên máy: mở lại app vào đúng chế độ đó. Vuốt trái/phải đổi 1 tuần (Tuần, Danh sách) hoặc 1 ngày (Ngày); bấm event mở Chi tiết (riêng Tuần mở form sửa).
+- Chế độ xem lần cuối được nhớ trên máy: mở lại app vào đúng chế độ đó. Vuốt trái/phải đổi 1 tuần (Tuần, Danh sách) hoặc 1 ngày (Ngày); bấm event mở Chi tiết.
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm

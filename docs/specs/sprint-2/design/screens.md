@@ -5,7 +5,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | # | Màn | Route | Mục đích | Thành phần chính | Chức năng |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Lịch — Tháng | `(tabs)/calendar` | Xem tháng | Header (‹ tháng ›, Hôm nay, chọn chế độ) · hàng thứ · lưới 6×7 | [F1](../F1-calendar.md) |
-| 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event · bấm thẻ event → form sửa event · bấm hàng ngày (ngoài thẻ) → form event, Cả ngày bật | [F1](../F1-calendar.md) |
+| 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event · bấm hàng ngày (ngoài thẻ) → form event, Cả ngày bật | [F1](../F1-calendar.md) |
 | 3 | Lịch — Ngày | `(tabs)/calendar` | Xem theo giờ | Header · dòng Cả ngày · lưới giờ · vạch giờ hiện tại · bấm giờ trống / dòng Cả ngày → form event điền sẵn (3b, 3c) | [F1](../F1-calendar.md) |
 | 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-calendar.md) |
 | 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header: Tháng · Danh sách · Tuần · Ngày | [F1](../F1-calendar.md) |

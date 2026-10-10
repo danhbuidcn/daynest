@@ -98,11 +98,6 @@ export default function CalendarScreen() {
     router.push({ pathname: '/event/[id]', params: { id: o.eventId, occurrenceDate: o.occurrenceDate } });
   };
 
-  // Week view (màn 2) skips the detail screen and opens the form straight away.
-  const onEditOccurrence = (o: EventOccurrence) => {
-    router.push({ pathname: '/event/edit', params: { eventId: o.eventId, occurrenceDate: o.occurrenceDate } });
-  };
-
   const onAddAt = (d: SolarDate, hour: number | null) => {
     const params = hour === null ? { date: isoDate(d), allDay: '1' } : { date: isoDate(d), hour: String(hour) };
     router.push({ pathname: '/event/edit', params });
@@ -129,7 +124,7 @@ export default function CalendarScreen() {
           {mode === 'month' ? (
             <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} />
           ) : mode === 'week' ? (
-            <WeekView {...viewProps} onPressOccurrence={onEditOccurrence} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} />
+            <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} />
           ) : mode === 'day' ? (
             <DayView {...viewProps} onAddAt={onAddAt} />
           ) : (

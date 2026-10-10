@@ -1,4 +1,4 @@
-# 2026-10-10 — Màn 2 (Lịch — Tuần): bấm event → form sửa luôn — ✅ xong
+# 2026-10-10 — Màn 2 (Lịch — Tuần): bấm event → form sửa luôn — ❌ huỷ (đã hoàn tác)
 
 ## Input
 
@@ -16,3 +16,7 @@
 - Emulator: bấm thẻ "Kham rang" (lặp năm âm lịch) → form sửa đúng event, 15:00–16:00. Event lặp: lưu vẫn hỏi "Chỉ lần này / Tất cả" như cũ.
 - Xoá event giờ chỉ còn ở Chi tiết (mở từ xem Ngày, Danh sách, pop-up ngày) — form không có nút xoá.
 - Kiểm tra: typecheck ok · lint 0 lỗi · test 122/122.
+
+## Hoàn tác
+
+- Bạn: "hoàn tác yêu cầu vừa rồi" → `git revert`: xem Tuần bấm event lại mở Chi tiết như cũ; spec trả về như trước.
