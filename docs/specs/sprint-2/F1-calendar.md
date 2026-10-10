@@ -54,7 +54,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 | Chế độ | Bố cục |
 | --- | --- |
 | Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ · ngày lễ hiện thành 1 thanh như thanh event (nền `error`, chữ trắng, không bấm được) xếp đầu · tối đa 3 thanh (kể cả thanh lễ) + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` |
-| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event, nhiều event quá 1 hàng thì cuộn ngang trong hàng đó |
+| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event, nhiều event quá 1 hàng thì cuộn ngang trong hàng đó · bấm hàng ngày (ngoài thẻ) → form event (màn 9) điền sẵn ngày đó, Cả ngày bật |
 | Ngày | Dòng "Cả ngày" + lưới giờ 0–23 · event là khối theo giờ, trùng giờ xếp cạnh nhau · vạch giờ hiện tại · bấm 1 giờ trống → form event (màn 9) điền sẵn ngày + giờ đó (1 tiếng) · bấm dòng "Cả ngày" (chỗ trống) → form event, Cả ngày bật |
 | Danh sách | Thanh chọn ngày ngang (1 tuần) · danh sách event ngày đã chọn theo giờ |
 

@@ -124,7 +124,7 @@ export default function CalendarScreen() {
           {mode === 'month' ? (
             <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} />
           ) : mode === 'week' ? (
-            <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} />
+            <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} />
           ) : mode === 'day' ? (
             <DayView {...viewProps} onAddAt={onAddAt} />
           ) : (

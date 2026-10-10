@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
@@ -17,6 +17,7 @@ import { WeekChips } from './WeekChips';
 const CARD_WIDTH = 132;
 
 // Màn 2: one row per day — weekday, solar + lunar date, then its cards scrolling sideways.
+// Tapping the row outside a card opens the event form as an all-day event on that day.
 export function WeekView({
   cursor,
   today,
@@ -28,6 +29,7 @@ export function WeekView({
   onSelectWeek,
   onPressOccurrence,
   onPressHoliday,
+  onAddAllDay,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -39,6 +41,7 @@ export function WeekView({
   onSelectWeek: (deltaWeeks: number) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
+  onAddAllDay: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
@@ -53,7 +56,11 @@ export function WeekView({
           const events = occurrencesOnDay(occurrences, d, timeZone).sort(byStartTime);
           const empty = events.length === 0 && d.holidays.length === 0;
           return (
-            <View key={`${d.month}-${d.day}`} style={styles.row}>
+            <Pressable
+              key={`${d.month}-${d.day}`}
+              accessibilityRole="button"
+              onPress={() => onAddAllDay(d)}
+              style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
               <View style={styles.date}>
                 <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted}>
                   {t(`calendar.weekdays.${weekday}`)}
@@ -86,7 +93,7 @@ export function WeekView({
                   ))}
                 </GestureScrollView>
               )}
-            </View>
+            </Pressable>
           );
         })}
       </ScrollView>
@@ -98,6 +105,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   rows: { paddingHorizontal: space.lg, paddingBottom: space.lg },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 66, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: colors.border },
+  pressed: { backgroundColor: colors.primarySoft },
   date: { width: 52 },
   none: { flex: 1 },
   cards: { gap: 6, alignItems: 'center', paddingVertical: 4, paddingRight: space.xs },
