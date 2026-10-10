@@ -132,6 +132,7 @@ where user_id = auth.uid() and deleted_at is null
 
 - Index `(user_id, pinned desc, updated_at desc, id) where deleted_at is null` — danh sách.
 - Index `(user_id, deleted_at) where deleted_at is not null` — thùng rác.
+- Xoá danh mục: hàm `delete_note_categories(ids uuid[])` (quyền người gọi, RLS vẫn áp) — trong 1 transaction: `update notes set deleted_at = now()` cho note còn sống thuộc các danh mục đó → `delete from note_categories` (FK `set null` gỡ danh mục khỏi note đã vào thùng rác).
 - Phân trang **keyset** theo `(pinned, updated_at, id)` (không dùng `offset`) → không lặp/sót khi note đổi lúc đang cuộn.
 - Tìm kiếm: `search_text ilike '%' || :q || '%'` (`:q` bỏ dấu cùng cách) trong note của user — số note mỗi user nhỏ nên quét theo index `user_id` đủ nhanh, không cần `pg_trgm`.
 

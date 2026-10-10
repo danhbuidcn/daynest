@@ -589,7 +589,7 @@ const catScreen = `<div class="content">
   <div class="settings"><div class="card">
     ${cats.map(([c, n], i) => `<div class="row"><span class="cdot ev-${c}" style="width:20px;height:20px"></span><span class="label">${n}</span><span class="val">${[2, 2, 1][i]} ghi chú</span><span class="muted" style="width:20px">${I.pen}</span></div>`).join('')}
   </div>
-  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. Xoá danh mục: ghi chú của nó về "Chưa phân loại".</div></div>
+  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. Xoá danh mục thì ghi chú bên trong cũng bị xoá.</div></div>
   <div class="form-footer"><button class="btn btn-primary">${I.plusG.replace('currentColor', '#fff')}Thêm danh mục</button></div>
 </div>`;
 const catDialog = `<div class="under">${catScreen}</div>
@@ -612,7 +612,7 @@ const catConfirm = `<div class="under">${catSelect}</div>
   <div class="scrim"><div class="dialog">
     <div class="dicon err">${I.trash}</div>
     <h3>Xoá 2 danh mục?</h3>
-    <p>3 ghi chú sẽ về Chưa phân loại. Ghi chú không bị xoá.</p>
+    <p>3 ghi chú bên trong cũng sẽ bị xoá.</p>
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div>
   </div></div>`;
 const tcard = (n) => `<div>${ncard(n, 'Đã xoá 08/10')}<div class="trow" style="margin-top:8px"><button class="btn btn-secondary">${I.restore}Khôi phục</button><button class="btn btn-danger">Xoá vĩnh viễn</button></div></div>`;

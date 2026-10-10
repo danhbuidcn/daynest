@@ -24,7 +24,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 17 | Editor note | `note/[id]` | Viết note | ‹ · chip danh mục · ⋯ · tiêu đề · nội dung · checklist | [F5](../F5-notes.md) |
 | 18 | Danh mục | `note/categories` | Quản lý danh mục | Danh sách (chấm màu + tên + số ghi chú + icon bút) · `⋯` góc trên phải: Chọn để xoá · nút Thêm danh mục | [F5](../F5-notes.md#danh-mục) |
 | 18b | Chọn để xoá | — | Xoá nhiều | Thanh trên: ✕ · "Đã chọn n" · ô tick tròn mỗi dòng · nút đáy Xoá (n) màu `error` | [F5](../F5-notes.md#danh-mục) |
-| 18c | Xác nhận xoá danh mục | — | Tránh bấm nhầm | Hộp: "Xoá n danh mục?" · "m ghi chú sẽ về Chưa phân loại." · Huỷ / Xoá | [F5](../F5-notes.md#danh-mục) |
+| 18c | Xác nhận xoá danh mục | — | Tránh bấm nhầm | Hộp: "Xoá n danh mục?" · "m ghi chú bên trong cũng sẽ bị xoá." · Huỷ / Xoá | [F5](../F5-notes.md#danh-mục) |
 | 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
 | 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · nút Xoá tất cả (góc trên phải) |
 | 20b | Xác nhận xoá tất cả | — | Tránh bấm nhầm | Hộp: "Xoá vĩnh viễn tất cả?" (không có dòng mô tả) · Huỷ / Xoá tất cả | [F5](../F5-notes.md#thùng-rác) |
