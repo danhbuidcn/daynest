@@ -29,8 +29,26 @@
 - [x] 2. `src/lib/holidays/`: danh sách lễ dương + âm trong F1 (tên EN + VI), `holidaysOn(date)`.
 - [x] 3. `src/lib/calendar/monthGrid.ts`: 42 ngày của tháng theo tuần bắt đầu Thứ 2 / CN.
 - [x] 4. Test (Jest): Tết 2020–2030 đúng ngày; tháng nhuận 2020 (4), 2023 (2), 2025 (6); đổi dương ↔ âm khớp nhau mọi ngày 1900–2100; lễ âm 2024–2027; Giao thừa tháng Chạp thiếu/đủ; lưới tháng 2 năm nhuận, tuần bắt đầu T2/CN.
-- [ ] 5. Màn Lịch — Tháng (`(tabs)/calendar.tsx` + `src/features/calendar/`): header `‹ Tháng 10, 2026 ›` + chip Hôm nay · thanh chọn chế độ (chỉ Tháng chạy; Tuần/Ngày/Danh sách → toast "Đang phát triển" tới bước 7) · hàng thứ · lưới 6×7 (số dương, ngày âm, mùng 1/rằm kèm tháng, tên lễ, hôm nay, CN/lễ màu `error`, ngày tháng khác mờ) · vuốt trái/phải đổi tháng · bấm tiêu đề → hộp chọn tháng/năm (màn 6) · bấm ô → chọn ngày (pop-up ngày làm ở bước 6).
-- [ ] 6. Đọc `week_start` từ `user_settings` khi đăng nhập (cùng chỗ đọc `language`); chưa có cài đặt hiện ngày âm/lễ (bước 8) → luôn hiện. "Hôm nay" tính theo múi giờ `Asia/Ho_Chi_Minh` (cột `time_zone` có ở bước 4 → khi đó đọc từ DB).
-- [ ] 7. i18n EN + VI cho chữ mới (tên tháng, thứ, tên lễ, Hôm nay…).
+- [~] 5. Màn Lịch — Tháng (`(tabs)/calendar.tsx` + `src/features/calendar/`): header `‹ Tháng 10, 2026 ›` + chip Hôm nay · thanh chọn chế độ (chỉ Tháng chạy; Tuần/Ngày/Danh sách → toast "Đang phát triển" tới bước 7) · hàng thứ · lưới 6×7 (số dương, ngày âm, mùng 1/rằm kèm tháng, tên lễ, hôm nay, CN/lễ màu `error`, ngày tháng khác mờ) · vuốt trái/phải đổi tháng · bấm tiêu đề → hộp chọn tháng/năm (màn 6) · bấm ô → chọn ngày (pop-up ngày làm ở bước 6).
+- [x] 6. Đọc `week_start` từ `user_settings` khi đăng nhập (cùng chỗ đọc `language`); chưa có cài đặt hiện ngày âm/lễ (bước 8) → luôn hiện. "Hôm nay" tính theo múi giờ `Asia/Ho_Chi_Minh` (cột `time_zone` có ở bước 4 → khi đó đọc từ DB).
+- [x] 7. i18n EN + VI cho chữ mới (tên tháng, thứ, tên lễ, Hôm nay…).
 - [ ] 8. Kiểm tra: `npm run typecheck && npm run lint && npm test`; emulator: tháng 10/2026 khớp mockup màn 1 (ngày âm, 20/10 lễ), vuốt qua tháng 2/2026 thấy Tết 17/2, đổi ngôn ngữ EN ↔ VI.
 - [ ] 9. Commit `feat(app): lunar month calendar`, push. Không release.
+
+## Bàn giao (2026-10-10, session bị clear giữa chừng)
+
+Đã viết, **chưa commit** (xem `git status`):
+
+- `lib/calendar/timeZone.ts` `todayIn(tz)` — mặc định `Asia/Ho_Chi_Minh`, có test `timeZone.test.ts`. Bỏ `today()` khỏi `monthGrid.ts`.
+- `features/auth`: `getLanguage` → `getSettings()` đọc `language, week_start`; `AuthProvider` có `settings.weekStart` (đăng xuất → về mặc định).
+- `features/calendar/`: `dayInfo.ts` (+ test), `CalendarHeader`, `ViewModeBar`, `MonthView` (+ `WeekdayRow`), `MonthYearPicker`. `Dialog.tsx` export `DialogShell`.
+- `(tabs)/calendar.tsx`: header · thanh chế độ (khác Tháng → toast "Đang phát triển") · lưới tháng · vuốt đổi tháng · bấm tiêu đề → chọn tháng/năm · bấm ô ngày tháng khác → chuyển tháng.
+- Locales EN + VI: `calendar.*`, `holidays.*` (21 lễ).
+
+Lần chạy cuối: typecheck ok · lint 1 lỗi (setState trong effect ở `MonthYearPicker`) · test 52/53 (dynamic import trong `holidays.test.ts`). **Đã sửa cả 2 nhưng chưa chạy lại.**
+
+Việc tiếp:
+
+- [ ] `npm run typecheck && npm run lint && npm test` → xanh.
+- [ ] Mục 8: emulator — tháng 10/2026 khớp mockup màn 1 (ngày âm, 20/10 lễ, hôm nay), vuốt tới 2/2026 thấy Tết 17/2, đổi EN ↔ VI, chọn tháng/năm. Chụp màn so mockup.
+- [ ] Mục 9: commit `feat(app): lunar month calendar`, push. Không release.
