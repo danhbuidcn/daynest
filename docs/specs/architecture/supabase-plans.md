@@ -1,6 +1,6 @@
 # Các gói Supabase
 
-Thuộc: [Spec tổng](index.md) §3 · [Kiến trúc](architecture.md#12-xử-lý-traffic). Nguồn: [supabase.com/pricing](https://supabase.com/pricing), xem ngày 2026-10-10 — giá có thể đổi, kiểm lại trước khi nâng gói.
+Thuộc: [Spec tổng](../index.md) §3 · [Kiến trúc](index.md) · [Traffic](traffic.md). Nguồn: [supabase.com/pricing](https://supabase.com/pricing), xem ngày 2026-10-10 — giá có thể đổi, kiểm lại trước khi nâng gói.
 
 Daynest hiện dùng **Free**.
 

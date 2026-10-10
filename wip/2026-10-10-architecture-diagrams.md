@@ -14,4 +14,4 @@
 
 ## Kết quả
 
-- [docs/specs/architecture.md](../docs/specs/architecture.md) — xem được trên GitHub / VS Code (Markdown Preview Mermaid).
+- [docs/specs/architecture.md](../docs/specs/architecture/index.md) — xem được trên GitHub / VS Code (Markdown Preview Mermaid).

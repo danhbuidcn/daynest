@@ -28,7 +28,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 
 ## 3. Kiến trúc
 
-Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traffic): [architecture.md](architecture.md).
+Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traffic): [architecture/](architecture/index.md).
 
 ```text
 [Expo app] ──supabase-js──▶ [Supabase: Auth · Postgres (RLS) · Storage]
@@ -58,7 +58,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 ### Mục tiêu tải
 
 - 100 user dùng cùng lúc, tổng ~10.000 user, gói Free Supabase.
-- So sánh các gói Supabase + gói nên dùng: [supabase-plans.md](supabase-plans.md).
+- So sánh các gói Supabase + gói nên dùng: [architecture/supabase-plans.md](architecture/supabase-plans.md).
 
 | Hạng mục | Ước tính | Gói Free | Kết luận |
 | --- | --- | --- | --- |
