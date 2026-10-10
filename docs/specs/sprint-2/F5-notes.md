@@ -64,7 +64,7 @@ Editor ⋯ → Ghim · Danh mục · Xoá
 ## Mô tả
 
 - Tab Quản lý (S2 chỉ có Notes; Todo, Diary thêm ở S3, S4): tiêu đề "Quản lý" · ô tìm kiếm · chip danh mục · lưới 2 cột thẻ note.
-- Thẻ note: viền trái màu danh mục · tiêu đề · 3 dòng nội dung hoặc "2/5 mục" · ngày sửa · icon ghim.
+- Thẻ note: viền trái màu danh mục · tiêu đề · 3 dòng nội dung hoặc "2/5 mục" · ngày sửa · icon ghim · `⋯` góc thẻ (không cần mở Editor) → **Xoá** (vào thùng rác như [Thùng rác](#thùng-rác), toast + Hoàn tác) · **Di chuyển đến** (hộp chọn danh mục, giống chip "+ Danh mục" trong Editor).
 - Editor: ‹ · chip danh mục · ⋯ · ô tiêu đề · ô nội dung · khối checklist (ô tick vuông, ✕, "+ Thêm mục") · thanh dưới: nút "Checklist".
 - Trống: "Chưa có ghi chú" + nút tạo.
 

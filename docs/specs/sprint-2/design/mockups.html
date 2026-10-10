@@ -112,11 +112,11 @@
   .cell.today .d { background: var(--primary); color: #fff; font-weight: 800; }
   .cell.sel { background: var(--primary-soft); border-radius: 10px; }
   .cell.out { opacity: .4; }
-  .cell .hname { font-size: 12px; line-height: 14px; color: var(--error); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .more { font-size: 12px; line-height: 14px; color: var(--muted); padding-left: 2px; }
   .ev-mint { background: var(--mint); } .ev-sky { background: var(--sky); } .ev-lavender { background: var(--lavender); }
   .ev-pink { background: var(--pink); } .ev-peach { background: var(--peach); } .ev-lemon { background: var(--lemon); }
+  .ev-hol { background: var(--error); color: #fff; }
 
   .ecard { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: stretch; overflow: hidden; }
   .ecard .stripe { width: 4px; flex: none; }
@@ -233,6 +233,9 @@
   .ncard .pin svg { width: 16px; height: 16px; }
   .ncard .prog { font-size: 12px; color: var(--primary-dark); font-weight: 800; display: flex; align-items: center; gap: 4px; }
   .ncard .prog svg { width: 14px; height: 14px; }
+  .ncard .foot { display: flex; align-items: center; justify-content: space-between; }
+  .ncard .more { color: var(--muted); }
+  .ncard .more svg { width: 18px; height: 18px; }
 
   .editor { padding: 0 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
   .editor .et { font-size: 22px; line-height: 28px; font-weight: 800; padding: 6px 0; }
@@ -375,8 +378,11 @@ const monthView = (selKey) => days.map((x) => {
   const key = `${x.d}/${x.m}`, evs = EV[key] || [], hol = HOL[key];
   const lkey = x.ld === 1 || x.ld === 15;
   const cls = ['cell', x.m !== 10 ? 'out' : '', x.sun ? 'sun' : '', hol ? 'hol' : '', key === '9/10' ? 'today' : '', key === selKey ? 'sel' : ''].join(' ');
-  const bars = evs.slice(0, 3).map(([c, t]) => `<div class="bar ev-${c}">${t}</div>`).join('') + (evs.length > 3 ? `<div class="more">+${evs.length - 3}</div>` : '');
-  return `<div class="${cls}"><div class="top"><span class="d">${x.d}</span><span class="l ${lkey ? 'key' : ''}">${lkey ? `${x.ld}/${x.lm}` : x.ld}</span></div>${hol ? `<div class="hname">${hol}</div>` : ''}${bars}</div>`;
+  // Ngày lễ hiện thành 1 thanh như event (nền error, không bấm được), xếp đầu danh sách thanh.
+  const items = hol ? [['hol', hol], ...evs] : evs;
+  const shown = items.slice(0, 3), extra = items.length - shown.length;
+  const bars = shown.map(([c, t]) => `<div class="bar ${c === 'hol' ? 'ev-hol' : `ev-${c}`}">${t}</div>`).join('') + (extra > 0 ? `<div class="more">+${extra}</div>` : '');
+  return `<div class="${cls}"><div class="top"><span class="d">${x.d}</span><span class="l ${lkey ? 'key' : ''}">${lkey ? `${x.ld}/${x.lm}` : x.ld}</span></div>${bars}</div>`;
 }).join('');
 
 const calHead = (t) => `<div class="cal-head"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`;
@@ -439,6 +445,7 @@ const dayPopup = `<div class="under">${monthScreen('9/10')}</div>
   <div class="scrim"><div class="dialog" style="padding:16px 12px 16px;text-align:left">
     <div class="shead" style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:12px"><span class="x">${I.close}</span><div style="text-align:center"><h3>Thứ Sáu, 9/10/2026</h3><div class="cap muted">29/8 năm Bính Ngọ</div></div><span class="round-plus">${I.plus}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px">
+      ${ecard('hol', 'Phụ nữ Việt Nam', 'Ngày lễ')}
       ${ag('10:00', '11:00', 'lavender', 'Họp nhóm', 'Phòng họp tầng 3', 'google')}
       ${ag('15:00', '15:30', 'lemon', 'Khám răng', '', 'bell')}
       ${ag('19:00', '20:30', 'mint', 'Ăn tối gia đình', '', 'bell', 'repeat')}
@@ -548,7 +555,7 @@ const notes = [
   ['lavender', 'Họp 9/10', 'Chốt phạm vi sprint 2, đồng bộ Google 2 chiều, test tải 100 user.', '', false],
   ['mint', 'Mật khẩu wifi nhà', 'Hỏi lại anh Tuấn', '', false],
 ];
-const ncard = ([c, t, p, prog, pin], date = '08/10') => `<div class="ncard" style="border-left-color:${c ? `var(--${c})` : 'var(--border)'}">${pin ? `<span class="pin">${I.pin}</span>` : ''}<h4>${t}</h4>${p ? `<p>${p}</p>` : ''}${prog ? `<span class="prog">${I.checklist}${prog}</span>` : ''}<span class="cap muted">${date}</span></div>`;
+const ncard = ([c, t, p, prog, pin], date = '08/10') => `<div class="ncard" style="border-left-color:${c ? `var(--${c})` : 'var(--border)'}">${pin ? `<span class="pin">${I.pin}</span>` : ''}<h4>${t}</h4>${p ? `<p>${p}</p>` : ''}${prog ? `<span class="prog">${I.checklist}${prog}</span>` : ''}<div class="foot"><span class="cap muted">${date}</span><span class="more">${I.more}</span></div></div>`;
 const cats = [['mint', 'Cá nhân'], ['lavender', 'Công việc'], ['peach', 'Mua sắm']];
 const notesList = `<div class="content">
   <div class="topbar"><span></span><div class="screen-title">Quản lý</div><span class="act">${I.more}</span></div>
@@ -745,7 +752,7 @@ const groups = [
     ['14. Hỏi lần lặp', 'xoá event lặp', phone(askRepeat)],
   ]],
   ['Notes', [
-    ['16. Quản lý — Notes', 'ghim trước · menu ⋯ mở', phone(notesList)],
+    ['16. Quản lý — Notes', 'ghim trước · mỗi thẻ có ⋯ (xoá, di chuyển)', phone(notesList)],
     ['16b. Tìm kiếm + xoá', 'gõ không dấu · Hoàn tác', phone(notesSearch)],
     ['17. Editor note', 'Back = tự lưu', phone(editor)],
     ['15. Xung đột', 'dùng chung cho event', phone(conflict)],

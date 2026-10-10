@@ -20,7 +20,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 13 | Chi tiết event | `event/[id]` | Xem | Màu + tiêu đề · thời gian + ngày âm · lặp · nhắc · chi tiết · nhãn Google / Chỉ trên Daynest · ⋯ Sửa, Xoá | [F2](../F2-event.md), [F4](../F4-google-calendar.md) |
 | 14 | Hỏi lần lặp | — | Sửa/xoá event lặp | Hộp: Chỉ lần này · Tất cả · Huỷ | [F2](../F2-event.md#ngoại-lệ-sửaxoá-1-lần-lặp) |
 | 15 | Xung đột | — | Sửa ở máy khác | Hộp: "Đã thay đổi ở thiết bị khác" · Tải bản mới · Ghi đè | [F2](../F2-event.md), [F5](../F5-notes.md) |
-| 16 | Quản lý — Notes | `(tabs)/manage` | Danh sách note | Tiêu đề · ô tìm · chip danh mục · lưới 2 cột thẻ note · ⋯ | [F5](../F5-notes.md) |
+| 16 | Quản lý — Notes | `(tabs)/manage` | Danh sách note | Tiêu đề · ô tìm · chip danh mục · lưới 2 cột thẻ note (mỗi thẻ có `⋯`: Xoá, Di chuyển đến) · `⋯` góc trên phải (Danh mục, Thùng rác) | [F5](../F5-notes.md) |
 | 17 | Editor note | `note/[id]` | Viết note | ‹ · chip danh mục · ⋯ · tiêu đề · nội dung · checklist | [F5](../F5-notes.md) |
 | 18 | Danh mục | `note/categories` | Quản lý danh mục | Danh sách (chấm màu + tên + số ghi chú + icon bút) · `⋯` góc trên phải: Chọn để xoá · nút Thêm danh mục | [F5](../F5-notes.md#danh-mục) |
 | 18b | Chọn để xoá | — | Xoá nhiều | Thanh trên: ✕ · "Đã chọn n" · ô tick tròn mỗi dòng · nút đáy Xoá (n) màu `error` | [F5](../F5-notes.md#danh-mục) |

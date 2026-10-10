@@ -53,14 +53,14 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 | Chế độ | Bố cục |
 | --- | --- |
-| Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ, tên lễ 1 dòng, tối đa 3 thanh event + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` |
+| Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ · ngày lễ hiện thành 1 thanh như thanh event (nền `error`, chữ trắng, không bấm được) xếp đầu · tối đa 3 thanh (kể cả thanh lễ) + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` |
 | Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event, nhiều event quá 1 hàng thì cuộn ngang trong hàng đó |
 | Ngày | Dòng "Cả ngày" + lưới giờ 0–23 · event là khối theo giờ, trùng giờ xếp cạnh nhau · vạch giờ hiện tại |
 | Danh sách | Thanh chọn ngày ngang (1 tuần) · danh sách event ngày đã chọn theo giờ |
 
 - Ngày âm trong ô: mùng 1 và rằm kèm tháng âm (`1/8`, `15/8`), ngày khác chỉ hiện số ngày. Tháng nhuận thêm "N" (vd `1/6N`).
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
-- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · tên lễ · danh sách event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event → "Chưa có sự kiện".
+- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · danh sách event — ngày lễ xếp đầu (chấm `error`, không bấm được), rồi event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event/lễ → "Chưa có sự kiện".
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm
