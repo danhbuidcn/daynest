@@ -91,13 +91,6 @@ const DayCell = memo(function DayCell({
       onPress={() => onPress(day)}
       style={[styles.cell, selected && styles.selected, !day.inMonth && styles.out]}>
       <View style={styles.top}>
-        <View style={[styles.num, day.isToday && styles.today]}>
-          <AppText
-            weight={day.isToday ? 'extrabold' : undefined}
-            color={day.isToday ? colors.white : red ? colors.error : colors.text}>
-            {day.day}
-          </AppText>
-        </View>
         <AppText
           variant="micro"
           weight={day.lunarKey ? 'extrabold' : undefined}
@@ -106,6 +99,13 @@ const DayCell = memo(function DayCell({
           style={styles.lunar}>
           {day.lunarLabel}
         </AppText>
+        <View style={[styles.num, day.isToday && styles.today]}>
+          <AppText
+            weight={day.isToday ? 'extrabold' : undefined}
+            color={day.isToday ? colors.white : red ? colors.error : colors.text}>
+            {day.day}
+          </AppText>
+        </View>
       </View>
       {showAddBadge ? (
         <View style={styles.addLayer} pointerEvents="box-none">
@@ -146,9 +146,9 @@ const styles = StyleSheet.create({
   },
   selected: { backgroundColor: colors.primarySoft, borderRadius: 10 },
   out: { opacity: 0.4 },
-  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  lunar: { paddingHorizontal: 1 },
-  num: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  top: { paddingHorizontal: 1 },
+  lunar: { alignSelf: 'flex-end', height: 12, lineHeight: 12 },
+  num: { alignSelf: 'flex-start', width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   today: { backgroundColor: colors.primary },
   bars: { gap: 2, marginTop: 2 },
   // Centred on the whole cell, not under the date row.
