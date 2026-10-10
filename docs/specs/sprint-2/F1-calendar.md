@@ -60,8 +60,9 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 - Ngày âm trong ô: mùng 1 và rằm kèm tháng âm (`1/8`, `15/8`), ngày khác chỉ hiện số ngày. Tháng nhuận thêm "N" (vd `1/6N`).
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
-- Chọn ô trống (giống app lịch cài sẵn trên máy): lần bấm đầu chỉ chọn ô và hiện nút `+` tròn `primary` giữa ô; bấm `+` mới mở pop-up ngày. Ô có event hoặc ngày lễ: bấm là mở pop-up ngay.
+- Chọn ô trống (giống app lịch cài sẵn trên máy): lần bấm đầu chỉ chọn ô và hiện nút `+` tròn `primary` đặt chính giữa ô (cả chiều ngang lẫn dọc); bấm `+` mới mở pop-up ngày. Ô có event hoặc ngày lễ: bấm là mở pop-up ngay.
 - Pop-up ngày (hộp giữa màn, cỡ lớn: cách mép 12, cao tối đa 85% màn, danh sách cuộn): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · danh sách event — ngày lễ xếp đầu (chấm `error`, không bấm được), rồi event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event/lễ → "Chưa có sự kiện".
+- Chế độ xem lần cuối được nhớ trên máy: mở lại app vào đúng chế độ đó. Vuốt trái/phải đổi 1 tuần (Tuần, Danh sách) hoặc 1 ngày (Ngày); bấm event mở Chi tiết.
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm

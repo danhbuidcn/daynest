@@ -4,6 +4,9 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | S2 code bước 7: xem Tuần / Ngày / Danh sách (F1) | ✅ xong | [2026-10-10-s2-code-step-7-week-day-list.md](2026-10-10-s2-code-step-7-week-day-list.md) |
+| 2026-10-10 | Cảnh báo email khi Supabase dùng ≥ 80% gói | ❌ huỷ | [2026-10-10-supabase-usage-alert.md](2026-10-10-supabase-usage-alert.md) |
+| 2026-10-10 | Spec kiến trúc bằng biểu đồ Mermaid | ✅ xong | [2026-10-10-architecture-diagrams.md](2026-10-10-architecture-diagrams.md) |
 | 2026-10-10 | S2 code bước 6: Event — hàm lặp, form, chi tiết, pop-up, thanh event (F2) | ✅ xong | [2026-10-10-s2-code-step-6-event.md](2026-10-10-s2-code-step-6-event.md) |
 | 2026-10-10 | S2 code bước 5: giới hạn 2 thiết bị (F7) | ✅ xong | [2026-10-10-s2-code-step-5-device-limit.md](2026-10-10-s2-code-step-5-device-limit.md) |
 | 2026-10-10 | Ngày lễ hiện như thanh event + thẻ note có ⋯ (xoá, di chuyển) | ✅ xong | [2026-10-10-holiday-as-event-bar-note-card-menu.md](2026-10-10-holiday-as-event-bar-note-card-menu.md) |

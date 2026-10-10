@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { occurrencesOnDay } from '@/features/calendar/dayOccurrences';
+import { byStartTime, occurrencesOnDay, timedSpansOnDay } from '@/features/calendar/dayOccurrences';
 import type { EventOccurrence } from '@/features/events/occurrences';
 
 const occ = (over: Partial<EventOccurrence>): EventOccurrence => ({
@@ -34,5 +34,28 @@ describe('occurrencesOnDay', () => {
     const meeting = occ({ allDay: false, startDate: null, endDate: null, startsAt: '2026-10-06T16:00:00.000Z', endsAt: '2026-10-06T18:00:00.000Z' }); // 23:00-01:00 Asia/Ho_Chi_Minh
     expect(occurrencesOnDay([meeting], { year: 2026, month: 10, day: 6 })).toEqual([meeting]);
     expect(occurrencesOnDay([meeting], { year: 2026, month: 10, day: 7 })).toEqual([meeting]);
+  });
+});
+
+describe('timedSpansOnDay', () => {
+  const meeting = occ({ allDay: false, startDate: null, endDate: null, startsAt: '2026-10-06T16:00:00.000Z', endsAt: '2026-10-06T18:00:00.000Z' }); // 23:00-01:00 +7
+
+  it('measures minutes from the start of the shown day in the user time zone', () => {
+    expect(timedSpansOnDay([meeting], { year: 2026, month: 10, day: 6 })).toEqual([{ id: 'e1-2026-10-06', start: 23 * 60, end: 25 * 60, occurrence: meeting }]);
+    expect(timedSpansOnDay([meeting], { year: 2026, month: 10, day: 7 })).toEqual([{ id: 'e1-2026-10-06', start: -60, end: 60, occurrence: meeting }]);
+  });
+
+  it('leaves out all-day events and other days', () => {
+    expect(timedSpansOnDay([occ({})], { year: 2026, month: 10, day: 6 })).toEqual([]);
+    expect(timedSpansOnDay([meeting], { year: 2026, month: 10, day: 8 })).toEqual([]);
+  });
+});
+
+describe('byStartTime', () => {
+  it('lists all-day events first, then timed ones by start', () => {
+    const late = occ({ eventId: 'late', allDay: false, startsAt: '2026-10-06T10:00:00.000Z', endsAt: '2026-10-06T11:00:00.000Z' });
+    const early = occ({ eventId: 'early', allDay: false, startsAt: '2026-10-06T02:00:00.000Z', endsAt: '2026-10-06T03:00:00.000Z' });
+    const allDay = occ({ eventId: 'all' });
+    expect([late, allDay, early].sort(byStartTime).map((o) => o.eventId)).toEqual(['all', 'early', 'late']);
   });
 });

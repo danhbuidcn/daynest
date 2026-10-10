@@ -1,6 +1,7 @@
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TimedSpan } from '@/lib/calendar/dayLayout';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
-import { DEFAULT_TIME_ZONE, todayIn } from '@/lib/calendar/timeZone';
+import { DEFAULT_TIME_ZONE, timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
 import { jdFromDate, type SolarDate } from '@/lib/lunar';
 
 function occurrenceRange(occ: EventOccurrence, timeZone: string): { start: number; end: number } {
@@ -20,4 +21,37 @@ export function occurrencesOnDay(all: EventOccurrence[], day: SolarDate, timeZon
     const { start, end } = occurrenceRange(occ, timeZone);
     return jd >= start && jd <= end;
   });
+}
+
+// Display order inside one day: all-day first, then by start time.
+export function byStartTime(a: EventOccurrence, b: EventOccurrence): number {
+  if (a.allDay !== b.allDay) return a.allDay ? -1 : 1;
+  const ka = a.allDay ? a.startDate! : a.startsAt!;
+  const kb = b.allDay ? b.startDate! : b.startsAt!;
+  return ka < kb ? -1 : ka > kb ? 1 : 0;
+}
+
+export function occurrenceKey(occ: EventOccurrence): string {
+  return `${occ.eventId}-${occ.occurrenceDate}`;
+}
+
+function minutesFromDayStart(instant: string, dayJd: number, timeZone: string): number {
+  const date = new Date(instant);
+  const time = timeOfDayIn(date, timeZone);
+  return (jdFromDate(todayIn(timeZone, date)) - dayJd) * 24 * 60 + time.hour * 60 + time.minute;
+}
+
+export type OccurrenceSpan = TimedSpan & { occurrence: EventOccurrence };
+
+// Day view blocks: timed occurrences on `day`, in minutes from that day's 00:00 (all-day ones go to the "Cả ngày" row).
+export function timedSpansOnDay(all: EventOccurrence[], day: SolarDate, timeZone: string = DEFAULT_TIME_ZONE): OccurrenceSpan[] {
+  const jd = jdFromDate(day);
+  return occurrencesOnDay(all, day, timeZone)
+    .filter((occ) => !occ.allDay)
+    .map((occ) => ({
+      id: occurrenceKey(occ),
+      start: minutesFromDayStart(occ.startsAt!, jd, timeZone),
+      end: minutesFromDayStart(occ.endsAt!, jd, timeZone),
+      occurrence: occ,
+    }));
 }

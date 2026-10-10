@@ -108,9 +108,11 @@ const DayCell = memo(function DayCell({
         </AppText>
       </View>
       {showAddBadge ? (
-        <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={() => onPressAdd(day)} hitSlop={8} style={styles.addBadge}>
-          <Icon name="plus" size={14} color={colors.white} />
-        </Pressable>
+        <View style={styles.addLayer} pointerEvents="box-none">
+          <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={() => onPressAdd(day)} hitSlop={12} style={styles.addBadge}>
+            <Icon name="plus" size={14} color={colors.white} />
+          </Pressable>
+        </View>
       ) : (
         <View style={styles.bars}>
           {shown.map((item) => (
@@ -149,5 +151,7 @@ const styles = StyleSheet.create({
   num: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   today: { backgroundColor: colors.primary },
   bars: { gap: 2, marginTop: 2 },
-  addBadge: { alignSelf: 'center', marginTop: 4, width: 22, height: 22, borderRadius: 11, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
+  // Centred on the whole cell, not under the date row.
+  addLayer: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center' },
+  addBadge: { width: 22, height: 22, borderRadius: 11, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
 });
