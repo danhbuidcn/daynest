@@ -39,7 +39,7 @@ Thuộc: [Sprint 2](index.md).
   - "Đồng bộ ngay" — bấm → đồng bộ, hiện vòng xoay.
   - "Lần đồng bộ cuối" — vd "Hôm nay 10:20".
 - Lỗi token → dòng cảnh báo "Cần kết nối lại Google" + bấm để kết nối lại.
-- Tắt công tắc → hộp xác nhận "Tắt đồng bộ? Sự kiện đã có vẫn còn ở cả Daynest và Google. Từ giờ, sửa trong Daynest sẽ không đổi trên Google, và sửa trên Google cũng không đổi trong Daynest."
+- Tắt công tắc → hộp xác nhận "Tắt đồng bộ? Sự kiện vẫn được giữ ở cả Daynest và Google, nhưng sẽ không tự cập nhật cho nhau nữa."
 
 ## Mô tả
 
