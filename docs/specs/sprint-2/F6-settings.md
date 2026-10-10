@@ -37,7 +37,7 @@ Thuộc: [Sprint 2](index.md).
 - Tắt: dòng công tắc + chú thích "Đồng bộ 2 chiều với lịch chính của <email Google>".
 - Bật: thêm 2 dòng:
   - "Đồng bộ ngay" — bấm → đồng bộ, hiện vòng xoay.
-  - "Lần đồng bộ cuối" — vd "Hôm nay 10:20" · có event `pending` → "Còn 3 sự kiện chưa đồng bộ".
+  - "Lần đồng bộ cuối" — vd "Hôm nay 10:20".
 - Lỗi token → dòng cảnh báo "Cần kết nối lại Google" + bấm để kết nối lại.
 - Tắt công tắc → hộp xác nhận "Tắt đồng bộ? Sự kiện đã có vẫn còn ở cả Daynest và Google. Từ giờ, sửa trong Daynest sẽ không đổi trên Google, và sửa trên Google cũng không đổi trong Daynest."
 
