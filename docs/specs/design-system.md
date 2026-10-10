@@ -111,6 +111,15 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 - Chuỗi không có khoảng trắng (URL…) vẫn phải xuống dòng/cắt, không tràn ngang.
 - Bảng chi tiết từng field: [S2 screens.md](sprint-2/design/screens.md#giới-hạn-ký-tự-và-hiển-thị-chữ-dài).
 
+## Câu chữ
+
+- Lịch sự, trang trọng vừa phải, đơn giản, dễ hiểu. Tiếng Việt và tiếng Anh cùng giọng.
+- Ngắn: tiêu đề hộp là câu hỏi ngắn ("Tắt đồng bộ?"); mô tả tối đa 1 câu, chỉ nói điều người dùng cần biết; không lặp ý của tiêu đề.
+- Không dùng khẩu ngữ, từ suồng sã: "cho nhau", "về" (thay "được chuyển sang"), "luôn", "nha", "nhé", "xịn".
+- Không dùng từ kỹ thuật với người dùng: "sync token", "pending", "server", "API".
+- Dùng "được" cho kết quả trung tính/tốt ("được giữ", "được chuyển"), "bị" cho kết quả không mong muốn ("bị xoá", "bị đăng xuất").
+- Tên nút là động từ rõ việc: "Xoá", "Tắt", "Đã hiểu" — không dùng "OK", "Có/Không".
+
 ## Quy tắc đồng bộ
 
 - Mọi màn chỉ dùng token ở file này: màu, cỡ chữ (22 / 17 / 15 / 12), khoảng cách, bo góc. Không dùng mã màu hay cỡ chữ khác (trừ chữ logo).
