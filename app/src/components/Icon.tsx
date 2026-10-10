@@ -49,6 +49,12 @@ const ICONS = {
   time24: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12h4"/>'),
   flag: () => stroke('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
   search: () => stroke('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>'),
+  pin: () =>
+    '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3l6 6-3 1-3.5 3.5L15 18l-2 2-4-4-5 5-1-1 5-5-4-4 2-2 4.5.5L14 6z"/></svg>',
+  checklist: () => stroke('<path d="M4 6.5l1.5 1.5L8.5 5M4 12.5l1.5 1.5 3-3M4 18.5l1.5 1.5 3-3M12 7h8M12 13h8M12 19h8"/>'),
+  folder: () =>
+    stroke('<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h4l2 2h6a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5z"/>'),
+  restore: () => stroke('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>'),
 } satisfies Record<string, (filled: boolean) => string>;
 
 export type IconName = keyof typeof ICONS;

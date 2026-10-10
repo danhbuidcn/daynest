@@ -79,6 +79,9 @@ function RootStack({ ready }: { ready: boolean }) {
       <Stack.Protected guard={signedIn}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="settings/devices" />
+        <Stack.Screen name="note/[id]" />
+        <Stack.Screen name="note/categories" />
+        <Stack.Screen name="note/trash" />
       </Stack.Protected>
     </Stack>
   );

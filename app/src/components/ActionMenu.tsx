@@ -8,23 +8,25 @@ import { Icon, type IconName } from './Icon';
 export type MenuAction = { icon: IconName; label: string; danger?: boolean; onPress: () => void };
 
 // Drop-down menu behind a `⋯` button, under the top bar on the right (mockup `.menu`).
-// `top` overrides the position, measured from the top of the screen.
+// `top` / `right` override the position (window coordinates) — e.g. under a note card's `⋯`.
 export function ActionMenu({
   visible,
   actions,
   onClose,
   top,
+  right,
 }: {
   visible: boolean;
   actions: MenuAction[];
   onClose: () => void;
   top?: number;
+  right?: number;
 }) {
   const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
       <Pressable style={styles.scrim} onPress={onClose}>
-        <View style={[styles.menu, { top: top ?? insets.top + 60 }]}>
+        <View style={[styles.menu, { top: top ?? insets.top + 60, right: right ?? space.lg }]}>
           {actions.map((a) => (
             <Pressable
               key={a.label}
@@ -58,7 +60,6 @@ const styles = StyleSheet.create({
   scrim: { flex: 1 },
   menu: {
     position: 'absolute',
-    right: space.lg,
     width: 160,
     backgroundColor: colors.surface,
     borderRadius: radius.button,

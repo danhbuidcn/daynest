@@ -32,7 +32,7 @@ export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TI
 // Wraps a mutation's API call so a write rejected by RLS (42501) re-checks the session (F7)
 // before the error reaches the caller — a kicked-out device then shows "Bạn đã bị đăng xuất"
 // instead of a generic error toast.
-function useForbiddenGuard() {
+export function useForbiddenGuard() {
   const { recheckSession } = useAuth();
   return async <T>(run: () => Promise<T>): Promise<T> => {
     try {

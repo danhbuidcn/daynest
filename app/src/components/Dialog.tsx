@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
 import { AppText } from './AppText';
@@ -24,11 +24,14 @@ export function DialogShell({
 }) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
-      <Pressable style={[styles.scrim, large && styles.scrimLarge]} onPress={onClose}>
-        <Pressable style={[styles.box, compact && styles.compact, large && styles.boxLarge, boxStyle]} onPress={() => {}}>
-          {children}
+      {/* Dialogs with a text field (category name) move up above the keyboard. */}
+      <KeyboardAvoidingView style={styles.flex} behavior="padding">
+        <Pressable style={[styles.scrim, large && styles.scrimLarge]} onPress={onClose}>
+          <Pressable style={[styles.box, compact && styles.compact, large && styles.boxLarge, boxStyle]} onPress={() => {}}>
+            {children}
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -46,7 +49,8 @@ export function ConfirmDialog({
   visible: boolean;
   icon?: IconName;
   title: string;
-  text: string;
+  // Empty → title only (e.g. "Xoá vĩnh viễn tất cả?", màn 20b).
+  text?: string;
   cancelLabel: string;
   confirmLabel: string;
   onCancel: () => void;
@@ -60,9 +64,13 @@ export function ConfirmDialog({
       <AppText variant="heading" style={styles.center}>
         {title}
       </AppText>
-      <AppText color={colors.textMuted} style={[styles.center, styles.text]}>
-        {text}
-      </AppText>
+      {text ? (
+        <AppText color={colors.textMuted} style={[styles.center, styles.text]}>
+          {text}
+        </AppText>
+      ) : (
+        <View style={styles.titleOnly} />
+      )}
       <View style={styles.actions}>
         <Button label={cancelLabel} variant="secondary" onPress={onCancel} style={styles.flex} />
         <Button label={confirmLabel} variant="danger" onPress={onConfirm} style={styles.flex} />
@@ -170,6 +178,7 @@ const styles = StyleSheet.create({
   alertIconWarning: { backgroundColor: colors.warningSoft },
   center: { textAlign: 'center' },
   text: { marginTop: 6, marginBottom: 20 },
+  titleOnly: { height: 20 },
   actions: { flexDirection: 'row', gap: 10 },
   flex: { flex: 1 },
   option: { height: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, borderRadius: radius.button },

@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TabBar } from '@/components/TabBar';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { QuickAddDialog } from '@/features/calendar/QuickAddDialog';
+import { newNoteHref } from '@/features/notes/newNote';
 import { useNotificationTap } from '@/features/reminders/useNotificationTap';
 import { clockLabel } from '@/features/events/format';
 import { isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
@@ -15,7 +15,6 @@ import { colors } from '@/theme';
 
 export default function TabsLayout() {
   const { t } = useTranslation();
-  const toast = useToast();
   const router = useRouter();
   const { settings } = useAuth();
   const [quickAddOpen, setQuickAddOpen] = useState(false);
@@ -49,7 +48,7 @@ export default function TabsLayout() {
         }}
         onCreateNote={() => {
           setQuickAddOpen(false);
-          toast(t('comingSoon'));
+          router.push(newNoteHref());
         }}
       />
     </>
