@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 2 (Lịch — Tuần): thẻ event 10 ký tự tiêu đề + giờ bắt đầu – kết thúc | ✅ xong (chờ bạn thử trên máy) | [2026-10-10-week-card-title-10-chars.md](2026-10-10-week-card-title-10-chars.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm event → form sửa luôn | ❌ huỷ (đã hoàn tác) | [2026-10-10-week-event-tap-opens-edit.md](2026-10-10-week-event-tap-opens-edit.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm ngày → form event cả ngày | ✅ xong | [2026-10-10-week-day-tap-opens-all-day-form.md](2026-10-10-week-day-tap-opens-all-day-form.md) |
 | 2026-10-10 | S2 code bước 8: Nhắc nhở + Cài đặt Thông báo, Lịch (F3, F6) | ✅ xong | [2026-10-10-s2-code-step-8-reminders-settings.md](2026-10-10-s2-code-step-8-reminders-settings.md) |

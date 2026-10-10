@@ -140,7 +140,7 @@
   .wrow.today .dd { color: var(--primary-dark); }
   .wrow .evs { display: flex; gap: 6px; align-items: center; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
   .wrow .evs::-webkit-scrollbar { display: none; }
-  .wrow .evs .ecard { width: 132px; flex: none; }
+  .wrow .evs .ecard { flex: none; }
   .wrow .none { font-size: 12px; color: var(--muted); align-self: center; }
 
   .dayhead { padding: 0 16px 6px; display: flex; justify-content: space-between; align-items: baseline; flex: none; }
@@ -398,7 +398,7 @@ const monthScreen = (sel) => `<div class="content">${calHead('Tháng 10, 2026')}
 // ---- Tuần ----
 const weekRows = [
   ['T2', '05', '25/8', []],
-  ['T3', '06', '26/8', [['mint', 'Chạy bộ', '06:00 – 07:00', 'repeat']]],
+  ['T3', '06', '26/8', [['mint', 'Chạy bộ', '06:00 – 07:00', 'repeat'], ['sky', 'Họp tổng kết dự án quý 4', '13:00 – 14:30', '']]],
   ['T4', '07', '27/8', []],
   ['T5', '08', '28/8', []],
   ['T6', '09', '29/8', [['lavender', 'Họp nhóm', '10:00 – 11:00', 'google'], ['lemon', 'Khám răng', '15:00 – 15:30', 'bell'], ['peach', 'Đón con', '17:00 – 17:30', '']], true],
@@ -407,7 +407,7 @@ const weekRows = [
 ];
 const weekScreen = `<div class="content">${calHead('Tuần 5 – 11/10')}${seg('Tuần')}
   <div class="weekbar">${['21 – 27<i>Th9</i>', '28 – 04<i>Th9</i>', '05 – 11<i>Th10</i>', '12 – 18<i>Th10</i>'].map((w, i) => { const [a, b] = w.split('<i>'); return `<div class="wchip ${i === 2 ? 'on' : ''}"><b>${a}</b><i>${b}</div>`; }).join('')}</div>
-  <div class="wrows">${weekRows.map(([w, d, l, evs, today]) => `<div class="wrow ${today ? 'today' : ''}"><div class="dd"><span>${w}</span><b>${d}</b><span>${l}</span></div><div class="evs">${evs.length ? evs.map((e) => ecard(e[0], e[1], e[2], e[3])).join('') : '<span class="none">—</span>'}</div></div>`).join('')}</div>
+  <div class="wrows">${weekRows.map(([w, d, l, evs, today]) => `<div class="wrow ${today ? 'today' : ''}"><div class="dd"><span>${w}</span><b>${d}</b><span>${l}</span></div><div class="evs">${evs.length ? evs.map((e) => ecard(e[0], [...e[1]].slice(0, 10).join(''), e[2], e[3])).join('') : '<span class="none">—</span>'}</div></div>`).join('')}</div>
 </div>${tabbar('cal')}`;
 
 // ---- Ngày ----

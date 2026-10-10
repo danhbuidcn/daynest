@@ -60,7 +60,8 @@ Quy tắc chung: [design-system § Chữ dài](../../design-system.md#chữ-dài
 | --- | --- |
 | Thanh lễ, thẻ lễ (tháng, tuần, ngày, danh sách) | Dùng tên rút gọn (vd "Phụ nữ"); bấm vào mở pop-up ngày xem tên đầy đủ |
 | Thanh event (ô tháng) | 1 dòng, cắt thẳng ở mép (không `…`) |
-| Thẻ event (tuần, danh sách, pop-up ngày) | Tiêu đề 1 dòng · chi tiết 1 dòng, cắt thẳng ở mép (không `…`) |
+| Thẻ event (xem tuần) | Tiêu đề tối đa 10 ký tự đầu (không `…`) · luôn hiện đủ giờ bắt đầu – kết thúc · thẻ rộng vừa nội dung |
+| Thẻ event (danh sách, pop-up ngày) | Tiêu đề 1 dòng · chi tiết 1 dòng, cắt thẳng ở mép (không `…`) |
 | Khối event (xem ngày) | Tiêu đề xuống dòng vừa chiều cao khối, dư thì cắt thẳng (không `…`) |
 | Chi tiết event, editor note, mục checklist trong editor | Hiện hết, xuống dòng, cuộn màn |
 | Ô tiêu đề (form event, editor note) | Tự giãn tối đa 3 dòng, quá thì cuộn trong ô |

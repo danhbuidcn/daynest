@@ -11,6 +11,7 @@ import { colors, eventColors, radius, shadow, space } from '@/theme';
 export function EventCard({
   occurrence,
   subtitle,
+  titleMaxChars,
   use24h,
   timeZone,
   onPress,
@@ -18,6 +19,8 @@ export function EventCard({
 }: {
   occurrence: EventOccurrence;
   subtitle?: string;
+  // Week rows show only the first N characters (no `…`) so the start – end time always fits.
+  titleMaxChars?: number;
   use24h: boolean;
   timeZone: string;
   onPress: () => void;
@@ -25,6 +28,7 @@ export function EventCard({
 }) {
   const { t } = useTranslation();
   const time = timeRangeLabel(t, occurrence, use24h, timeZone);
+  const title = titleMaxChars ? Array.from(occurrence.title).slice(0, titleMaxChars).join('') : occurrence.title;
   return (
     <Pressable
       accessibilityRole="button"
@@ -32,8 +36,10 @@ export function EventCard({
       onPress={onPress}
       style={({ pressed }) => [styles.card, pressed && styles.pressed, style]}>
       <View style={[styles.stripe, { backgroundColor: eventColors[occurrence.color] }]} />
-      <View style={styles.body}>
-        <AppText numberOfLines={1} ellipsizeMode="clip">{occurrence.title}</AppText>
+      <View style={[styles.body, titleMaxChars ? styles.bodyAuto : null]}>
+        <AppText numberOfLines={1} ellipsizeMode="clip">
+          {title}
+        </AppText>
         <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
           {subtitle ?? time}
         </AppText>
@@ -47,7 +53,17 @@ export function EventCard({
 }
 
 // Holidays show their short name; tapping opens the day popup with the full name.
-export function HolidayCard({ title, onPress, style }: { title: string; onPress?: () => void; style?: StyleProp<ViewStyle> }) {
+export function HolidayCard({
+  title,
+  autoWidth,
+  onPress,
+  style,
+}: {
+  title: string;
+  autoWidth?: boolean;
+  onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
+}) {
   const { t } = useTranslation();
   return (
     <Pressable
@@ -55,7 +71,7 @@ export function HolidayCard({ title, onPress, style }: { title: string; onPress?
       accessibilityLabel={`${title}, ${t('events.dayDialog.holiday')}`}
       onPress={onPress}
       style={({ pressed }) => [styles.card, styles.holiday, pressed && styles.pressed, style]}>
-      <View style={styles.body}>
+      <View style={[styles.body, autoWidth ? styles.bodyAuto : null]}>
         <AppText color={colors.white} numberOfLines={1} ellipsizeMode="clip">
           {title}
         </AppText>
@@ -73,5 +89,7 @@ const styles = StyleSheet.create({
   holiday: { backgroundColor: colors.error },
   stripe: { width: 4 },
   body: { flex: 1, minWidth: 0, paddingVertical: space.sm, paddingHorizontal: 10 },
+  // No fixed card width (week rows): size to the text instead of filling the card.
+  bodyAuto: { flex: 0 },
   icons: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingRight: 10 },
 });

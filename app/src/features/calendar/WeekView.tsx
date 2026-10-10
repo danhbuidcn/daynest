@@ -14,7 +14,7 @@ import { dayDetails, type DayDisplay } from './dayInfo';
 import { EventCard, HolidayCard } from './EventCard';
 import { WeekChips } from './WeekChips';
 
-const CARD_WIDTH = 132;
+const TITLE_MAX_CHARS = 10;
 
 // Màn 2: one row per day — weekday, solar + lunar date, then its cards scrolling sideways.
 // Tapping the row outside a card opens the event form as an all-day event on that day.
@@ -79,16 +79,16 @@ export function WeekView({
               ) : (
                 <GestureScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cards}>
                   {d.holidays.map((h) => (
-                    <HolidayCard key={h} title={t(`holidaysShort.${h}`)} onPress={() => onPressHoliday(d)} style={styles.card} />
+                    <HolidayCard key={h} title={t(`holidaysShort.${h}`)} autoWidth onPress={() => onPressHoliday(d)} />
                   ))}
                   {events.map((o) => (
                     <EventCard
                       key={occurrenceKey(o)}
                       occurrence={o}
                       use24h={use24h}
+                      titleMaxChars={TITLE_MAX_CHARS}
                       timeZone={timeZone}
                       onPress={() => onPressOccurrence(o)}
-                      style={styles.card}
                     />
                   ))}
                 </GestureScrollView>
@@ -109,5 +109,4 @@ const styles = StyleSheet.create({
   date: { width: 52 },
   none: { flex: 1 },
   cards: { gap: 6, alignItems: 'center', paddingVertical: 4, paddingRight: space.xs },
-  card: { width: CARD_WIDTH },
 });
