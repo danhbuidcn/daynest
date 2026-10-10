@@ -4,6 +4,8 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 25 (Thiết bị đăng nhập): chú thích hiện đủ, giống mockup | ✅ xong | [2026-10-10-devices-caption-wrap.md](2026-10-10-devices-caption-wrap.md) |
+| 2026-10-10 | S2 code bước 10: Đồng bộ Google 2 chiều (F4) | ⛔ code xong, chờ cấu hình Google Cloud để thử | [2026-10-10-s2-code-step-10-google-sync.md](2026-10-10-s2-code-step-10-google-sync.md) |
 | 2026-10-10 | Màn 13 (Chi tiết event): giống hệt mockup | ✅ xong | [2026-10-10-event-detail-match-mockup.md](2026-10-10-event-detail-match-mockup.md) |
 | 2026-10-10 | S2 code bước 9: Notes (F5) | ✅ xong (trừ kéo đổi thứ tự checklist) | [2026-10-10-s2-code-step-9-notes.md](2026-10-10-s2-code-step-9-notes.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): thẻ event 10 ký tự tiêu đề + giờ bắt đầu – kết thúc | ✅ xong (chờ bạn thử trên máy) | [2026-10-10-week-card-title-10-chars.md](2026-10-10-week-card-title-10-chars.md) |

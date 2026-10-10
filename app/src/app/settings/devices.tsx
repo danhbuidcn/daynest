@@ -62,7 +62,7 @@ export default function DevicesScreen() {
                     </View>
                   ) : null}
                 </View>
-                <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+                <AppText variant="caption" color={colors.textMuted}>
                   {t('devices.caption', {
                     signedIn: formatAbsoluteDate(d.signedInAt),
                     lastSeen: formatLastSeen(d.lastSeenAt, t),
