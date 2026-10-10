@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
 import { AppText } from './AppText';
@@ -12,6 +12,7 @@ export function DialogShell({
   children,
   compact,
   large,
+  boxStyle,
 }: {
   visible: boolean;
   onClose: () => void;
@@ -19,11 +20,12 @@ export function DialogShell({
   compact?: boolean;
   // Narrower side margins + taller box — day popup, pop-ups with a scrollable list.
   large?: boolean;
+  boxStyle?: StyleProp<ViewStyle>;
 }) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
       <Pressable style={[styles.scrim, large && styles.scrimLarge]} onPress={onClose}>
-        <Pressable style={[styles.box, compact && styles.compact, large && styles.boxLarge]} onPress={() => {}}>
+        <Pressable style={[styles.box, compact && styles.compact, large && styles.boxLarge, boxStyle]} onPress={() => {}}>
           {children}
         </Pressable>
       </Pressable>

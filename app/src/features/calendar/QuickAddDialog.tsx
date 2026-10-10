@@ -23,23 +23,26 @@ export function QuickAddDialog({
 }) {
   const { t } = useTranslation();
   return (
-    <DialogShell visible={visible} onClose={onClose} compact>
+    <DialogShell visible={visible} onClose={onClose} boxStyle={styles.box}>
       <PopupHeader title={title} onClose={onClose} />
-      <QuickOption icon="calendar" label={t('events.quickAdd.event')} tone="primary" onPress={onCreateEvent} />
-      <QuickOption icon="note" label={t('events.quickAdd.note')} tone="warning" onPress={onCreateNote} />
+      <View style={styles.options}>
+        <QuickOption icon="calendar" label={t('events.quickAdd.event')} tone="primary" onPress={onCreateEvent} />
+        <QuickOption icon="note" label={t('events.quickAdd.note')} tone="warning" onPress={onCreateNote} />
+      </View>
     </DialogShell>
   );
 }
 
 function QuickOption({ icon, label, tone, onPress }: { icon: IconName; label: string; tone: 'primary' | 'warning'; onPress: () => void }) {
   const soft = tone === 'primary' ? colors.primarySoft : colors.warningSoft;
-  const fg = tone === 'primary' ? colors.primaryDark : colors.warning;
+  const iconColor = tone === 'primary' ? colors.primaryDark : colors.warning;
+  const labelColor = tone === 'primary' ? colors.primaryDark : colors.text;
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={[styles.option, { backgroundColor: soft }]}>
-      <View style={[styles.icon, { backgroundColor: colors.surface }]}>
-        <Icon name={icon} size={20} color={fg} />
+      <View style={styles.icon}>
+        <Icon name={icon} size={28} color={iconColor} />
       </View>
-      <AppText weight="bold" color={fg}>
+      <AppText weight="bold" color={labelColor}>
         {label}
       </AppText>
     </Pressable>
@@ -47,6 +50,8 @@ function QuickOption({ icon, label, tone, onPress }: { icon: IconName; label: st
 }
 
 const styles = StyleSheet.create({
-  option: { flexDirection: 'row', alignItems: 'center', gap: space.md, height: 56, borderRadius: radius.button, paddingHorizontal: space.md, marginTop: space.sm },
-  icon: { width: 32, height: 32, borderRadius: radius.icon, alignItems: 'center', justifyContent: 'center' },
+  box: { paddingTop: space.lg, paddingHorizontal: space.md, paddingBottom: space.lg },
+  options: { flexDirection: 'row', gap: space.md },
+  option: { flex: 1, height: 112, borderRadius: radius.card, alignItems: 'center', justifyContent: 'center', gap: 10 },
+  icon: { width: 52, height: 52, borderRadius: 18, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
 });

@@ -277,7 +277,6 @@
       "deleteFailed": "Xoá không thành công. Vui lòng thử lại."
     },
     "quickAdd": {
-      "title": "Thêm mới",
       "event": "Sự kiện",
       "note": "Ghi chú"
     }

@@ -277,7 +277,6 @@
       "deleteFailed": "Could not delete. Please try again."
     },
     "quickAdd": {
-      "title": "Add new",
       "event": "Event",
       "note": "Note"
     }

@@ -1,14 +1,15 @@
 import { useRouter } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TabBar } from '@/components/TabBar';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { QuickAddDialog } from '@/features/calendar/QuickAddDialog';
-import { isoDate } from '@/lib/calendar/monthGrid';
-import { todayIn } from '@/lib/calendar/timeZone';
+import { clockLabel } from '@/features/events/format';
+import { isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
+import { timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
 import { colors } from '@/theme';
 
 export default function TabsLayout() {
@@ -17,6 +18,14 @@ export default function TabsLayout() {
   const router = useRouter();
   const { settings } = useAuth();
   const [quickAddOpen, setQuickAddOpen] = useState(false);
+
+  // Weekday, date and the current time, taken when the popup opens (mockup screen 8).
+  const quickAddTitle = useMemo(() => {
+    if (!quickAddOpen) return '';
+    const today = todayIn(settings.timeZone);
+    const time = clockLabel(t, timeOfDayIn(new Date(), settings.timeZone), settings.use24h);
+    return `${t(`calendar.weekdaysLong.${weekdayOf(today)}`)}, ${today.day}/${today.month} · ${time}`;
+  }, [quickAddOpen, settings.timeZone, settings.use24h, t]);
 
   return (
     <>
@@ -30,7 +39,7 @@ export default function TabsLayout() {
       </Tabs>
       <QuickAddDialog
         visible={quickAddOpen}
-        title={t('events.quickAdd.title')}
+        title={quickAddTitle}
         onClose={() => setQuickAddOpen(false)}
         onCreateEvent={() => {
           setQuickAddOpen(false);
