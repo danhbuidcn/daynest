@@ -1,6 +1,6 @@
 # Skill Index
 
-Skill AI gom từ GitHub, đã lọc chỉ giữ phần cần dùng. Lưu sẵn, **chưa kích hoạt**. Cần skill nào thì kích hoạt skill đó.
+Skill AI gom từ GitHub, đã lọc chỉ giữ phần cần dùng. **Đã kích hoạt** (symlink trong `.claude/skills/`, có trong git → máy nào clone về cũng có): `archify`, `ui-ux-pro-max`, `i-have-adhd`. Superpowers cài dạng plugin.
 
 ## Chọn nhanh
 
