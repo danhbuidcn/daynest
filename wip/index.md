@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 21: bỏ chú thích "Đồng bộ 2 chiều với lịch chính của …" | ✅ xong | [2026-10-10-drop-sync-caption.md](2026-10-10-drop-sync-caption.md) |
 | 2026-10-10 | Màn 24: rút gọn chữ hộp "Đã đăng xuất <tên máy>" | ✅ xong | [2026-10-10-new-device-dialog-text.md](2026-10-10-new-device-dialog-text.md) |
 | 2026-10-10 | Màn 23: rút gọn chữ hộp "Bạn đã bị đăng xuất" | ✅ xong | [2026-10-10-kicked-dialog-text.md](2026-10-10-kicked-dialog-text.md) |
 | 2026-10-10 | Hộp "Tắt đồng bộ?": câu trang trọng hơn + quy tắc câu chữ | ✅ xong | [2026-10-10-formal-sync-off-text.md](2026-10-10-formal-sync-off-text.md) |

@@ -34,7 +34,7 @@ Thuộc: [Sprint 2](index.md).
 
 ### Google Calendar
 
-- Tắt: dòng công tắc + chú thích "Đồng bộ 2 chiều với lịch chính của <email Google>".
+- Tắt: chỉ dòng công tắc.
 - Bật: thêm 2 dòng:
   - "Đồng bộ ngay" — bấm → đồng bộ, hiện vòng xoay.
   - "Lần đồng bộ cuối" — vd "Hôm nay 10:20".
