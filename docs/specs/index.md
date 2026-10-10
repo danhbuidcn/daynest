@@ -94,6 +94,7 @@ Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó. Ghi chú đã chố
 ### S3 — Todo
 - Tiêu đề, hạn, ghim, subtask · xong hết subtask → todo xong · % tự tính.
 - Lọc: quá hạn / hôm nay / tuần / tháng.
+- Danh sách todo (và mọi màn list khác từ S3 về sau): phân trang **keyset** (không `offset`, như [S2 notes](sprint-2/design/db.md#notes)) + nút/tự cuộn "Tải thêm" · thao tác lặp (mạng chập chờn, bấm 2 lần) không tạo trùng / không lệch trang — áp nguyên tắc idempotency ở [§3](#nguyên-tắc-mở-rộng).
 
 ### S4 — Diary + Thống kê
 - Diary: 1/ngày, mood 5 mức, ≤ 5 ảnh (Storage `diary-images`), ghim · mood hiện trên lịch.
