@@ -47,6 +47,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | `heading` | 17 / 24 | 700 | Tiêu đề thẻ, nhóm |
 | `body` | 15 / 22 | 600 | Nội dung, dòng cài đặt |
 | `caption` | 12 / 16 | 600 | Nhãn tab, chú thích, version |
+| `micro` | 10 / 12 | 600 | Ngày âm trong ô lịch tháng |
 
 ## Khoảng cách và bo góc
 
@@ -85,7 +86,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | --- | --- |
 | Thanh chọn chế độ | Segmented cao 40, nền `border`, bo 16 · 4 mục Tháng · Danh sách · Tuần · Ngày · mục chọn nền `primary` chữ trắng 700, mục khác chữ `text` |
 | Header lịch | `‹` · tiêu đề `title` ("Tháng 10, 2026") bấm được · `›` · bên phải nút "Hôm nay" (chip `primarySoft`, chữ `primaryDark`) |
-| Ô lịch tháng | Không viền ngoài, kẻ `border` giữa các ô · số dương `body` góc trái trên · ngày âm `caption` `textMuted` góc phải trên (mùng 1 / rằm: `primaryDark`) · tên lễ `caption` `error` 1 dòng · tối đa 3 thanh event + "+N" `caption` `textMuted` |
+| Ô lịch tháng | Không viền ngoài, kẻ `border` giữa các ô · ngày âm `micro` `textMuted` hàng trên cùng, căn phải · số dương `body` hàng dưới, căn trái (mùng 1 / rằm: `primaryDark`) · tên lễ `caption` `error` 1 dòng · tối đa 3 thanh event + "+N" `caption` `textMuted` |
 | Trạng thái ô | Hôm nay: số trong vòng tròn 24 nền `primary` chữ trắng · đang chọn: nền ô `primarySoft` · ngày tháng khác: mờ 40% · CN + ngày lễ: số `error` |
 | Thanh event | Cao 16, bo 6, nền màu event, chữ `caption` `text` 1 dòng, padding ngang 4 |
 | Thẻ event | Nền `surface`, bo 16, vạch trái 4 màu event · tiêu đề `body` · giờ `caption` `textMuted` · icon trạng thái bên phải |

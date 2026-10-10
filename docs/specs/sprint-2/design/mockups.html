@@ -104,9 +104,9 @@
   .month { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(6, 1fr); padding: 0 8px 4px; }
   .cell { border-top: 1px solid var(--border); padding: 3px 2px 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
   .cell:nth-child(7n+1) { border-left: 0; }
-  .cell .top { display: flex; justify-content: space-between; align-items: center; height: 24px; padding: 0 1px; }
-  .cell .d { font-size: 15px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
-  .cell .l { font-size: 12px; color: var(--muted); }
+  .cell .top { display: flex; flex-direction: column-reverse; padding: 0 1px; }
+  .cell .d { align-self: flex-start; font-size: 15px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
+  .cell .l { align-self: flex-end; height: 12px; font-size: 10px; line-height: 12px; color: var(--muted); }
   .cell .l.key { color: var(--primary-dark); font-weight: 800; }
   .cell.sun .d, .cell.hol .d { color: var(--error); }
   .cell.today .d { background: var(--primary); color: #fff; font-weight: 800; }
@@ -135,7 +135,8 @@
   .wrow .dd { display: flex; flex-direction: column; justify-content: center; }
   .wrow .dd b { font-size: 17px; font-weight: 800; } .wrow .dd span { font-size: 12px; color: var(--muted); }
   .wrow.today .dd { color: var(--primary-dark); }
-  .wrow .evs { display: flex; gap: 6px; align-items: center; overflow: hidden; }
+  .wrow .evs { display: flex; gap: 6px; align-items: center; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .wrow .evs::-webkit-scrollbar { display: none; }
   .wrow .evs .ecard { width: 132px; flex: none; }
   .wrow .none { font-size: 12px; color: var(--muted); align-self: center; }
 
@@ -389,7 +390,7 @@ const weekRows = [
   ['T3', '06', '26/8', [['mint', 'Chạy bộ', '06:00 – 07:00', 'repeat']]],
   ['T4', '07', '27/8', []],
   ['T5', '08', '28/8', []],
-  ['T6', '09', '29/8', [['lavender', 'Họp nhóm', '10:00 – 11:00', 'google'], ['lemon', 'Khám răng', '15:00 – 15:30', 'bell']], true],
+  ['T6', '09', '29/8', [['lavender', 'Họp nhóm', '10:00 – 11:00', 'google'], ['lemon', 'Khám răng', '15:00 – 15:30', 'bell'], ['peach', 'Đón con', '17:00 – 17:30', '']], true],
   ['T7', '10', 'Mùng 1/9', []],
   ['CN', '11', '2/9', []],
 ];
