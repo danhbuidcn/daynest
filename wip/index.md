@@ -4,11 +4,12 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Notes: kéo đổi thứ tự mục checklist (thư viện) | ✅ xong | [2026-10-10-checklist-drag-reorder.md](2026-10-10-checklist-drag-reorder.md) |
 | 2026-10-10 | Màn 4 (Lịch — Danh sách): chấm chỉ ở ngày hôm nay | ✅ xong | [2026-10-10-list-strip-dot-today-only.md](2026-10-10-list-strip-dot-today-only.md) |
 | 2026-10-10 | Màn 25 (Thiết bị đăng nhập): chú thích hiện đủ, giống mockup | ✅ xong | [2026-10-10-devices-caption-wrap.md](2026-10-10-devices-caption-wrap.md) |
 | 2026-10-10 | S2 code bước 10: Đồng bộ Google 2 chiều (F4) | ✅ xong (chưa thử thay đổi từ phía Google) | [2026-10-10-s2-code-step-10-google-sync.md](2026-10-10-s2-code-step-10-google-sync.md) |
 | 2026-10-10 | Màn 13 (Chi tiết event): giống hệt mockup | ✅ xong | [2026-10-10-event-detail-match-mockup.md](2026-10-10-event-detail-match-mockup.md) |
-| 2026-10-10 | S2 code bước 9: Notes (F5) | ✅ xong (trừ kéo đổi thứ tự checklist) | [2026-10-10-s2-code-step-9-notes.md](2026-10-10-s2-code-step-9-notes.md) |
+| 2026-10-10 | S2 code bước 9: Notes (F5) | ✅ xong | [2026-10-10-s2-code-step-9-notes.md](2026-10-10-s2-code-step-9-notes.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): thẻ event 10 ký tự tiêu đề + giờ bắt đầu – kết thúc | ✅ xong (chờ bạn thử trên máy) | [2026-10-10-week-card-title-10-chars.md](2026-10-10-week-card-title-10-chars.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm event → form sửa luôn | ❌ huỷ (đã hoàn tác) | [2026-10-10-week-event-tap-opens-edit.md](2026-10-10-week-event-tap-opens-edit.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm ngày → form event cả ngày | ✅ xong | [2026-10-10-week-day-tap-opens-all-day-form.md](2026-10-10-week-day-tap-opens-all-day-form.md) |

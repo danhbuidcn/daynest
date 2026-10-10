@@ -250,6 +250,7 @@
   .tick svg { width: 14px; height: 14px; }
   .cl.done span { text-decoration: line-through; color: var(--muted); }
   .cl .grow { flex: 1; }
+  .cl .grip { color: var(--muted); margin-right: -6px; } .cl .grip svg { width: 18px; height: 18px; }
   .cl .rm { color: var(--muted); } .cl .rm svg { width: 18px; height: 18px; }
   .addline { color: var(--primary-dark); font-weight: 700; font-size: 15px; display: flex; gap: 10px; align-items: center; min-height: 44px; }
   .addline svg { width: 22px; height: 22px; }
@@ -309,6 +310,7 @@ const I = {
   left: sv('<path d="M15 5l-7 7 7 7"/>', 2.2),
   right: sv('<path d="M9 5l7 7-7 7"/>', 2.2),
   close: sv('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+  grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
   more: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
   repeat: sv('<path d="M17 3l3 3-3 3"/><path d="M4 12V9a3 3 0 0 1 3-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 12v3a3 3 0 0 1-3 3H4"/>'),
   bell: sv('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>'),
@@ -582,7 +584,7 @@ const notesSearch = `<div class="content">
   <div class="ngrid"><div>${ncard(notes[0])}</div><div></div></div>
   <div class="toast"><span>Đã chuyển vào thùng rác</span><span class="act">Hoàn tác</span></div>
 </div>${tabbar('man')}`;
-const cl = (t, done) => `<div class="cl ${done ? 'done' : ''}"><span class="tick ${done ? 'on' : ''}">${done ? I.checkW : ''}</span><span class="grow">${t}</span><span class="rm">${I.close}</span></div>`;
+const cl = (t, done) => `<div class="cl ${done ? 'done' : ''}"><span class="grip">${I.grip}</span><span class="tick ${done ? 'on' : ''}">${done ? I.checkW : ''}</span><span class="grow">${t}</span><span class="rm">${I.close}</span></div>`;
 const editor = `<div class="content">
   <div class="topbar" style="grid-template-columns:40px 1fr 40px"><span class="back">${I.left}</span><span class="catchip"><span class="cd ev-mint"></span>Cá nhân</span><span class="act">${I.more}</span></div>
   <div class="editor">

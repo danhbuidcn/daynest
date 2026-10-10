@@ -37,7 +37,7 @@
 - Bỏ dấu kiểm bằng node: "Kế Hoạch Tuần Đi chợ" → "ke hoach tuan di cho" (adb không gõ được chữ có dấu).
 - Chưa thử được: xung đột 2 máy (dùng chung hộp + luồng với event), tải trang 2 (cần > 30 note), tự lưu 2 s khi app bị tắt.
 - typecheck ok · lint 0 lỗi · test 122/122.
-- **Chưa làm:** kéo đổi thứ tự mục checklist — cần thư viện kéo-thả hoặc tự viết bằng gesture-handler; chờ bạn chọn.
+- ~~Chưa làm: kéo đổi thứ tự mục checklist~~ → đã làm ở [2026-10-10-checklist-drag-reorder.md](2026-10-10-checklist-drag-reorder.md).
 
 ## Sau bước 9
 
