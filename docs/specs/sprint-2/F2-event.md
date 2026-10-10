@@ -18,7 +18,7 @@ Thuộc: [Sprint 2](index.md).
 | Thời gian | Kết thúc ≥ bắt đầu, nếu không: báo lỗi dưới ô, khoá Lưu |
 | Màu | 1 trong 6 màu event ([design-system](../design-system.md#màu)), mặc định `mint` |
 | Lặp | Xem [Lặp](#lặp) |
-| Nhắc | Xem [F3](F3-nhac-nho.md) |
+| Nhắc | Xem [F3](F3-reminders.md) |
 
 - Giới hạn ký tự + cách hiện chữ dài: [screens.md](design/screens.md#giới-hạn-ký-tự-và-hiển-thị-chữ-dài).
 
@@ -69,7 +69,7 @@ Bấm event → Chi tiết → ⋯ → Sửa → Form sửa → Lưu
 
 ## Mô tả
 
-- Form (sheet toàn màn): ✕ · tiêu đề "Event" · nút Lưu · ô Tiêu đề · ô Chi tiết · Cả ngày + 2 dòng bắt đầu/kết thúc · Nhắc nhở (công tắc "Cài đặt nhắc nhở" + danh sách mốc + "Thêm nhắc nhở", [F3](F3-nhac-nho.md#mô-tả)) · Lặp lại · Màu (6 chấm).
+- Form (sheet toàn màn): ✕ · tiêu đề "Event" · nút Lưu · ô Tiêu đề · ô Chi tiết · Cả ngày + 2 dòng bắt đầu/kết thúc · Nhắc nhở (công tắc "Cài đặt nhắc nhở" + danh sách mốc + "Thêm nhắc nhở", [F3](F3-reminders.md#mô-tả)) · Lặp lại · Màu (6 chấm).
 - Chi tiết: chấm màu + tiêu đề · thời gian (+ ngày âm) · lặp · nhắc · chi tiết · nhãn "Google" nếu đã đồng bộ · menu ⋯: Sửa, Xoá.
 - Giờ hiện theo cài đặt 24 giờ.
 

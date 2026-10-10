@@ -55,7 +55,7 @@ Lần đầu tạo event có nhắc, chưa có quyền → xin quyền
   - Mỗi mốc 1 dòng: icon đồng hồ · "15 phút trước" · ✕ xoá.
   - "+ Thêm nhắc nhở" → sheet từ đáy: **Huỷ bỏ** · "Chọn nhắc nhở lúc" · **Hoàn tất** · danh sách mốc cuộn được, mốc đang chọn có ✓ · chọn 1 mốc / lần. Mốc đã có trong event không hiện lại. Đủ 5 mốc → ẩn "+ Thêm nhắc nhở".
   - Bấm `!` → hộp: "Trên một số máy, nhắc nhở có thể không chạy nếu bật tối ưu hoá pin. Hãy tắt tối ưu hoá pin cho Daynest." + nút **Loại trừ** → mở màn tối ưu pin của Android cho app.
-- Cài đặt: xem [F6](F6-cai-dat.md).
+- Cài đặt: xem [F6](F6-settings.md).
 
 ## Không làm
 

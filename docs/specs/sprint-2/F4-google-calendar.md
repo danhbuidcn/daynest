@@ -45,7 +45,7 @@ Thuộc: [Sprint 2](index.md).
 
 - `410 Gone` (token hết hạn) → kéo lại toàn bộ năm, ghép theo `google_event_id`.
 - Sang năm mới → kéo toàn bộ năm mới.
-- Mỗi lần kéo xong → đặt lại thông báo ([F3](F3-nhac-nho.md)), làm mới lịch.
+- Mỗi lần kéo xong → đặt lại thông báo ([F3](F3-reminders.md)), làm mới lịch.
 
 ### Không trùng, không mất (nhiều máy)
 
@@ -99,7 +99,7 @@ Tắt "Đồng bộ" → 2 bên độc lập
 
 ## Mô tả
 
-- Cài đặt: xem [F6](F6-cai-dat.md#google-calendar).
+- Cài đặt: xem [F6](F6-settings.md#google-calendar).
 - Event đã đồng bộ: icon Google nhỏ ở pop-up ngày + Chi tiết. Event `pending`: icon đồng hồ nhỏ.
 
 ## Không làm

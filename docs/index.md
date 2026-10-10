@@ -10,7 +10,7 @@ docs/
     design-system.md        # màu, chữ, khoảng cách, icon, thành phần dùng chung
     sprint-N/
       index.md              # mục tiêu, phạm vi, luồng tổng, DoD của sprint
-      F<n>-<tên>.md         # từng chức năng: mục tiêu, logic, luồng, mô tả
+      F<n>-<english-name>.md # từng chức năng (tên file tiếng Anh): mục tiêu, logic, luồng, mô tả
       design/               # thiết kế chi tiết: màn hình, mockup, DB, build…
 ```
 
@@ -23,6 +23,7 @@ docs/
 
 Quy tắc:
 
+- Tên file, tên thư mục: tiếng Anh, kebab-case (nội dung trong `docs/` vẫn tiếng Việt).
 - Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó.
 - Mỗi file ghi "Thuộc: …" trỏ lên file cha để truy ngược.
 - Gạch đầu dòng ngắn, bám mục tiêu; không lặp nội dung giữa các file.

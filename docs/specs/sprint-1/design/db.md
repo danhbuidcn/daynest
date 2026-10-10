@@ -1,6 +1,6 @@
 # DB — Sprint 1
 
-Thuộc: [F3](../F3-db-supabase.md).
+Thuộc: [F3](../F3-supabase-db.md).
 
 ## `profiles`
 

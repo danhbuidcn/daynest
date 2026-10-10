@@ -12,10 +12,10 @@ Thuộc: [Spec tổng](../index.md) · S1.
 
 | Mã | Chức năng | Chi tiết |
 | --- | --- | --- |
-| F1 | Khung app + điều hướng | [F1-khung-app.md](F1-khung-app.md) |
-| F2 | Đăng nhập Google | [F2-dang-nhap-google.md](F2-dang-nhap-google.md) |
-| F3 | DB Supabase tối thiểu | [F3-db-supabase.md](F3-db-supabase.md) |
-| F4 | Ký app + version | [F4-ky-app-version.md](F4-ky-app-version.md) |
+| F1 | Khung app + điều hướng | [F1-app-shell.md](F1-app-shell.md) |
+| F2 | Đăng nhập Google | [F2-google-sign-in.md](F2-google-sign-in.md) |
+| F3 | DB Supabase tối thiểu | [F3-supabase-db.md](F3-supabase-db.md) |
+| F4 | Ký app + version | [F4-signing-and-version.md](F4-signing-and-version.md) |
 
 **Không làm ở S1:** lịch, event, todo, note, diary, Google Calendar, thông báo.
 

@@ -7,7 +7,7 @@ Quy tắc chung mọi bảng mới:
 - `id uuid` PK, **app tự sinh** (DB vẫn có `default gen_random_uuid()`) → gửi lại không tạo trùng.
 - `user_id uuid not null default auth.uid()` → `auth.users` `on delete cascade`.
 - `created_at`, `updated_at timestamptz`; trigger `set_updated_at` (có từ S1).
-- RLS bật; select/insert/update/delete chỉ khi `user_id = (select auth.uid())` **và** `(select public.session_active())` ([F7](../F7-gioi-han-thiet-bi.md)); insert/update có `with check` cùng điều kiện. Áp cả cho bảng S1 (`profiles`, `user_settings`) (migration S2 sửa policy cũ).
+- RLS bật; select/insert/update/delete chỉ khi `user_id = (select auth.uid())` **và** `(select public.session_active())` ([F7](../F7-device-limit.md)); insert/update có `with check` cùng điều kiện. Áp cả cho bảng S1 (`profiles`, `user_settings`) (migration S2 sửa policy cũ).
 - Sửa dùng **khoá lạc quan**: `update … where id = :id and updated_at = :read_updated_at returning *` → 0 dòng = đã đổi ở máy khác. App giữ nguyên chuỗi `updated_at` API trả về (không đổi qua `Date` — mất micro giây).
 
 ## `user_settings` — thêm cột

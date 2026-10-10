@@ -16,13 +16,13 @@ Nguyên tắc: tính năng nào làm ở S2 thì làm trọn phạm vi GĐ1 củ
 
 | Mã | Chức năng | Chi tiết |
 | --- | --- | --- |
-| F1 | Lịch: 4 chế độ xem, lịch âm, ngày lễ | [F1-lich.md](F1-lich.md) |
+| F1 | Lịch: 4 chế độ xem, lịch âm, ngày lễ | [F1-calendar.md](F1-calendar.md) |
 | F2 | Event: form, lặp dương + âm, ngoại lệ | [F2-event.md](F2-event.md) |
-| F3 | Nhắc nhở + công tắc Cho phép thông báo | [F3-nhac-nho.md](F3-nhac-nho.md) |
+| F3 | Nhắc nhở + công tắc Cho phép thông báo | [F3-reminders.md](F3-reminders.md) |
 | F4 | Đồng bộ Google Calendar 2 chiều (khi bật) | [F4-google-calendar.md](F4-google-calendar.md) |
 | F5 | Notes | [F5-notes.md](F5-notes.md) |
-| F6 | Cài đặt mới | [F6-cai-dat.md](F6-cai-dat.md) |
-| F7 | Giới hạn 2 thiết bị / tài khoản | [F7-gioi-han-thiet-bi.md](F7-gioi-han-thiet-bi.md) |
+| F6 | Cài đặt mới | [F6-settings.md](F6-settings.md) |
+| F7 | Giới hạn 2 thiết bị / tài khoản | [F7-device-limit.md](F7-device-limit.md) |
 
 **Không làm ở S2:** Todo (S3), Diary + Thống kê (S4). Các mục "Không làm" riêng ghi trong từng file F.
 

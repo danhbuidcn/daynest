@@ -4,18 +4,18 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 
 | # | Màn | Route | Mục đích | Thành phần chính | Chức năng |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Lịch — Tháng | `(tabs)/calendar` | Xem tháng | Header (‹ tháng ›, Hôm nay, chọn chế độ) · hàng thứ · lưới 6×7 | [F1](../F1-lich.md) |
-| 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event | [F1](../F1-lich.md) |
-| 3 | Lịch — Ngày | `(tabs)/calendar` | Xem theo giờ | Header · dòng Cả ngày · lưới giờ · vạch giờ hiện tại | [F1](../F1-lich.md) |
-| 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-lich.md) |
-| 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header: Tháng · Danh sách · Tuần · Ngày | [F1](../F1-lich.md) |
-| 6 | Chọn tháng/năm | — | Nhảy nhanh | Hộp: năm ‹ › + lưới 12 tháng | [F1](../F1-lich.md) |
-| 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn (như màn 6): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-lich.md) |
+| 1 | Lịch — Tháng | `(tabs)/calendar` | Xem tháng | Header (‹ tháng ›, Hôm nay, chọn chế độ) · hàng thứ · lưới 6×7 | [F1](../F1-calendar.md) |
+| 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event | [F1](../F1-calendar.md) |
+| 3 | Lịch — Ngày | `(tabs)/calendar` | Xem theo giờ | Header · dòng Cả ngày · lưới giờ · vạch giờ hiện tại | [F1](../F1-calendar.md) |
+| 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-calendar.md) |
+| 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header: Tháng · Danh sách · Tuần · Ngày | [F1](../F1-calendar.md) |
+| 6 | Chọn tháng/năm | — | Nhảy nhanh | Hộp: năm ‹ › + lưới 12 tháng | [F1](../F1-calendar.md) |
+| 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn (như màn 6): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-calendar.md) |
 | 8 | Pop-up `+` | — | Tạo nhanh | Hộp giữa màn (như màn 6): 2 nút Sự kiện · Ghi chú | [F2](../F2-event.md), [F5](../F5-notes.md) |
-| 9 | Form event | `event/edit` | Tạo/sửa | ✕ · Lưu · tiêu đề · chi tiết · cả ngày · thời gian · nhắc · lặp · màu | [F2](../F2-event.md), [F3](../F3-nhac-nho.md) |
+| 9 | Form event | `event/edit` | Tạo/sửa | ✕ · Lưu · tiêu đề · chi tiết · cả ngày · thời gian · nhắc · lặp · màu | [F2](../F2-event.md), [F3](../F3-reminders.md) |
 | 10 | Chọn lặp | — | Kiểu lặp | Hộp: Không lặp · Ngày · Tuần · Tháng · Năm · **Năm (âm lịch)** · ô N · ngày kết thúc | [F2](../F2-event.md#lặp) |
-| 11 | Chọn mốc nhắc | — | Thêm mốc | Sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất · Đúng giờ … 1 tuần trước, ✓ mốc đang chọn | [F3](../F3-nhac-nho.md#mô-tả) |
-| 11b | Mẹo tối ưu pin | — | Nhắc chạy ổn định | Hộp từ icon `!`: giải thích + nút Loại trừ | [F3](../F3-nhac-nho.md#mô-tả) |
+| 11 | Chọn mốc nhắc | — | Thêm mốc | Sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất · Đúng giờ … 1 tuần trước, ✓ mốc đang chọn | [F3](../F3-reminders.md#mô-tả) |
+| 11b | Mẹo tối ưu pin | — | Nhắc chạy ổn định | Hộp từ icon `!`: giải thích + nút Loại trừ | [F3](../F3-reminders.md#mô-tả) |
 | 12 | Chọn ngày / giờ | — | Nhập thời gian | Picker ngày + giờ của hệ điều hành | [F2](../F2-event.md) |
 | 13 | Chi tiết event | `event/[id]` | Xem | Màu + tiêu đề · thời gian + ngày âm · lặp · nhắc · chi tiết · nhãn Google / Chỉ trên Daynest · ⋯ Sửa, Xoá | [F2](../F2-event.md), [F4](../F4-google-calendar.md) |
 | 14 | Hỏi lần lặp | — | Sửa/xoá event lặp | Hộp: Chỉ lần này · Tất cả · Huỷ | [F2](../F2-event.md#ngoại-lệ-sửaxoá-1-lần-lặp) |
@@ -28,11 +28,11 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
 | 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · nút Xoá tất cả (góc trên phải) |
 | 20b | Xác nhận xoá tất cả | — | Tránh bấm nhầm | Hộp: "Xoá vĩnh viễn tất cả?" · số ghi chú · không khôi phục được · Huỷ / Xoá tất cả | [F5](../F5-notes.md#thùng-rác) |
-| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch (+ Múi giờ: hộp chọn có tìm kiếm) · Google Calendar | [F6](../F6-cai-dat.md) |
+| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch (+ Múi giờ: hộp chọn có tìm kiếm) · Google Calendar | [F6](../F6-settings.md) |
 | 22 | Đồng bộ Google | — | Tiến độ lần đầu | Hộp: "Đang đồng bộ 120/300" + thanh tiến độ | [F4](../F4-google-calendar.md) |
-| 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |
-| 24 | Đã đăng xuất máy cũ (máy mới) | — | Báo máy mới | Hộp trên Tab Lịch: "Đã đăng xuất <tên máy>" · ngày máy đó đăng nhập · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |
-| 25 | Thiết bị đăng nhập | `settings/devices` | Xem máy đang đăng nhập | Danh sách ≤ 2 máy (tên, ngày đăng nhập, dùng lần cuối, nhãn Thiết bị đang dùng) · chú thích | [F7](../F7-gioi-han-thiet-bi.md) |
+| 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-device-limit.md) |
+| 24 | Đã đăng xuất máy cũ (máy mới) | — | Báo máy mới | Hộp trên Tab Lịch: "Đã đăng xuất <tên máy>" · ngày máy đó đăng nhập · Đã hiểu | [F7](../F7-device-limit.md) |
+| 25 | Thiết bị đăng nhập | `settings/devices` | Xem máy đang đăng nhập | Danh sách ≤ 2 máy (tên, ngày đăng nhập, dùng lần cuối, nhãn Thiết bị đang dùng) · chú thích | [F7](../F7-device-limit.md) |
 
 - Màn có route (9, 13, 17, 18, 20, 25): màn con, vuốt mép trái để quay lại.
 - Hộp chọn / hộp xác nhận: theo design-system (đã có ở S1).

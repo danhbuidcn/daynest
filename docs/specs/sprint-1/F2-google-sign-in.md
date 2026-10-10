@@ -12,7 +12,7 @@ Thuộc: [Sprint 1](index.md).
 - `supabase.auth.signInWithIdToken({ provider: 'google', token: idToken })`.
 - Scope S1: `openid email profile`. Scope `calendar.readonly` xin thêm ở S6.
 - Phiên Supabase lưu trên máy (AsyncStorage), tự làm mới token.
-- Lần đầu đăng nhập: trigger DB tạo `profiles` + `user_settings` ([F3](F3-db-supabase.md)).
+- Lần đầu đăng nhập: trigger DB tạo `profiles` + `user_settings` ([F3](F3-supabase-db.md)).
 - Đăng xuất: `supabase.auth.signOut()` + `GoogleSignin.signOut()`.
 
 ## Luồng

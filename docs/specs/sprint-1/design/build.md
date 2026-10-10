@@ -1,6 +1,6 @@
 # Build + ký app — Sprint 1
 
-Thuộc: [F4](../F4-ky-app-version.md).
+Thuộc: [F4](../F4-signing-and-version.md).
 
 ## Keystore
 

@@ -10,12 +10,12 @@ Thuộc: [Sprint 2](index.md).
 
 | Nhóm | Mục | Kiểu | Mặc định | Lưu ở | Chi tiết |
 | --- | --- | --- | --- | --- | --- |
-| Thông báo | Cho phép thông báo | Công tắc | Bật | `user_settings.notifications_enabled` | [F3](F3-nhac-nho.md#công-tắc-cho-phép-thông-báo) |
-| Lịch | Tuần bắt đầu từ | Hộp chọn: Thứ Hai / Chủ nhật | Thứ Hai | `user_settings.week_start` (có từ S1) | [F1](F1-lich.md) |
+| Thông báo | Cho phép thông báo | Công tắc | Bật | `user_settings.notifications_enabled` | [F3](F3-reminders.md#công-tắc-cho-phép-thông-báo) |
+| Lịch | Tuần bắt đầu từ | Hộp chọn: Thứ Hai / Chủ nhật | Thứ Hai | `user_settings.week_start` (có từ S1) | [F1](F1-calendar.md) |
 | Lịch | Múi giờ | Hộp chọn có ô tìm kiếm | Việt Nam (GMT+7) | `user_settings.time_zone` | [Múi giờ](#múi-giờ) |
 | Lịch | Định dạng 24 giờ | Công tắc | Bật | `user_settings.use_24h` (có từ S1) | Tắt → "4:54 CH" / "4:54 PM" |
-| Lịch | Hiện ngày âm | Công tắc | Bật | `user_settings.show_lunar` | [F1](F1-lich.md) |
-| Lịch | Hiện ngày lễ | Công tắc | Bật | `user_settings.show_holidays` | [F1](F1-lich.md) |
+| Lịch | Hiện ngày âm | Công tắc | Bật | `user_settings.show_lunar` | [F1](F1-calendar.md) |
+| Lịch | Hiện ngày lễ | Công tắc | Bật | `user_settings.show_holidays` | [F1](F1-calendar.md) |
 | Google Calendar | Đồng bộ với Google Calendar | Công tắc | Tắt | `google_sync_state.enabled` | [F4](F4-google-calendar.md) |
 
 - Đổi → áp dụng ngay trên màn, lưu DB. Lưu lỗi → trả về giá trị cũ, toast lỗi (cùng cách đổi ngôn ngữ ở S1).
@@ -30,7 +30,7 @@ Thuộc: [Sprint 2](index.md).
   - event cả ngày (`date`) không đổi ngày khi đổi múi giờ;
   - nhắc nhở đặt theo thời điểm tuyệt đối → đổi múi giờ thì giờ hiện đổi, thời điểm báo không đổi;
   - event tạo mới / đẩy lên Google gửi kèm `timeZone` này ([F4](F4-google-calendar.md)).
-- Lịch âm **luôn** tính theo +7 dù chọn múi giờ nào (định nghĩa lịch âm Việt Nam, [F1](F1-lich.md#lịch-âm)).
+- Lịch âm **luôn** tính theo +7 dù chọn múi giờ nào (định nghĩa lịch âm Việt Nam, [F1](F1-calendar.md#lịch-âm)).
 
 ### Google Calendar
 
@@ -57,7 +57,7 @@ Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
 
 - Dòng công tắc: dùng `SettingRow` + công tắc bên phải ([design-system](../design-system.md#thành-phần-thêm-ở-s2)).
 
-- Thiết bị đăng nhập: xem [F7](F7-gioi-han-thiet-bi.md).
+- Thiết bị đăng nhập: xem [F7](F7-device-limit.md).
 
 ## Không làm
 

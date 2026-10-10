@@ -31,5 +31,5 @@ Thuộc: [Sprint 1](index.md).
 
 - 5 vị trí trên thanh dưới: Lịch · Quản lý · `+` · Thống kê · Cài đặt.
 - Tab Lịch, Quản lý, Thống kê: màn trống có tiêu đề.
-- Tab Cài đặt: tài khoản + Đăng xuất (xem [F2](F2-dang-nhap-google.md)), Ngôn ngữ.
+- Tab Cài đặt: tài khoản + Đăng xuất (xem [F2](F2-google-sign-in.md)), Ngôn ngữ.
 - Màn hình: [design/screens.md](design/screens.md).

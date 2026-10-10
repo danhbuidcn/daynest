@@ -35,7 +35,7 @@ Thuộc: [Sprint 2](index.md).
 
 ### Tuỳ chọn hiển thị
 
-- Tuần bắt đầu từ, múi giờ (cho "Hôm nay" + giờ event), 24 giờ, hiện ngày âm, hiện ngày lễ: lấy từ `user_settings` ([F6](F6-cai-dat.md)).
+- Tuần bắt đầu từ, múi giờ (cho "Hôm nay" + giờ event), 24 giờ, hiện ngày âm, hiện ngày lễ: lấy từ `user_settings` ([F6](F6-settings.md)).
 - Chế độ xem lần cuối: lưu trên máy (AsyncStorage). Mở app → mở lại chế độ đó.
 
 ## Luồng

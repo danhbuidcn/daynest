@@ -29,7 +29,7 @@
   - Xoá file + bucket `avatars`: qua Storage API (Supabase chặn xoá file Storage bằng SQL) — chạy CLI `supabase storage rm` trên project, kiểm tra bucket trống rồi xoá bucket. Nếu CLI không xoá được bucket → nhờ bạn xoá trên Dashboard (1 thao tác).
   - `supabase/tests/rls_s1.sql`: bỏ test ảnh; thêm test "user không update được `profiles`". Chạy `supabase/db test`.
 - [x] 3. Docs:
-  - S1 `F2-dang-nhap-google.md` mục "Sửa tài khoản", `screens.md` màn 10, `db.md` Storage `avatars`, `F3` → ghi "Đã bỏ (2026-10-09)", giữ lại để truy vết;
+  - S1 `F2-google-sign-in.md` mục "Sửa tài khoản", `screens.md` màn 10, `db.md` Storage `avatars`, `F3` → ghi "Đã bỏ (2026-10-09)", giữ lại để truy vết;
   - S2: `db.md` + `F7` bỏ nhắc `avatars`; `screens.md` bỏ dòng "Tên hiển thị"; Spec tổng §3 bỏ dòng Storage avatar trong "Mục tiêu tải".
   - `supabase/README.md`, `config.toml`: bỏ phần avatars nếu có.
 - [x] 4. Kiểm tra: `npm run typecheck && npm run lint && npm test`; `supabase/db test`; emulator: Cài đặt hiện tên + ảnh Google, bấm thẻ không mở gì.
@@ -54,7 +54,7 @@
 
 ### Bước 3 — Input
 
-- Spec: [F1](../docs/specs/sprint-2/F1-lich.md) (lịch âm, ngày lễ, xem tháng), mockup màn 1, 6.
+- Spec: [F1](../docs/specs/sprint-2/F1-calendar.md) (lịch âm, ngày lễ, xem tháng), mockup màn 1, 6.
 - App hiện: tab Lịch là màn trống; `user_settings.week_start` đã có từ S1 (chưa đọc lên app).
 
 ### Bước 3 — Output
@@ -126,7 +126,7 @@
 
 **Plan:**
 
-- [x] 1. Viết `docs/specs/sprint-2/F7-gioi-han-thiet-bi.md` (mục tiêu, logic như bảng trên, luồng, mô tả, test) + thêm dòng F7 vào `sprint-2/index.md` (phạm vi, luồng, DoD: "đăng nhập máy thứ 3 → máy sớm nhất bị đăng xuất, thấy hộp thông báo; máy mới thấy toast").
+- [x] 1. Viết `docs/specs/sprint-2/F7-device-limit.md` (mục tiêu, logic như bảng trên, luồng, mô tả, test) + thêm dòng F7 vào `sprint-2/index.md` (phạm vi, luồng, DoD: "đăng nhập máy thứ 3 → máy sớm nhất bị đăng xuất, thấy hộp thông báo; máy mới thấy toast").
 - [x] 2. `design/db.md`: bảng `user_devices`, hàm `register_device()`, điều kiện RLS mới cho mọi bảng; `rls_s2.sql` thêm test máy bị đá không đọc/ghi được.
 - [x] 3. `design/screens.md` + `mockups.html`: màn 23 hộp "Bạn đã bị đăng xuất…" (máy cũ, trên màn Đăng nhập) · màn 24 hộp "Đã đăng xuất <máy cũ>" (máy mới) · màn 25 "Thiết bị đăng nhập" · Cài đặt thêm dòng "Thiết bị đăng nhập" (nhóm Tài khoản).
 - [x] 4. `docs/specs/index.md` §2: thêm dòng "Thiết bị: 1 account tối đa 2 thiết bị".
@@ -139,7 +139,7 @@
 | Hộp "Tắt đồng bộ?" (màn 21c) | Sự kiện ở 2 bên vẫn giữ nguyên, sau đó không còn cập nhật cho nhau. | Sự kiện đã có vẫn còn ở cả Daynest và Google. Từ giờ, sửa ở bên này sẽ không đổi bên kia. |
 | Hộp đang đồng bộ (màn 22) | Kéo sự kiện năm 2026 và đẩy sự kiện Daynest lên lịch chính. | Đang lấy sự kiện năm 2026 từ Google về Daynest, và gửi sự kiện của Daynest lên Google. |
 
-- [x] Sửa trong `F6-cai-dat.md` (dòng hộp xác nhận), `F4-google-calendar.md` (thêm câu cho hộp tiến độ), `mockups.html` (màn 21c, 22).
+- [x] Sửa trong `F6-settings.md` (dòng hộp xác nhận), `F4-google-calendar.md` (thêm câu cho hộp tiến độ), `mockups.html` (màn 21c, 22).
 - [x] Commit `docs: simplify google sync texts`, push.
 
 ## 2026-10-09 — S2 spec: giới hạn ký tự mọi field + cách hiển thị chữ dài — ✅ xong
@@ -235,7 +235,7 @@ Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (khôn
   - **Notes:** màn 16–20 (danh sách, editor có checklist, danh mục, sửa danh mục, thùng rác);
   - **Cài đặt:** màn 21–22 (Cài đặt có nhóm Thông báo / Lịch / Google Calendar ở cả trạng thái tắt và bật; tiến độ đồng bộ).
   - Màn 12 (picker ngày/giờ hệ điều hành): không vẽ.
-- [x] 4. `design/screens.md` + `sprint-2/index.md`: thêm link mockup, bỏ chữ "bước 2 (chưa làm)"; `F6-cai-dat.md`: bỏ ghi chú "thêm vào design-system ở bước 2".
+- [x] 4. `design/screens.md` + `sprint-2/index.md`: thêm link mockup, bỏ chữ "bước 2 (chưa làm)"; `F6-settings.md`: bỏ ghi chú "thêm vào design-system ở bước 2".
 - [x] 5. Kiểm tra: mở `mockups.html` (chụp màn bằng trình duyệt headless) — đủ màn, không vỡ bố cục; chỉ dùng token trong design system; không link hỏng.
 - [x] Góp ý của bạn (đã sửa): màn 7, 8 → pop-up giữa màn như màn 6; bỏ chữ "(ngày giỗ)" trong dòng gợi ý lặp âm.
 - [x] 6. Gửi bạn xem. Góp ý thì sửa; ok thì commit `docs: add sprint-2 mockups` (1 dòng, không body, không Co-Authored-By), push → sang bước code (todo riêng, chia nhiều bước nhỏ).
@@ -246,7 +246,7 @@ Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (khôn
 
 Spec hiện có: chọn mốc trong form (Đúng giờ · 5 · 10 · 15 · 30 phút · 1 giờ · 1 ngày trước), mặc định 15 phút. Còn thiếu:
 
-- [x] `F3-nhac-nho.md` + `F2-event.md`: thêm công tắc **"Cài đặt nhắc nhở"** đầu mục (bật = có nhắc, hiện danh sách mốc; tắt = không nhắc, ẩn danh sách) · mỗi mốc 1 dòng icon đồng hồ + "15 phút trước" + ✕ · "+ Thêm nhắc nhở" mở sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất, danh sách mốc có ✓.
+- [x] `F3-reminders.md` + `F2-event.md`: thêm công tắc **"Cài đặt nhắc nhở"** đầu mục (bật = có nhắc, hiện danh sách mốc; tắt = không nhắc, ẩn danh sách) · mỗi mốc 1 dòng icon đồng hồ + "15 phút trước" + ✕ · "+ Thêm nhắc nhở" mở sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất, danh sách mốc có ✓.
 - [x] `design/screens.md` màn 11: đổi "Hộp chọn" → sheet từ đáy như trên.
 - [x] Khảo sát app tham khảo trên máy thật (bạn cho phép, không lưu gì): danh sách mốc = Đúng giờ · 5 · 10 · 30 phút · 1 · 2 giờ · 1 · 2 ngày · 1 tuần trước (cả ngày dùng chung); mặc định 15 phút (không có trong danh sách); icon `!` = mẹo tắt tối ưu pin + nút Loại trừ → đã cập nhật F3 + thêm màn 11b.
 
@@ -331,12 +331,12 @@ Rủi ro: S2 rất lớn (≈ 5 sprint cũ). Code sẽ chia nhiều bước nh�
 
 - [x] 1. Tạo `docs/specs/sprint-2/index.md`: mục tiêu, bảng phạm vi F1–F6, luồng tổng, "Bạn chuẩn bị" (bật Google Calendar API + scope `calendar.readonly` ở OAuth consent), DoD.
 - [x] 2. Viết 6 file chức năng (mục tiêu, logic, luồng, mô tả — như S1):
-  - `F1-lich.md` — 4 chế độ xem, lịch âm (Hồ Ngọc Đức, +7), ngày lễ cố định, test Tết 2020–2030 + năm nhuận.
+  - `F1-calendar.md` — 4 chế độ xem, lịch âm (Hồ Ngọc Đức, +7), ngày lễ cố định, test Tết 2020–2030 + năm nhuận.
   - `F2-event.md` — form, lặp dương + âm, ngoại lệ.
-  - `F3-nhac-nho.md` — mốc nhắc, lịch đặt thông báo, công tắc Cho phép thông báo.
+  - `F3-reminders.md` — mốc nhắc, lịch đặt thông báo, công tắc Cho phép thông báo.
   - `F4-google-calendar.md` — kết nối, chọn lịch, đồng bộ.
   - `F5-notes.md` — danh sách, editor, danh mục, thùng rác, tìm kiếm.
-  - `F6-cai-dat.md` — các mục cài đặt mới + giá trị mặc định.
+  - `F6-settings.md` — các mục cài đặt mới + giá trị mặc định.
 - [x] 3. Viết `design/screens.md` (danh sách màn) + `design/db.md` (bảng `events`, `event_exceptions`, `event_reminders`, `google_sync_state`, `notes`, `note_categories`, cột mới `user_settings`, RLS).
 - [x] 4. `docs/specs/index.md`: §1 "GĐ1 = sprint 1–4"; §2 dòng "Người dùng" → nhiều user thật; §3 thêm "Nguyên tắc mở rộng" + "Mục tiêu tải" (2 bảng trên) + mục "Trước khi lên Google Play"; §4 thay bảng sprint; chuyển các "ghi chú đã chốt" S2–S6, S8 vào file F tương ứng (xoá khỏi index, không lặp); sửa ghi chú S7 → S3, S9 → S4.
 - [x] 5. `docs/index.md`: thêm dòng Sprint 2.
@@ -392,7 +392,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 
 ### Input
 
-- Spec: `F4-ky-app-version.md`, `design/build.md` (keystore RSA 2048, 10000 ngày, alias `daynest`).
+- Spec: `F4-signing-and-version.md`, `design/build.md` (keystore RSA 2048, 10000 ngày, alias `daynest`).
 - **Đã chốt (bạn):** keystore nằm trong `app/.env` → máy khác chỉ cần chép `app/.env`.
 - Hiện bản release Gradle đang ký bằng keystore **debug** (template Expo) → chưa dùng được để phát hành.
 - DoD S1 còn 3 mục: cài APK release lên máy thật + đăng nhập Google; build từ máy thứ 2 cài đè được; `versionCode` 2 cài đè bản 1.
@@ -651,7 +651,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
   - nhóm Tài khoản còn dòng "Đăng nhập bằng Google".
 - [x] `screens.md` màn 7: ghi thứ tự: tài khoản → Ứng dụng (Ngôn ngữ, Phiên bản) → Đăng xuất ở cuối.
 - [x] Sửa tài khoản: cho sửa tên hiển thị và ảnh đại diện. Email lấy từ Google, chỉ xem.
-  - `F2-dang-nhap-google.md`, thêm mục Sửa tài khoản:
+  - `F2-google-sign-in.md`, thêm mục Sửa tài khoản:
     - Bấm thẻ tài khoản (có icon bút) → mở màn Sửa tài khoản.
     - Tên bắt buộc, 1–50 ký tự, cắt khoảng trắng 2 đầu.
     - Ảnh: chọn từ thư viện (`expo-image-picker`), cắt vuông, thu nhỏ 512px JPEG (`expo-image-manipulator`), tải lên Storage.
@@ -662,7 +662,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
     - thêm Storage bucket `avatars` (public read), file `avatars/{user_id}/avatar.jpg`;
     - RLS: user chỉ ghi/xoá trong folder `{user_id}` của mình;
     - `profiles.avatar_url` ghi rõ: ảnh Google lúc đầu, ảnh tự tải sau khi sửa.
-  - `F3-db-supabase.md`: thêm bucket vào phạm vi migration.
+  - `F3-supabase-db.md`: thêm bucket vào phạm vi migration.
   - `screens.md`: màn 7 thẻ tài khoản có icon bút; thêm màn 10 "Sửa tài khoản": ảnh tròn kèm nút máy ảnh, ô Tên, ô Email (khoá), nút Lưu, nút quay lại.
   - `mockups.html`: thẻ tài khoản có icon bút; thêm màn 10.
   - `sprint-1/index.md` DoD: thêm "Sửa tên + ảnh, mở lại app vẫn đúng; user A không ghi được ảnh của user B."
@@ -696,7 +696,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 
 **Việc cần làm:**
 
-- [x] `F1-khung-app.md`: thêm mục i18n.
+- [x] `F1-app-shell.md`: thêm mục i18n.
   - Dùng `i18next` + `react-i18next`; file chữ `locales/en.json`, `locales/vi.json`.
   - Mở app: đọc ngôn ngữ trên máy (AsyncStorage), chưa có thì dùng `en`.
   - Đăng nhập xong: nếu DB có `language` thì áp dụng và ghi về máy.
@@ -716,7 +716,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
   - Quản lý: "Việc cần làm, ghi chú, nhật ký đang phát triển".
   - Thống kê: "Thống kê đang phát triển".
   - Dòng mô tả của cả 3 tab: "Tính năng này đang được phát triển. Bạn quay lại sau nhé!"
-  - Chip và toast nút `+` đổi từ "Sắp có" thành "Đang phát triển". Cập nhật `screens.md` và `F1-khung-app.md` cho khớp.
+  - Chip và toast nút `+` đổi từ "Sắp có" thành "Đang phát triển". Cập nhật `screens.md` và `F1-app-shell.md` cho khớp.
 - [x] Logo tạm: đổi icon tờ lịch thành **sổ ghi chú**. Mục xoay 180° bỏ, vì đã thay hình.
   - Hình: cuốn sổ trắng đứng, có gáy lò xo (các khoen tròn) bên trái, 3 dòng kẻ màu `primary`, góc phải dưới có chấm tròn nhỏ màu `event.pink` cho dễ thương. Nét bo tròn, đặt trên ô nền `primary` như cũ.
   - `mockups.html`: thay SVG logo ở màn Splash và màn Đăng nhập.
@@ -765,10 +765,10 @@ docs/
     index.md                  # sản phẩm, quyết định chung, kiến trúc, danh sách sprint + chức năng sơ bộ
     sprint-1/                 # S1 nền móng
       index.md                # mục tiêu, phạm vi, luồng tổng, DoD, link chức năng + màn hình
-      F1-khung-app.md         # mỗi file: mục tiêu, logic, luồng, mô tả
-      F2-dang-nhap-google.md
-      F3-db-supabase.md
-      F4-ky-app-version.md
+      F1-app-shell.md         # mỗi file: mục tiêu, logic, luồng, mô tả
+      F2-google-sign-in.md
+      F3-supabase-db.md
+      F4-signing-and-version.md
       design/
         screens.md            # danh sách màn: Đăng nhập, 5 tab trống, Cài đặt (tài khoản + đăng xuất)
         db.md                 # bảng profiles, user_settings: cột, RLS
