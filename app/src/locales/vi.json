@@ -138,6 +138,29 @@
     "midAutumn": "Trung thu",
     "kitchenGods": "Ông Công Ông Táo"
   },
+  "holidaysShort": {
+    "newYear": "Tết Dương",
+    "partyFounding": "Lập Đảng",
+    "valentine": "Valentine",
+    "womensDay": "QT Phụ nữ",
+    "reunification": "30/4",
+    "labourDay": "Lao động",
+    "childrensDay": "Thiếu nhi",
+    "nationalDay": "Quốc khánh",
+    "vietnameseWomensDay": "Phụ nữ",
+    "teachersDay": "Nhà giáo",
+    "christmasEve": "Đêm Noel",
+    "christmas": "Giáng sinh",
+    "lunarNewYearEve": "Giao thừa",
+    "lunarNewYear": "Tết",
+    "lanternFestival": "Rằm Giêng",
+    "hungKings": "Giỗ Tổ",
+    "buddhasBirthday": "Phật Đản",
+    "doubleFifth": "Đoan Ngọ",
+    "vuLan": "Vu Lan",
+    "midAutumn": "Trung thu",
+    "kitchenGods": "Táo quân"
+  },
   "lunar": {
     "stems": {
       "0": "Giáp",

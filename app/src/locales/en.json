@@ -138,6 +138,29 @@
     "midAutumn": "Mid-Autumn Festival",
     "kitchenGods": "Kitchen Gods' Day"
   },
+  "holidaysShort": {
+    "newYear": "New Year",
+    "partyFounding": "Party Day",
+    "valentine": "Valentine",
+    "womensDay": "Women's",
+    "reunification": "Apr 30",
+    "labourDay": "Labour",
+    "childrensDay": "Children's",
+    "nationalDay": "National",
+    "vietnameseWomensDay": "VN Women's",
+    "teachersDay": "Teachers'",
+    "christmasEve": "Xmas Eve",
+    "christmas": "Christmas",
+    "lunarNewYearEve": "Tet Eve",
+    "lunarNewYear": "Tet",
+    "lanternFestival": "Lantern",
+    "hungKings": "Hung Kings",
+    "buddhasBirthday": "Buddha",
+    "doubleFifth": "Double Fifth",
+    "vuLan": "Vu Lan",
+    "midAutumn": "Mid-Autumn",
+    "kitchenGods": "Kitchen Gods"
+  },
   "lunar": {
     "stems": {
       "0": "Giáp",

@@ -48,7 +48,7 @@ export default function CalendarScreen() {
 
   const barsForDay = useCallback(
     (d: DayInfo): BarItem[] => {
-      const holidayItems: BarItem[] = d.holidays.map((h) => ({ kind: 'holiday', id: h, title: t(`holidays.${h}`) }));
+      const holidayItems: BarItem[] = d.holidays.map((h) => ({ kind: 'holiday', id: h, title: t(`holidaysShort.${h}`) }));
       const eventItems: BarItem[] = occurrencesOnDay(occurrences, d, settings.timeZone).map((o) => ({
         kind: 'event',
         id: `${o.eventId}-${o.occurrenceDate}`,
