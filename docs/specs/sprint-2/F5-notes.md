@@ -33,10 +33,9 @@ Thuộc: [Sprint 2](index.md).
 ### Danh mục
 
 - User tự tạo: tên (không trùng, không phân biệt hoa thường) + 1 trong 6 màu event.
-- Tối đa 30 danh mục (không tính "Chưa phân loại").
-- **"Chưa phân loại"** (EN "Uncategorized"): danh mục mặc định, luôn có, không sửa tên/màu, không xoá được. Là note có `category_id = null` (không có dòng trong DB). Màn Danh mục: dòng đầu tiên, chấm màu `border`, không có icon bút; chế độ chọn để xoá: dòng mờ, không tick được.
+- Tối đa 30 danh mục. Không có danh mục mặc định.
 - Sửa tên/màu: bấm icon bút ở dòng → hộp sửa (chỉ Huỷ / Lưu, không có nút xoá).
-- Xoá: màn Danh mục → `⋯` góc trên phải → "Chọn để xoá" → tick 1 hoặc nhiều danh mục → nút **Xoá (n)** → hộp xác nhận "Xoá n danh mục?" · "m ghi chú sẽ được chuyển sang "Chưa phân loại". Đây là danh mục mặc định, không thể xoá." → note của danh mục đã xoá chuyển sang **"Chưa phân loại"** (không xoá note). Không có note nào → bỏ dòng mô tả.
+- Xoá: màn Danh mục → `⋯` góc trên phải → "Chọn để xoá" → tick 1 hoặc nhiều danh mục → nút **Xoá (n)** → hộp xác nhận "Xoá n danh mục? m ghi chú sẽ về Chưa phân loại." → note của danh mục đã xoá về **"Chưa phân loại"** (không xoá note).
 - Note không có danh mục: chip trong editor hiện "Chưa phân loại".
 
 ### Danh sách, tìm kiếm, phân trang
@@ -78,4 +77,4 @@ Editor ⋯ → Ghim · Danh mục · Xoá
 - Tự lưu: Back có thay đổi / không thay đổi / note trống; lưu 2 lần cùng `id` → 1 note.
 - Xung đột `updated_at` → hộp hiện.
 - Tìm kiếm có dấu/không dấu; phân trang không lặp, không sót note.
-- Xoá nhiều danh mục → note chuyển sang "Chưa phân loại"; "Chưa phân loại" không xoá, không sửa được; thùng rác khôi phục / xoá vĩnh viễn.
+- Xoá nhiều danh mục → note về "Chưa phân loại"; thùng rác khôi phục / xoá vĩnh viễn.

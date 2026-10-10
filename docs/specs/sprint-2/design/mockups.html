@@ -587,10 +587,9 @@ const conflict = `<div class="under">${editor}</div>
 const catScreen = `<div class="content">
   <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Danh mục</div><span class="act">${I.more}</span></div>
   <div class="settings"><div class="card">
-    <div class="row"><span class="cdot" style="width:20px;height:20px;background:var(--border)"></span><span class="label">Chưa phân loại</span><span class="val">1 ghi chú</span><span style="width:20px"></span></div>
     ${cats.map(([c, n], i) => `<div class="row"><span class="cdot ev-${c}" style="width:20px;height:20px"></span><span class="label">${n}</span><span class="val">${[2, 2, 1][i]} ghi chú</span><span class="muted" style="width:20px">${I.pen}</span></div>`).join('')}
   </div>
-  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. "Chưa phân loại" là danh mục mặc định, không thể xoá.</div></div>
+  <div class="cap muted" style="padding:0 4px">Tối đa 30 danh mục. Xoá danh mục: ghi chú của nó về "Chưa phân loại".</div></div>
   <div class="form-footer"><button class="btn btn-primary">${I.plusG.replace('currentColor', '#fff')}Thêm danh mục</button></div>
 </div>`;
 const catDialog = `<div class="under">${catScreen}</div>
@@ -604,7 +603,6 @@ const catMenu = `${catScreen}<div class="menu" style="top:84px;width:180px"><div
 const catSelectBody = (sel) => `<div class="content">
   <div class="topbar" style="grid-template-columns:40px 1fr 40px"><span class="back">${I.close}</span><div class="screen-title">Đã chọn ${sel.length}</div><span></span></div>
   <div class="settings"><div class="card">
-    <div class="row" style="opacity:.5"><span class="tick" style="border-color:var(--border)"></span><span class="cdot" style="width:20px;height:20px;background:var(--border)"></span><span class="label">Chưa phân loại</span><span class="val">1 ghi chú</span></div>
     ${cats.map(([c, n], i) => `<div class="row"><span class="tick ${sel.includes(i) ? 'on' : ''}">${sel.includes(i) ? I.checkW : ''}</span><span class="cdot ev-${c}" style="width:20px;height:20px"></span><span class="label">${n}</span><span class="val">${[2, 2, 1][i]} ghi chú</span></div>`).join('')}
   </div></div>
   <div class="form-footer"><button class="btn btn-danger-solid">${I.trash.replace('currentColor', '#fff')}Xoá (${sel.length})</button></div>
@@ -614,7 +612,7 @@ const catConfirm = `<div class="under">${catSelect}</div>
   <div class="scrim"><div class="dialog">
     <div class="dicon err">${I.trash}</div>
     <h3>Xoá 2 danh mục?</h3>
-    <p>3 ghi chú sẽ được chuyển sang "Chưa phân loại". Đây là danh mục mặc định, không thể xoá.</p>
+    <p>3 ghi chú sẽ về Chưa phân loại. Ghi chú không bị xoá.</p>
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div>
   </div></div>`;
 const tcard = (n) => `<div>${ncard(n, 'Đã xoá 08/10')}<div class="trow" style="margin-top:8px"><button class="btn btn-secondary">${I.restore}Khôi phục</button><button class="btn btn-danger">Xoá vĩnh viễn</button></div></div>`;

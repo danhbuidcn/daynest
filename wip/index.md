@@ -4,7 +4,6 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-10 | "Chưa phân loại" là danh mục mặc định, không xoá được | ✅ xong | [2026-10-10-uncategorized-default.md](2026-10-10-uncategorized-default.md) |
 | 2026-10-10 | Màn 20b: bỏ dòng mô tả hộp "Xoá vĩnh viễn tất cả?" | ✅ xong | [2026-10-10-trash-dialog-text.md](2026-10-10-trash-dialog-text.md) |
 | 2026-10-10 | Màn 25: "sẽ được đăng xuất" → "sẽ bị đăng xuất" | ✅ xong | [2026-10-10-device-limit-wording.md](2026-10-10-device-limit-wording.md) |
 | 2026-10-10 | Google: chỉ đồng bộ năm hiện tại + event lặp | ✅ xong | [2026-10-10-google-sync-scope.md](2026-10-10-google-sync-scope.md) |
