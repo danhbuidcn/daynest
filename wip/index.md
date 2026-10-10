@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | S2 code bước 4: migration (events, notes, giới hạn 2 thiết bị) | ✅ migration + test xong, chờ migrate lên DB thật + commit | [2026-10-10-s2-code-step-4-migration.md](2026-10-10-s2-code-step-4-migration.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): cuộn ngang trong hàng khi nhiều event | ✅ xong | [2026-10-10-week-row-horizontal-scroll.md](2026-10-10-week-row-horizontal-scroll.md) |
 | 2026-10-10 | Thêm mục Conventions vào `CLAUDE.md` | ✅ xong | [2026-10-10-claude-md-conventions.md](2026-10-10-claude-md-conventions.md) |
 | 2026-10-10 | Màn 21: bỏ chú thích "Đồng bộ 2 chiều với lịch chính của …" | ✅ xong | [2026-10-10-drop-sync-caption.md](2026-10-10-drop-sync-caption.md) |

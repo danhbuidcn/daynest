@@ -2,7 +2,7 @@
 -- Run: npx supabase test db
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(11);
+select plan(12);
 
 -- 2 fake users -> trigger creates profiles + user_settings
 insert into auth.users (id, email, raw_user_meta_data) values
@@ -13,9 +13,12 @@ select is((select display_name from public.profiles where id = '00000000-0000-00
 select is((select avatar_url from public.profiles where id = '00000000-0000-0000-0000-00000000000a'), 'https://example.com/a.png', 'trigger: takes avatar_url from Google');
 select is((select language from public.user_settings where user_id = '00000000-0000-0000-0000-00000000000b'), 'en', 'trigger: user_settings defaults to language = en');
 
--- Act as user A
+-- Act as user A (register a device first: S2 RLS also requires an active session, see rls_s2.sql)
 set local role authenticated;
-set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", "session_id": "00000000-0000-0000-0000-00000000de0a", "role": "authenticated"}';
+select is_empty(
+  $$ select * from public.register_device('00000000-0000-0000-0000-00000000de1a', 'Device A') $$,
+  'A: register device for the RLS checks below');
 
 select results_eq('select count(*)::int from public.profiles', array[1], 'A sees only 1 profile (own)');
 select results_eq('select count(*)::int from public.user_settings', array[1], 'A sees only 1 user_settings (own)');
