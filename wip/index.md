@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | S2 code bước 6: Event — hàm lặp, form, chi tiết, pop-up, thanh event (F2) | ✅ xong | [2026-10-10-s2-code-step-6-event.md](2026-10-10-s2-code-step-6-event.md) |
 | 2026-10-10 | S2 code bước 5: giới hạn 2 thiết bị (F7) | ✅ xong | [2026-10-10-s2-code-step-5-device-limit.md](2026-10-10-s2-code-step-5-device-limit.md) |
 | 2026-10-10 | Ngày lễ hiện như thanh event + thẻ note có ⋯ (xoá, di chuyển) | ✅ xong | [2026-10-10-holiday-as-event-bar-note-card-menu.md](2026-10-10-holiday-as-event-bar-note-card-menu.md) |
 | 2026-10-10 | S3: ghi chú list cần phân trang load more + idempotency | ✅ xong | [2026-10-10-s3-note-list-pagination-idempotency.md](2026-10-10-s3-note-list-pagination-idempotency.md) |

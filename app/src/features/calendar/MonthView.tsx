@@ -3,10 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { Icon } from '@/components/Icon';
+import { dayBars, type BarItem } from '@/lib/calendar/eventBars';
 import { sameDay, weekdayOrder, type WeekStart } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
 import type { DayInfo } from './dayInfo';
+import { EventBar } from './EventBar';
 
 export function WeekdayRow({ weekStart }: { weekStart: WeekStart }) {
   const { t } = useTranslation();
@@ -30,19 +33,35 @@ export function MonthView({
   days,
   selected,
   onPressDay,
+  onPressAdd,
+  barsForDay,
 }: {
   days: DayInfo[];
   selected: SolarDate | null;
+  // A day with no events/holidays only selects on first tap (shows a `+` badge); the badge
+  // itself opens the day popup. A day that already has something opens the popup right away.
   onPressDay: (day: DayInfo) => void;
+  onPressAdd: (day: DayInfo) => void;
+  barsForDay: (day: DayInfo) => BarItem[];
 }) {
   const rows = Array.from({ length: 6 }, (_, r) => days.slice(r * 7, r * 7 + 7));
   return (
     <View style={styles.month}>
       {rows.map((row) => (
         <View key={`${row[0].year}-${row[0].month}-${row[0].day}`} style={styles.row}>
-          {row.map((d) => (
-            <DayCell key={d.day} day={d} selected={!!selected && sameDay(d, selected)} onPress={onPressDay} />
-          ))}
+          {row.map((d) => {
+            const isSelected = !!selected && sameDay(d, selected);
+            return (
+              <DayCell
+                key={d.day}
+                day={d}
+                selected={isSelected}
+                onPress={onPressDay}
+                onPressAdd={onPressAdd}
+                items={barsForDay(d)}
+              />
+            );
+          })}
         </View>
       ))}
     </View>
@@ -53,40 +72,57 @@ const DayCell = memo(function DayCell({
   day,
   selected,
   onPress,
+  onPressAdd,
+  items,
 }: {
   day: DayInfo;
   selected: boolean;
   onPress: (day: DayInfo) => void;
+  onPressAdd: (day: DayInfo) => void;
+  items: BarItem[];
 }) {
-  const { t } = useTranslation();
   const red = day.weekday === 0 || day.holidays.length > 0;
-  const holiday = day.holidays[0];
+  const { shown, extra } = dayBars(items);
+  const showAddBadge = selected && items.length === 0;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected }}
       onPress={() => onPress(day)}
       style={[styles.cell, selected && styles.selected, !day.inMonth && styles.out]}>
-      <AppText
-        variant="micro"
-        weight={day.lunarKey ? 'extrabold' : undefined}
-        color={day.lunarKey ? colors.primaryDark : colors.textMuted}
-        numberOfLines={1}
-        style={styles.lunar}>
-        {day.lunarLabel}
-      </AppText>
-      <View style={[styles.num, day.isToday && styles.today]}>
+      <View style={styles.top}>
+        <View style={[styles.num, day.isToday && styles.today]}>
+          <AppText
+            weight={day.isToday ? 'extrabold' : undefined}
+            color={day.isToday ? colors.white : red ? colors.error : colors.text}>
+            {day.day}
+          </AppText>
+        </View>
         <AppText
-          weight={day.isToday ? 'extrabold' : undefined}
-          color={day.isToday ? colors.white : red ? colors.error : colors.text}>
-          {day.day}
+          variant="micro"
+          weight={day.lunarKey ? 'extrabold' : undefined}
+          color={day.lunarKey ? colors.primaryDark : colors.textMuted}
+          numberOfLines={1}
+          style={styles.lunar}>
+          {day.lunarLabel}
         </AppText>
       </View>
-      {holiday ? (
-        <AppText variant="caption" color={colors.error} numberOfLines={1} style={styles.holiday}>
-          {t(`holidays.${holiday}`)}
-        </AppText>
-      ) : null}
+      {showAddBadge ? (
+        <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={() => onPressAdd(day)} hitSlop={8} style={styles.addBadge}>
+          <Icon name="plus" size={14} color={colors.white} />
+        </Pressable>
+      ) : (
+        <View style={styles.bars}>
+          {shown.map((item) => (
+            <EventBar key={item.id} item={item} />
+          ))}
+          {extra > 0 ? (
+            <AppText variant="caption" color={colors.textMuted}>
+              +{extra}
+            </AppText>
+          ) : null}
+        </View>
+      )}
     </Pressable>
   );
 });
@@ -108,8 +144,10 @@ const styles = StyleSheet.create({
   },
   selected: { backgroundColor: colors.primarySoft, borderRadius: 10 },
   out: { opacity: 0.4 },
-  lunar: { alignSelf: 'flex-end', paddingHorizontal: 1 },
-  num: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  lunar: { paddingHorizontal: 1 },
+  num: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   today: { backgroundColor: colors.primary },
-  holiday: { lineHeight: 14 },
+  bars: { gap: 2, marginTop: 2 },
+  addBadge: { alignSelf: 'center', marginTop: 4, width: 22, height: 22, borderRadius: 11, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
 });

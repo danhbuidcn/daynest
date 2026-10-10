@@ -33,3 +33,13 @@ export function addMonths(year: number, month: number, delta: number): { year: n
 export function sameDay(a: SolarDate, b: SolarDate): boolean {
   return a.year === b.year && a.month === b.month && a.day === b.day;
 }
+
+// Postgres `date` text format — used for DB columns (start_date, repeat_until...) and as a map key.
+export function isoDate(d: SolarDate): string {
+  return `${d.year}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
+}
+
+export function parseIsoDate(s: string): SolarDate {
+  const [year, month, day] = s.split('-').map(Number);
+  return { year, month, day };
+}

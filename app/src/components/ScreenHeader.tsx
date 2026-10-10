@@ -1,23 +1,35 @@
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, space } from '@/theme';
 import { AppText } from './AppText';
 import { Icon } from './Icon';
 
-export function ScreenHeader({ title, onBack }: { title: string; onBack?: () => void }) {
+export function ScreenHeader({
+  title,
+  onBack,
+  closeIcon,
+  action,
+}: {
+  title: string;
+  onBack?: () => void;
+  // Create/edit forms and multi-select bars close instead of navigating back (F2, F5).
+  closeIcon?: boolean;
+  action?: ReactNode;
+}) {
   return (
     <View style={styles.bar}>
       <View style={styles.side}>
         {onBack ? (
           <Pressable accessibilityRole="button" accessibilityLabel="Back" onPress={onBack} hitSlop={8} style={styles.back}>
-            <Icon name="back" size={24} color={colors.text} />
+            <Icon name={closeIcon ? 'close' : 'back'} size={closeIcon ? 22 : 24} color={colors.text} />
           </Pressable>
         ) : null}
       </View>
       <AppText variant="title" style={styles.title} numberOfLines={1}>
         {title}
       </AppText>
-      <View style={styles.side} />
+      <View style={styles.side}>{action}</View>
     </View>
   );
 }

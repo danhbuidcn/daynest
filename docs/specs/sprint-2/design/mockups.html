@@ -111,6 +111,9 @@
   .cell.sun .d, .cell.hol .d { color: var(--error); }
   .cell.today .d { background: var(--primary); color: #fff; font-weight: 800; }
   .cell.sel { background: var(--primary-soft); border-radius: 10px; }
+  .cell .addb { align-self: center; margin-top: 4px; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 16px; line-height: 1; }
+  .scrim.big { padding: 12px; }
+  .dialog.big { max-height: 85%; }
   .cell.out { opacity: .4; }
   .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .more { font-size: 12px; line-height: 14px; color: var(--muted); padding-left: 2px; }
@@ -382,7 +385,9 @@ const monthView = (selKey) => days.map((x) => {
   const items = hol ? [['hol', hol], ...evs] : evs;
   const shown = items.slice(0, 3), extra = items.length - shown.length;
   const bars = shown.map(([c, t]) => `<div class="bar ${c === 'hol' ? 'ev-hol' : `ev-${c}`}">${t}</div>`).join('') + (extra > 0 ? `<div class="more">+${extra}</div>` : '');
-  return `<div class="${cls}"><div class="top"><span class="d">${x.d}</span><span class="l ${lkey ? 'key' : ''}">${lkey ? `${x.ld}/${x.lm}` : x.ld}</span></div>${bars}</div>`;
+  // Ngày trống đang chọn: hiện nút + giữa ô; bấm + mới mở pop-up ngày. Ngày có event/lễ: bấm là mở pop-up luôn.
+  const body = key === selKey && items.length === 0 ? '<div class="addb">+</div>' : bars;
+  return `<div class="${cls}"><div class="top"><span class="d">${x.d}</span><span class="l ${lkey ? 'key' : ''}">${lkey ? `${x.ld}/${x.lm}` : x.ld}</span></div>${body}</div>`;
 }).join('');
 
 const calHead = (t) => `<div class="cal-head"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`;
@@ -442,7 +447,7 @@ const monthPicker = `<div class="under">${monthScreen('9/10').replace('<div clas
 
 // ---- Pop-up ngày ----
 const dayPopup = `<div class="under">${monthScreen('9/10')}</div>
-  <div class="scrim"><div class="dialog" style="padding:16px 12px 16px;text-align:left">
+  <div class="scrim big"><div class="dialog big" style="padding:16px 12px 16px;text-align:left">
     <div class="shead" style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:12px"><span class="x">${I.close}</span><div style="text-align:center"><h3>Thứ Sáu, 9/10/2026</h3><div class="cap muted">29/8 năm Bính Ngọ</div></div><span class="round-plus">${I.plus}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px">
       ${ecard('hol', 'Phụ nữ Việt Nam', 'Ngày lễ')}
@@ -738,7 +743,8 @@ const groups = [
     ['3. Lịch — Ngày', 'trùng giờ xếp cạnh nhau', phone(dayScreen)],
     ['4. Lịch — Danh sách', 'thanh ngày ngang', phone(listScreen)],
     ['6. Chọn tháng/năm', 'bấm tiêu đề', phone(monthPicker)],
-    ['7. Pop-up ngày', 'bấm ô 9/10', phone(dayPopup)],
+    ['7a. Chọn ngày trống', 'bấm ô 14/10 → hiện + giữa ô', phone(monthScreen('14/10'))],
+    ['7. Pop-up ngày', 'bấm ô có event (9/10) hoặc bấm + · hộp lớn, sát mép', phone(dayPopup)],
   ]],
   ['Event', [
     ['8. Pop-up +', 'Sự kiện · Ghi chú', phone(plusPopup)],

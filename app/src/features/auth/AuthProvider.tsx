@@ -24,6 +24,9 @@ type AuthState = {
   newDeviceName: string | null;
   dismissNewDeviceName: () => void;
   listDevices: () => Promise<DeviceRow[]>;
+  // A write rejected by RLS (Postgres 42501) can mean this device got kicked out (F7) — callers
+  // re-check and let this trigger the same "signed out" dialog as the foreground check.
+  recheckSession: () => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -120,6 +123,13 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
   const dismissNewDeviceName = useCallback(() => setNewDeviceName(null), []);
   const listDevices = useCallback(() => service.listDevices(), [service]);
 
+  const recheckSession = useCallback(async () => {
+    const active = await service.checkSessionActive().catch(() => true);
+    if (!active) await forceSignOut();
+    else service.touchDevice().catch(() => {});
+    return active;
+  }, [service, forceSignOut]);
+
   const value = useMemo(
     () => ({
       loading,
@@ -133,8 +143,22 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
       newDeviceName,
       dismissNewDeviceName,
       listDevices,
+      recheckSession,
     }),
-    [loading, profile, settings, signIn, signOut, saveLanguage, kickedOut, dismissKickedOut, newDeviceName, dismissNewDeviceName, listDevices],
+    [
+      loading,
+      profile,
+      settings,
+      signIn,
+      signOut,
+      saveLanguage,
+      kickedOut,
+      dismissKickedOut,
+      newDeviceName,
+      dismissNewDeviceName,
+      listDevices,
+      recheckSession,
+    ],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

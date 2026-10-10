@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 
 import { colors, radius, space } from '@/theme';
@@ -5,11 +6,24 @@ import { AppText } from './AppText';
 import { Button } from './Button';
 import { Icon, type IconName } from './Icon';
 
-export function DialogShell({ visible, onClose, children, compact }: { visible: boolean; onClose: () => void; children: React.ReactNode; compact?: boolean }) {
+export function DialogShell({
+  visible,
+  onClose,
+  children,
+  compact,
+  large,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  children: ReactNode;
+  compact?: boolean;
+  // Narrower side margins + taller box — day popup, pop-ups with a scrollable list.
+  large?: boolean;
+}) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
-      <Pressable style={styles.scrim} onPress={onClose}>
-        <Pressable style={[styles.box, compact && styles.compact]} onPress={() => {}}>
+      <Pressable style={[styles.scrim, large && styles.scrimLarge]} onPress={onClose}>
+        <Pressable style={[styles.box, compact && styles.compact, large && styles.boxLarge]} onPress={() => {}}>
           {children}
         </Pressable>
       </Pressable>
@@ -19,6 +33,7 @@ export function DialogShell({ visible, onClose, children, compact }: { visible: 
 
 export function ConfirmDialog({
   visible,
+  icon = 'logout',
   title,
   text,
   cancelLabel,
@@ -27,6 +42,7 @@ export function ConfirmDialog({
   onConfirm,
 }: {
   visible: boolean;
+  icon?: IconName;
   title: string;
   text: string;
   cancelLabel: string;
@@ -37,7 +53,7 @@ export function ConfirmDialog({
   return (
     <DialogShell visible={visible} onClose={onCancel}>
       <View style={styles.dangerIcon}>
-        <Icon name="logout" size={28} color={colors.error} />
+        <Icon name={icon} size={28} color={colors.error} />
       </View>
       <AppText variant="heading" style={styles.center}>
         {title}
@@ -133,7 +149,9 @@ export function ChoiceDialog<T extends string>({
 
 const styles = StyleSheet.create({
   scrim: { flex: 1, backgroundColor: colors.scrim, justifyContent: 'center', padding: space.xl },
+  scrimLarge: { padding: space.md },
   box: { backgroundColor: colors.surface, borderRadius: radius.dialog, paddingTop: space.xl, paddingHorizontal: 20, paddingBottom: 20 },
+  boxLarge: { maxHeight: '85%', paddingTop: space.lg },
   compact: { paddingTop: 20, paddingHorizontal: space.md, paddingBottom: space.md },
   dangerIcon: {
     width: 56,

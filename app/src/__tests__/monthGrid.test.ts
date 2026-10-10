@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { addMonths, monthGrid, weekdayOf, weekdayOrder } from '@/lib/calendar/monthGrid';
+import { addMonths, isoDate, monthGrid, parseIsoDate, weekdayOf, weekdayOrder } from '@/lib/calendar/monthGrid';
 
 describe('monthGrid', () => {
   it('starts October 2026 on Monday 28/9 when weeks start Monday', () => {
@@ -33,5 +33,10 @@ describe('monthGrid', () => {
     expect(weekdayOf({ year: 2000, month: 1, day: 1 })).toBe(6);
     expect(weekdayOrder(1)).toEqual([1, 2, 3, 4, 5, 6, 0]);
     expect(weekdayOrder(0)).toEqual([0, 1, 2, 3, 4, 5, 6]);
+  });
+
+  it('round-trips the Postgres date text format', () => {
+    expect(isoDate({ year: 2026, month: 1, day: 5 })).toBe('2026-01-05');
+    expect(parseIsoDate('2026-01-05')).toEqual({ year: 2026, month: 1, day: 5 });
   });
 });

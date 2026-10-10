@@ -27,6 +27,7 @@ const config: ExpoConfig = {
     './plugins/withReleaseSigning',
     'expo-router',
     'expo-font',
+    '@react-native-community/datetimepicker',
     [
       'expo-splash-screen',
       { image: './assets/splash-icon.png', imageWidth: 120, backgroundColor: '#FAF8F5' },

@@ -10,7 +10,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-calendar.md) |
 | 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header: Tháng · Danh sách · Tuần · Ngày | [F1](../F1-calendar.md) |
 | 6 | Chọn tháng/năm | — | Nhảy nhanh | Hộp: năm ‹ › + lưới 12 tháng | [F1](../F1-calendar.md) |
-| 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn (như màn 6): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-calendar.md) |
+| 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn cỡ lớn (cách mép 12, cao ≤ 85%): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` · mở khi bấm ô có event/lễ, hoặc bấm `+` giữa ô trống đang chọn | [F1](../F1-calendar.md) |
 | 8 | Pop-up `+` | — | Tạo nhanh | Hộp giữa màn (như màn 6): 2 nút Sự kiện · Ghi chú | [F2](../F2-event.md), [F5](../F5-notes.md) |
 | 9 | Form event | `event/edit` | Tạo/sửa | ✕ · Lưu · tiêu đề · chi tiết · cả ngày · thời gian · nhắc · lặp · màu | [F2](../F2-event.md), [F3](../F3-reminders.md) |
 | 10 | Chọn lặp | — | Kiểu lặp | Hộp: Không lặp · Ngày · Tuần · Tháng · Năm · **Năm (âm lịch)** · ô N · ngày kết thúc | [F2](../F2-event.md#lặp) |

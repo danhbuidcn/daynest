@@ -44,7 +44,7 @@ Thuộc: [Sprint 2](index.md).
 Tab Lịch → chế độ lần cuối (mặc định Tháng)
   Header: [‹] Tháng 10, 2026 [›] · Hôm nay · thanh chọn chế độ ngay dưới
   Vuốt trái/phải → kỳ sau/trước · bấm tiêu đề → chọn tháng/năm
-  Tháng: bấm ô → pop-up ngày
+  Tháng: bấm ô có event/lễ → pop-up ngày · bấm ô trống → chọn ô, hiện nút `+` giữa ô → bấm `+` → pop-up ngày
   Tuần/Ngày/Danh sách: bấm event → Chi tiết event
   Kéo xuống → đồng bộ Google (khi bật, [F4](F4-google-calendar.md))
 ```
@@ -60,7 +60,8 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 - Ngày âm trong ô: mùng 1 và rằm kèm tháng âm (`1/8`, `15/8`), ngày khác chỉ hiện số ngày. Tháng nhuận thêm "N" (vd `1/6N`).
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
-- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · danh sách event — ngày lễ xếp đầu (chấm `error`, không bấm được), rồi event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event/lễ → "Chưa có sự kiện".
+- Chọn ô trống (giống app lịch cài sẵn trên máy): lần bấm đầu chỉ chọn ô và hiện nút `+` tròn `primary` giữa ô; bấm `+` mới mở pop-up ngày. Ô có event hoặc ngày lễ: bấm là mở pop-up ngay.
+- Pop-up ngày (hộp giữa màn, cỡ lớn: cách mép 12, cao tối đa 85% màn, danh sách cuộn): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · danh sách event — ngày lễ xếp đầu (chấm `error`, không bấm được), rồi event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event/lễ → "Chưa có sự kiện".
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm

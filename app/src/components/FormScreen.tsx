@@ -8,17 +8,19 @@ import { ScreenHeader } from './ScreenHeader';
 export function FormScreen({
   title,
   onBack,
+  closeIcon,
   footer,
   children,
 }: {
   title: string;
   onBack: () => void;
+  closeIcon?: boolean;
   footer: ReactNode;
   children: ReactNode;
 }) {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
-      <ScreenHeader title={title} onBack={onBack} />
+      <ScreenHeader title={title} onBack={onBack} closeIcon={closeIcon} />
       <KeyboardAvoidingView style={styles.flex} behavior="padding">
         <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
           {children}

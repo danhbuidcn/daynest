@@ -2,6 +2,7 @@ import { GoogleSignin, isCancelledResponse, isErrorWithCode } from '@react-nativ
 import { getNetworkStateAsync } from 'expo-network';
 
 import { isLanguage, type Language } from '@/i18n';
+import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
 import type { WeekStart } from '@/lib/calendar/monthGrid';
 import { supabase } from '@/lib/supabase';
 import { getDeviceId, getDeviceName } from './device';
@@ -9,8 +10,8 @@ import { toProfile, type Profile } from './profile';
 
 export type { Profile } from './profile';
 
-export type UserSettings = { language: Language | null; weekStart: WeekStart };
-export const DEFAULT_SETTINGS: UserSettings = { language: null, weekStart: 1 };
+export type UserSettings = { language: Language | null; weekStart: WeekStart; timeZone: string; use24h: boolean };
+export const DEFAULT_SETTINGS: UserSettings = { language: null, weekStart: 1, timeZone: DEFAULT_TIME_ZONE, use24h: true };
 
 // F7 — max 2 devices per account; signing in on a 3rd kicks the earliest one out.
 export type KickedDevice = { name: string; signedInAt: string };
@@ -153,10 +154,16 @@ export const supabaseAuthService: AuthService = {
   async getSettings() {
     const userId = await currentUserId();
     if (!userId) return DEFAULT_SETTINGS;
-    const { data } = await supabase.from('user_settings').select('language, week_start').eq('user_id', userId).single();
+    const { data } = await supabase
+      .from('user_settings')
+      .select('language, week_start, time_zone, use_24h')
+      .eq('user_id', userId)
+      .single();
     return {
       language: isLanguage(data?.language) ? data.language : null,
       weekStart: data?.week_start === 0 ? 0 : 1,
+      timeZone: data?.time_zone ?? DEFAULT_TIME_ZONE,
+      use24h: data?.use_24h ?? true,
     };
   },
 
