@@ -14,7 +14,7 @@ export function EventBar({ item, large = false, onPress }: { item: BarItem; larg
       accessibilityRole={onPress ? 'button' : undefined}
       onPress={onPress}
       style={({ pressed }) => [styles.bar, large && styles.large, { backgroundColor: background }, pressed && styles.pressed]}>
-      <AppText variant={large ? 'body' : 'caption'} color={textColor} numberOfLines={1}>
+      <AppText variant={large ? 'body' : 'caption'} color={textColor} numberOfLines={1} ellipsizeMode={large ? 'tail' : 'clip'}>
         {item.title}
       </AppText>
     </Pressable>
