@@ -5,7 +5,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
 | 2026-10-10 | Màn 13 (Chi tiết event): giống hệt mockup | ✅ xong | [2026-10-10-event-detail-match-mockup.md](2026-10-10-event-detail-match-mockup.md) |
-| 2026-10-10 | S2 code bước 9: Notes (F5) | 🔄 đang làm | [2026-10-10-s2-code-step-9-notes.md](2026-10-10-s2-code-step-9-notes.md) |
+| 2026-10-10 | S2 code bước 9: Notes (F5) | ✅ xong (trừ kéo đổi thứ tự checklist) | [2026-10-10-s2-code-step-9-notes.md](2026-10-10-s2-code-step-9-notes.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): thẻ event 10 ký tự tiêu đề + giờ bắt đầu – kết thúc | ✅ xong (chờ bạn thử trên máy) | [2026-10-10-week-card-title-10-chars.md](2026-10-10-week-card-title-10-chars.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm event → form sửa luôn | ❌ huỷ (đã hoàn tác) | [2026-10-10-week-event-tap-opens-edit.md](2026-10-10-week-event-tap-opens-edit.md) |
 | 2026-10-10 | Màn 2 (Lịch — Tuần): bấm ngày → form event cả ngày | ✅ xong | [2026-10-10-week-day-tap-opens-all-day-form.md](2026-10-10-week-day-tap-opens-all-day-form.md) |
