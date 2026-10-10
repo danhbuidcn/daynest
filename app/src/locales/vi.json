@@ -6,7 +6,7 @@
   "tagline": "Lịch, việc cần làm và ghi chú\ngọn trong một tổ nhỏ.",
   "login": {
     "google": "Đăng nhập bằng Google",
-    "error": "Đăng nhập không thành công. Thử lại nhé."
+    "error": "Đăng nhập không thành công. Vui lòng thử lại."
   },
   "tabs": {
     "calendar": "Lịch",

@@ -9,3 +9,4 @@
 - [x] `F6-settings.md` + `mockups.html` (màn 21c).
 - [x] `design-system.md`: thêm mục **Câu chữ** (lịch sự, ngắn, không khẩu ngữ, không từ kỹ thuật, "được"/"bị", tên nút là động từ).
 - [x] Lưu Claude memory `formal-ui-wording`.
+- [x] Rà chữ cũ: `vi.json` "Thử lại nhé." → "Vui lòng thử lại."
