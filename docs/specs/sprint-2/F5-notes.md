@@ -63,9 +63,9 @@ Editor ⋯ → Ghim · Danh mục · Xoá
 
 ## Mô tả
 
-- Tab Quản lý (S2 chỉ có Notes; Todo, Diary thêm ở S3, S4): tiêu đề "Quản lý" · ô tìm kiếm · chip danh mục · lưới 2 cột thẻ note ([Cute 46](../../research/cute-calendar/screenshots/46-notes.png)).
+- Tab Quản lý (S2 chỉ có Notes; Todo, Diary thêm ở S3, S4): tiêu đề "Quản lý" · ô tìm kiếm · chip danh mục · lưới 2 cột thẻ note.
 - Thẻ note: viền trái màu danh mục · tiêu đề · 3 dòng nội dung hoặc "2/5 mục" · ngày sửa · icon ghim.
-- Editor ([Cute 23](../../research/cute-calendar/screenshots/23-create-note.png), [32](../../research/cute-calendar/screenshots/32-note-checklist.png)): ‹ · chip danh mục · ⋯ · ô tiêu đề · ô nội dung · khối checklist (ô tick vuông, ✕, "+ Thêm mục") · thanh dưới: nút "Checklist".
+- Editor: ‹ · chip danh mục · ⋯ · ô tiêu đề · ô nội dung · khối checklist (ô tick vuông, ✕, "+ Thêm mục") · thanh dưới: nút "Checklist".
 - Trống: "Chưa có ghi chú" + nút tạo.
 
 ## Không làm

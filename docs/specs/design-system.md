@@ -2,7 +2,7 @@
 
 Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 
-- Phong cách: dễ thương, pastel, bo tròn — tinh thần giống Cute Calendar.
+- Phong cách: dễ thương, pastel, bo tròn.
 - Không chép sticker, icon, hình minh hoạ của app gốc.
 - Chỉ làm theme sáng. Chế độ tối để sau.
 - Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html).

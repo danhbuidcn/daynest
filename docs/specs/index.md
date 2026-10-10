@@ -8,7 +8,6 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 - **Lịch:** dương + âm, ngày lễ VN, event (lặp dương + âm), nhắc nhở, đồng bộ Google Calendar 2 chiều, chu kỳ kinh nguyệt.
 - **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chi tiêu, chu kỳ kinh nguyệt, web.
 - Không làm: học tập, thể dục, dashboard, habit, sticker/theme, xu/quảng cáo.
-- Tham khảo UI/tính năng: [Cute Calendar](../research/cute-calendar/features.md), Memrise (`../research/memrise/`).
 
 ## 2. Quyết định chung
 
@@ -51,7 +50,7 @@ App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trư�
 | Bấm Lưu 2 lần / mạng chập chờn | App tự sinh `id` (uuid) trước khi gửi → gửi lại không tạo trùng |
 | 1 user sửa cùng lúc trên 2 máy | Khoá lạc quan theo `updated_at` → hộp "Đã thay đổi ở thiết bị khác": Tải bản mới / Ghi đè |
 | 2 máy cùng đồng bộ Google | Upsert theo `(user_id, google_event_id)` · đẩy lên dùng `id` cố định |
-| Múi giờ | Event có giờ `timestamptz` · cả ngày `date` · ngày âm theo +7 |
+| Múi giờ | Mặc định Việt Nam (+7), đổi trong Cài đặt · event có giờ `timestamptz` · cả ngày `date` · ngày âm luôn +7 |
 | Không có server riêng | App gọi thẳng Supabase + Google · không giữ trạng thái chung giữa user |
 
 ### Mục tiêu tải

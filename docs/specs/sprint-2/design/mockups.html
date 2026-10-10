@@ -572,7 +572,7 @@ const editor = `<div class="content">
     <div class="et">Kế hoạch tuần</div>
     <div class="eb">Tuần này tập trung xong spec sprint 2, cuối tuần về quê.</div>
     <div style="height:8px"></div>
-    ${cl('Viết spec S2', true)}${cl('Khảo sát Cute Calendar', true)}${cl('Vẽ mockup', false)}${cl('Mua quà sinh nhật mẹ', false)}${cl('Đặt xe về quê', false)}
+    ${cl('Viết spec S2', true)}${cl('Chọn màu event', true)}${cl('Vẽ mockup', false)}${cl('Mua quà sinh nhật mẹ', false)}${cl('Đặt xe về quê', false)}
     <div class="addline">${I.plusG}Thêm mục</div>
   </div>
   <div class="toolbar"><span class="tool">${I.checklist}Checklist</span><span style="flex:1"></span><span class="cap muted">Tự lưu khi quay lại</span></div>
@@ -646,6 +646,7 @@ const settings = (sync, blocked) => `<div class="content">
     <div class="group-label">Lịch</div>
     <div class="card">
       <div class="row"><span class="ico">${I.week}</span><span class="label">Tuần bắt đầu từ</span><span class="val">Thứ Hai</span>${I.chev}</div>
+      <div class="row"><span class="ico">${I.clock}</span><span class="label">Múi giờ</span><span class="val">Việt Nam (GMT+7)</span>${I.chev}</div>
       <div class="row"><span class="ico">${I.time24}</span><span class="label">Định dạng 24 giờ</span>${sw(true)}</div>
       <div class="row"><span class="ico">${I.moon}</span><span class="label">Hiện ngày âm</span>${sw(true)}</div>
       <div class="row"><span class="ico">${I.flag}</span><span class="label">Hiện ngày lễ</span>${sw(true)}</div>

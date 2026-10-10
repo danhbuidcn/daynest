@@ -39,7 +39,7 @@ Thuộc: [Sprint 2](index.md).
 - N: 1–99. Kết thúc lặp: "Không bao giờ" hoặc "Đến ngày" (chọn ngày ≥ ngày bắt đầu).
 - Chọn "Hằng năm âm lịch": app lấy ngày/tháng âm từ ngày bắt đầu, lưu `lunar_day`, `lunar_month`.
 - DB lưu **1 dòng quy tắc**, không lưu từng lần. `lib/recurrence/` (hàm thuần) trải ra các lần trong khoảng ngày cần xem, rồi áp ngoại lệ.
-- Hộp chọn lặp giống [Cute 13](../../research/cute-calendar/screenshots/13-event-repeat.png): tab kiểu · ô số N · ô "Chọn ngày kết thúc lặp" · thêm 1 lựa chọn riêng **"Hằng năm (âm lịch)"** — hiện luôn ngày âm sẽ lặp, vd "Lặp mỗi năm vào 18/8 âm lịch".
+- Hộp chọn lặp: tab kiểu · ô số N · ô "Chọn ngày kết thúc lặp" · thêm 1 lựa chọn riêng **"Hằng năm (âm lịch)"** — hiện luôn ngày âm sẽ lặp, vd "Lặp mỗi năm vào 18/8 âm lịch".
 
 ### Ngoại lệ (sửa/xoá 1 lần lặp)
 
@@ -69,8 +69,8 @@ Bấm event → Chi tiết → ⋯ → Sửa → Form sửa → Lưu
 
 ## Mô tả
 
-- Form (sheet toàn màn, giống [Cute 12](../../research/cute-calendar/screenshots/12-create-event-more.png)): ✕ · tiêu đề "Event" · nút Lưu · ô Tiêu đề · ô Chi tiết · Cả ngày + 2 dòng bắt đầu/kết thúc · Nhắc nhở (công tắc "Cài đặt nhắc nhở" + danh sách mốc + "Thêm nhắc nhở", [F3](F3-nhac-nho.md#mô-tả)) · Lặp lại · Màu (6 chấm).
-- Chi tiết ([Cute 18b](../../research/cute-calendar/screenshots/18b-event-detail.png)): chấm màu + tiêu đề · thời gian (+ ngày âm) · lặp · nhắc · chi tiết · nhãn "Google" nếu đã đồng bộ · menu ⋯: Sửa, Xoá.
+- Form (sheet toàn màn): ✕ · tiêu đề "Event" · nút Lưu · ô Tiêu đề · ô Chi tiết · Cả ngày + 2 dòng bắt đầu/kết thúc · Nhắc nhở (công tắc "Cài đặt nhắc nhở" + danh sách mốc + "Thêm nhắc nhở", [F3](F3-nhac-nho.md#mô-tả)) · Lặp lại · Màu (6 chấm).
+- Chi tiết: chấm màu + tiêu đề · thời gian (+ ngày âm) · lặp · nhắc · chi tiết · nhãn "Google" nếu đã đồng bộ · menu ⋯: Sửa, Xoá.
 - Giờ hiện theo cài đặt 24 giờ.
 
 ## Không làm

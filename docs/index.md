@@ -12,9 +12,6 @@ docs/
       index.md              # mục tiêu, phạm vi, luồng tổng, DoD của sprint
       F<n>-<tên>.md         # từng chức năng: mục tiêu, logic, luồng, mô tả
       design/               # thiết kế chi tiết: màn hình, mockup, DB, build…
-  research/
-    cute-calendar/          # khảo sát Cute Calendar: features.md + screenshots/
-    memrise/                # khảo sát Memrise: screenshots/
 ```
 
 | Đường dẫn | Nội dung |
@@ -23,8 +20,6 @@ docs/
 | [specs/design-system.md](specs/design-system.md) | Design system dùng chung mọi sprint |
 | [specs/sprint-1/](specs/sprint-1/index.md) | Sprint 1: nền móng (khung app, đăng nhập Google, DB, ký app) |
 | [specs/sprint-2/](specs/sprint-2/index.md) | Sprint 2: lịch, event, nhắc, đồng bộ Google, notes |
-| [research/cute-calendar/](research/cute-calendar/features.md) | Tham khảo tính năng + UI app lịch |
-| `research/memrise/` | Tham khảo UI (ảnh chụp màn hình) |
 
 Quy tắc:
 

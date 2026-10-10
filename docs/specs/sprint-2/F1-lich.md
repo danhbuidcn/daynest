@@ -35,7 +35,7 @@ Thuộc: [Sprint 2](index.md).
 
 ### Tuỳ chọn hiển thị
 
-- Tuần bắt đầu từ, 24 giờ, hiện ngày âm, hiện ngày lễ: lấy từ `user_settings` ([F6](F6-cai-dat.md)).
+- Tuần bắt đầu từ, múi giờ (cho "Hôm nay" + giờ event), 24 giờ, hiện ngày âm, hiện ngày lễ: lấy từ `user_settings` ([F6](F6-cai-dat.md)).
 - Chế độ xem lần cuối: lưu trên máy (AsyncStorage). Mở app → mở lại chế độ đó.
 
 ## Luồng
@@ -51,16 +51,16 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 ## Mô tả
 
-| Chế độ | Bố cục | Tham khảo |
-| --- | --- | --- |
-| Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ, tên lễ 1 dòng, tối đa 3 thanh event + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` | [01](../../research/cute-calendar/screenshots/01-home.png), [17](../../research/cute-calendar/screenshots/17-after-save-event.png) |
-| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event | [03](../../research/cute-calendar/screenshots/03-calendar-week.png) |
-| Ngày | Dòng "Cả ngày" + lưới giờ 0–23 · event là khối theo giờ, trùng giờ xếp cạnh nhau · vạch giờ hiện tại | [04](../../research/cute-calendar/screenshots/04-calendar-day.png) |
-| Danh sách | Thanh chọn ngày ngang (1 tuần) · danh sách event ngày đã chọn theo giờ | [02](../../research/cute-calendar/screenshots/02-calendar-list.png) |
+| Chế độ | Bố cục |
+| --- | --- |
+| Tháng | Lưới 6 tuần × 7 · ô: số dương, ngày âm nhỏ, tên lễ 1 dòng, tối đa 3 thanh event + "+N" · hôm nay khoanh `primary` · ngày tháng khác mờ · CN và ngày lễ chữ `error` |
+| Tuần | Thanh chọn tuần · mỗi ngày 1 hàng: thứ + ngày dương/âm + thẻ event |
+| Ngày | Dòng "Cả ngày" + lưới giờ 0–23 · event là khối theo giờ, trùng giờ xếp cạnh nhau · vạch giờ hiện tại |
+| Danh sách | Thanh chọn ngày ngang (1 tuần) · danh sách event ngày đã chọn theo giờ |
 
 - Ngày âm trong ô: mùng 1 và rằm kèm tháng âm (`1/8`, `15/8`), ngày khác chỉ hiện số ngày. Tháng nhuận thêm "N" (vd `1/6N`).
 - Event nhiều ngày: hiện ở mọi ô nó phủ.
-- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm; nội dung theo [Cute 18](../../research/cute-calendar/screenshots/18-day-tap.png)): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · tên lễ · danh sách event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event → "Chưa có sự kiện".
+- Pop-up ngày (hộp giữa màn như hộp chọn tháng/năm): "Thứ Sáu, 9/10/2026" · "29/8 năm Bính Ngọ" · tên lễ · danh sách event (giờ, chấm màu, tiêu đề, icon lặp/nhắc/Google) · nút `+` tạo event ngày đó. Không có event → "Chưa có sự kiện".
 - Tắt ngày âm / ngày lễ trong Cài đặt → ẩn khỏi mọi chế độ xem.
 
 ## Không làm

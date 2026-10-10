@@ -1,5 +1,14 @@
 # Todo
 
+## 2026-10-10 — Xoá research + tên app tham khảo, thêm cài đặt Múi giờ — ✅ xong
+
+**Bạn chốt:** xoá `docs/research/` khỏi mọi commit (xoá luôn trên máy) · xoá mọi chữ "Cute Calendar", "Memrise" · Cài đặt có chỗ đổi múi giờ, mặc định Việt Nam +7.
+
+- [x] 1. `git filter-repo --path docs/research --invert-paths` (backup mirror ở scratchpad) → force push `main` + tag `v1.0.1`.
+- [x] 2. Bỏ link `research/` + chữ Cute Calendar / Memrise trong `docs/`, `README.md`, todo này (xoá 2 mục khảo sát 2026-10-08).
+- [x] 3. Spec Múi giờ: `F6` (dòng + mục "Múi giờ"), `db.md` (`user_settings.time_zone` mặc định `Asia/Ho_Chi_Minh`), `F1`, Spec tổng §3, `screens.md` màn 21, `mockups.html` (dòng Múi giờ). Lịch âm vẫn luôn +7.
+- Làm code: cột ở bước 4 (migration S2), màn chọn múi giờ ở bước 8; bước 3 đọc `time_zone` để tính "Hôm nay".
+
 ## 2026-10-09 — Bỏ màn Sửa tài khoản (không sửa tên, ảnh) — ✅ xong
 
 **Bạn chốt:** xoá màn Sửa tài khoản; không cho sửa tên, ảnh → tiết kiệm Storage Supabase.
@@ -27,7 +36,7 @@
 - [x] 5. `supabase/db migrate` lên project thật (bạn ok ở đây là ok bước này) · commit `feat: remove profile editing`, push. Ra máy người dùng ở bản `1.1.0`.
 - Kết quả: typecheck ok, lint 0 lỗi, test 2/2 (bỏ test validateName + avatar), `supabase/db test` 11/11. Project thật: đã xoá 1 file ảnh + bucket `avatars` (CLI `storage rm -r`), migration `20261009102301_drop_profile_edit` đã chạy. Emulator: Cài đặt hiện tên + ảnh Google, thẻ không bấm được. DB local vẫn còn bucket rỗng do migration S1 tạo (Supabase chặn xoá bucket bằng SQL) — không ảnh hưởng.
 
-## 2026-10-09 — S2 code: lộ trình + bước 3 (lịch âm, ngày lễ, lưới tháng) — ✅ đã duyệt, chưa làm (làm tiếp phiên sau)
+## 2026-10-09 — S2 code: lộ trình + bước 3 (lịch âm, ngày lễ, lưới tháng) — 🔄 đang làm (xong mục 1–4)
 
 ### Lộ trình code S2 (mỗi bước 1 todo riêng, chạy được trên máy sau mỗi bước)
 
@@ -54,12 +63,12 @@
 
 ### Bước 3 — Plan
 
-- [ ] 1. `src/lib/lunar/`: `toLunar`, `toSolar`, `lunarMonthLength`, `canChiYear` — thuật toán Hồ Ngọc Đức, múi giờ +7, năm 1900–2100, hàm thuần.
-- [ ] 2. `src/lib/holidays/`: danh sách lễ dương + âm trong F1 (tên EN + VI), `holidaysOn(date)`.
-- [ ] 3. `src/lib/calendar/monthGrid.ts`: 42 ngày của tháng theo tuần bắt đầu Thứ 2 / CN.
-- [ ] 4. Test (Jest): Tết 2020–2030 đúng ngày; tháng nhuận 2020 (4), 2023 (2), 2025 (6); đổi dương ↔ âm khớp nhau mọi ngày 1900–2100; lễ âm 2024–2027; Giao thừa tháng Chạp thiếu/đủ; lưới tháng 2 năm nhuận, tuần bắt đầu T2/CN.
+- [x] 1. `src/lib/lunar/`: `toLunar`, `toSolar`, `lunarMonthLength`, `canChiYear` — thuật toán Hồ Ngọc Đức, múi giờ +7, năm 1900–2100, hàm thuần.
+- [x] 2. `src/lib/holidays/`: danh sách lễ dương + âm trong F1 (tên EN + VI), `holidaysOn(date)`.
+- [x] 3. `src/lib/calendar/monthGrid.ts`: 42 ngày của tháng theo tuần bắt đầu Thứ 2 / CN.
+- [x] 4. Test (Jest): Tết 2020–2030 đúng ngày; tháng nhuận 2020 (4), 2023 (2), 2025 (6); đổi dương ↔ âm khớp nhau mọi ngày 1900–2100; lễ âm 2024–2027; Giao thừa tháng Chạp thiếu/đủ; lưới tháng 2 năm nhuận, tuần bắt đầu T2/CN.
 - [ ] 5. Màn Lịch — Tháng (`(tabs)/calendar.tsx` + `src/features/calendar/`): header `‹ Tháng 10, 2026 ›` + chip Hôm nay · thanh chọn chế độ (chỉ Tháng chạy; Tuần/Ngày/Danh sách → toast "Đang phát triển" tới bước 7) · hàng thứ · lưới 6×7 (số dương, ngày âm, mùng 1/rằm kèm tháng, tên lễ, hôm nay, CN/lễ màu `error`, ngày tháng khác mờ) · vuốt trái/phải đổi tháng · bấm tiêu đề → hộp chọn tháng/năm (màn 6) · bấm ô → chọn ngày (pop-up ngày làm ở bước 6).
-- [ ] 6. Đọc `week_start` từ `user_settings` khi đăng nhập (cùng chỗ đọc `language`); chưa có cài đặt hiện ngày âm/lễ (bước 8) → luôn hiện.
+- [ ] 6. Đọc `week_start` từ `user_settings` khi đăng nhập (cùng chỗ đọc `language`); chưa có cài đặt hiện ngày âm/lễ (bước 8) → luôn hiện. "Hôm nay" tính theo múi giờ `Asia/Ho_Chi_Minh` (cột `time_zone` có ở bước 4 → khi đó đọc từ DB).
 - [ ] 7. i18n EN + VI cho chữ mới (tên tháng, thứ, tên lễ, Hôm nay…).
 - [ ] 8. Kiểm tra: `npm run typecheck && npm run lint && npm test`; emulator: tháng 10/2026 khớp mockup màn 1 (ngày âm, 20/10 lễ), vuốt qua tháng 2/2026 thấy Tết 17/2, đổi ngôn ngữ EN ↔ VI.
 - [ ] 9. Commit `feat(app): lunar month calendar`, push. Không release.
@@ -215,7 +224,7 @@ Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (khôn
 - [x] 2. `docs/specs/design-system.md` — thêm thành phần mới (chỉ token có sẵn, không thêm màu/cỡ chữ):
   - ô lịch tháng (số dương, ngày âm, tên lễ, thanh event, "+N", hôm nay, ngày tháng khác, CN/lễ);
   - thanh event (tháng) + thẻ event (tuần/danh sách/sheet ngày) + khối event (xem ngày);
-  - thanh chọn chế độ (segmented: Tháng · Danh sách · Tuần · Ngày — giống Cute);
+  - thanh chọn chế độ (segmented: Tháng · Danh sách · Tuần · Ngày);
   - sheet từ đáy (có Huỷ bỏ / tiêu đề / Hoàn tất);
   - công tắc + dòng cài đặt có công tắc;
   - chip danh mục, thẻ note, dòng checklist;
@@ -231,21 +240,21 @@ Tag chỉ có source code → thêm bước tạo GitHub Release kèm APK (khôn
 - [x] Góp ý của bạn (đã sửa): màn 7, 8 → pop-up giữa màn như màn 6; bỏ chữ "(ngày giỗ)" trong dòng gợi ý lặp âm.
 - [x] 6. Gửi bạn xem. Góp ý thì sửa; ok thì commit `docs: add sprint-2 mockups` (1 dòng, không body, không Co-Authored-By), push → sang bước code (todo riêng, chia nhiều bước nhỏ).
 
-## 2026-10-09 — S2 spec: mục Nhắc nhở trong form event giống hệt Cute Calendar — ✅ xong
+## 2026-10-09 — S2 spec: mục Nhắc nhở trong form event giống app tham khảo — ✅ xong
 
 ~~Thêm cài đặt "Nhắc mặc định" 5/10/15 phút~~ — đã bỏ (hiểu sai: bạn muốn chọn mốc nhắc ngay trong event).
 
-Spec hiện có: chọn mốc trong form (Đúng giờ · 5 · 10 · 15 · 30 phút · 1 giờ · 1 ngày trước), mặc định 15 phút. Còn thiếu so với [Cute 12](../docs/research/cute-calendar/screenshots/12-create-event-more.png), [14](../docs/research/cute-calendar/screenshots/14-event-add-reminder.png):
+Spec hiện có: chọn mốc trong form (Đúng giờ · 5 · 10 · 15 · 30 phút · 1 giờ · 1 ngày trước), mặc định 15 phút. Còn thiếu:
 
 - [x] `F3-nhac-nho.md` + `F2-event.md`: thêm công tắc **"Cài đặt nhắc nhở"** đầu mục (bật = có nhắc, hiện danh sách mốc; tắt = không nhắc, ẩn danh sách) · mỗi mốc 1 dòng icon đồng hồ + "15 phút trước" + ✕ · "+ Thêm nhắc nhở" mở sheet từ đáy: Huỷ bỏ · "Chọn nhắc nhở lúc" · Hoàn tất, danh sách mốc có ✓.
 - [x] `design/screens.md` màn 11: đổi "Hộp chọn" → sheet từ đáy như trên.
-- [x] Khảo sát Cute trên máy thật (bạn cho phép, không lưu gì): danh sách mốc = Đúng giờ · 5 · 10 · 30 phút · 1 · 2 giờ · 1 · 2 ngày · 1 tuần trước (cả ngày dùng chung); mặc định 15 phút (không có trong danh sách); icon `!` = mẹo tắt tối ưu pin + nút Loại trừ → đã cập nhật F3 + thêm màn 11b.
+- [x] Khảo sát app tham khảo trên máy thật (bạn cho phép, không lưu gì): danh sách mốc = Đúng giờ · 5 · 10 · 30 phút · 1 · 2 giờ · 1 · 2 ngày · 1 tuần trước (cả ngày dùng chung); mặc định 15 phút (không có trong danh sách); icon `!` = mẹo tắt tối ưu pin + nút Loại trừ → đã cập nhật F3 + thêm màn 11b.
 
 ## 2026-10-09 — S2 bước 1: viết spec Sprint 2 + sắp lại danh sách sprint — ✅ xong (bạn đã ok)
 
 ### Input
 
-- Bạn chốt: S2 = **Lịch, Event, Notes, Cài đặt thông báo**, giống Cute Calendar.
+- Bạn chốt: S2 = **Lịch, Event, Notes, Cài đặt thông báo**.
 - Bạn chốt: **mỗi tính năng làm trọn trong 1 sprint**, không chia nhiều sprint. "Trọn" = toàn bộ phạm vi GĐ1 đã chốt; mục "Sau / Không làm" giữ nguyên ngoài.
 - Bạn chốt: kéo Google Calendar là một phần của Lịch → làm ở S2.
 - Bạn chốt (đổi): **bật đồng bộ → Daynest ↔ Google 2 chiều**; tắt → 2 bên độc lập. Thay quyết định cũ "kéo 1 chiều" (§2 Spec tổng). Chi tiết đã chốt: lịch chính · bật → đẩy hết event có sẵn · tắt → giữ event Google thành event thường · lặp âm không đẩy · thêm lựa chọn "Hằng năm (âm lịch)" cho ngày giỗ (bỏ lặp tháng âm). Xem `F4-google-calendar.md`.
@@ -718,7 +727,7 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 
 ## 2026-10-09 — Sprint 1: thiết kế (design system + mockup) — ✅ xong
 
-**Đã chốt:** phong cách dễ thương, pastel, giống tinh thần Cute Calendar. Không chép sticker, icon hay hình của app gốc.
+**Đã chốt:** phong cách dễ thương, pastel. Không chép sticker, icon hay hình của app gốc.
 
 - [x] Viết `docs/specs/design-system.md`, dùng chung cho mọi sprint, gạch đầu dòng ngắn:
   - **Màu:**
@@ -752,7 +761,6 @@ Quy ước mới (bạn chốt): code không comment, mọi chỗ ngoài docs d�
 ```text
 docs/
   index.md                    # mô tả từng file/folder trong docs/
-  research/                   # giữ nguyên (cute-calendar, memrise)
   specs/
     index.md                  # sản phẩm, quyết định chung, kiến trúc, danh sách sprint + chức năng sơ bộ
     sprint-1/                 # S1 nền móng
@@ -780,9 +788,8 @@ docs/
 - [x] Viết `docs/index.md` mô tả cây tài liệu.
 - [x] Sửa link:
   - `README.md` trỏ sang `docs/index.md` và `docs/specs/index.md`;
-  - `research/cute-calendar/features.md` không còn link tới file đã xoá.
 - [x] Kiểm tra: không còn link hỏng (grep các đường dẫn `.md`), không còn nội dung trùng giữa các file.
-- [x] Commit `docs: restructure specs as tree, add sprint-1 docs` kèm Co-Authored-By, push. Không add ảnh Memrise.
+- [x] Commit `docs: restructure specs as tree, add sprint-1 docs` kèm Co-Authored-By, push.
 
 ## 2026-10-09 — Đổi tên thành Daynest + thu hẹp phạm vi — ✅ xong
 
@@ -844,28 +851,21 @@ docs/
 
   - Mỗi sprint thêm bảng DB của riêng nó qua migration.
 - [x] Spec: thay mục 9 "Mốc M1–M6" bằng link tới `docs/backlog.md`.
-- [x] `docs/research/cute-calendar/features.md`:
-  - đổi chữ "personal-hub" thành "Daynest";
-  - sửa tên module trong bảng map cho khớp 2 phần mới.
 - [x] Không sửa các mục cũ trong todo, vì đó là lịch sử.
 - [x] Commit `docs: rename project to Daynest and narrow scope` kèm Co-Authored-By, push.
   - Chỉ add các file trên (gồm `docs/backlog.md`) và `wip/` (`todo.md` đã đổi tên thành `todo_list.md`).
-  - Không add ảnh Memrise.
+  -
 - [ ] Kiểm tra:
   - [x] `grep -ri personal-hub` chỉ còn trong các mục cũ của todo;
   - [x] `git fetch` qua remote mới chạy được.
 - [x] **Bạn làm sau khi đóng phiên (không bắt buộc):** đổi tên thư mục local (bạn đã đổi 2026-10-09) thành `~/Documents/daynest`. Memory của Claude Code gắn với đường dẫn thư mục, nên đổi thư mục thì phải chép thư mục memory sang tên mới.
-
-**Memrise:** giữ lại. Khảo sát Cute Calendar và Memrise là tài liệu tham khảo để thiết kế giao diện và tính năng, không gắn với module Học tập.
-- Trong đợt này không đụng tới phần Memrise.
-- Ảnh 36–44 chưa commit, để nguyên.
 
 **Quy trình đã chốt:** docs → thiết kế → code.
 - Sau khi xong đợt đổi tên, bước tiếp theo là **Sprint 1: docs → thiết kế → code**.
 - Todo của bước thiết kế viết riêng, bạn duyệt rồi mới làm.
 - Implementation plan chỉ viết sau khi thiết kế xong.
 
-## 2026-10-09 — Viết spec Giai đoạn 1 (app lịch kiểu Cute Calendar) — ✅ xong, chờ review spec
+## 2026-10-09 — Viết spec Giai đoạn 1 — ✅ xong, chờ review spec
 
 Thiết kế đã chốt qua chat (phần 1–3). Việc này chỉ ghi tài liệu, chưa code.
 
@@ -891,7 +891,7 @@ Thiết kế đã chốt qua chat (phần 1–3). Việc này chỉ ghi tài li�
   - sửa bảng Quyết định: mobile trước, sync 1 chiều, GĐ1 chưa dùng Go;
   - đổi thứ tự làm: Học tập lùi sau GĐ1.
 - [x] Commit `docs: add phase 1 calendar app spec` kèm Co-Authored-By, push `main`.
-  - Chỉ add 2 file trên, không đụng ảnh Memrise chưa commit.
+  - Chỉ add 2 file trên.
 - [x] Gửi bạn review spec. Sau khi bạn duyệt mới viết implementation plan.
 
 ## 2026-10-08 — Ghi kết quả làm rõ MVP vào docs — ✅ xong
@@ -912,62 +912,6 @@ Thiết kế đã chốt qua chat (phần 1–3). Việc này chỉ ghi tài li�
     - Stack: app Expo (React Native, TS) · web Nuxt 3 + Nuxt UI · api Go trên nền Supabase (Postgres, Auth, Storage) · OCR Claude API gọi từ Go.
 - [x] `README.md`: thêm cột Công nghệ vào bảng cấu trúc.
 - [x] Commit `docs: define MVP scope and tech stack` + Co-Authored-By, push `main`.
-
-## 2026-10-08 — Khảo sát app Memrise trên điện thoại — ⏸ tạm dừng (làm tiếp 2026-10-09)
-
-Mục tiêu: chụp mọi màn hình + liệt kê tính năng của Memrise (`com.memrise.android.memrisecompanion`, Samsung, qua `adb`) để lấy ý tưởng thiết kế cho module **Học tập** (từ vựng, ôn tập, tiến độ). Hình minh hoạ/icon/mascot không chép — tự design sau.
-
-**Lưu ở:** `docs/research/memrise/`
-
-- `screenshots/NN-<tên-màn>.png` — đánh số theo thứ tự duyệt.
-- `features.md` — tính năng theo màn, map sang module personal-hub, link ảnh, gợi ý MVP.
-- ⚠️ Repo **public**: ảnh có thể lộ tên tài khoản, email, tiến độ học. Màn có email (Profile/Settings) → hỏi bạn trước khi commit.
-
-**Các bước:**
-
-- [x] Ghi version app: `2026.09.28.0` (versionCode 209426065), máy SM-A556E.
-- [x] Mở app, chụp (`screencap`) + `uiautomator dump` để biết nút bấm được.
-- [x] Duyệt lần lượt: từng tab dưới → menu/nút → màn con → Settings. Mỗi màn: chụp, ghi tính năng.
-- [x] Popup mua Pro/quảng cáo: chụp rồi đóng, không bấm mua. Không đổi setting, không xoá, không đăng xuất.
-- [ ] Luồng học (bạn cho làm 1 bài): đang làm dở bài "汉字 (Ký Tự) 1" (tab Tình huống). Còn: hết bài → chụp màn kết quả; xem lại Home/Hoạt động/Từ vựng sau khi học; tab Ôn tập; thử mở đối thoại AI (thoát nếu bắt mua Pro).
-- [ ] Viết `features.md`: bảng tính năng theo màn + map module Học tập + ghi chú nên đưa vào MVP.
-- [ ] Cập nhật `docs/features.md`: link tới `research/memrise/features.md` ở mục 5. Học tập.
-- [ ] Commit `docs: add Memrise research` + Co-Authored-By, push `main`.
-- [ ] Kiểm tra: số ảnh khớp danh sách trong `features.md`, `git status` sạch.
-
-**Tiến độ (2026-10-08):** 42 ảnh trong `screenshots/`. Ảnh 01–35 đã lọt vào commit `0efba1b` của phiên khác. Ảnh 36–44 lỡ vào commit `b99ffc3` (2026-10-09); bạn chọn giữ nguyên.
-
-- 01–03: onboarding (màn chào, chọn ngôn ngữ, đăng ký). Bạn đã tự đăng nhập: tài khoản tiếng Trung, cấp 1, 0 điểm.
-- 04–27: Home, Settings, Hoạt động, Từ vựng, Streak, Đổi ngôn ngữ, Cấp độ, Pro, các tab Tình huống/Video/Đối thoại.
-- 30–44: trong bài học — loading, thẻ giới thiệu từ, tuỳ chỉnh bài học, nghe → chọn nghĩa/chữ, ghép từ thành câu, popup "học được từ mới", chọn sai → popup "Từ khó" + màn sửa, nghĩa → chữ, video → chữ.
-- Ghi chú: trả lời đúng là app chuyển câu ngay, chưa chụp được màn "đúng" riêng (ảnh 35 thực ra là thẻ từ kế tiếp).
-
-## 2026-10-08 — Khảo sát app Cute Calendar trên điện thoại — ✅ xong
-
-Mục tiêu: chụp mọi màn hình + liệt kê toàn bộ tính năng của Cute Calendar (Samsung, qua `adb`) để làm module Daily note và các module khác tương tự. Sticker/icon/hình ảnh không chép — tự design sau.
-
-**Điều kiện:** `adb devices` thấy điện thoại (bạn bật USB debugging + cho phép máy tính).
-
-**Lưu ở:** `docs/research/cute-calendar/`
-
-- `screenshots/NN-<tên-màn>.png` — đánh số theo thứ tự duyệt.
-- `features.md` — danh sách tính năng theo màn, map sang module personal-hub, link ảnh tương ứng.
-- ⚠️ Repo đang **public**: ảnh có dữ liệu nhật ký/ghi chú thật. Bạn đã chọn vẫn commit. Muốn kín thì đổi repo sang private trên GitHub.
-
-**Kết quả:** 82 ảnh, `features.md` 6 nhóm tính năng + bảng map MVP. 5 mục `[TEST]` đã xoá (tìm "TEST" trong app: không còn).
-
-**Các bước:**
-
-- [x] Tìm package app (`pm list packages`), ghi version.
-- [x] Mở app, chụp màn đầu (`screencap`) + dump giao diện (`uiautomator dump`) để biết nút nào bấm được.
-- [x] Duyệt lần lượt: từng tab dưới → từng menu/nút → màn con → Settings. Mỗi màn: chụp ảnh, ghi tính năng.
-- [x] Màn tạo/sửa (diary, note, event, todo...): chỉ mở, chụp, rồi **Back — không lưu**. Không xoá, không đổi setting, không mua gói.
-- [x] Popup quảng cáo / mua Pro: chụp rồi đóng, không bấm mua.
-- [x] (Bạn cho phép thêm) Test luồng: tạo mục thử tiêu đề bắt đầu `[TEST]` (event, todo, note, diary...), xem luồng sửa/hoàn thành/hiển thị. Cuối buổi **xoá hết mục `[TEST]`**. Vẫn không sửa/xoá dữ liệu thật, không đổi setting.
-- [x] Viết `features.md`: bảng tính năng theo màn + map module + ghi chú tính năng nên đưa vào MVP.
-- [x] Cập nhật `docs/features.md`: link tới `research/cute-calendar/features.md` ở mục Daily note.
-- [x] Commit `docs: add Cute Calendar research` + Co-Authored-By, push `main`.
-- [x] Kiểm tra: số ảnh khớp danh sách màn trong `features.md`, `git status` sạch.
 
 ## 2026-10-08 — Chép skill AI + patterns từ AI_challenge — ✅ xong
 

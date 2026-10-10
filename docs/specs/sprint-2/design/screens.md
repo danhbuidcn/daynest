@@ -8,7 +8,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 2 | Lịch — Tuần | `(tabs)/calendar` | Xem tuần | Header · 7 hàng ngày + thẻ event | [F1](../F1-lich.md) |
 | 3 | Lịch — Ngày | `(tabs)/calendar` | Xem theo giờ | Header · dòng Cả ngày · lưới giờ · vạch giờ hiện tại | [F1](../F1-lich.md) |
 | 4 | Lịch — Danh sách | `(tabs)/calendar` | Xem 1 ngày dạng danh sách | Thanh ngày ngang · danh sách event | [F1](../F1-lich.md) |
-| 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header (giống Cute): Tháng · Danh sách · Tuần · Ngày | [F1](../F1-lich.md) |
+| 5 | Chọn chế độ xem | — | Đổi chế độ | Thanh chọn luôn hiện dưới header: Tháng · Danh sách · Tuần · Ngày | [F1](../F1-lich.md) |
 | 6 | Chọn tháng/năm | — | Nhảy nhanh | Hộp: năm ‹ › + lưới 12 tháng | [F1](../F1-lich.md) |
 | 7 | Pop-up ngày | — | Event của 1 ngày | Hộp giữa màn (như màn 6): ✕ · ngày dương + âm + can chi · tên lễ · danh sách event · nút `+` | [F1](../F1-lich.md) |
 | 8 | Pop-up `+` | — | Tạo nhanh | Hộp giữa màn (như màn 6): 2 nút Sự kiện · Ghi chú | [F2](../F2-event.md), [F5](../F5-notes.md) |
@@ -28,7 +28,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 19 | Sửa danh mục | — | Tên + màu | Hộp: ô tên · 6 chấm màu · Huỷ / Lưu (không có nút xoá) | [F5](../F5-notes.md#danh-mục) |
 | 20 | Thùng rác | `note/trash` | Note đã xoá | Danh sách · Khôi phục · Xoá vĩnh viễn · nút Xoá tất cả (góc trên phải) |
 | 20b | Xác nhận xoá tất cả | — | Tránh bấm nhầm | Hộp: "Xoá vĩnh viễn tất cả?" · số ghi chú · không khôi phục được · Huỷ / Xoá tất cả | [F5](../F5-notes.md#thùng-rác) |
-| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch · Google Calendar | [F6](../F6-cai-dat.md) |
+| 21 | Cài đặt (thêm nhóm) | `(tabs)/settings` | Cài đặt mới | Tài khoản (+ Thiết bị đăng nhập) · Thông báo · Lịch (+ Múi giờ: hộp chọn có tìm kiếm) · Google Calendar | [F6](../F6-cai-dat.md) |
 | 22 | Đồng bộ Google | — | Tiến độ lần đầu | Hộp: "Đang đồng bộ 120/300" + thanh tiến độ | [F4](../F4-google-calendar.md) |
 | 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |
 | 24 | Đã đăng xuất máy cũ (máy mới) | — | Báo máy mới | Hộp trên Tab Lịch: "Đã đăng xuất <tên máy>" · ngày máy đó đăng nhập · Đã hiểu | [F7](../F7-gioi-han-thiet-bi.md) |

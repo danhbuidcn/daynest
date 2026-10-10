@@ -11,12 +11,12 @@ Thuộc: [Sprint 2](index.md).
 
 ### Mốc nhắc
 
-- Mỗi event 0–5 mốc, không trùng. Lựa chọn giống hệt Cute Calendar (khảo sát máy thật 2026-10-09, [Cute 14](../../research/cute-calendar/screenshots/14-event-add-reminder.png)): Đúng giờ · 5 phút · 10 phút · 30 phút · 1 giờ · 2 giờ · 1 ngày · 2 ngày · 1 tuần trước. Event có giờ và cả ngày dùng cùng danh sách.
+- Mỗi event 0–5 mốc, không trùng. Lựa chọn: Đúng giờ · 5 phút · 10 phút · 30 phút · 1 giờ · 2 giờ · 1 ngày · 2 ngày · 1 tuần trước. Event có giờ và cả ngày dùng cùng danh sách.
 - Công tắc **"Cài đặt nhắc nhở"** trong form: bật = event có nhắc (theo các mốc); tắt = không nhắc, ẩn danh sách mốc. Tắt rồi bật lại trong cùng lần sửa → hiện lại các mốc cũ.
 - Event có giờ: mốc tính từ giờ bắt đầu.
 - Event cả ngày: mốc tính từ **9:00** ngày bắt đầu (vd "1 ngày trước" = 9:00 hôm trước).
 - Event lặp: mỗi lần lặp nhắc theo cùng mốc; ngoại lệ `override` có mốc riêng.
-- Event mới: công tắc bật, 1 mốc "15 phút trước" (như Cute; mốc 15 phút chỉ có ở mặc định, không có trong danh sách chọn). Bật công tắc khi chưa có mốc nào → thêm "15 phút trước".
+- Event mới: công tắc bật, 1 mốc "15 phút trước" (mốc 15 phút chỉ có ở mặc định, không có trong danh sách chọn). Bật công tắc khi chưa có mốc nào → thêm "15 phút trước".
 - Event Google (khi đồng bộ bật): mốc lấy từ nhắc `popup` của Google ([F4](F4-google-calendar.md#map-trường)).
 
 ### Đặt thông báo
@@ -50,7 +50,7 @@ Lần đầu tạo event có nhắc, chưa có quyền → xin quyền
 
 ## Mô tả
 
-- Form event, mục Nhắc nhở ([Cute 12](../../research/cute-calendar/screenshots/12-create-event-more.png)):
+- Form event, mục Nhắc nhở:
   - Dòng "Cài đặt nhắc nhở": icon lịch-chuông · nhãn · icon `!` · công tắc.
   - Mỗi mốc 1 dòng: icon đồng hồ · "15 phút trước" · ✕ xoá.
   - "+ Thêm nhắc nhở" → sheet từ đáy: **Huỷ bỏ** · "Chọn nhắc nhở lúc" · **Hoàn tất** · danh sách mốc cuộn được, mốc đang chọn có ✓ · chọn 1 mốc / lần. Mốc đã có trong event không hiện lại. Đủ 5 mốc → ẩn "+ Thêm nhắc nhở".

@@ -19,4 +19,3 @@ Thuộc: [Sprint 1](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 - Màn con (vd Sửa tài khoản): vuốt từ mép trái sang phải → về màn trước (Android + iOS).
 - Tab trống: tiêu đề "<Tab> đang phát triển" + "Tính năng đang được phát triển." — không chip, không nhắc số sprint.
 - Cài đặt hiện `version` (vd `1.0.0`). Mỗi bản build cài lên máy tăng `version` để phân biệt.
-- Tham khảo bố cục thanh tab: [Cute Calendar 01](../../../research/cute-calendar/screenshots/01-home.png), [Cài đặt 70](../../../research/cute-calendar/screenshots/70-settings.png).

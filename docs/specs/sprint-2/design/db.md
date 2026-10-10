@@ -17,6 +17,7 @@ Quy tắc chung mọi bảng mới:
 | `notifications_enabled` | `boolean` | `true` |
 | `show_lunar` | `boolean` | `true` |
 | `show_holidays` | `boolean` | `true` |
+| `time_zone` | `text` | `'Asia/Ho_Chi_Minh'` · check: là tên trong `pg_timezone_names` (qua trigger, check không dùng được truy vấn con) |
 
 ## `events`
 

@@ -14,7 +14,7 @@ Mobile (Android + iOS) first, web later. Built with Scrum in small sprints — s
 | `app/` | Mobile app (Android + iOS) | React Native + Expo |
 | `api/` | Backend API (not used in phase 1) | Go, on top of Supabase (Postgres, Auth, Storage) |
 | `web/` | Web app (later) | Nuxt 3 + Nuxt UI |
-| `docs/` | Docs: specs per sprint, research (Vietnamese) | — |
+| `docs/` | Docs: specs per sprint (Vietnamese) | — |
 | `playbook/` | AI skills and reference docs for Claude Code | — |
 
 ## Docs
