@@ -1,4 +1,4 @@
-# 2026-10-10 — S2 code bước 4: migration (events, notes, giới hạn 2 thiết bị) — ✅ migration + test xong, chờ migrate lên DB thật + commit
+# 2026-10-10 — S2 code bước 4: migration (events, notes, giới hạn 2 thiết bị) — ✅ xong
 
 ## Input
 
@@ -11,8 +11,8 @@
 - [x] 2. `supabase/tests/rls_s2.sql`: đăng nhập máy 3 → máy sớm nhất bị đá, phiên đó không đọc/ghi được bảng nào kể cả `profiles`/`user_settings`; đăng nhập lại cùng `device_id` không đá máy khác; 2 user giả A/B không đọc/sửa/xoá được `events`, `event_exceptions`, `google_sync_state`, `note_categories`, `notes` của nhau; A không gắn note vào danh mục B, không gắn ngoại lệ vào event B; `delete_note_categories` xoá đúng phạm vi RLS; `time_zone` sai tên bị chặn.
 - [x] 3. Sửa `supabase/tests/rls_s1.sql`: thêm `register_device` cho user A trước khi test (RLS S1 giờ cũng cần phiên đang hoạt động).
 - [x] 4. `supabase/db test` (Docker local) → 43/43 test qua.
-- [ ] 5. `supabase/db migrate` lên project thật (chưa chạy — hỏi trước khi áp lên DB thật).
-- [ ] 6. Commit `chore(supabase): s2 migration — events, notes, device limit`, push.
+- [x] 5. `supabase/db migrate` lên project thật (đã hỏi, bạn đồng ý) → `supabase/db status` khớp.
+- [x] 6. Commit `chore(supabase): s2 migration — events, notes, 2-device limit`, push.
 
 ## Kết quả
 
