@@ -3,7 +3,7 @@ import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { colors, radius, space } from '@/theme';
 import { AppText } from './AppText';
 import { Button } from './Button';
-import { Icon } from './Icon';
+import { Icon, type IconName } from './Icon';
 
 export function DialogShell({ visible, onClose, children, compact }: { visible: boolean; onClose: () => void; children: React.ReactNode; compact?: boolean }) {
   return (
@@ -49,6 +49,39 @@ export function ConfirmDialog({
         <Button label={cancelLabel} variant="secondary" onPress={onCancel} style={styles.flex} />
         <Button label={confirmLabel} variant="danger" onPress={onConfirm} style={styles.flex} />
       </View>
+    </DialogShell>
+  );
+}
+
+export function AlertDialog({
+  visible,
+  tone = 'primary',
+  icon,
+  title,
+  text,
+  buttonLabel,
+  onClose,
+}: {
+  visible: boolean;
+  tone?: 'primary' | 'warning';
+  icon: IconName;
+  title: string;
+  text: string;
+  buttonLabel: string;
+  onClose: () => void;
+}) {
+  return (
+    <DialogShell visible={visible} onClose={onClose}>
+      <View style={[styles.alertIcon, tone === 'warning' ? styles.alertIconWarning : styles.alertIconPrimary]}>
+        <Icon name={icon} size={28} color={tone === 'warning' ? colors.warning : colors.primaryDark} />
+      </View>
+      <AppText variant="heading" style={styles.center}>
+        {title}
+      </AppText>
+      <AppText color={colors.textMuted} style={[styles.center, styles.text]}>
+        {text}
+      </AppText>
+      <Button label={buttonLabel} onPress={onClose} />
     </DialogShell>
   );
 }
@@ -112,6 +145,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 14,
   },
+  alertIcon: { width: 56, height: 56, borderRadius: 20, alignSelf: 'center', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  alertIconPrimary: { backgroundColor: colors.primarySoft },
+  alertIconWarning: { backgroundColor: colors.warningSoft },
   center: { textAlign: 'center' },
   text: { marginTop: 6, marginBottom: 20 },
   actions: { flexDirection: 'row', gap: 10 },

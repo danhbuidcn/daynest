@@ -12,6 +12,7 @@ export const colors = {
   error: '#E9787B',
   errorSoft: '#FCE8E8',
   warning: '#F2B45C',
+  warningSoft: '#FDF1DE',
   white: '#FFFFFF',
   scrim: 'rgba(47,45,51,0.4)',
 } as const;

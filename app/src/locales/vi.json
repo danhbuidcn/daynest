@@ -23,6 +23,7 @@
     "title": "Cài đặt",
     "account": "Tài khoản",
     "signedInWith": "Đăng nhập bằng",
+    "devices": "Thiết bị đăng nhập",
     "app": "Ứng dụng",
     "language": "Ngôn ngữ",
     "version": "Phiên bản",
@@ -33,6 +34,23 @@
     "text": "Bạn sẽ cần đăng nhập Google lại để dùng Daynest.",
     "cancel": "Huỷ",
     "confirm": "Đăng xuất"
+  },
+  "devices": {
+    "current": "Thiết bị đang dùng",
+    "footer": "Tối đa 2 thiết bị. Khi đăng nhập trên thiết bị thứ 3, thiết bị đăng nhập sớm nhất sẽ bị đăng xuất.",
+    "caption": "Đăng nhập {{signedIn}} · Dùng lần cuối {{lastSeen}}",
+    "today": "hôm nay {{time}}",
+    "yesterday": "hôm qua {{time}}"
+  },
+  "kickedDialog": {
+    "title": "Bạn đã bị đăng xuất",
+    "text": "Tài khoản đã đăng nhập trên thiết bị khác.",
+    "button": "Đã hiểu"
+  },
+  "newDeviceDialog": {
+    "title": "Đã đăng xuất thiết bị cũ",
+    "text": "{{name}} đã bị đăng xuất.",
+    "button": "Đã hiểu"
   },
   "calendar": {
     "today": "Hôm nay",

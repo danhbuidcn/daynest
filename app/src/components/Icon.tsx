@@ -25,6 +25,8 @@ const ICONS = {
   mail: () => stroke('<rect x="3.5" y="5.5" width="17" height="13" rx="3.5"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/>'),
   globe: () =>
     stroke('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>'),
+  devices: () => stroke('<rect x="3" y="5" width="12" height="9" rx="2"/><rect x="15" y="9" width="6" height="11" rx="2"/><path d="M6 18h6"/>'),
+  phone: () => stroke('<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M11 18h2"/>'),
 } satisfies Record<string, (filled: boolean) => string>;
 
 export type IconName = keyof typeof ICONS;

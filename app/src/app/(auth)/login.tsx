@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
+import { AlertDialog } from '@/components/Dialog';
 import { Logo } from '@/components/Logo';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -13,7 +14,7 @@ import { colors, space } from '@/theme';
 
 export default function LoginScreen() {
   const { t } = useTranslation();
-  const { signIn } = useAuth();
+  const { signIn, kickedOut, dismissKickedOut } = useAuth();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
 
@@ -41,6 +42,15 @@ export default function LoginScreen() {
         onPress={onSignIn}
         disabled={busy}
         icon={<View style={styles.gIcon}><AppText variant="caption" weight="extrabold" color={colors.primaryDark}>G</AppText></View>}
+      />
+      <AlertDialog
+        visible={kickedOut}
+        tone="warning"
+        icon="devices"
+        title={t('kickedDialog.title')}
+        text={t('kickedDialog.text')}
+        buttonLabel={t('kickedDialog.button')}
+        onClose={dismissKickedOut}
       />
     </SafeAreaView>
   );

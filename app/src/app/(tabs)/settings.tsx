@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
-import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,10 +18,18 @@ import { colors, space } from '@/theme';
 
 export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
-  const { profile, signOut, saveLanguage } = useAuth();
+  const { profile, signOut, saveLanguage, listDevices } = useAuth();
+  const router = useRouter();
   const toast = useToast();
   const [langOpen, setLangOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [deviceCount, setDeviceCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    listDevices()
+      .then((rows) => setDeviceCount(rows.length))
+      .catch(() => setDeviceCount(null));
+  }, [listDevices]);
 
   const current = (i18n.language as Language) ?? 'en';
   const currentLabel = LANGUAGES.find((l) => l.code === current)?.label ?? '';
@@ -46,6 +55,12 @@ export default function SettingsScreen() {
         <GroupLabel text={t('settings.account')} />
         <Card>
           <SettingRow first icon="mail" label={t('settings.signedInWith')} value="Google" />
+          <SettingRow
+            icon="devices"
+            label={t('settings.devices')}
+            value={deviceCount !== null ? `${deviceCount}/2` : ''}
+            onPress={() => router.push('/settings/devices')}
+          />
         </Card>
 
         <GroupLabel text={t('settings.app')} />

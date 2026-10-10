@@ -23,6 +23,7 @@
     "title": "Settings",
     "account": "Account",
     "signedInWith": "Signed in with",
+    "devices": "Signed-in devices",
     "app": "App",
     "language": "Language",
     "version": "Version",
@@ -33,6 +34,23 @@
     "text": "You'll need to sign in with Google again to use Daynest.",
     "cancel": "Cancel",
     "confirm": "Sign out"
+  },
+  "devices": {
+    "current": "This device",
+    "footer": "Up to 2 devices. Signing in on a 3rd one signs out the earliest device.",
+    "caption": "Signed in {{signedIn}} · Last active {{lastSeen}}",
+    "today": "today {{time}}",
+    "yesterday": "yesterday {{time}}"
+  },
+  "kickedDialog": {
+    "title": "You've been signed out",
+    "text": "Your account signed in on another device.",
+    "button": "Got it"
+  },
+  "newDeviceDialog": {
+    "title": "Signed out the old device",
+    "text": "{{name}} was signed out.",
+    "button": "Got it"
   },
   "calendar": {
     "today": "Today",

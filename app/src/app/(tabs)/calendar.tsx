@@ -4,6 +4,7 @@ import { AppState, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AlertDialog } from '@/components/Dialog';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
@@ -21,7 +22,7 @@ const SWIPE_DISTANCE = 50;
 export default function CalendarScreen() {
   const { t } = useTranslation();
   const toast = useToast();
-  const { settings } = useAuth();
+  const { settings, newDeviceName, dismissNewDeviceName } = useAuth();
   const [today, setToday] = useState(() => todayIn());
   const [shown, setShown] = useState({ year: today.year, month: today.month });
   const [selected, setSelected] = useState<SolarDate | null>(today);
@@ -99,6 +100,15 @@ export default function CalendarScreen() {
           setShown({ year, month });
           setPickerOpen(false);
         }}
+      />
+      <AlertDialog
+        visible={!!newDeviceName}
+        tone="primary"
+        icon="devices"
+        title={t('newDeviceDialog.title')}
+        text={t('newDeviceDialog.text', { name: newDeviceName })}
+        buttonLabel={t('newDeviceDialog.button')}
+        onClose={dismissNewDeviceName}
       />
     </SafeAreaView>
   );
