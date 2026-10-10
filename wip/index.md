@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 4 (Lịch — Danh sách): chấm chỉ ở ngày hôm nay | ✅ xong | [2026-10-10-list-strip-dot-today-only.md](2026-10-10-list-strip-dot-today-only.md) |
 | 2026-10-10 | Màn 25 (Thiết bị đăng nhập): chú thích hiện đủ, giống mockup | ✅ xong | [2026-10-10-devices-caption-wrap.md](2026-10-10-devices-caption-wrap.md) |
 | 2026-10-10 | S2 code bước 10: Đồng bộ Google 2 chiều (F4) | ✅ xong (chưa thử thay đổi từ phía Google) | [2026-10-10-s2-code-step-10-google-sync.md](2026-10-10-s2-code-step-10-google-sync.md) |
 | 2026-10-10 | Màn 13 (Chi tiết event): giống hệt mockup | ✅ xong | [2026-10-10-event-detail-match-mockup.md](2026-10-10-event-detail-match-mockup.md) |

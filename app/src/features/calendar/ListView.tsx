@@ -54,7 +54,6 @@ export function ListView({
       <DayStrip
         days={days}
         selected={cursor}
-        hasItems={(d) => d.holidays.length > 0 || occurrencesOnDay(occurrences, d, timeZone).length > 0}
         onSelect={onSelectDay}
       />
       {empty ? (

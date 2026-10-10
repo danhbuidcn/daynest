@@ -7,16 +7,14 @@ import type { SolarDate } from '@/lib/lunar';
 import { colors, radius, space } from '@/theme';
 import type { DayDetails } from './dayInfo';
 
-// Màn 4 thanh ngày: the 7 days of the shown week; a dot marks days that have events or holidays.
+// Màn 4 thanh ngày: the 7 days of the shown week; a dot marks today.
 export function DayStrip({
   days,
   selected,
-  hasItems,
   onSelect,
 }: {
   days: DayDetails[];
   selected: SolarDate;
-  hasItems: (d: DayDetails) => boolean;
   onSelect: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
@@ -44,7 +42,7 @@ export function DayStrip({
             <AppText variant="micro" color={muted} numberOfLines={1} ellipsizeMode="clip">
               {d.lunarDayMonth}
             </AppText>
-            <View style={[styles.dot, hasItems(d) && { backgroundColor: on ? colors.white : colors.primary }]} />
+            <View style={[styles.dot, d.isToday && { backgroundColor: on ? colors.white : colors.primary }]} />
           </Pressable>
         );
       })}
