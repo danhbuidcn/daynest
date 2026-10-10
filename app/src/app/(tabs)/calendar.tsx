@@ -119,7 +119,7 @@ export default function CalendarScreen() {
           ) : mode === 'day' ? (
             <DayView {...viewProps} />
           ) : (
-            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} />
+            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} onAddDay={setDayDialogDate} />
           )}
         </View>
       </GestureDetector>

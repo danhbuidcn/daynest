@@ -24,6 +24,7 @@ export function ListView({
   use24h,
   timeZone,
   onSelectDay,
+  onAddDay,
   onPressOccurrence,
   onPressHoliday,
 }: {
@@ -34,6 +35,7 @@ export function ListView({
   use24h: boolean;
   timeZone: string;
   onSelectDay: (d: SolarDate) => void;
+  onAddDay: (d: SolarDate) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
 }) {
@@ -51,6 +53,7 @@ export function ListView({
         selected={cursor}
         hasItems={(d) => d.holidays.length > 0 || occurrencesOnDay(occurrences, d, timeZone).length > 0}
         onSelect={onSelectDay}
+        onAdd={onAddDay}
       />
       {empty ? (
         <AppText color={colors.textMuted} style={styles.empty}>
