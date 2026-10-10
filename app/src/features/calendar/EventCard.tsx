@@ -46,11 +46,15 @@ export function EventCard({
   );
 }
 
-// Holidays sit among the cards but are not tappable (F1).
-export function HolidayCard({ title, style }: { title: string; style?: StyleProp<ViewStyle> }) {
+// Holidays show their short name; tapping opens the day popup with the full name.
+export function HolidayCard({ title, onPress, style }: { title: string; onPress?: () => void; style?: StyleProp<ViewStyle> }) {
   const { t } = useTranslation();
   return (
-    <View style={[styles.card, styles.holiday, style]} accessibilityLabel={`${title}, ${t('events.dayDialog.holiday')}`}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${title}, ${t('events.dayDialog.holiday')}`}
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, styles.holiday, pressed && styles.pressed, style]}>
       <View style={styles.body}>
         <AppText color={colors.white} numberOfLines={1} ellipsizeMode="clip">
           {title}
@@ -59,7 +63,7 @@ export function HolidayCard({ title, style }: { title: string; style?: StyleProp
           {t('events.dayDialog.holiday')}
         </AppText>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

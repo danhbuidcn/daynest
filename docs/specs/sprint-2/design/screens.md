@@ -58,7 +58,8 @@ Quy tắc chung: [design-system § Chữ dài](../../design-system.md#chữ-dài
 
 | Chỗ hiện | Cách hiện |
 | --- | --- |
-| Thanh event (ô tháng), tên lễ trong ô | 1 dòng, cắt thẳng ở mép (không `…`); tên lễ trong ô dùng tên rút gọn (vd "Phụ nữ"), bấm vào ô xem tên đầy đủ |
+| Thanh lễ, thẻ lễ (tháng, tuần, ngày, danh sách) | Dùng tên rút gọn (vd "Phụ nữ"); bấm vào mở pop-up ngày xem tên đầy đủ |
+| Thanh event (ô tháng) | 1 dòng, cắt thẳng ở mép (không `…`) |
 | Thẻ event (tuần, danh sách, pop-up ngày) | Tiêu đề 1 dòng · chi tiết 1 dòng, cắt thẳng ở mép (không `…`) |
 | Khối event (xem ngày) | Tiêu đề xuống dòng vừa chiều cao khối, dư thì cắt thẳng (không `…`) |
 | Chi tiết event, editor note, mục checklist trong editor | Hiện hết, xuống dòng, cuộn màn |

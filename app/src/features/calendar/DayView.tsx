@@ -20,6 +20,7 @@ export function DayView({
   use24h,
   timeZone,
   onPressOccurrence,
+  onPressHoliday,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -27,6 +28,7 @@ export function DayView({
   use24h: boolean;
   timeZone: string;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onPressHoliday: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
   const day = useMemo(() => dayDetails(cursor, today), [cursor, today]);
@@ -47,7 +49,7 @@ export function DayView({
         {hasAllDay ? (
           <ScrollView style={styles.allDayList} contentContainerStyle={styles.allDayItems} nestedScrollEnabled>
             {day.holidays.map((h) => (
-              <EventBar key={h} item={{ kind: 'holiday', id: h, title: t(`holidays.${h}`) }} large />
+              <EventBar key={h} item={{ kind: 'holiday', id: h, title: t(`holidaysShort.${h}`) }} large onPress={() => onPressHoliday(cursor)} />
             ))}
             {allDay.map((o) => (
               <EventBar

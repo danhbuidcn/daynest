@@ -25,6 +25,7 @@ export function ListView({
   timeZone,
   onSelectDay,
   onPressOccurrence,
+  onPressHoliday,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -34,6 +35,7 @@ export function ListView({
   timeZone: string;
   onSelectDay: (d: SolarDate) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onPressHoliday: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today)), [cursor, weekStart, today]);
@@ -63,7 +65,7 @@ export function ListView({
                   {t('events.form.allDay')}
                 </AppText>
               </View>
-              <HolidayCard title={t(`holidays.${h}`)} style={styles.flex} />
+              <HolidayCard title={t(`holidaysShort.${h}`)} onPress={() => onPressHoliday(cursor)} style={styles.flex} />
             </View>
           ))}
           {events.map((o) => (

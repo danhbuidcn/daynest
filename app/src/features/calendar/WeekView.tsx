@@ -26,6 +26,7 @@ export function WeekView({
   timeZone,
   onSelectWeek,
   onPressOccurrence,
+  onPressHoliday,
 }: {
   cursor: SolarDate;
   today: SolarDate;
@@ -35,6 +36,7 @@ export function WeekView({
   timeZone: string;
   onSelectWeek: (deltaWeeks: number) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onPressHoliday: (d: SolarDate) => void;
 }) {
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today)), [cursor, weekStart, today]);
@@ -68,7 +70,7 @@ export function WeekView({
               ) : (
                 <GestureScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cards}>
                   {d.holidays.map((h) => (
-                    <HolidayCard key={h} title={t(`holidays.${h}`)} style={styles.card} />
+                    <HolidayCard key={h} title={t(`holidaysShort.${h}`)} onPress={() => onPressHoliday(d)} style={styles.card} />
                   ))}
                   {events.map((o) => (
                     <EventCard

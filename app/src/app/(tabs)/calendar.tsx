@@ -103,7 +103,7 @@ export default function CalendarScreen() {
       else if (e.translationX >= SWIPE_DISTANCE) go(-1);
     });
 
-  const viewProps = { cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, onPressOccurrence };
+  const viewProps = { cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, onPressOccurrence, onPressHoliday: setDayDialogDate };
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
