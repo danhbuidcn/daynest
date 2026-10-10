@@ -2,10 +2,14 @@ import { GoogleSignin, isCancelledResponse, isErrorWithCode } from '@react-nativ
 import { getNetworkStateAsync } from 'expo-network';
 
 import { isLanguage, type Language } from '@/i18n';
+import type { WeekStart } from '@/lib/calendar/monthGrid';
 import { supabase } from '@/lib/supabase';
 import { toProfile, type Profile } from './profile';
 
 export type { Profile } from './profile';
+
+export type UserSettings = { language: Language | null; weekStart: WeekStart };
+export const DEFAULT_SETTINGS: UserSettings = { language: null, weekStart: 1 };
 
 export class AuthError extends Error {
   constructor(public kind: 'cancelled' | 'offline' | 'failed', cause?: unknown) {
@@ -17,7 +21,7 @@ export interface AuthService {
   getSession(): Promise<Profile | null>;
   signIn(): Promise<Profile>;
   signOut(): Promise<void>;
-  getLanguage(): Promise<Language | null>;
+  getSettings(): Promise<UserSettings>;
   saveLanguage(lang: Language): Promise<void>;
 }
 
@@ -86,11 +90,14 @@ export const supabaseAuthService: AuthService = {
     await GoogleSignin.signOut().catch(() => {});
   },
 
-  async getLanguage() {
+  async getSettings() {
     const userId = await currentUserId();
-    if (!userId) return null;
-    const { data } = await supabase.from('user_settings').select('language').eq('user_id', userId).single();
-    return isLanguage(data?.language) ? data.language : null;
+    if (!userId) return DEFAULT_SETTINGS;
+    const { data } = await supabase.from('user_settings').select('language, week_start').eq('user_id', userId).single();
+    return {
+      language: isLanguage(data?.language) ? data.language : null,
+      weekStart: data?.week_start === 0 ? 0 : 1,
+    };
   },
 
   async saveLanguage(lang) {

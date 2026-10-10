@@ -33,5 +33,77 @@
     "text": "Bạn sẽ cần đăng nhập Google lại để dùng Daynest.",
     "cancel": "Huỷ",
     "confirm": "Đăng xuất"
+  },
+  "calendar": {
+    "today": "Hôm nay",
+    "previous": "Trước",
+    "next": "Sau",
+    "monthTitle": "{{month}}, {{year}}",
+    "months": {
+      "1": "Tháng 1",
+      "2": "Tháng 2",
+      "3": "Tháng 3",
+      "4": "Tháng 4",
+      "5": "Tháng 5",
+      "6": "Tháng 6",
+      "7": "Tháng 7",
+      "8": "Tháng 8",
+      "9": "Tháng 9",
+      "10": "Tháng 10",
+      "11": "Tháng 11",
+      "12": "Tháng 12"
+    },
+    "monthsShort": {
+      "1": "Th1",
+      "2": "Th2",
+      "3": "Th3",
+      "4": "Th4",
+      "5": "Th5",
+      "6": "Th6",
+      "7": "Th7",
+      "8": "Th8",
+      "9": "Th9",
+      "10": "Th10",
+      "11": "Th11",
+      "12": "Th12"
+    },
+    "weekdays": {
+      "0": "CN",
+      "1": "T2",
+      "2": "T3",
+      "3": "T4",
+      "4": "T5",
+      "5": "T6",
+      "6": "T7"
+    },
+    "modes": {
+      "month": "Tháng",
+      "list": "Danh sách",
+      "week": "Tuần",
+      "day": "Ngày"
+    }
+  },
+  "holidays": {
+    "newYear": "Tết Dương lịch",
+    "partyFounding": "Thành lập Đảng",
+    "valentine": "Valentine",
+    "womensDay": "Quốc tế Phụ nữ",
+    "reunification": "Giải phóng miền Nam",
+    "labourDay": "Quốc tế Lao động",
+    "childrensDay": "Quốc tế Thiếu nhi",
+    "nationalDay": "Quốc khánh",
+    "vietnameseWomensDay": "Phụ nữ Việt Nam",
+    "teachersDay": "Nhà giáo Việt Nam",
+    "christmasEve": "Đêm Giáng sinh",
+    "christmas": "Giáng sinh",
+    "lunarNewYearEve": "Giao thừa",
+    "lunarNewYear": "Tết Nguyên Đán",
+    "lanternFestival": "Rằm tháng Giêng",
+    "hungKings": "Giỗ Tổ Hùng Vương",
+    "buddhasBirthday": "Phật Đản",
+    "doubleFifth": "Tết Đoan Ngọ",
+    "vuLan": "Vu Lan",
+    "midAutumn": "Trung thu",
+    "kitchenGods": "Ông Công Ông Táo"
   }
 }

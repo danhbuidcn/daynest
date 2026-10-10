@@ -36,6 +36,7 @@ export const type = {
   heading: { fontSize: 17, lineHeight: 24, fontFamily: fonts.bold },
   body: { fontSize: 15, lineHeight: 22, fontFamily: fonts.semibold },
   caption: { fontSize: 12, lineHeight: 16, fontFamily: fonts.semibold },
+  micro: { fontSize: 10, lineHeight: 12, fontFamily: fonts.semibold },
 } as const;
 
 export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;

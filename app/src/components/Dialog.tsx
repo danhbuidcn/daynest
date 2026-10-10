@@ -5,7 +5,7 @@ import { AppText } from './AppText';
 import { Button } from './Button';
 import { Icon } from './Icon';
 
-function Shell({ visible, onClose, children, compact }: { visible: boolean; onClose: () => void; children: React.ReactNode; compact?: boolean }) {
+export function DialogShell({ visible, onClose, children, compact }: { visible: boolean; onClose: () => void; children: React.ReactNode; compact?: boolean }) {
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
       <Pressable style={styles.scrim} onPress={onClose}>
@@ -35,7 +35,7 @@ export function ConfirmDialog({
   onConfirm: () => void;
 }) {
   return (
-    <Shell visible={visible} onClose={onCancel}>
+    <DialogShell visible={visible} onClose={onCancel}>
       <View style={styles.dangerIcon}>
         <Icon name="logout" size={28} color={colors.error} />
       </View>
@@ -49,7 +49,7 @@ export function ConfirmDialog({
         <Button label={cancelLabel} variant="secondary" onPress={onCancel} style={styles.flex} />
         <Button label={confirmLabel} variant="danger" onPress={onConfirm} style={styles.flex} />
       </View>
-    </Shell>
+    </DialogShell>
   );
 }
 
@@ -69,7 +69,7 @@ export function ChoiceDialog<T extends string>({
   onClose: () => void;
 }) {
   return (
-    <Shell visible={visible} onClose={onClose} compact>
+    <DialogShell visible={visible} onClose={onClose} compact>
       <AppText variant="heading" style={[styles.center, { marginBottom: space.md }]}>
         {title}
       </AppText>
@@ -94,7 +94,7 @@ export function ChoiceDialog<T extends string>({
           </Pressable>
         );
       })}
-    </Shell>
+    </DialogShell>
   );
 }
 

@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-10 | Màn 2 (Lịch — Tuần): cuộn ngang trong hàng khi nhiều event | ✅ xong | [2026-10-10-week-row-horizontal-scroll.md](2026-10-10-week-row-horizontal-scroll.md) |
 | 2026-10-10 | Thêm mục Conventions vào `CLAUDE.md` | ✅ xong | [2026-10-10-claude-md-conventions.md](2026-10-10-claude-md-conventions.md) |
 | 2026-10-10 | Màn 21: bỏ chú thích "Đồng bộ 2 chiều với lịch chính của …" | ✅ xong | [2026-10-10-drop-sync-caption.md](2026-10-10-drop-sync-caption.md) |
 | 2026-10-10 | Màn 24: rút gọn chữ hộp "Đã đăng xuất <tên máy>" | ✅ xong | [2026-10-10-new-device-dialog-text.md](2026-10-10-new-device-dialog-text.md) |
@@ -18,7 +19,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | 2026-10-10 | Chia `wip/` thành 1 file / việc | ✅ xong | [2026-10-10-split-wip.md](2026-10-10-split-wip.md) |
 | 2026-10-10 | Xoá research + tên app tham khảo, thêm cài đặt Múi giờ | ✅ xong | [2026-10-10-drop-research-add-time-zone.md](2026-10-10-drop-research-add-time-zone.md) |
 | 2026-10-09 | Bỏ màn Sửa tài khoản (không sửa tên, ảnh) | ✅ xong | [2026-10-09-remove-profile-editing.md](2026-10-09-remove-profile-editing.md) |
-| 2026-10-09 | S2 code: lộ trình + bước 3 (lịch âm, ngày lễ, lưới tháng) | 🔄 đang làm (xong 1–4, 6–7; 5 dở — xem Bàn giao) | [2026-10-09-s2-code-roadmap-step-3-lunar-month.md](2026-10-09-s2-code-roadmap-step-3-lunar-month.md) |
+| 2026-10-09 | S2 code: lộ trình + bước 3 (lịch âm, ngày lễ, lưới tháng) | ✅ bước 3 xong (chưa commit) | [2026-10-09-s2-code-roadmap-step-3-lunar-month.md](2026-10-09-s2-code-roadmap-step-3-lunar-month.md) |
 | 2026-10-09 | App icons match the mockups | ✅ xong | [2026-10-09-app-icons-match-mockups.md](2026-10-09-app-icons-match-mockups.md) |
 | 2026-10-09 | English everywhere except docs/ and wip/ | ✅ xong | [2026-10-09-english-outside-docs.md](2026-10-09-english-outside-docs.md) |
 | 2026-10-09 | S2 spec: 1 account tối đa 2 thiết bị | ✅ xong | [2026-10-09-s2-spec-two-device-limit.md](2026-10-09-s2-spec-two-device-limit.md) |

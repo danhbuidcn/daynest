@@ -33,8 +33,3 @@ export function addMonths(year: number, month: number, delta: number): { year: n
 export function sameDay(a: SolarDate, b: SolarDate): boolean {
   return a.year === b.year && a.month === b.month && a.day === b.day;
 }
-
-export function today(): SolarDate {
-  const now = new Date();
-  return { year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate() };
-}

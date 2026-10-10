@@ -1,6 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { holidaysOn, type HolidayId } from '@/lib/holidays';
+import en from '@/locales/en.json';
+import vi from '@/locales/vi.json';
 
 const on = (year: number, month: number, day: number) => holidaysOn({ year, month, day });
 
@@ -45,5 +47,18 @@ describe('holidays', () => {
   it('skips lunar holidays in a leap month', () => {
     // 2025 has leap month 6; 15/6 leap is not a holiday, nor is any other leap day.
     expect(holidaysOn({ year: 2025, month: 8, day: 8 }, { year: 2025, month: 7, day: 15, leap: true })).toEqual([]);
+  });
+});
+
+describe('holiday names', () => {
+  it('every holiday that occurs has an EN and VI name', () => {
+    const seen = new Set<string>();
+    for (let m = 1; m <= 12; m++) for (let d = 1; d <= 31; d++) on(2026, m, d).forEach((id) => seen.add(id));
+    on(2027, 2, 5).forEach((id) => seen.add(id));
+    expect(seen.size).toBe(21);
+    for (const id of seen) {
+      expect(en.holidays[id as HolidayId]).toBeTruthy();
+      expect(vi.holidays[id as HolidayId]).toBeTruthy();
+    }
   });
 });
