@@ -103,8 +103,8 @@ function boundaryDates(input: Pick<EventInput, 'allDay' | 'startDate' | 'endDate
   end: SolarDate;
 } {
   if (input.allDay) return { start: parseIsoDate(input.startDate!), end: parseIsoDate(input.endDate!) };
-  // starts_at/ends_at are ISO timestamps; their calendar date is read in UTC here — close enough for
-  // span_start/span_end, which only bound a range-filter query, not anything shown to the user.
+  // starts_at/ends_at are ISO timestamps; their calendar date is read in UTC here, up to a day off the
+  // local date — fetchEvents (api.ts) widens its query by a day each side to cover that.
   return { start: isoOfInstant(input.startsAt!), end: isoOfInstant(input.endsAt!) };
 }
 

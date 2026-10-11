@@ -1,5 +1,7 @@
 import * as Crypto from 'expo-crypto';
 
+import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
+import { jdFromDate, jdToDate } from '@/lib/lunar';
 import { supabase } from '@/lib/supabase';
 import { toEvent, toEventColumns, type EventInput, type EventRow, type EventTableRow } from './event';
 import type { ExceptionKind, ExceptionRow } from './occurrences';
@@ -25,6 +27,10 @@ function classify(error: unknown): Error {
   return new Error(JSON.stringify(error));
 }
 
+// span_start/span_end of timed events hold the UTC date (event.ts), which can be a day off the
+// user's local date — so fetch one extra day each side; occurrence expansion trims to the range.
+const shiftIso = (iso: string, days: number) => isoDate(jdToDate(jdFromDate(parseIsoDate(iso)) + days));
+
 export async function fetchEvents(fromIso: string, toIso: string): Promise<EventRow[]> {
   const { data, error } = await supabase
     .from('events')
@@ -32,8 +38,8 @@ export async function fetchEvents(fromIso: string, toIso: string): Promise<Event
       'id, title, note, color, all_day, starts_at, ends_at, start_date, end_date, repeat, repeat_interval, repeat_until, lunar_month, lunar_day, reminder_minutes, updated_at, google_event_id, google_status, google_readonly',
     )
     .is('deleted_at', null)
-    .lte('span_start', toIso)
-    .gte('span_end', fromIso);
+    .lte('span_start', shiftIso(toIso, 1))
+    .gte('span_end', shiftIso(fromIso, -1));
   if (error) throw classify(error);
   return (data ?? []).map((row) => toEvent(row as EventTableRow));
 }
