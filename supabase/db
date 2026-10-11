@@ -16,8 +16,13 @@ remote() {
 case "${1:-}" in
   new)     sb migration new "${2:?Usage: supabase/db new <migration_name>}" ;;
   test)    sb start && sb db reset && sb test db ;;
+  load)    sb start && sb db reset &&
+           psql_local() { docker exec -i supabase_db_daynest psql -q -U postgres -d postgres; } &&
+           psql_local < supabase/load/seed.sql && psql_local < supabase/load/explain.sql &&
+           eval "$(sb status -o env | grep -E '^(API_URL|ANON_KEY|JWT_SECRET)=' | sed 's/^/export /')" &&
+           node supabase/load/run.mjs ;;
   status)  remote && sb migration list --linked -p "$SUPABASE_DB_PASSWORD" ;;
   migrate) remote && sb db push --linked --dry-run -p "$SUPABASE_DB_PASSWORD" &&
            sb db push --linked --yes -p "$SUPABASE_DB_PASSWORD" ;;
-  *)       echo "Usage: supabase/db <new NAME|test|status|migrate>"; exit 1 ;;
+  *)       echo "Usage: supabase/db <new NAME|test|load|status|migrate>"; exit 1 ;;
 esac

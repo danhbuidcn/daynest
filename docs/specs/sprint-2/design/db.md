@@ -136,6 +136,12 @@ where user_id = auth.uid() and deleted_at is null
 - Phân trang **keyset** theo `(pinned, updated_at, id)` (không dùng `offset`) → không lặp/sót khi note đổi lúc đang cuộn.
 - Tìm kiếm: `search_text ilike '%' || :q || '%'` (`:q` bỏ dấu cùng cách) trong note của user — số note mỗi user nhỏ nên quét theo index `user_id` đủ nhanh, không cần `pg_trgm`.
 
+## `app_config`
+
+- 1 dòng duy nhất (`id boolean` luôn `true`): `min_version_code int` (versionCode nhỏ nhất được chạy), `update_url text` (link tải bản mới, có thể trống).
+- RLS: `anon` và `authenticated` chỉ được `select`; app không ghi được (sửa bằng migration / SQL).
+- App đọc khi mở và khi quay lại từ nền; `versionCode` đang cài < `min_version_code` → màn "Cần cập nhật" chặn toàn app (kể cả màn đăng nhập). Lỗi mạng → vẫn cho dùng. Giá trị đầu: `3` (1.1.0).
+
 ## Migration + test
 
 - `supabase/migrations/<timestamp>_s2_calendar_notes.sql`: cột mới `user_settings` + 5 bảng + RLS + index + trigger `updated_at`.
@@ -147,4 +153,5 @@ where user_id = auth.uid() and deleted_at is null
 - Seed: 10.000 user giả, mỗi user ~50 event (1/5 lặp) + 20 note.
 - Script 100 user ảo chạy đồng thời 5 phút, mỗi user lặp lại: đọc lịch tháng (events + exceptions) → tạo/sửa 1 event → đọc trang notes đầu → tìm kiếm note.
 - Đạt: 0 lỗi, p95 < 1 s. Kèm `explain analyze` 4 truy vấn chính (lịch tháng, ngoại lệ, danh sách note, tìm note) dùng đúng index.
-- Công cụ + script chốt ở bước code (ghi vào todo bước đó).
+- Kết quả (2026-10-11): 339.318 request, 0 lỗi, p95 136 ms, p99 234 ms; 4 truy vấn dùng đúng index (`events_span_idx`, `event_exceptions_event_idx`, `notes_list_idx`).
+- Chạy: `supabase/db load` (start → reset → seed → `explain analyze` → 100 user ảo × 5 phút). Script ở `supabase/load/`: `seed.sql` (seed), `explain.sql` (4 truy vấn, chạy với vai trò `authenticated`), `run.mjs` (Node, gọi thẳng PostgREST như app, ký JWT bằng `JWT_SECRET` local, mỗi user ảo có `session_id` khớp `user_devices`). Đổi số user ảo / thời gian: `VUS=… DURATION_S=…`.
