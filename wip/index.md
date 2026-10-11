@@ -4,6 +4,8 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-11 | Bản cũ hiện màn "Cần cập nhật" khi có bản mới | 🔄 đang làm | [2026-10-11-force-update-old-versions.md](2026-10-11-force-update-old-versions.md) |
+| 2026-10-10 | S2 code bước 11: test tải, rà chữ dài, DoD → release 1.1.0 | 🔄 đang làm (còn release) | [2026-10-10-s2-code-step-11-load-test-release.md](2026-10-10-s2-code-step-11-load-test-release.md) |
 | 2026-10-10 | Notes: kéo đổi thứ tự mục checklist (thư viện) | ✅ xong | [2026-10-10-checklist-drag-reorder.md](2026-10-10-checklist-drag-reorder.md) |
 | 2026-10-10 | Màn 4 (Lịch — Danh sách): chấm chỉ ở ngày hôm nay | ✅ xong | [2026-10-10-list-strip-dot-today-only.md](2026-10-10-list-strip-dot-today-only.md) |
 | 2026-10-10 | Màn 25 (Thiết bị đăng nhập): chú thích hiện đủ, giống mockup | ✅ xong | [2026-10-10-devices-caption-wrap.md](2026-10-10-devices-caption-wrap.md) |
