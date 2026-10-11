@@ -1,4 +1,4 @@
-# 2026-10-10 — S2 code bước 11: test tải, rà chữ dài, DoD → release 1.1.0 — 🔄 đang làm
+# 2026-10-10 — S2 code bước 11: test tải, rà chữ dài, DoD → release 2.0.0 — ✅ xong (release v2.0.0)
 
 ## Input
 
@@ -12,7 +12,7 @@
 - Kết quả: 0 lỗi, p95 < 1 s, 4 truy vấn dùng đúng index.
 - Rà chữ dài trên emulator (tiêu đề event/note dài, EN + VI).
 - DoD S2 được tick (mục nào chưa thử được thì ghi rõ).
-- Release `1.1.0` (versionCode +1): APK, tag `v1.1.0`, GitHub Release kèm APK.
+- Release `2.0.0` (bạn chốt; versionCode 3): APK, tag `v2.0.0`, GitHub Release kèm APK.
 
 ## Plan
 
@@ -23,7 +23,7 @@
 - [x] 5. Rà chữ dài trên emulator: event/note/danh mục tiêu đề dài, EN + VI, các màn Tháng/Tuần/Ngày/Danh sách/Chi tiết/Notes.
 - [x] 6. `npm run typecheck && npm run lint && npm test`.
 - [x] 7. Rà DoD S2, tick các mục đã đạt; ghi mục chưa thử được.
-- [ ] 8. Cuối sprint: version `1.1.0` + versionCode +1 → (không có migration mới) → `npm run release` → cài đè máy → thử luồng chính → commit `chore(release): v1.1.0` → tag + push → `gh release create` kèm APK.
+- [x] 8. Cuối sprint: version `2.0.0` + versionCode 3 → (không có migration mới) → `npm run release` → cài đè máy → thử luồng chính → commit `chore(release): v1.1.0` → tag + push → `gh release create` kèm APK.
 
 ## Kết quả
 
@@ -33,8 +33,8 @@
 
 **Kiểm tra mã:** `typecheck` sạch, `lint` 0 lỗi, 122 test qua.
 
-**Rà chữ dài (emulator, bản 1.1.0 release):** tiêu đề event 100 ký tự (có từ 30 ký tự liền) — form wrap 3 dòng + bộ đếm 100/100 · Tháng, Tuần, Danh sách, Ngày cắt gọn đúng · Chi tiết wrap, không tràn · xoá event có hộp xác nhận. Chưa rà riêng note/danh mục dài.
+**Rà chữ dài (emulator, bản 2.0.0 release):** tiêu đề event 100 ký tự (có từ 30 ký tự liền) — form wrap 3 dòng + bộ đếm 100/100 · Tháng, Tuần, Danh sách, Ngày cắt gọn đúng · Chi tiết wrap, không tràn · xoá event có hộp xác nhận. Chưa rà riêng note/danh mục dài.
 
-**DoD:** tick 6 mục có bằng chứng (lịch âm + test, 4 chế độ xem, tạo/sửa/xoá event, Notes, RLS, test tải). Các mục còn lại ghi "chưa thử" ngay trong DoD — cần máy thật / 2–3 máy / phía Google. **Chưa release**: còn bước 8 (cài đè máy thật, thử luồng chính, commit + tag + GitHub Release).
+**DoD:** tick 6 mục có bằng chứng (lịch âm + test, 4 chế độ xem, tạo/sửa/xoá event, Notes, RLS, test tải). Các mục còn lại ghi "chưa thử" ngay trong DoD — cần máy thật / 2–3 máy / phía Google. **Release v2.0.0 (versionCode 3):** APK ký khoá release, cài đè lên emulator (bản trước 1.1.0 build thử) → vẫn đăng nhập, mở lịch bình thường. Chưa cài lên máy Samsung thật (không cắm máy lúc release).
 
 **Phát hiện (đăng nhập v1.0.1 lỗi):** migration S2 đã áp lên Supabase thật, mà v1.0.1 không gọi `register_device` → `session_active()` sai → RLS chặn đọc `profiles` → "đăng nhập thất bại". Chỉ sửa được bằng cách cài v1.1.0.

@@ -70,4 +70,4 @@ Thông báo nhắc → bấm → Chi tiết event
 - [ ] Đăng nhập máy thứ 3 → máy đăng nhập sớm nhất bị đăng xuất, mở app thấy hộp "Bạn đã bị đăng xuất"; máy mới thấy hộp "Đã đăng xuất thiết bị cũ"; Cài đặt → Thiết bị đăng nhập hiện đúng 2 máy. _(chưa thử: cần 3 máy)_
 - [x] Test RLS mọi bảng mới: user A không đọc/sửa/xoá được dữ liệu user B.
 - [x] Test tải: 100 user giả đồng thời (đọc lịch tháng, ghi event, đọc notes) trên DB local có 10.000 user giả → 0 lỗi, p95 < 1 s.
-- [ ] Cuối sprint: release `1.1.0` theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
+- [x] Cuối sprint: release `2.0.0` theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).

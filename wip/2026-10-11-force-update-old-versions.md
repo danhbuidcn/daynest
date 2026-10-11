@@ -1,11 +1,11 @@
-# 2026-10-11 — Bản cũ phải hiện "Cần cập nhật" — 🔄 đang làm
+# 2026-10-11 — Bản cũ phải hiện "Cần cập nhật" — ✅ xong (chưa thấy màn trên máy)
 
 ## Input
 
 - Bạn yêu cầu: khi đã có bản mới, bản cũ phải hiện thông báo cập nhật để người dùng biết.
 - Nguyên nhân gợi ra: v1.0.1 không đăng nhập được vì migration S2 đã lên DB thật (xem [bước 11](2026-10-10-s2-code-step-11-load-test-release.md)).
 - **Giới hạn:** v1.0.1 đã cài trên máy thì không có đoạn kiểm tra này → không thể hiện thông báo. Chỉ áp dụng từ **1.1.0** trở đi; v1.0.1 phải cài tay bản mới.
-- Repo GitHub đang **private** → người dùng không mở được link Release. Link tải đặt trong DB (`update_url`), điền sau.
+- Bạn chốt: chưa lên Google Play nên chỉ cần **thông báo** cập nhật, không cần link (nút ẩn khi `update_url` trống). Repo GitHub đang **private** → người dùng không mở được link Release. Link tải đặt trong DB (`update_url`), điền sau.
 
 ## Plan
 

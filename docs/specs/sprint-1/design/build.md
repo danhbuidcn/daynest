@@ -18,7 +18,7 @@ Thuộc: [F4](../F4-signing-and-version.md).
 
 | Trường | Ý nghĩa | Quy tắc |
 | --- | --- | --- |
-| `version` | Số hiện cho người dùng | `MAJOR.MINOR.PATCH`: mỗi sprint +MINOR (S2 = `1.1.0`), sửa lỗi giữa sprint +PATCH. S1 phát hành `1.0.1` |
+| `version` | Số hiện cho người dùng | `MAJOR.MINOR.PATCH`: mỗi sprint +MINOR (S2 = `2.0.0`, bạn chốt nhảy MAJOR), sửa lỗi giữa sprint +PATCH. S1 phát hành `1.0.1` |
 | `android.versionCode` | Số Android so sánh khi cài đè | Số nguyên, bắt đầu `1`, **+1 mỗi bản build phát hành**, không bao giờ giảm |
 
 - Cả 2 nằm trong config app (`app.config.ts`), commit vào git.

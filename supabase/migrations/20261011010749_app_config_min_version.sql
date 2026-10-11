@@ -14,5 +14,5 @@ for select to anon, authenticated using (true);
 
 grant select on public.app_config to anon, authenticated;
 
--- 3 = 1.1.0, the first build that registers its device after sign-in (F7).
+-- 3 = 2.0.0, the first build that registers its device after sign-in (F7).
 insert into public.app_config (min_version_code) values (3);

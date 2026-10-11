@@ -140,7 +140,7 @@ where user_id = auth.uid() and deleted_at is null
 
 - 1 dòng duy nhất (`id boolean` luôn `true`): `min_version_code int` (versionCode nhỏ nhất được chạy), `update_url text` (link tải bản mới, có thể trống).
 - RLS: `anon` và `authenticated` chỉ được `select`; app không ghi được (sửa bằng migration / SQL).
-- App đọc khi mở và khi quay lại từ nền; `versionCode` đang cài < `min_version_code` → màn "Cần cập nhật" chặn toàn app (kể cả màn đăng nhập). Lỗi mạng → vẫn cho dùng. Giá trị đầu: `3` (1.1.0).
+- App đọc khi mở và khi quay lại từ nền; `versionCode` đang cài < `min_version_code` → màn "Cần cập nhật" chặn toàn app (kể cả màn đăng nhập). Lỗi mạng → vẫn cho dùng. Giá trị đầu: `3` (2.0.0).
 
 ## Migration + test
 
