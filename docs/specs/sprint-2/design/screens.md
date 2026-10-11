@@ -33,6 +33,7 @@ Thuộc: [Sprint 2](../index.md). Mockup: [mockups.html](mockups.html) (mở b�
 | 23 | Bị đăng xuất (máy cũ) | — | Báo máy bị đá | Hộp trên màn Đăng nhập: icon thiết bị · "Bạn đã bị đăng xuất" · lý do tối đa 2 thiết bị · Đã hiểu | [F7](../F7-device-limit.md) |
 | 24 | Đã đăng xuất máy cũ (máy mới) | — | Báo máy mới | Hộp trên Tab Lịch: "Đã đăng xuất thiết bị cũ" · "<Tên máy> đã bị đăng xuất." · Đã hiểu | [F7](../F7-device-limit.md) |
 | 25 | Thiết bị đăng nhập | `settings/devices` | Xem máy đang đăng nhập | Danh sách ≤ 2 máy (tên, ngày đăng nhập, dùng lần cuối, nhãn Thiết bị đang dùng) · chú thích | [F7](../F7-device-limit.md) |
+| 26 | Cần cập nhật | — | Báo bản app đã cũ | Toàn màn, chặn mọi màn kể cả Đăng nhập: icon đồng bộ · "Cần cập nhật" · "Phiên bản này đã cũ. Vui lòng cài phiên bản mới nhất để tiếp tục." · nút Cập nhật (mở link tải; không có link thì ẩn nút) | [db.md](db.md#app_config) |
 
 - Màn có route (9, 13, 17, 18, 20, 25): màn con, vuốt mép trái để quay lại.
 - Hộp chọn / hộp xác nhận: theo design-system (đã có ở S1).

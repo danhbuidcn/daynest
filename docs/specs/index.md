@@ -86,7 +86,7 @@ Khi DoD sprint đạt, làm theo thứ tự (todo: 1 file mới trong `wip/`, th
 
 1. Tick DoD trong `sprint-N/index.md`.
 2. Tăng version trong `app/app.config.ts`: `version` +MINOR, `versionCode` +1 ([build.md](sprint-1/design/build.md#version)).
-3. Có migration mới → `supabase/db migrate`.
+3. Có migration mới → `supabase/db migrate`. Migration mà bản app cũ không chạy được (đổi RLS, bỏ/đổi cột…) phải tăng `app_config.min_version_code` lên `versionCode` của bản sắp release, ngay trong migration đó: bản cũ hơn sẽ hiện màn "Cần cập nhật" thay vì lỗi khó hiểu (bản 1.0.1 không có màn này vì ra trước).
 4. `cd app && npm run release` → `app/dist/daynest-<version>-<versionCode>.apk|.aab`.
 5. Cài đè lên máy thật (`adb install -r …apk`): vẫn đăng nhập, test luồng chính + chức năng sprint.
 6. Commit `chore(release): v<version>` → gắn tag GitHub: `git tag v<version> && git push origin main v<version>` (bắt buộc mỗi lần release; tag trỏ đúng commit đã build APK).

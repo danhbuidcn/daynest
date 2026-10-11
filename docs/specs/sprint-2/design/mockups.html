@@ -750,6 +750,13 @@ const devices = `<div class="content">
   </div>
 </div>`;
 
+const updateRequired = `<div class="content" style="align-items:center;justify-content:center;gap:14px;padding:0 32px;text-align:center">
+  <div style="width:112px;height:112px;border-radius:40px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;color:var(--primary);margin-bottom:6px"><span style="width:52px;height:52px;display:block">${I.sync}</span></div>
+  <h3 style="margin:0;font-size:22px">Cần cập nhật</h3>
+  <p class="muted" style="margin:0;max-width:280px">Phiên bản này đã cũ. Vui lòng cài phiên bản mới nhất để tiếp tục.</p>
+  <button class="btn btn-primary" style="position:absolute;left:16px;right:16px;bottom:24px">Cập nhật</button>
+</div>`;
+
 const groups = [
   ['Lịch', [
     ['1 + 5. Lịch — Tháng', 'thanh chọn chế độ luôn hiện', phone(monthScreen(''))],
@@ -796,6 +803,7 @@ const groups = [
     ['23. Bị đăng xuất', 'máy đăng nhập sớm nhất, khi mở app', phone(kicked)],
     ['24. Đã đăng xuất máy cũ', 'máy mới, ngay sau đăng nhập', phone(kickedOther)],
     ['25. Thiết bị đăng nhập', 'Cài đặt → Tài khoản', phone(devices)],
+    ['26. Cần cập nhật', 'bản app cũ hơn min_version_code · chặn cả màn Đăng nhập · không có link thì ẩn nút', phone(updateRequired)],
   ]],
   ['Kiểm tra chữ dài', [
     ['Chữ dài', 'cắt 1 dòng / 3 dòng · bộ đếm · không tràn ngang', phone(longScreen)],

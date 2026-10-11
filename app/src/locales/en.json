@@ -22,6 +22,11 @@
     "title": "{{name}} is in development",
     "text": "This feature is in development."
   },
+  "update": {
+    "title": "Update required",
+    "text": "This version is out of date. Please install the latest version to continue.",
+    "action": "Update"
+  },
   "comingSoon": "In development",
   "settings": {
     "title": "Settings",

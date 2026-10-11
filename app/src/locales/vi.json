@@ -22,6 +22,11 @@
     "title": "{{name}} đang phát triển",
     "text": "Tính năng đang được phát triển."
   },
+  "update": {
+    "title": "Cần cập nhật",
+    "text": "Phiên bản này đã cũ. Vui lòng cài phiên bản mới nhất để tiếp tục.",
+    "action": "Cập nhật"
+  },
   "comingSoon": "Đang phát triển",
   "settings": {
     "title": "Cài đặt",
