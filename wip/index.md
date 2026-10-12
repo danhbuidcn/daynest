@@ -6,7 +6,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | --- | --- | --- | --- |
 | 2026-10-12 | Ghi 5 giai đoạn của mọi sprint vào README | ✅ xong | [2026-10-12-sprint-five-phases.md](2026-10-12-sprint-five-phases.md) |
 | 2026-10-12 | S3 bước 5: tab "Ghi chú" + số note, nhóm theo tháng, màn soạn note kiểu Samsung Notes | ✅ đã duyệt, chưa làm | [2026-10-12-s3-step-5-notes-tab.md](2026-10-12-s3-step-5-notes-tab.md) |
-| 2026-10-12 | S3 bước 3: chế độ Ngày — chữ event không bị cắt | ✅ đã duyệt, chưa làm | [2026-10-12-s3-step-3-day-view-text-clip.md](2026-10-12-s3-step-3-day-view-text-clip.md) |
+| 2026-10-12 | S3 bước 3: chế độ Ngày — chữ event không bị cắt | ✅ xong | [2026-10-12-s3-step-3-day-view-text-clip.md](2026-10-12-s3-step-3-day-view-text-clip.md) |
 | 2026-10-12 | S3: lộ trình — hoàn thiện Lịch + Ghi chú, bỏ Todo/Diary, S4 Chi tiêu | 🔄 bước 1–2 xong (spec, chọn Notes A+B+C) | [2026-10-12-s3-plan.md](2026-10-12-s3-plan.md) |
 | 2026-10-11 | Bản cũ hiện màn "Cần cập nhật" khi có bản mới | ✅ xong (chưa thấy màn trên máy) | [2026-10-11-force-update-old-versions.md](2026-10-11-force-update-old-versions.md) |
 | 2026-10-10 | S2 code bước 11: test tải, rà chữ dài, DoD → release 2.0.0 | ✅ xong (release v2.0.0) | [2026-10-10-s2-code-step-11-load-test-release.md](2026-10-10-s2-code-step-11-load-test-release.md) |

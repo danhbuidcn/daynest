@@ -16,6 +16,10 @@ const TOP_PAD = space.sm;
 const DEFAULT_SCROLL_HOUR = 8;
 // 30% of the event colour over the surface, as in mockup màn 3.
 const BLOCK_ALPHA = '4D';
+// Below this a `body` title (22) plus 4+4 padding no longer fits, so it drops to `caption`.
+const COMPACT_BLOCK = 30;
+// Title (22) + time line (16) + padding (8): any shorter and the time line would be cut in half.
+const TWO_LINE_BLOCK = 46;
 
 const yOf = (minutes: number) => TOP_PAD + (minutes / 60) * HOUR_HEIGHT;
 
@@ -76,6 +80,8 @@ export function DayTimeline({
         {blocks.map((b) => {
           const occ = byId.get(b.id)!;
           const color = eventColors[occ.color];
+          const height = Math.max((b.height / 60) * HOUR_HEIGHT - 4, 20);
+          const compact = height < COMPACT_BLOCK;
           return (
             <Pressable
               key={b.id}
@@ -86,15 +92,23 @@ export function DayTimeline({
                 styles.block,
                 {
                   top: yOf(b.top),
-                  height: Math.max((b.height / 60) * HOUR_HEIGHT - 4, 20),
+                  height,
                   left: `${(b.column / b.columns) * 100}%`,
                   width: `${100 / b.columns}%`,
                 },
                 pressed && styles.pressed,
               ]}>
-              <View style={[styles.blockInner, { backgroundColor: color + BLOCK_ALPHA, borderLeftColor: color }]}>
-                <AppText numberOfLines={1} ellipsizeMode="clip">{occ.title}</AppText>
-                {b.height >= 45 ? (
+              <View
+                style={[
+                  styles.blockInner,
+                  compact && styles.blockCompact,
+                  b.height <= 60 && styles.blockCentered,
+                  { backgroundColor: color + BLOCK_ALPHA, borderLeftColor: color },
+                ]}>
+                <AppText variant={compact ? 'caption' : 'body'} numberOfLines={1} ellipsizeMode="clip">
+                  {occ.title}
+                </AppText>
+                {height >= TWO_LINE_BLOCK ? (
                   <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
                     {`${clockLabel(t, timeOfDayIn(new Date(occ.startsAt!), timeZone), use24h)} – ${clockLabel(t, timeOfDayIn(new Date(occ.endsAt!), timeZone), use24h)}`}
                   </AppText>
@@ -127,6 +141,8 @@ const styles = StyleSheet.create({
   blocks: { position: 'absolute', top: 0, bottom: 0, left: LABEL_WIDTH + 6, right: 0 },
   block: { position: 'absolute', paddingRight: 4 },
   blockInner: { flex: 1, borderRadius: 12, borderLeftWidth: 4, paddingVertical: 4, paddingHorizontal: space.sm, overflow: 'hidden' },
+  blockCompact: { paddingVertical: 2 },
+  blockCentered: { justifyContent: 'center' },
   pressed: { opacity: 0.7 },
   now: { position: 'absolute', left: LABEL_WIDTH, right: 0, height: 2, backgroundColor: colors.error },
   nowDot: { position: 'absolute', left: -4, top: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.error },
