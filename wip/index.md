@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-12 | S4 spec: chỉ 3 nhóm có sẵn (Ăn uống, Di chuyển, Hoá đơn) | ✅ xong | [2026-10-12-s4-spec-three-default-categories.md](2026-10-12-s4-spec-three-default-categories.md) |
 | 2026-10-12 | S4: viết spec Chi tiêu | ✅ xong | [2026-10-12-s4-spec.md](2026-10-12-s4-spec.md) |
 | 2026-10-12 | S4: lộ trình — xem app chi tiêu tham khảo · S5 bật/tắt trong Cài đặt | ✅ xong (chốt phạm vi S4) | [2026-10-12-s4-plan.md](2026-10-12-s4-plan.md) |
 | 2026-10-12 | S6: quảng cáo + Pro + lên Google Play (viết spec) | ✅ xong (spec S6) | [2026-10-12-s6-plan-monetization-play.md](2026-10-12-s6-plan-monetization-play.md) |

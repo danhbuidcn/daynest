@@ -14,7 +14,7 @@ Thuộc: [Spec tổng](../index.md) · S4. Chốt phạm vi: [wip](../../../wip/
 | --- | --- | --- |
 | 1 | Tab "Thống kê" → "Chi tiêu" | VI "Chi tiêu", EN "Expenses" · icon ví |
 | 2 | Thêm / sửa / xoá khoản chi | Số tiền · nhóm · ngày · ghi chú (không bắt buộc) |
-| 3 | Nhóm chi tiêu | 10 nhóm có sẵn · tự thêm, đổi tên, xoá nhóm của mình |
+| 3 | Nhóm chi tiêu | 3 nhóm có sẵn · tự thêm, đổi tên, xoá nhóm của mình |
 | 4 | Xem theo Ngày / Tuần / Tháng | Tổng chi của kỳ · danh sách khoản chi theo từng ngày |
 | 5 | Thống kê theo nhóm | Trong kỳ đang xem: mỗi nhóm số tiền + % + thanh ngang, xếp nhiều → ít |
 
@@ -34,10 +34,10 @@ Thuộc: [Spec tổng](../index.md) · S4. Chốt phạm vi: [wip](../../../wip/
 
 ## Nhóm chi tiêu
 
-- **10 nhóm có sẵn** (tạo cho mọi user, cả user cũ): Ăn uống · Di chuyển · Hoá đơn & tiện ích · Mua sắm · Sức khoẻ · Giáo dục · Gia đình · Giải trí · Quà tặng · Khác. Mỗi nhóm có icon + màu riêng, tên theo ngôn ngữ app (VI/EN). Không sửa, không xoá được.
+- **3 nhóm có sẵn** (tạo cho mọi user, cả user cũ): Ăn uống · Di chuyển · Hoá đơn (EN: Food · Transport · Bills). Mỗi nhóm có icon + màu riêng, tên theo ngôn ngữ app (VI/EN). Không sửa, không xoá được.
 - **Nhóm tự tạo:** tên 1–30 ký tự (không trùng, không phân biệt hoa thường) · chọn 1 trong 6 màu event · icon chung (thẻ tag) · tối đa 30 nhóm tự tạo.
 - Đổi tên / đổi màu nhóm tự tạo: bấm vào nhóm trong màn Nhóm.
-- Xoá nhóm tự tạo: hộp xác nhận "Xoá nhóm "X"?" · "n khoản chi sẽ chuyển sang nhóm Khác." (không có khoản chi → chỉ tiêu đề) → khoản chi chuyển sang "Khác", rồi xoá nhóm (1 lệnh DB, xem [db.md](design/db.md)).
+- Xoá nhóm tự tạo: hộp xác nhận "Xoá nhóm "X"?" · "n khoản chi cũng sẽ bị xoá." (không có khoản chi → chỉ tiêu đề) → xoá nhóm + xoá hẳn mọi khoản chi trong nhóm (1 lệnh DB, xem [db.md](design/db.md)).
 
 ## Màn hình
 
@@ -70,7 +70,7 @@ Màn Nhóm chi tiêu: nhóm có sẵn (khoá) · nhóm của bạn (bấm để 
 
 - [ ] Tab hiện "Chi tiêu" (VI) / "Expenses" (EN).
 - [ ] Thêm, sửa, xoá khoản chi trên máy thật · bấm Lưu 2 lần / gửi lại khi mạng chập chờn → không tạo trùng · sửa cùng lúc trên 2 máy → hộp "Đã thay đổi ở thiết bị khác".
-- [ ] User cũ và user mới đều có 10 nhóm có sẵn, tên đổi theo ngôn ngữ · thêm, đổi tên, xoá nhóm tự tạo → khoản chi chuyển sang "Khác".
+- [ ] User cũ và user mới đều có 3 nhóm có sẵn, tên đổi theo ngôn ngữ · thêm, đổi tên, xoá nhóm tự tạo → khoản chi trong nhóm bị xoá theo.
 - [ ] Ngày / Tuần / Tháng: tổng chi và thống kê theo nhóm khớp tổng các khoản chi trong kỳ · chuyển kỳ ‹ › đúng, tuần theo `week_start`.
 - [ ] Test RLS: A không đọc/sửa/xoá được nhóm, khoản chi của B · không gắn khoản chi vào nhóm của B.
 - [ ] Test tải đạt (0 lỗi, p95 < 1 s) · đo dung lượng DB thật → cập nhật [§3](../index.md#mục-tiêu-tải).
