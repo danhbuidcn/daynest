@@ -15,7 +15,7 @@ App cá nhân 3 phần: **Lịch** + **Ghi chú** + **Chi tiêu**. Mobile (Andro
 | Chủ đề | Chốt |
 | --- | --- |
 | Tên | **Daynest** · package `com.danhbuidcn.daynest` (không đổi sau khi lên store) |
-| Quy trình | Scrum · mỗi sprint: docs → thiết kế → code · cuối sprint chạy được trên Android · **1 tính năng làm trọn trong 1 sprint**, không chia nhiều sprint |
+| Quy trình | Scrum · mỗi sprint 5 giai đoạn: [README § Sprint workflow](../../README.md#sprint-workflow) · cuối sprint chạy được trên Android · **1 tính năng làm trọn trong 1 sprint**, không chia nhiều sprint |
 | Nền tảng | Expo (TypeScript) Android + iOS · chỉ test Android máy thật (không có iPhone) · web (Nuxt) sau |
 | Backend | Supabase gói Free (Auth, Postgres + RLS, Storage) · GĐ1 không dùng Go |
 | Online | Online-only · cache chỉ để xem |
