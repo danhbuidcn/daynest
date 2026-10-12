@@ -39,7 +39,7 @@ Sau release [v3.0.0](2026-10-12-s3-step-7-release-3-0-0.md) · tiếp nối [đ�
 - 2026-10-12 16:00 — Bước 6b xong: `features/auth/sessionSnapshot.ts` (khoá `daynest.session`) lưu profile + settings mỗi khi đổi; mở app có bản lưu → vẽ ngay, 3 lần gọi API chạy nền. `getSettings` giờ báo lỗi khi mất mạng (trừ "chưa có dòng" PGRST116) để không ghi đè cài đặt đã lưu bằng mặc định. typecheck ✓ · lint 0 lỗi · test 131/131 ✓. Build lại release.
 - 2026-10-12 15:17 — Bước 7 xong (bản 3.0.0-4 build lại, cài đè trên Galaxy A55, không đo theo ý bạn):
   - Tắt hẳn mạng (máy bay + tắt Wi-Fi), đóng app rồi mở: sau 1,5 s Lịch hiện đủ event từ cache (bản cũ: về màn đăng nhập).
-  - Tạo event "ZZCACHE" → Lịch hiện ngay · đóng/mở app → vẫn còn · mở Chi tiết: hiện đủ sau 0,6 s (trước: trắng 2–4 s) · Sửa → form có dữ liệu ngay · đổi tên "ZZCACHEX" → Lịch hiện tên mới · Xoá → Lịch bỏ ngay.
+  - Tạo event "ZZCACHE" → Lịch hiện ngay · đóng/mở app → vẫn còn · mở Chi tiết: ảnh chụp lúc 0,6 s sau khi chạm đã hiện đủ (không đo độ trễ thật; 0,6 s là lúc chụp, gồm cả hiệu ứng trượt màn) · trước: trắng 2–4 s (theo ghi chép ở [S3 lộ trình](2026-10-12-s3-plan.md), hôm nay không đo lại) · Sửa → form có dữ liệu ngay · đổi tên "ZZCACHEX" → Lịch hiện tên mới · Xoá → Lịch bỏ ngay.
   - Đăng xuất → mở lại app: màn đăng nhập, không có dữ liệu cũ · đăng nhập lại (cùng tài khoản): Lịch tải bình thường.
   - Dữ liệu thử đã xoá (cả trên Google Calendar). Mạng đã bật lại.
   - APK 3.0.0-4 đã phát hành giữ ở scratchpad; `app/dist/daynest-3.0.0-4.apk` giờ là bản thử này (chưa release — gộp vào bản sau).
