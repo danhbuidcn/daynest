@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -25,7 +25,7 @@ import { useEventsInRange } from '@/features/events/useEvents';
 import { type BarItem } from '@/lib/calendar/eventBars';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
-import { colors } from '@/theme';
+import { colors, space } from '@/theme';
 
 const SWIPE_DISTANCE = 50;
 
@@ -50,7 +50,7 @@ export default function CalendarScreen() {
     () => (mode === 'month' ? monthDays(cursor.year, cursor.month, settings.weekStart, today, display) : []),
     [mode, cursor.year, cursor.month, settings.weekStart, today, display],
   );
-  const { occurrences } = useEventsInRange(nav.range, settings.timeZone);
+  const { occurrences, isLoading: eventsLoading } = useEventsInRange(nav.range, settings.timeZone);
 
   const goToday = () => setSelected(nav.goToday());
 
@@ -145,6 +145,7 @@ export default function CalendarScreen() {
           ) : (
             <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} />
           )}
+          {eventsLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
         </View>
       </GestureDetector>
       <MonthYearPicker
@@ -187,4 +188,5 @@ export default function CalendarScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   swipeArea: { flex: 1 },
+  loading: { position: 'absolute', top: space.sm, alignSelf: 'center' },
 });

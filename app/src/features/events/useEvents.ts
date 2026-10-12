@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuth } from '@/features/auth/AuthProvider';
 import * as googleSync from '@/features/google/sync';
@@ -20,6 +20,9 @@ export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TI
   const query = useQuery({
     queryKey: eventsQueryKey(range),
     enabled,
+    // Paging months/weeks keeps the old events on screen until the new range arrives,
+    // so a slow network doesn't flash an empty grid that looks like "no events".
+    placeholderData: keepPreviousData,
     queryFn: async () => {
       const events = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
       const exceptions = await api.fetchExceptions(events.map((e) => e.id));

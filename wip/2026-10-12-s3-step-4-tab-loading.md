@@ -1,4 +1,4 @@
-# 2026-10-12 — S3 bước 4: bấm tab mượt + loading trong nội dung — ✅ đã duyệt, chưa làm
+# 2026-10-12 — S3 bước 4: bấm tab mượt + loading trong nội dung — ✅ xong
 
 Thuộc: [S3 lộ trình](2026-10-12-s3-plan.md) · spec [S3 mục 2](../docs/specs/sprint-3/index.md).
 
@@ -23,12 +23,18 @@ Cách đo: trên máy chụp màn liên tục (~250 ms/ảnh), giữa chừng b�
 
 ## Plan
 
-- [ ] 1. `useEventsInRange`: giữ dữ liệu cũ khi đổi khoảng ngày (`placeholderData: keepPreviousData` của React Query) → lưới không nhấp nháy trống, event mới thay vào khi về.
-- [ ] 2. Lịch: chưa có dữ liệu lần nào (lần đầu mở, mạng chậm) → vòng loading nhỏ ở đầu phần nội dung (dưới thanh chế độ xem), không che lưới, không chặn tab bar. Đang tải lại có dữ liệu cũ → không hiện vòng loading.
-- [ ] 3. `npm run typecheck && npm run lint && npm test`.
-- [ ] 4. Thử trên máy: bấm qua lại 4 tab + đổi tháng → vẫn đổi ngay. Mạng chậm: tôi tắt Wi-Fi để máy dùng 4G (`adb shell svc wifi disable`, xong bật lại) → thấy vòng loading lần đầu, đổi tháng giữ dữ liệu cũ. _Nếu bạn không muốn tôi tắt Wi-Fi trên máy, bạn tự thử bước này._
-- [ ] 5. Commit `fix(app): calendar keeps old events and shows loading while fetching` + push.
+- [x] 1. `useEventsInRange`: giữ dữ liệu cũ khi đổi khoảng ngày (`placeholderData: keepPreviousData` của React Query) → lưới không nhấp nháy trống, event mới thay vào khi về.
+- [x] 2. Lịch: chưa có dữ liệu lần nào (lần đầu mở, mạng chậm) → vòng loading nhỏ ở đầu phần nội dung (dưới thanh chế độ xem), không che lưới, không chặn tab bar. Đang tải lại có dữ liệu cũ → không hiện vòng loading.
+- [x] 3. `npm run typecheck && npm run lint && npm test`.
+- [x] 4. Thử trên máy: bấm qua lại 4 tab + đổi tháng → vẫn đổi ngay. Mạng chậm: tôi tắt Wi-Fi để máy dùng 4G (`adb shell svc wifi disable`, xong bật lại) → thấy vòng loading lần đầu, đổi tháng giữ dữ liệu cũ. _Nếu bạn không muốn tôi tắt Wi-Fi trên máy, bạn tự thử bước này._
+- [x] 5. Commit `fix(app): calendar keeps old events and shows loading while fetching` + push.
 
 ## Kết quả
 
 - 2026-10-12 11:30 — Bạn duyệt plan, cho phép tôi tắt/bật Wi-Fi trên máy để thử mạng chậm (bước 4).
+- 2026-10-12 11:45 — Bước 1–3 xong: `placeholderData: keepPreviousData` trong `useEventsInRange`; `calendar.tsx` hiện `ActivityIndicator` nổi ở đầu vùng nội dung khi `isLoading` (chưa có dữ liệu lần nào). typecheck + lint (0 lỗi, 3 cảnh báo cũ ở i18n) + test 125/125 qua. Thử trên máy gộp chung 1 bản release với bước 6.
+- 2026-10-12 11:50 — Thử trên máy (bản release build từ code bước 4 + 6, Galaxy A55):
+  - Wi-Fi: bấm Ghi chú → Thống kê → Cài đặt → Lịch, đổi sang tháng 11 → đổi ngay, không khựng.
+  - 4G (đã tắt Wi-Fi, **đã bật lại**): mở app từ đầu → lưới Tháng hiện ngay, vòng loading nhỏ ở giữa đầu lưới ~1 giây, rồi event hiện. Đổi tháng 10 → 9 (chưa tải) → event hiện từ khung hình đầu, không nhấp nháy trống, không có vòng loading.
+  - Ghi nhận (không sửa): vòng loading nằm đè sát số ngày ở ô giữa hàng đầu; màn Chi tiết event trắng 2–4 giây khi chờ tải (code cũ `return null`, ngoài phạm vi bước này).
+- 2026-10-12 11:55 — Commit + push.
