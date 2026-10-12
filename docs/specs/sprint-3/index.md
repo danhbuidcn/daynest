@@ -37,10 +37,10 @@ Không làm: hoàn tác/làm lại, lưới thư mục, định dạng chữ, me
 
 ## Xong khi (DoD)
 
-- [ ] Chế độ Ngày: event 15, 30, 45 phút và event chồng giờ hiện đủ chữ trên máy thật.
-- [ ] Bấm qua lại 4 tab trên máy thật: tab đổi ngay, không khựng · mạng chậm → thấy loading trong nội dung, không màn trắng.
-- [ ] Tab hiện "Ghi chú" (VI) / "Notes" (EN) · các thay đổi Ghi chú đã chọn chạy đúng.
-- [ ] Bấm Lưu 2 lần / gửi lại khi mạng chập chờn → không tạo trùng event, note, danh mục.
-- [ ] Danh sách dài cuộn tới cuối → tải thêm, không lặp, không sót.
-- [ ] `npm run typecheck && npm run lint && npm test` qua.
-- [ ] Cuối sprint: release `3.0.0` theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
+- [x] Chế độ Ngày: event 15, 30, 45 phút và event chồng giờ hiện đủ chữ trên máy thật.
+- [x] Bấm qua lại 4 tab trên máy thật: tab đổi ngay, không khựng · mạng chậm → thấy loading trong nội dung, không màn trắng.
+- [x] Tab hiện "Ghi chú" (VI) / "Notes" (EN) · các thay đổi Ghi chú đã chọn chạy đúng.
+- [x] Bấm Lưu 2 lần / gửi lại khi mạng chập chờn → không tạo trùng event, note, danh mục.
+- [x] Danh sách dài cuộn tới cuối → tải thêm, không lặp, không sót.
+- [x] `npm run typecheck && npm run lint && npm test` qua.
+- [x] Cuối sprint: release `3.0.0` theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
