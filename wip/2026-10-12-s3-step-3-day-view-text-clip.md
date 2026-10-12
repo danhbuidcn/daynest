@@ -1,4 +1,4 @@
-# 2026-10-12 — S3 bước 3: chế độ Ngày — chữ event không bị cắt — ⏳ chờ duyệt
+# 2026-10-12 — S3 bước 3: chế độ Ngày — chữ event không bị cắt — ✅ đã duyệt, chưa làm
 
 Thuộc: [S3 lộ trình](2026-10-12-s3-plan.md) · spec [S3 mục 1](../docs/specs/sprint-3/index.md).
 

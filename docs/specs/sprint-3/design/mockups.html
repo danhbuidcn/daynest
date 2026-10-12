@@ -815,6 +815,14 @@ const newNote = `<div class="content">
 </div>${kbd}`;
 // Same as the app: block height = max(minutes / 60 × 56 − 4, 20).
 const newNoteCat = newNote.replace(/<span class="catchip">[\s\S]*?Danh mục<\/span>/, '<span class="catchip"><span class="cd ev-lavender"></span>Công việc</span>');
+// Tapping the category chip closes the keyboard and opens the picker (same dialog as "Di chuyển đến", S2).
+const pickOpt = (c, n, on) => `<div class="opt ${on ? 'on' : ''}"><span class="cdot ${c ? `ev-${c}` : ''}" style="width:14px;height:14px;${c ? '' : 'border:1.5px solid var(--border)'}"></span><span class="label">${n}</span>${on ? I.check : ''}</div>`;
+const newNotePick = `<div class="under">${newNote.replace(kbd, '')}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left">
+    <h3 style="text-align:center;margin-bottom:12px">Danh mục</h3>
+    ${pickOpt('', 'Không có danh mục', true)}${cats.map(([c, n]) => pickOpt(c, n, false)).join('')}
+    <div class="opt" style="color:var(--primary-dark);font-weight:800">${I.plusG.replace('<svg', '<svg width="20" height="20"')}Thêm danh mục</div>
+  </div></div>`;
 const blkM = (...args) => blk(...args).replace('class="block"', 'class="block mid"');
 const blkS = (c, ttl, from, to) => blk(c, ttl, '', from, to).replace('class="block"', 'class="block short"').replace(/height:(-?[\d.]+)px/, (_, h) => `height:${Math.max(+h, 20)}px`).replace('<div class="tm"></div>', '');
 const dayShort = `<div class="content">${calHead('Thứ Hai, 12/10')}${seg('Ngày')}
@@ -836,6 +844,7 @@ const groups = [
     ['16c. Ghi chú — lọc danh mục', 'số note theo chip đang chọn · năm khác ghi kèm năm', phone(notesCat)],
     ['17b. Note mới (từ "Tất cả")', 'dùng cho cả sửa note cũ · như Samsung Notes: tiêu đề nằm trên thanh trên · nội dung chiếm cả màn, con trỏ ở đó, bàn phím bật sẵn · công cụ ngay trên bàn phím: Checklist, Danh mục', phone(newNote)],
     ['17c. Note mới khi đang lọc "Công việc"', 'danh mục tự gán theo chip đang lọc · bấm chip để đổi · từ "Tất cả" → không có danh mục (17b)', phone(newNoteCat)],
+    ['17d. Chọn danh mục trong màn soạn note', 'bấm chip "+ Danh mục" (hoặc tên danh mục) → hộp chọn · chọn xong hộp đóng, chip đổi theo · "Thêm danh mục" tạo mới tại chỗ (đã có từ S2)', phone(newNotePick)],
   ]],
   ['Lịch', [
     ['3b. Ngày — event ngắn', 'khối thấp (< 30 dp): chữ nhỏ, đệm 2 dp → hiện đủ dòng chữ · khối ≤ 1 giờ: chữ căn giữa dọc · khối dài hơn: căn trên', phone(dayShort)],
