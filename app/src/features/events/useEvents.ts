@@ -1,15 +1,16 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
+import { useEffect, useMemo } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
 import * as googleSync from '@/features/google/sync';
 import { resyncReminders } from '@/features/reminders/reminderSync';
+import { narrowestCovering } from '@/lib/calendar/coveringRange';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
 import type { DateRange } from '@/lib/recurrence';
 import * as api from './api';
-import type { EventInput } from './event';
-import { occurrencesForEvents, type ExceptionKind } from './occurrences';
+import type { EventInput, EventRow } from './event';
+import { occurrencesForEvents, type ExceptionKind, type ExceptionRow } from './occurrences';
 
 export const EVENTS_KEY = 'events';
 
@@ -17,18 +18,36 @@ export function eventsQueryKey(range: DateRange) {
   return [EVENTS_KEY, isoDate(range.from), isoDate(range.to)] as const;
 }
 
-export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TIME_ZONE, enabled = true) {
-  const query = useQuery({
+type EventsData = { events: EventRow[]; exceptions: ExceptionRow[] };
+
+function eventsQueryOptions(range: DateRange) {
+  return {
     queryKey: eventsQueryKey(range),
-    enabled,
-    // Paging months/weeks keeps the old events on screen until the new range arrives,
-    // so a slow network doesn't flash an empty grid that looks like "no events".
-    placeholderData: keepPreviousData,
-    queryFn: async () => {
+    queryFn: async (): Promise<EventsData> => {
       const events = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
       const exceptions = await api.fetchExceptions(events.map((e) => e.id));
       return { events, exceptions };
     },
+  };
+}
+
+// A wider range already loaded (e.g. the month holding the day an event detail opens on)
+// holds every event of this one — show it at once while the exact range loads.
+function cachedCovering(queryClient: QueryClient, range: DateRange): EventsData | undefined {
+  const loaded = queryClient
+    .getQueriesData<EventsData>({ queryKey: [EVENTS_KEY] })
+    .flatMap(([key, data]) => (data ? [{ from: key[1] as string, to: key[2] as string, value: data }] : []));
+  return narrowestCovering(loaded, isoDate(range.from), isoDate(range.to));
+}
+
+export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TIME_ZONE, enabled = true) {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    ...eventsQueryOptions(range),
+    enabled,
+    // Paging months/weeks keeps the old events on screen until the new range arrives,
+    // so a slow network doesn't flash an empty grid that looks like "no events".
+    placeholderData: (previous) => cachedCovering(queryClient, range) ?? keepPreviousData(previous),
   });
   const { data } = query;
   const { from, to } = range;
@@ -39,6 +58,15 @@ export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TI
     [data, from, to, timeZone],
   );
   return { ...query, occurrences };
+}
+
+// Loads the periods next to the one on screen once it has arrived, so paging needs no wait.
+export function usePrefetchEvents(ranges: DateRange[], enabled: boolean) {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (!enabled) return;
+    for (const range of ranges) void queryClient.prefetchQuery(eventsQueryOptions(range));
+  }, [queryClient, ranges, enabled]);
 }
 
 // Wraps a mutation's API call so a write rejected by RLS (42501) re-checks the session (F7)

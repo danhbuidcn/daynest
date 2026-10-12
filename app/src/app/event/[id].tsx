@@ -37,7 +37,8 @@ export default function EventDetailScreen() {
   const [menuOpen, setMenuOpen] = useState(false);
   const deleter = useEventDelete({ event, occurrence: occ, onDone: () => router.back(), onError: () => toast(t('events.detail.deleteFailed'), 'error') });
 
-  if (loaded.isLoading) return null;
+  // Cached data from a wider range may predate this event — wait for the exact range then.
+  if (loaded.isLoading || (loaded.isPlaceholderData && (!event || !occ))) return null;
   if (!event || !occ) {
     return (
       <SafeAreaView edges={['top']} style={styles.screen}>

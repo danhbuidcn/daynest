@@ -9,6 +9,7 @@ import { AlertDialog } from '@/components/Dialog';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { dayDetails, monthDays, type DayDisplay, type DayInfo } from '@/features/calendar/dayInfo';
+import { periodRange, shiftCursor } from '@/features/calendar/calendarNav';
 import { DayEventsDialog } from '@/features/calendar/DayEventsDialog';
 import { occurrencesOnDay } from '@/features/calendar/dayOccurrences';
 import { DayView } from '@/features/calendar/DayView';
@@ -21,7 +22,7 @@ import { WeekView } from '@/features/calendar/WeekView';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { syncNow } from '@/features/google/sync';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
-import { useEventsInRange } from '@/features/events/useEvents';
+import { useEventsInRange, usePrefetchEvents } from '@/features/events/useEvents';
 import { type BarItem } from '@/lib/calendar/eventBars';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
@@ -50,7 +51,13 @@ export default function CalendarScreen() {
     () => (mode === 'month' ? monthDays(cursor.year, cursor.month, settings.weekStart, today, display) : []),
     [mode, cursor.year, cursor.month, settings.weekStart, today, display],
   );
-  const { occurrences, isLoading: eventsLoading } = useEventsInRange(nav.range, settings.timeZone);
+  const { occurrences, isLoading: eventsLoading, isFetching: eventsFetching } = useEventsInRange(nav.range, settings.timeZone);
+  // Day view loads whole weeks, so its neighbours are the weeks before and after.
+  const adjacentRanges = useMemo(() => {
+    const step = mode === 'day' ? 'week' : mode;
+    return [-1, 1].map((d) => periodRange(mode, shiftCursor(step, cursor, d), settings.weekStart));
+  }, [mode, cursor, settings.weekStart]);
+  usePrefetchEvents(adjacentRanges, !eventsFetching);
 
   const goToday = () => setSelected(nav.goToday());
 

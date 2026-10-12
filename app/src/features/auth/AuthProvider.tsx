@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AppState } from 'react-native';
 
+import { clearQueryCache } from '@/features/cache/queryClient';
 import { setLanguage, type Language } from '@/i18n';
 import {
   DEFAULT_SETTINGS,
@@ -11,6 +12,12 @@ import {
   type SettingsPatch,
   type UserSettings,
 } from './authService';
+import { clearSnapshot, loadSnapshot, saveSnapshot, type SessionSnapshot } from './sessionSnapshot';
+
+// Signing out (or in as someone else) must not leave the last user's data on the device.
+async function clearLocalData() {
+  await Promise.all([clearQueryCache().catch(() => {}), clearSnapshot()]);
+}
 
 type AuthState = {
   loading: boolean;
@@ -45,8 +52,10 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
     signedIn.current = !!profile;
   }, [profile]);
 
+  // A failed read (e.g. offline) keeps what is shown: the saved copy, or the defaults.
   const syncSettings = useCallback(async () => {
-    const s = await service.getSettings().catch(() => DEFAULT_SETTINGS);
+    const s = await service.getSettings().catch(() => null);
+    if (!s) return;
     if (s.language) await setLanguage(s.language);
     setSettings(s);
   }, [service]);
@@ -54,6 +63,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
   // A device kicked out by a 3rd sign-in must stop right away, not wait for the token to expire (F7).
   const forceSignOut = useCallback(async () => {
     await service.signOut().catch(() => {});
+    await clearLocalData();
     setProfile(null);
     setSettings(DEFAULT_SETTINGS);
     setKickedOut(true);
@@ -61,6 +71,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
 
   useEffect(() => {
     (async () => {
+      let saved: SessionSnapshot | null = null;
       try {
         // Check session_active() before reading any table: every table's RLS now requires it,
         // and checking first (rather than letting a table read fail) lets us tell "kicked out"
@@ -69,6 +80,13 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
           setProfile(null);
           return;
         }
+        // Draw the app from the saved copy now; the requests below refresh it (or sign out).
+        saved = await loadSnapshot();
+        if (saved) {
+          setProfile(saved.profile);
+          setSettings(saved.settings);
+          setLoading(false);
+        }
         const active = await service.checkSessionActive().catch(() => true);
         if (!active) {
           await forceSignOut();
@@ -76,10 +94,11 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
         }
         service.touchDevice().catch(() => {});
         const p = await service.getSession();
-        setProfile(p);
+        // null while offline too — keep the saved profile then.
+        if (p || !saved) setProfile(p);
         if (p) await syncSettings();
       } catch {
-        setProfile(null);
+        if (!saved) setProfile(null);
       } finally {
         setLoading(false);
       }
@@ -104,12 +123,16 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
 
   const signIn = useCallback(async () => {
     const { profile: p, kicked } = await service.signIn();
+    // Also covers a session that expired without a sign-out: the old cache may be someone else's.
+    await clearLocalData();
+    setSettings(DEFAULT_SETTINGS);
     await syncSettings();
     setProfile(p);
     setNewDeviceName(kicked?.name ?? null);
   }, [service, syncSettings]);
   const signOut = useCallback(async () => {
     await service.signOut();
+    await clearLocalData();
     setProfile(null);
     setSettings(DEFAULT_SETTINGS);
   }, [service]);
@@ -121,6 +144,10 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
     },
     [service],
   );
+
+  useEffect(() => {
+    if (profile) void saveSnapshot({ profile, settings });
+  }, [profile, settings]);
 
   const settingsRef = useRef(settings);
   useEffect(() => {

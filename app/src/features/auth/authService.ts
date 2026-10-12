@@ -182,11 +182,14 @@ export const supabaseAuthService: AuthService = {
   async getSettings() {
     const userId = await currentUserId();
     if (!userId) return DEFAULT_SETTINGS;
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_settings')
       .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays')
       .eq('user_id', userId)
       .single();
+    // No row yet (PGRST116) means defaults; any other error (e.g. offline) must not
+    // overwrite the settings saved on the device with defaults.
+    if (error && error.code !== 'PGRST116') throw classify(error);
     return {
       language: isLanguage(data?.language) ? data.language : null,
       weekStart: data?.week_start === 0 ? 0 : 1,

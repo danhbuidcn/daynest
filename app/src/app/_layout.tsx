@@ -4,7 +4,7 @@ import {
   Nunito_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/nunito';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { Stack, TransitionPresets } from 'expo-router/js-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -18,6 +18,7 @@ import { ToastProvider } from '@/components/Toast';
 import { UpdateRequiredScreen } from '@/features/appVersion/UpdateRequiredScreen';
 import { useUpdateRequired } from '@/features/appVersion/useUpdateRequired';
 import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
+import { persistOptions, queryClient } from '@/features/cache/queryClient';
 import { useGoogleSyncLifecycle } from '@/features/google/useGoogleSync';
 import { useReminderSync } from '@/features/reminders/useReminderSync';
 import { loadSavedLanguage } from '@/i18n';
@@ -27,8 +28,6 @@ SplashScreen.preventAutoHideAsync();
 
 // Warning comes from JS stack (react-navigation), not app code; dev builds only.
 LogBox.ignoreLogs(['InteractionManager has been deprecated']);
-
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1 } } });
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({ Nunito_600SemiBold, Nunito_700Bold, Nunito_800ExtraBold });
@@ -48,13 +47,13 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
         <StatusBar style="dark" />
-        <QueryClientProvider client={queryClient}>
+        <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
           <AuthProvider>
             <ToastProvider>
               <RootStack ready={langLoaded} />
             </ToastProvider>
           </AuthProvider>
-        </QueryClientProvider>
+        </PersistQueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
