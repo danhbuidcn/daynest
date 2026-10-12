@@ -49,8 +49,8 @@
     "searchTimeZone": "Tìm múi giờ",
     "noTimeZone": "Không tìm thấy múi giờ",
     "use24h": "Định dạng 24 giờ",
-    "showLunar": "Hiện ngày âm lịch",
-    "showHolidays": "Hiện ngày lễ",
+    "showLunar": "Hiển thị ngày âm lịch",
+    "showHolidays": "Hiển thị ngày lễ",
     "saveFailed": "Chưa lưu được. Vui lòng thử lại."
   },
   "logoutDialog": {
