@@ -7,8 +7,8 @@ App cá nhân 3 phần: **Lịch** + **Ghi chú** + **Chi tiêu**. Mobile (Andro
 - **Ghi chú:** note.
 - **Chi tiêu:** theo ngày, tuần, tháng (S4).
 - **Lịch:** dương + âm, ngày lễ VN, event (lặp dương + âm), nhắc nhở, đồng bộ Google Calendar 2 chiều, chu kỳ kinh nguyệt.
-- **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chu kỳ kinh nguyệt, web.
-- Không làm: todo, diary, học tập, thể dục, dashboard, habit, sticker/theme, xu/quảng cáo.
+- **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chu kỳ kinh nguyệt (S5), quảng cáo + Pro + lên Google Play (S6), web.
+- Không làm: todo, diary, học tập, thể dục, dashboard, habit, sticker/theme, xu. Quảng cáo + gói Pro tắt quảng cáo: [S6](sprint-6/index.md).
 
 ## 2. Quyết định chung
 
@@ -24,7 +24,7 @@ App cá nhân 3 phần: **Lịch** + **Ghi chú** + **Chi tiêu**. Mobile (Andro
 | Thiết bị | 1 tài khoản đăng nhập tối đa 2 thiết bị · máy thứ 3 đăng nhập → máy đăng nhập sớm nhất bị đăng xuất ([S2 F7](sprint-2/F7-device-limit.md)) |
 | Google Calendar | Bật đồng bộ → 2 chiều với lịch chính · tắt → độc lập · chỉ đồng bộ event năm hiện tại + event lặp còn diễn ra trong năm ([S2 F4](sprint-2/F4-google-calendar.md)) |
 | Lịch âm | Tự viết theo thuật toán Hồ Ngọc Đức, múi giờ +7 |
-| Store | Lên Google Play + App Store ([§6](#6-trước-khi-lên-google-play)) · chu kỳ kinh nguyệt cần chính sách quyền riêng tư + khai báo dữ liệu sức khoẻ |
+| Store | Lên Google Play ở [S6](sprint-6/index.md) (Android trước, App Store sau) ([§6](#6-trước-khi-lên-google-play)) · chu kỳ kinh nguyệt cần chính sách quyền riêng tư + khai báo dữ liệu sức khoẻ |
 | Sau GĐ1 | Go API (đọc bill bằng Claude API), web push |
 
 ## 3. Kiến trúc
@@ -80,6 +80,8 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | [S2](sprint-2/index.md) | Lịch (4 chế độ, âm, lễ) + Event (lặp dương + âm, ngoại lệ) + Nhắc + Đồng bộ Google 2 chiều + Notes + Cài đặt liên quan | Xem lịch, quản lý event + note, nhận thông báo, đồng bộ Google |
 | [S3](sprint-3/index.md) | Hoàn thiện Lịch + Ghi chú: sửa UI, bấm tab mượt, tab "Ghi chú", phân trang + idempotency | Lịch + Ghi chú dùng mượt, không tạo trùng |
 | S4 | Chi tiêu | Xong GĐ1 |
+| S5 | Chu kỳ kinh nguyệt | Theo dõi chu kỳ trên Lịch |
+| [S6](sprint-6/index.md) | Quảng cáo (banner AdMob) + Pro tắt quảng cáo (RevenueCat) + lên Google Play | App công khai trên Play, có quảng cáo, mua được Pro |
 
 ### Cuối sprint (mọi sprint)
 
@@ -108,7 +110,7 @@ Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó. Ghi chú đã chố
 
 ## 6. Trước khi lên Google Play
 
-Chưa làm ở sprint nào; làm trước khi phát hành công khai:
+Làm ở [S6](sprint-6/index.md), trước khi phát hành công khai:
 
 - Xoá tài khoản ngay trong app + trang web yêu cầu xoá (Play bắt buộc với app có tạo tài khoản).
 - Chính sách quyền riêng tư (URL công khai).
