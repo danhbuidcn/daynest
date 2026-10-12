@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -27,13 +28,14 @@ export function CategoryEditDialog({
 }) {
   const { t } = useTranslation();
   const save = useSaveCategory();
+  const [id] = useState(() => category?.id ?? Crypto.randomUUID());
   const [name, setName] = useState(category?.name ?? '');
   const [color, setColor] = useState<EventColor>(category?.color ?? 'mint');
   const [error, setError] = useState<string | null>(null);
 
   const submit = async () => {
     try {
-      await save.mutateAsync({ id: category?.id, name, color });
+      await save.mutateAsync({ id, isNew: !category, name, color });
       onSaved?.();
       onClose();
     } catch (e) {

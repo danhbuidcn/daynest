@@ -1,4 +1,3 @@
-import * as Crypto from 'expo-crypto';
 
 import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
@@ -68,11 +67,12 @@ export async function fetchExceptions(eventIds: string[]): Promise<ExceptionRow[
   }));
 }
 
-export async function createEvent(input: EventInput): Promise<EventRow> {
-  const id = Crypto.randomUUID();
+// `id` is generated once when the form opens: a retry after a lost response upserts the same
+// row instead of creating a second event.
+export async function createEvent(id: string, input: EventInput): Promise<EventRow> {
   const { data, error } = await supabase
     .from('events')
-    .insert({ id, ...toEventColumns(input) })
+    .upsert({ id, ...toEventColumns(input) }, { onConflict: 'id' })
     .select()
     .single();
   if (error) throw classify(error);

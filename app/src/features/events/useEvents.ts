@@ -56,7 +56,7 @@ function useInvalidateEvents() {
   };
 }
 
-export type SaveEventVars = { id?: string; updatedAt?: string; input: EventInput; clearExceptions?: boolean };
+export type SaveEventVars = { id: string; updatedAt?: string; input: EventInput; clearExceptions?: boolean };
 
 export function useSaveEvent() {
   const guard = useForbiddenGuard();
@@ -64,9 +64,9 @@ export function useSaveEvent() {
   return useMutation({
     mutationFn: (vars: SaveEventVars) =>
       guard(() =>
-        vars.id && vars.updatedAt
+        vars.updatedAt
           ? api.updateEvent(vars.id, vars.updatedAt, vars.input, { clearExceptions: vars.clearExceptions })
-          : api.createEvent(vars.input),
+          : api.createEvent(vars.id, vars.input),
       ),
     onSuccess: (row) => {
       googleSync.afterEventSaved(row.id);

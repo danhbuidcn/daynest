@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import * as Crypto from 'expo-crypto';
 import { useState } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -31,6 +32,7 @@ export function useEventFormSave({
   const { settings, recheckSession } = useAuth();
   const saveMutation = useSaveEvent();
   const exceptionMutation = useSetOccurrenceException();
+  const [newId] = useState(() => Crypto.randomUUID());
   const [saving, setSaving] = useState(false);
   const [scopeOpen, setScopeOpen] = useState(false);
   const [clearOpen, setClearOpen] = useState(false);
@@ -62,7 +64,7 @@ export function useEventFormSave({
     run(() => saveMutation.mutateAsync({ id: baseEvent!.id, updatedAt: baseEvent!.updatedAt, input: input(), clearExceptions }));
 
   const save = () => {
-    if (!baseEvent) return void run(() => saveMutation.mutateAsync({ input: input() }));
+    if (!baseEvent) return void run(() => saveMutation.mutateAsync({ id: newId, input: input() }));
     if (baseEvent.repeat === 'none') return void saveAll(false);
     setScopeOpen(true);
   };

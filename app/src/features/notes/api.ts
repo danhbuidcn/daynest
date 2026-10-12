@@ -156,11 +156,13 @@ export async function fetchCategories(): Promise<Category[]> {
   }));
 }
 
-export async function saveCategory(input: { id?: string; name: string; color: EventColor }): Promise<void> {
+// Create upserts on an `id` generated when the dialog opened, so a retry doesn't hit the
+// unique-name index and wrongly report "Tên này đã có".
+export async function saveCategory(input: { id: string; isNew: boolean; name: string; color: EventColor }): Promise<void> {
   const values = { name: input.name.trim(), color: input.color };
-  const { error } = input.id
-    ? await supabase.from('note_categories').update(values).eq('id', input.id)
-    : await supabase.from('note_categories').insert(values);
+  const { error } = input.isNew
+    ? await supabase.from('note_categories').upsert({ id: input.id, ...values }, { onConflict: 'id' })
+    : await supabase.from('note_categories').update(values).eq('id', input.id);
   if (error) throw classify(error);
 }
 

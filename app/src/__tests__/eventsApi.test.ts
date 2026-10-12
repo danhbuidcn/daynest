@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 
-import { ConflictError, ForbiddenError, updateEvent, upsertException } from '@/features/events/api';
+import { ConflictError, createEvent, ForbiddenError, updateEvent, upsertException } from '@/features/events/api';
 import type { EventInput } from '@/features/events/event';
 
 // Chainable stand-in for the supabase-js query builder: every call returns itself, and awaiting
@@ -17,8 +17,6 @@ for (const m of ['from', 'select', 'insert', 'update', 'delete', 'upsert', 'eq',
 builder.then = (resolve: (v: unknown) => unknown) => resolve(result);
 
 jest.mock('@/lib/supabase', () => ({ supabase: { from: (t: string) => (builder.from as (t: string) => unknown)(t) } }));
-// babel-jest hoists these above the imports.
-jest.mock('expo-crypto', () => ({ randomUUID: () => 'new-id' }));
 
 const input: EventInput = {
   title: 'Họp',
@@ -57,6 +55,18 @@ describe('updateEvent (optimistic lock)', () => {
   it('maps an RLS rejection (42501) to ForbiddenError', async () => {
     result = { data: null, error: { code: '42501', message: 'new row violates row-level security policy' } };
     await expect(updateEvent('e1', 'old', input)).rejects.toBeInstanceOf(ForbiddenError);
+  });
+});
+
+describe('createEvent', () => {
+  it('upserts on the id from the form, so a retry writes the same row', async () => {
+    result = { data: { id: 'form-id', updated_at: 'new', ...input, all_day: true, start_date: '2026-10-10', end_date: '2026-10-10' }, error: null };
+    await createEvent('form-id', input);
+    await createEvent('form-id', input);
+    const upserts = calls.filter((c) => c.startsWith('upsert('));
+    expect(upserts).toHaveLength(2);
+    for (const c of upserts) expect(c.includes('"id":"form-id"') && c.includes('"onConflict":"id"')).toBe(true);
+    expect(calls.some((c) => c.startsWith('insert('))).toBe(false);
   });
 });
 
