@@ -5,7 +5,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 - Phong cách: dễ thương, pastel, bo tròn.
 - Không chép sticker, icon, hình minh hoạ của app gốc.
 - Chỉ làm theme sáng. Chế độ tối để sau.
-- Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html).
+- Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html), [Sprint 3](sprint-3/design/mockups.html), [Sprint 4](sprint-4/design/mockups.html).
 
 ## Màu
 
@@ -23,7 +23,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | `error` | `#E9787B` | Báo lỗi, nút Đăng xuất |
 | `warning` | `#F2B45C` | Cảnh báo |
 
-**6 màu event (từ S2; dùng cả cho danh mục note):**
+**6 màu event (từ S2; dùng cả cho danh mục note, nhóm chi tiêu):**
 
 | Token | Giá trị |
 | --- | --- |
@@ -35,6 +35,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | `event.lemon` | `#F2D67A` |
 
 - Thanh event: nền màu event, chữ `text` (không dùng chữ trắng trên pastel — khó đọc).
+- Từ S4 user chọn được **màu bất kỳ** (mã hex) ngoài 6 màu trên → chữ / icon trên nền màu tự chọn `text` hoặc trắng, cái nào tương phản ≥ 4,5:1.
 
 ## Chữ
 
@@ -102,6 +103,21 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | Dòng checklist | Cao 44 · tay nắm ⋮⋮ 18 `textMuted` bên trái (giữ để kéo đổi thứ tự) · ô tick **vuông** 22 bo 6 viền `primary` (xong: nền `primary` + ✓ trắng, chữ gạch ngang `textMuted`) · chữ `body` · ✕ `textMuted` |
 | Lưới giờ | Cột giờ 44 `caption` `textMuted` · kẻ `border` mỗi giờ · vạch giờ hiện tại 2px `error` + chấm tròn |
 
+### Thành phần thêm ở S4
+
+| Thành phần | Mô tả |
+| --- | --- |
+| Thanh chọn kỳ | Như thanh chọn chế độ S2, 3 mục Ngày · Tuần · Tháng |
+| Header kỳ | `‹` · nhãn `title` bấm được (mở hộp chọn kỳ) · `›` · không có chip "Hôm nay" — nút về kỳ hiện tại nằm trong hộp chọn |
+| Hộp chọn kỳ | Như hộp chọn · Tháng: lưới 3×4 tháng + `‹ ›` năm · Tuần / Ngày: lịch nhỏ 7 cột, tuần đang chọn nền `primarySoft` cả hàng, ngày đang chọn vòng tròn `primary` · nút phụ "Tháng này" / "Tuần này" / "Hôm nay" ở đáy |
+| Ô icon nhóm | Vuông 34 bo 10, nền màu nhóm, icon 20 màu chữ theo độ sáng nền |
+| Dòng thống kê nhóm | Ô icon · tên `body` · số tiền `body` 700 bên phải · dưới tên: thanh % cao 6 bo 999 (nền `border`, phần đầy màu nhóm) · % `caption` `textMuted` bên phải |
+| Biểu đồ cột | 1 chuỗi, 1 màu: `primary` nhạt 55%, cột đang chọn / hiện tại `primaryDark` · đầu cột bo 4, cách nhau 2 · chỉ ghi số gọn ("2,5tr", "510k") `micro` trên cột cao nhất · nhãn trục `caption` `textMuted` · bấm cột → mở kỳ đó, bấm giữ → hiện số tiền |
+| Số tiền | Luôn màu `text` (không đỏ — `error` chỉ cho lỗi) · dạng "50.000 ₫" · ô nhập số tiền: `title` giữa màn, gạch chân `primary` |
+| Lưới chọn icon | 6 cột, ô 40 bo 12 nền `bg`, icon 22 · đang chọn: nền màu nhóm + viền 2 `text` cách 2 · cuộn trong ô (cao 3 hàng) |
+| Hàng màu | 6 chấm màu event 28 + chấm "Màu khác" (vòng cầu vồng có dấu `+`; đã chọn màu khác → chấm hiện màu đó) · đang chọn: viền 2 `text` cách 3 |
+| Hộp chọn màu | Như hộp chọn · ô sáng/đậm cao 150 bo 16 · thanh màu cao 16 bo 999 · ô màu 48 + ô nhập hex + chip "Aa" xem trước chữ · nút Huỷ / Chọn |
+
 ## Chữ dài
 
 - Mọi ô nhập có giới hạn ký tự (`maxLength`; dán chữ dài → tự cắt). Gõ tới ≥ 80% giới hạn → bộ đếm `caption` `textMuted` dưới ô bên phải ("85/100"); chạm giới hạn → đếm màu `error`.
@@ -126,7 +142,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 - Mọi màn chỉ dùng token ở file này: màu, cỡ chữ (22 / 17 / 15 / 12), khoảng cách, bo góc. Không dùng mã màu hay cỡ chữ khác (trừ chữ logo).
 - Cùng 1 loại thành phần → cùng kiểu ở mọi màn (tiêu đề màn, thẻ, dòng cài đặt, hộp thoại, toast).
 - Màu điểm nhấn chung là `primary`. Không gán mỗi tab/mục một màu riêng.
-- Màu event chỉ dùng cho event, danh mục note và chấm hồng trong logo.
+- Màu event (và màu user tự chọn) chỉ dùng cho event, danh mục note, nhóm chi tiêu và chấm hồng trong logo.
 - Màu `error` chỉ cho lỗi và hành động nguy hiểm (Đăng xuất, Xoá).
 - Màn form (sửa, tạo mới): nút hành động chính cố định ở đáy màn, nội dung cuộn phía trên; mở bàn phím thì nút nằm trên bàn phím. Code: `FormScreen`.
 - Màn con: vuốt từ mép trái sang phải để quay lại.
