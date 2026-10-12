@@ -13,12 +13,12 @@ import { CategoryChips } from '@/features/notes/CategoryChips';
 import { newNoteHref, setActiveNoteFilter } from '@/features/notes/newNote';
 import { NoteGrid } from '@/features/notes/NoteGrid';
 import { SearchBox } from '@/features/notes/SearchBox';
-import { useCategories, useNotesList } from '@/features/notes/useNotes';
+import { useCategories, useNotesCount, useNotesList } from '@/features/notes/useNotes';
 import { colors, space } from '@/theme';
 
 const SEARCH_DELAY_MS = 300;
 
-// Màn 16 — Quản lý · Notes.
+// Màn 16 — Ghi chú.
 export default function ManageScreen() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function ManageScreen() {
   // The chosen category was deleted (screen 18): fall back to "Tất cả".
   const filter = chosen && categoriesQuery.isSuccess && !categories.some((c) => c.id === chosen) ? null : chosen;
   const list = useNotesList(filter, query);
+  const count = useNotesCount(filter);
 
   useEffect(() => {
     const timer = setTimeout(() => setQuery(search.trim()), SEARCH_DELAY_MS);
@@ -50,6 +51,9 @@ export default function ManageScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
       <ScreenHeader title={t('tabs.manage')} compact action={<MoreButton onPress={() => setMenuOpen(true)} />} />
+      <AppText variant="caption" color={colors.textMuted} style={styles.subcount}>
+        {count.data !== undefined ? t('notes.count', { count: count.data }) : ' '}
+      </AppText>
       <SearchBox value={search} onChange={setSearch} placeholder={t('notes.search')} />
       <CategoryChips categories={categories} selected={filter} onSelect={setFilter} />
       <ScrollView
@@ -62,7 +66,7 @@ export default function ManageScreen() {
             refreshing={pulling}
             onRefresh={() => {
               setPulling(true);
-              void list.refetch().finally(() => setPulling(false));
+              void Promise.all([list.refetch(), count.refetch()]).finally(() => setPulling(false));
             }}
           />
         }>
@@ -110,6 +114,7 @@ function Empty({ text, action, onAction }: { text: string; action?: string; onAc
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: 120 },
+  subcount: { textAlign: 'center', marginTop: -space.xs, marginBottom: space.sm },
   count: { paddingHorizontal: 20, paddingBottom: space.sm },
   loading: { marginVertical: space.xl },
   empty: { alignItems: 'center', gap: space.md, paddingTop: 80, paddingHorizontal: space.xl },

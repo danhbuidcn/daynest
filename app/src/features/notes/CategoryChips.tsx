@@ -20,13 +20,32 @@ export function CategoryChips({
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row} style={styles.scroll}>
       <Chip label={t('notes.all')} on={selected === null} onPress={() => onSelect(null)} />
       {categories.map((c) => (
-        <Chip key={c.id} label={c.name} dot={eventColors[c.color]} on={selected === c.id} onPress={() => onSelect(c.id)} />
+        <Chip
+          key={c.id}
+          label={c.name}
+          dot={eventColors[c.color]}
+          count={c.noteCount}
+          on={selected === c.id}
+          onPress={() => onSelect(c.id)}
+        />
       ))}
     </ScrollView>
   );
 }
 
-export function Chip({ label, dot, on, onPress }: { label: string; dot?: string; on?: boolean; onPress?: () => void }) {
+export function Chip({
+  label,
+  dot,
+  count,
+  on,
+  onPress,
+}: {
+  label: string;
+  dot?: string;
+  count?: number;
+  on?: boolean;
+  onPress?: () => void;
+}) {
   return (
     <Pressable
       accessibilityRole="button"
@@ -37,6 +56,11 @@ export function Chip({ label, dot, on, onPress }: { label: string; dot?: string;
       <AppText color={on ? colors.white : colors.text} numberOfLines={1} style={styles.label}>
         {label}
       </AppText>
+      {count !== undefined ? (
+        <AppText variant="caption" color={on ? colors.white : colors.textMuted} style={on && styles.countOn}>
+          {count}
+        </AppText>
+      ) : null}
     </Pressable>
   );
 }
@@ -59,4 +83,5 @@ const styles = StyleSheet.create({
   chipOn: { backgroundColor: colors.primary, borderColor: colors.primary },
   dot: { width: 8, height: 8, borderRadius: 4 },
   label: { flexShrink: 1 },
+  countOn: { opacity: 0.85 },
 });

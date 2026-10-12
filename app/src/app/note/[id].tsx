@@ -2,6 +2,7 @@ import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Pressable,
   StyleSheet,
@@ -13,7 +14,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ActionMenu, MoreButton } from "@/components/ActionMenu";
 import { AppText } from "@/components/AppText";
-import { AutoGrowField } from "@/components/AutoGrowField";
 import { ConfirmDialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ScreenHeader } from "@/components/ScreenHeader";
@@ -42,6 +42,7 @@ import {
 import { colors, eventColors, radius, space, type as typeScale } from "@/theme";
 
 // Màn 17 — `/note/<id>` opens a note · `/note/<new id>?isNew=1&categoryId=…` starts one.
+// Laid out like Samsung Notes (S3 C): title in the top bar, body fills the screen, tools above the keyboard.
 export default function NoteEditorScreen() {
   const params = useLocalSearchParams<{
     id: string;
@@ -92,6 +93,7 @@ function NoteEditor({
   const [emptyAsk, setEmptyAsk] = useState(false);
   const [unsavedAsk, setUnsavedAsk] = useState(false);
   const [focusId, setFocusId] = useState<string | null>(null);
+  const bodyRef = useRef<TextInput>(null);
   const leaving = useRef(false);
   const pendingLeave = useRef<(() => void) | null>(null);
   const category = categories.find((c) => c.id === draft.categoryId);
@@ -143,13 +145,17 @@ function NoteEditor({
         >
           <Icon name="back" size={24} color={colors.text} />
         </Pressable>
-        <View style={styles.chipWrap}>
-          <Chip
-            label={category ? category.name : t("notes.addCategory")}
-            dot={category ? eventColors[category.color] : undefined}
-            onPress={() => setPickerOpen(true)}
-          />
-        </View>
+        <TextInput
+          value={draft.title}
+          onChangeText={(title) => setDraft({ ...draft, title })}
+          placeholder={t("notes.titlePlaceholder")}
+          placeholderTextColor={colors.textMuted}
+          maxLength={NOTE_TITLE_MAX}
+          returnKeyType="next"
+          submitBehavior="submit"
+          onSubmitEditing={() => bodyRef.current?.focus()}
+          style={styles.title}
+        />
         <MoreButton onPress={() => setMenuOpen(true)} />
       </View>
 
@@ -159,16 +165,9 @@ function NoteEditor({
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
-          <AutoGrowField
-            value={draft.title}
-            onChangeText={(title) => setDraft({ ...draft, title })}
-            placeholder={t("notes.titlePlaceholder")}
-            maxLength={NOTE_TITLE_MAX}
-            maxLines={3}
-            variant="title"
-            style={styles.title}
-          />
           <TextInput
+            ref={bodyRef}
+            autoFocus={!note}
             value={draft.body}
             onChangeText={(body) => setDraft({ ...draft, body })}
             placeholder={t("notes.bodyPlaceholder")}
@@ -187,18 +186,30 @@ function NoteEditor({
             focusId={focusId}
             onFocusHandled={() => setFocusId(null)}
           />
+          {/* The empty space under the text still belongs to the body, as in Samsung Notes. */}
+          <Pressable
+            accessible={false}
+            onPress={() => bodyRef.current?.focus()}
+            style={styles.rest}
+          />
         </NestableScrollContainer>
         <View style={styles.toolbar}>
           <Pressable
             accessibilityRole="button"
+            accessibilityLabel={t("notes.checklist")}
             onPress={addItem}
             style={styles.tool}
           >
-            <Icon name="checklist" size={18} color={colors.primaryDark} />
-            <AppText weight="bold" color={colors.primaryDark}>
-              {t("notes.checklist")}
-            </AppText>
+            <Icon name="checklist" size={22} color={colors.primaryDark} />
           </Pressable>
+          <Chip
+            label={category ? category.name : t("notes.addCategory")}
+            dot={category ? eventColors[category.color] : undefined}
+            onPress={() => {
+              Keyboard.dismiss();
+              setPickerOpen(true);
+            }}
+          />
           <View style={styles.flex} />
           <AppText variant="caption" color={colors.textMuted}>
             {t("notes.autosaveHint")}
@@ -290,8 +301,11 @@ const styles = StyleSheet.create({
   bar: {
     flexDirection: "row",
     alignItems: "center",
+    gap: space.xs,
     paddingHorizontal: space.md,
     paddingVertical: space.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
   barButton: {
     width: 40,
@@ -299,9 +313,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  chipWrap: { flex: 1, alignItems: "center" },
-  content: { paddingHorizontal: 20, paddingBottom: space.xl, gap: 6 },
-  title: { paddingVertical: 6 },
+  title: { ...typeScale.title, flex: 1, color: colors.text, padding: 0 },
+  content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 14, gap: 6 },
+  rest: { flexGrow: 1, minHeight: space.xxl },
   body: {
     ...typeScale.body,
     color: colors.text,
@@ -310,21 +324,20 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   toolbar: {
-    height: 56,
+    height: 52,
     flexDirection: "row",
     alignItems: "center",
-    gap: space.sm,
-    paddingHorizontal: space.lg,
+    gap: 10,
+    paddingHorizontal: space.md,
     borderTopWidth: 1,
     borderTopColor: colors.border,
     backgroundColor: colors.surface,
   },
   tool: {
-    height: 36,
-    flexDirection: "row",
+    width: 40,
+    height: 40,
     alignItems: "center",
-    gap: 6,
-    paddingHorizontal: space.md,
+    justifyContent: "center",
     borderRadius: radius.icon + 2,
     backgroundColor: colors.primarySoft,
   },

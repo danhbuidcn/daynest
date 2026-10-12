@@ -55,6 +55,15 @@ export async function fetchNotesPage({
   return { notes, next: notes.length === NOTES_PAGE_SIZE ? { pinned: last.pinned, updatedAt: last.updatedAt, id: last.id } : null };
 }
 
+// "N ghi chú" under the tab title (S3 A): every note outside the trash in the chosen chip, not only loaded pages.
+export async function countNotes(categoryId: string | null): Promise<number> {
+  let req = supabase.from('notes').select('id', { count: 'exact', head: true }).is('deleted_at', null);
+  if (categoryId) req = req.eq('category_id', categoryId);
+  const { count, error } = await req;
+  if (error) throw classify(error);
+  return count ?? 0;
+}
+
 export type TrashCursor = { deletedAt: string; id: string };
 export type TrashPage = { notes: Note[]; next: TrashCursor | null };
 

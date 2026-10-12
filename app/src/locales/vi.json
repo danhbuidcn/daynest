@@ -14,7 +14,7 @@
   },
   "tabs": {
     "calendar": "Lịch",
-    "manage": "Quản lý",
+    "manage": "Ghi chú",
     "stats": "Thống kê",
     "settings": "Cài đặt"
   },
@@ -323,6 +323,9 @@
     "exclude": "Loại trừ"
   },
   "notes": {
+    "count_one": "{{count}} ghi chú",
+    "count_other": "{{count}} ghi chú",
+    "pinned": "Đã ghim",
     "search": "Tìm ghi chú",
     "all": "Tất cả",
     "untitled": "Ghi chú trống",
@@ -349,7 +352,7 @@
     "itemPlaceholder": "Mục mới",
     "addItem": "Thêm mục",
     "checklist": "Checklist",
-    "autosaveHint": "Tự lưu khi quay lại",
+    "autosaveHint": "Tự lưu",
     "saveFailed": "Chưa lưu được. Vui lòng kiểm tra kết nối.",
     "emptyTitle": "Xoá ghi chú trống?",
     "emptyText": "Ghi chú không còn nội dung.",

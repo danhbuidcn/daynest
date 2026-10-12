@@ -21,6 +21,10 @@ export function useNotesList(categoryId: string | null, query: string) {
   return { ...result, notes };
 }
 
+export function useNotesCount(categoryId: string | null) {
+  return useQuery({ queryKey: [NOTES_KEY, 'count', categoryId], queryFn: () => api.countNotes(categoryId) });
+}
+
 export function useTrashList() {
   const result = useInfiniteQuery({
     queryKey: [NOTES_KEY, 'trash'],

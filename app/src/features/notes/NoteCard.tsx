@@ -33,7 +33,8 @@ export function NoteCard({
   const moreRef = useRef<View>(null);
   const progress = checklistProgress(note.checklist);
   const changed = todayIn(settings.timeZone, new Date(note.deletedAt ?? note.updatedAt));
-  const date = `${pad(changed.day)}/${pad(changed.month)}`;
+  const thisYear = changed.year === todayIn(settings.timeZone).year;
+  const date = `${pad(changed.day)}/${pad(changed.month)}${thisYear ? '' : `/${changed.year}`}`;
 
   return (
     <Pressable
