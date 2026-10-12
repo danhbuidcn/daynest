@@ -20,6 +20,7 @@ docs/
 | [specs/design-system.md](specs/design-system.md) | Design system dùng chung mọi sprint |
 | [specs/sprint-1/](specs/sprint-1/index.md) | Sprint 1: nền móng (khung app, đăng nhập Google, DB, ký app) |
 | [specs/sprint-2/](specs/sprint-2/index.md) | Sprint 2: lịch, event, nhắc, đồng bộ Google, notes |
+| [specs/sprint-3/](specs/sprint-3/index.md) | Sprint 3: hoàn thiện lịch + ghi chú |
 
 Quy tắc:
 

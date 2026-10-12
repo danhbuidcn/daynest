@@ -1,13 +1,14 @@
 # Daynest — Spec tổng
 
-App cá nhân 2 phần: **Ghi chú** + **Lịch**. Mobile (Android + iOS) trước, web sau.
+App cá nhân 3 phần: **Lịch** + **Ghi chú** + **Chi tiêu**. Mobile (Android + iOS) trước, web sau.
 
 ## 1. Sản phẩm
 
-- **Ghi chú:** note, diary, todo, thống kê, chi tiêu.
+- **Ghi chú:** note.
+- **Chi tiêu:** theo ngày, tuần, tháng (S4).
 - **Lịch:** dương + âm, ngày lễ VN, event (lặp dương + âm), nhắc nhở, đồng bộ Google Calendar 2 chiều, chu kỳ kinh nguyệt.
-- **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chi tiêu, chu kỳ kinh nguyệt, web.
-- Không làm: học tập, thể dục, dashboard, habit, sticker/theme, xu/quảng cáo.
+- **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chu kỳ kinh nguyệt, web.
+- Không làm: todo, diary, học tập, thể dục, dashboard, habit, sticker/theme, xu/quảng cáo.
 
 ## 2. Quyết định chung
 
@@ -77,8 +78,8 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | --- | --- | --- |
 | [S1](sprint-1/index.md) | Khung app, đăng nhập Google, DB tối thiểu, ký app + version | Đăng nhập, vào 5 tab trống |
 | [S2](sprint-2/index.md) | Lịch (4 chế độ, âm, lễ) + Event (lặp dương + âm, ngoại lệ) + Nhắc + Đồng bộ Google 2 chiều + Notes + Cài đặt liên quan | Xem lịch, quản lý event + note, nhận thông báo, đồng bộ Google |
-| S3 | Todo | Quản lý todo |
-| S4 | Diary + Thống kê | Xong GĐ1 |
+| [S3](sprint-3/index.md) | Hoàn thiện Lịch + Ghi chú: sửa UI, bấm tab mượt, tab "Ghi chú", phân trang + idempotency | Lịch + Ghi chú dùng mượt, không tạo trùng |
+| S4 | Chi tiêu | Xong GĐ1 |
 
 ### Cuối sprint (mọi sprint)
 
@@ -94,15 +95,9 @@ Khi DoD sprint đạt, làm theo thứ tự (todo: 1 file mới trong `wip/`, th
 
 Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó. Ghi chú đã chốt cho sprint sau:
 
-### S3 — Todo
-- Tiêu đề, hạn, ghim, subtask · xong hết subtask → todo xong · % tự tính.
-- Lọc: quá hạn / hôm nay / tuần / tháng.
-- Danh sách todo (và mọi màn list khác từ S3 về sau): phân trang **keyset** (không `offset`, như [S2 notes](sprint-2/design/db.md#notes)) + nút/tự cuộn "Tải thêm" · thao tác lặp (mạng chập chờn, bấm 2 lần) không tạo trùng / không lệch trang — áp nguyên tắc idempotency ở [§3](#nguyên-tắc-mở-rộng).
-
-### S4 — Diary + Thống kê
-- Diary: 1/ngày, mood 5 mức, ≤ 5 ảnh (Storage `diary-images`), ghim · mood hiện trên lịch.
-- Thống kê: donut todo tháng, đếm mood tháng.
-- Cài đặt: nhắc diary hằng ngày.
+### S4 — Chi tiêu
+- Tab "Thống kê" đổi thành "Chi tiêu": xem chi tiêu theo ngày, tuần, tháng.
+- Spec chi tiết viết khi bắt đầu S4.
 
 ## 5. Xử lý lỗi chung
 

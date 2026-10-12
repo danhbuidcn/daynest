@@ -56,7 +56,7 @@ Tính theo giờ cho từng project. Gói Pro / Team đã gồm 1 máy **Micro**
 | MAU | ≤ 10.000 | 50.000 | Đủ |
 | DB | 100–500 MB | 500 MB | **Sát** — gần 500 MB thì lên Pro |
 | Egress | Chỉ JSON nhỏ, không tải file | 5 GB | Cần theo dõi khi user tăng |
-| Storage | 0 (S4 diary ≤ 5 ảnh / ngày) | 1 GB | S4 có ảnh diary → dễ vượt |
+| Storage | 0 (không lưu file) | 1 GB | Đủ |
 | Realtime, Edge Functions | Không dùng | — | — |
 | Tạm dừng 7 ngày | App dùng hằng ngày | — | Ổn khi có user thật |
 | Sao lưu | Cần khi có dữ liệu user thật | Không có | Lý do chính để lên Pro trước khi lên Play |

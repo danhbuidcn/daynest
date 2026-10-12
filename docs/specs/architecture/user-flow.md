@@ -12,8 +12,8 @@ flowchart TD
   Login -->|"Google"| Tabs
 
   Tabs --> Cal["Lịch: Tháng · Tuần · Ngày · Danh sách<br/>dương + âm + ngày lễ"]
-  Tabs --> Manage["Quản lý: Notes<br/>(S3 Todo, S4 Diary)"]
-  Tabs --> Stats["Thống kê (S4)"]
+  Tabs --> Manage["Ghi chú"]
+  Tabs --> Stats["Chi tiêu (S4)"]
   Tabs --> Settings["Cài đặt: ngôn ngữ · lịch · thông báo<br/>Google Calendar · Thiết bị"]
 
   Cal -->|"bấm ngày"| DayPop["Pop-up ngày"] --> Detail["Chi tiết event"] --> Edit["Sửa / Xoá<br/>cả chuỗi hoặc chỉ lần này"]
