@@ -12,7 +12,7 @@ export type DayDetails = SolarDate & {
   isToday: boolean;
 };
 
-// F6 "Hiện ngày âm" / "Hiện ngày lễ": hidden parts come back empty so views need no extra checks.
+// F6 "Hiện ngày âm lịch" / "Hiện ngày lễ": hidden parts come back empty so views need no extra checks.
 export type DayDisplay = { showLunar: boolean; showHolidays: boolean };
 export const SHOW_ALL: DayDisplay = { showLunar: true, showHolidays: true };
 

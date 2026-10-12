@@ -14,7 +14,7 @@ Thuộc: [Sprint 2](index.md).
 | Lịch | Tuần bắt đầu từ | Hộp chọn: Thứ Hai / Chủ nhật | Thứ Hai | `user_settings.week_start` (có từ S1) | [F1](F1-calendar.md) |
 | Lịch | Múi giờ | Hộp chọn có ô tìm kiếm | Việt Nam (GMT+7) | `user_settings.time_zone` | [Múi giờ](#múi-giờ) |
 | Lịch | Định dạng 24 giờ | Công tắc | Bật | `user_settings.use_24h` (có từ S1) | Tắt → "4:54 CH" / "4:54 PM" |
-| Lịch | Hiện ngày âm | Công tắc | Bật | `user_settings.show_lunar` | [F1](F1-calendar.md) |
+| Lịch | Hiện ngày âm lịch | Công tắc | Bật | `user_settings.show_lunar` | [F1](F1-calendar.md) |
 | Lịch | Hiện ngày lễ | Công tắc | Bật | `user_settings.show_holidays` | [F1](F1-calendar.md) |
 | Google Calendar | Đồng bộ với Google Calendar | Công tắc | Tắt | `google_sync_state.enabled` | [F4](F4-google-calendar.md) |
 
@@ -49,7 +49,7 @@ Thứ tự trên màn Cài đặt (thêm vào giữa nhóm Tài khoản và nhó
 Thẻ tài khoản
 Tài khoản: Đăng nhập bằng · Thiết bị đăng nhập (2/2 ›)
 Thông báo: Cho phép thông báo · (cảnh báo bị chặn + Mở cài đặt máy)
-Lịch: Tuần bắt đầu từ · Múi giờ · Định dạng 24 giờ · Hiện ngày âm · Hiện ngày lễ
+Lịch: Tuần bắt đầu từ · Múi giờ · Định dạng 24 giờ · Hiện ngày âm lịch · Hiện ngày lễ
 Google Calendar: Đồng bộ · Đồng bộ ngay · Lần đồng bộ cuối
 Ứng dụng: Ngôn ngữ · Phiên bản
 Đăng xuất
