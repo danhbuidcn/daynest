@@ -4,8 +4,10 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-12 | S3 bước 6: gửi lại không tạo trùng event, danh mục | ✅ đã duyệt, chưa làm | [2026-10-12-s3-step-6-idempotent-create.md](2026-10-12-s3-step-6-idempotent-create.md) |
+| 2026-10-12 | S3 bước 4: Lịch giữ dữ liệu cũ + loading khi tải (đo tab trên máy: không khựng) | ✅ đã duyệt, chưa làm | [2026-10-12-s3-step-4-tab-loading.md](2026-10-12-s3-step-4-tab-loading.md) |
 | 2026-10-12 | Ghi 5 giai đoạn của mọi sprint vào README | ✅ xong | [2026-10-12-sprint-five-phases.md](2026-10-12-sprint-five-phases.md) |
-| 2026-10-12 | S3 bước 5: tab "Ghi chú" + số note, nhóm theo tháng, màn soạn note kiểu Samsung Notes | ✅ xong (còn xoá danh mục thử) | [2026-10-12-s3-step-5-notes-tab.md](2026-10-12-s3-step-5-notes-tab.md) |
+| 2026-10-12 | S3 bước 5: tab "Ghi chú" + số note, nhóm theo tháng, màn soạn note kiểu Samsung Notes | ✅ xong | [2026-10-12-s3-step-5-notes-tab.md](2026-10-12-s3-step-5-notes-tab.md) |
 | 2026-10-12 | S3 bước 3: chế độ Ngày — chữ event không bị cắt | ✅ xong | [2026-10-12-s3-step-3-day-view-text-clip.md](2026-10-12-s3-step-3-day-view-text-clip.md) |
 | 2026-10-12 | S3: lộ trình — hoàn thiện Lịch + Ghi chú, bỏ Todo/Diary, S4 Chi tiêu | 🔄 bước 1–3, 5 xong | [2026-10-12-s3-plan.md](2026-10-12-s3-plan.md) |
 | 2026-10-11 | Bản cũ hiện màn "Cần cập nhật" khi có bản mới | ✅ xong (chưa thấy màn trên máy) | [2026-10-11-force-update-old-versions.md](2026-10-11-force-update-old-versions.md) |

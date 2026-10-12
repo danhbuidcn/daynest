@@ -1,4 +1,4 @@
-# 2026-10-12 — S3 bước 5: tab "Ghi chú" + số note, nhóm theo tháng, màn soạn note kiểu Samsung Notes — ✅ xong (còn xoá danh mục thử TestCat)
+# 2026-10-12 — S3 bước 5: tab "Ghi chú" + số note, nhóm theo tháng, màn soạn note kiểu Samsung Notes — ✅ xong
 
 Thuộc: [S3 lộ trình](2026-10-12-s3-plan.md) · spec [S3 mục 3](../docs/specs/sprint-3/index.md#thay-đổi-ghi-chú).
 
@@ -31,4 +31,4 @@ Thuộc: [S3 lộ trình](2026-10-12-s3-plan.md) · spec [S3 mục 3](../docs/sp
   - Nhóm "Đã ghim" (icon ghim) rồi "Tháng 10" — giống mockup 16.
   - Note mới: bàn phím bật sẵn, con trỏ ở nội dung (17b) · đang lọc TestCat → chip tự là TestCat (17c) · bấm chip → bàn phím ẩn, hộp chọn mở, "Thêm danh mục" tạo tại chỗ (17d) · note cũ mở không bật bàn phím · note trống Back → không lưu.
   - Chưa thử trên máy: "Tải thêm" (cần > 30 note; phân trang không đổi) · nhóm năm khác (đã có test Jest).
-  - Dọn dữ liệu: 2 note thử đã xoá vĩnh viễn. **Còn danh mục "TestCat"** — đang xoá thì máy có cuộc gọi đến, tôi dừng. Bạn bấm "Xoá" ở hộp đang mở (hoặc ⋯ → Danh mục → Chọn để xoá).
+  - Dọn dữ liệu: 2 note thử đã xoá vĩnh viễn. Danh mục "TestCat" đã xoá 2026-10-12 11:15 (sau cuộc gọi đến).
