@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-12 | Release 3.0.1 (app mượt hơn: cache trên máy) | ✅ xong (release v3.0.1) | [2026-10-12-release-3-0-1.md](2026-10-12-release-3-0-1.md) |
 | 2026-10-12 | App mượt hơn: lưu cache trên máy, mở app hiện cache ngay, tải trước kỳ liền kề, dùng lại dữ liệu đã có | ✅ xong (mở app hiện cache ngay, cả khi mất mạng) | [2026-10-12-local-cache-speed.md](2026-10-12-local-cache-speed.md) |
 | 2026-10-12 | Cài đặt: "Hiện ngày âm" → "Hiện ngày âm lịch" | ✅ xong | [2026-10-12-show-lunar-label.md](2026-10-12-show-lunar-label.md) |
 | 2026-10-12 | S3: Lịch phản hồi dưới 500 ms (đo → sửa → đo lại) | ✅ xong (1,5–2 s → ≤ 0,35 s) | [2026-10-12-s3-calendar-latency.md](2026-10-12-s3-calendar-latency.md) |
