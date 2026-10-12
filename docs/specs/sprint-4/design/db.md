@@ -16,7 +16,7 @@ Thuộc: [Sprint 4](../index.md). Quy tắc chung mọi bảng mới (id app t�
 - Check: đúng 1 trong 2 cột `key`, `name` có giá trị.
 - Unique `(user_id, key)` · unique `(user_id, lower(name))`. Giới hạn 30 nhóm tự tạo: app kiểm tra.
 - Nhóm có sẵn không sửa, không xoá được: RLS update/delete chỉ cho dòng `key is null`.
-- Tạo nhóm có sẵn: hàm `handle_new_user()` (S1) thêm 3 dòng cho user mới · migration S4 thêm 3 dòng cho mọi user đang có.
+- Tạo nhóm có sẵn: hàm `add_default_expense_categories(user_id)` · trigger riêng `on_auth_user_created_expense_categories` gọi cho user mới (không sửa `handle_new_user()` của S1) · migration S4 gọi cho mọi user đang có.
 - Xoá nhóm: `delete from expense_categories where id = :id` → khoản chi trong nhóm bị xoá theo (FK `on delete cascade`).
 
 ## `expenses`
@@ -37,7 +37,8 @@ Thuộc: [Sprint 4](../index.md). Quy tắc chung mọi bảng mới (id app t�
 
 ## Migration + test
 
-- `supabase/migrations/<timestamp>_s4_expenses.sql`: 2 bảng + RLS + index + trigger `updated_at` + sửa `handle_new_user()` + thêm nhóm có sẵn cho user cũ.
+- Migration 1 `supabase/migrations/20261012102236_s4_expenses.sql`: 2 bảng + RLS + index + trigger `updated_at` + hàm tổng theo tháng + nhóm có sẵn (user mới + user cũ). Chỉ thêm → đã lên DB thật 2026-10-12.
+- Migration 2 `supabase/pending/20261012102237_s4_any_colour.sql` (+ test `rls_s4_colour.sql`): màu hex cho `events`, `note_categories` + `min_version_code = 6` — giữ lại tới lúc release S4 ([pending/README.md](../../../../supabase/pending/README.md)).
 - **Màu bất kỳ (toàn app):** check cột `color` của `events`, `note_categories`, `expense_categories` đổi thành `color in (6 tên) or color ~ '^#[0-9A-F]{6}$'` (hex viết hoa).
 - Bản app cũ chỉ hiểu 6 tên màu → migration tăng `app_config.min_version_code` lên `versionCode` của bản S4 (Spec tổng §4 bước 3).
 - `supabase/tests/rls_s4.sql`: 2 user giả · A không đọc/sửa/xoá được nhóm, khoản chi của B · A không gắn khoản chi vào nhóm của B · không sửa/xoá được nhóm có sẵn · xoá nhóm tự tạo → khoản chi trong nhóm bị xoá · user mới có đủ 3 nhóm · `color` nhận 6 tên + hex hợp lệ, từ chối giá trị khác (`#abc`, `red`) ở cả 3 bảng.
