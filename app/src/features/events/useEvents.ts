@@ -1,4 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
 import * as googleSync from '@/features/google/sync';
@@ -29,7 +30,14 @@ export function useEventsInRange(range: DateRange, timeZone: string = DEFAULT_TI
       return { events, exceptions };
     },
   });
-  const occurrences = query.data ? occurrencesForEvents(query.data.events, query.data.exceptions, range, timeZone) : [];
+  const { data } = query;
+  const { from, to } = range;
+  // Recompute only when the data or the range changes — not on every re-render of the screen,
+  // which would also rebuild every month cell's bars.
+  const occurrences = useMemo(
+    () => (data ? occurrencesForEvents(data.events, data.exceptions, { from, to }, timeZone) : []),
+    [data, from, to, timeZone],
+  );
   return { ...query, occurrences };
 }
 

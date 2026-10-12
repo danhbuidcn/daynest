@@ -2,15 +2,23 @@ import { jdFromDate, jdToDate, type SolarDate } from '@/lib/lunar';
 
 export const DEFAULT_TIME_ZONE = 'Asia/Ho_Chi_Minh';
 
+// Building an Intl.DateTimeFormat costs ~0.1–1 ms on Hermes and the month grid needs thousands
+// of conversions per render, so each (kind, time zone) formatter is built once and reused.
+const formatters = new Map<string, Intl.DateTimeFormat>();
+function formatter(kind: string, timeZone: string, options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
+  const key = `${kind}|${timeZone}`;
+  let f = formatters.get(key);
+  if (!f) {
+    f = new Intl.DateTimeFormat('en-US', { timeZone, ...options });
+    formatters.set(key, f);
+  }
+  return f;
+}
+
 // "Today" follows the user's chosen time zone (F6), not the device's.
 export function todayIn(timeZone: string = DEFAULT_TIME_ZONE, now: Date = new Date()): SolarDate {
   try {
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    }).formatToParts(now);
+    const parts = formatter('date', timeZone, { year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(now);
     const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
     return { year: get('year'), month: get('month'), day: get('day') };
   } catch {
@@ -23,13 +31,7 @@ export type TimeOfDay = { hour: number; minute: number; second: number };
 // Wall-clock time of `date` as seen in `timeZone`.
 export function timeOfDayIn(date: Date, timeZone: string = DEFAULT_TIME_ZONE): TimeOfDay {
   try {
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }).formatToParts(date);
+    const parts = formatter('time', timeZone, { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }).formatToParts(date);
     const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
     const hour = get('hour');
     return { hour: hour === 24 ? 0 : hour, minute: get('minute'), second: get('second') };
@@ -41,8 +43,7 @@ export function timeOfDayIn(date: Date, timeZone: string = DEFAULT_TIME_ZONE): T
 // Minutes to add to a UTC instant to get `timeZone`'s wall-clock time at that instant.
 export function tzOffsetMinutesAt(date: Date, timeZone: string): number {
   try {
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone,
+    const parts = formatter('dateTime', timeZone, {
       hour12: false,
       year: 'numeric',
       month: '2-digit',

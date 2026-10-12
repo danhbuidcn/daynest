@@ -4,7 +4,9 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-12 | S3 bước 7: cuối sprint, release 3.0.0 | ⏳ chờ duyệt | [2026-10-12-s3-step-7-release-3-0-0.md](2026-10-12-s3-step-7-release-3-0-0.md) |
+| 2026-10-12 | Cài đặt: "Hiện ngày âm" → "Hiện ngày âm lịch" | ⏳ chờ duyệt | [2026-10-12-show-lunar-label.md](2026-10-12-show-lunar-label.md) |
+| 2026-10-12 | S3: Lịch phản hồi dưới 500 ms (đo → sửa → đo lại) | ✅ xong (1,5–2 s → ≤ 0,35 s) | [2026-10-12-s3-calendar-latency.md](2026-10-12-s3-calendar-latency.md) |
+| 2026-10-12 | S3 bước 7: cuối sprint, release 3.0.0 | ⏸ chờ sửa độ trễ Lịch | [2026-10-12-s3-step-7-release-3-0-0.md](2026-10-12-s3-step-7-release-3-0-0.md) |
 | 2026-10-12 | S3 bước 6: gửi lại không tạo trùng event, danh mục | ✅ xong | [2026-10-12-s3-step-6-idempotent-create.md](2026-10-12-s3-step-6-idempotent-create.md) |
 | 2026-10-12 | S3 bước 4: Lịch giữ dữ liệu cũ + loading khi tải (đo tab trên máy: không khựng) | ✅ xong | [2026-10-12-s3-step-4-tab-loading.md](2026-10-12-s3-step-4-tab-loading.md) |
 | 2026-10-12 | Ghi 5 giai đoạn của mọi sprint vào README | ✅ xong | [2026-10-12-sprint-five-phases.md](2026-10-12-sprint-five-phases.md) |

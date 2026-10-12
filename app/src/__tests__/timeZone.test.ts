@@ -29,6 +29,18 @@ describe('timeOfDayIn / zonedDateTimeToUtc', () => {
   });
 });
 
+describe('cached formatters', () => {
+  it('keeps zones apart when calls alternate between them', () => {
+    const instant = new Date('2026-10-09T18:30:00Z');
+    for (let i = 0; i < 3; i++) {
+      expect(todayIn('Asia/Ho_Chi_Minh', instant)).toEqual({ year: 2026, month: 10, day: 10 });
+      expect(todayIn('Europe/London', instant)).toEqual({ year: 2026, month: 10, day: 9 });
+      expect(timeOfDayIn(instant, 'Asia/Ho_Chi_Minh')).toEqual({ hour: 1, minute: 30, second: 0 });
+      expect(timeOfDayIn(instant, 'Europe/London')).toEqual({ hour: 19, minute: 30, second: 0 });
+    }
+  });
+});
+
 describe('clockParts', () => {
   it('formats 24h as HH:mm', () => {
     expect(clockParts({ hour: 9, minute: 5, second: 0 }, true)).toEqual({ text: '09:05', period: null });
