@@ -4,9 +4,9 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-13 | Index `expense_categories (user_id)` (RLS tổng 6 tháng hết quét cả bảng) | ✅ xong (lên DB thật ở bước 8) | [2026-10-13-expense-categories-user-index.md](2026-10-13-expense-categories-user-index.md) |
+| 2026-10-13 | Index `expense_categories (user_id)` (RLS tổng 6 tháng hết quét cả bảng) | ✅ xong (đã lên DB thật) | [2026-10-13-expense-categories-user-index.md](2026-10-13-expense-categories-user-index.md) |
 | 2026-10-12 | Cài đặt: "Hiện …" → "Hiển thị …" (ngày âm lịch, ngày lễ) | ✅ xong | [2026-10-12-show-holidays-label.md](2026-10-12-show-holidays-label.md) |
-| 2026-10-12 | S4 bước 8: Cuối sprint, release | 🔄 đang làm | [2026-10-12-s4-step-8-release.md](2026-10-12-s4-step-8-release.md) |
+| 2026-10-12 | S4 bước 8: Cuối sprint, release | ✅ xong (v4.0.0 trên GitHub; máy thật bạn tự thử) | [2026-10-12-s4-step-8-release.md](2026-10-12-s4-step-8-release.md) |
 | 2026-10-12 | S4 bước 7: Test tải | ✅ xong (0 lỗi, p95 446 ms) | [2026-10-12-s4-step-7-load-test.md](2026-10-12-s4-step-7-load-test.md) |
 | 2026-10-12 | S4 bước 6: Nhóm chi tiêu | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-6-expense-categories.md](2026-10-12-s4-step-6-expense-categories.md) |
 | 2026-10-12 | S4 bước 5: Form khoản chi | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-5-expense-form.md](2026-10-12-s4-step-5-expense-form.md) |
@@ -14,7 +14,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | 2026-10-12 | S4 bước 3: Tab Chi tiêu — chế độ Ngày | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-3-expenses-day.md](2026-10-12-s4-step-3-expenses-day.md) |
 | 2026-10-12 | S4 bước 2: Màu bất kỳ (toàn app) | ✅ xong (thử giao diện trên máy ảo; lưu hex + Google thử ở bước 8) | [2026-10-12-s4-step-2-any-color.md](2026-10-12-s4-step-2-any-color.md) |
 | 2026-10-12 | S4 bước 1: DB (migration + test RLS) | ✅ xong (migration 1 trên DB thật, migration 2 chờ release) | [2026-10-12-s4-step-1-db.md](2026-10-12-s4-step-1-db.md) |
-| 2026-10-12 | S4: lộ trình code (Chi tiêu + màu bất kỳ) | 🔄 đang làm (8 bước) | [2026-10-12-s4-code-plan.md](2026-10-12-s4-code-plan.md) |
+| 2026-10-12 | S4: lộ trình code (Chi tiêu + màu bất kỳ) | ✅ xong (8 bước, v4.0.0) | [2026-10-12-s4-code-plan.md](2026-10-12-s4-code-plan.md) |
 | 2026-10-12 | S4: mockup Chi tiêu (+ chọn màu bất kỳ toàn app, 36 icon) | ✅ xong | [2026-10-12-s4-mockups.md](2026-10-12-s4-mockups.md) |
 | 2026-10-12 | S4 spec: chỉ 3 nhóm có sẵn (Ăn uống, Di chuyển, Hoá đơn) | ✅ xong | [2026-10-12-s4-spec-three-default-categories.md](2026-10-12-s4-spec-three-default-categories.md) |
 | 2026-10-12 | S4: viết spec Chi tiêu | ✅ xong | [2026-10-12-s4-spec.md](2026-10-12-s4-spec.md) |
