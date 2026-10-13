@@ -2,6 +2,7 @@
   "appName": "Daynest",
   "common": {
     "offline": "No connection",
+    "limitTitle": "Limit reached",
     "cancel": "Cancel",
     "done": "Done",
     "am": "AM",
@@ -372,6 +373,7 @@
     "leave": "Leave",
     "categories": {
       "title": "Categories",
+      "limitText": "Up to {{max}} categories.",
       "add": "Add category",
       "edit": "Edit category",
       "name": "Name",
@@ -466,6 +468,7 @@
       "duplicate": "This name already exists"
     },
     "categoriesScreen": {
+      "limitText": "Up to {{max}} of your own categories.",
       "builtIn": "Built-in",
       "mine": "Yours",
       "edit": "Edit",
@@ -477,9 +480,9 @@
       "title": "Todo",
       "changeKind": "Change type"
     },
-    "subtasks": "Subtasks",
-    "addSubtask": "Add subtask",
-    "subtaskPlaceholder": "New subtask",
+    "subtasks": "Checklist",
+    "addSubtask": "Add item",
+    "subtaskPlaceholder": "New item",
     "occurrenceTitle": "Repeating todo",
     "deleteTitle": "Delete todo?",
     "tickFailed": "Could not save. Please try again.",
@@ -512,6 +515,16 @@
     "save": "Save",
     "cancel": "Cancel",
     "loadFailed": "Could not load data",
-    "retry": "Retry"
+    "retry": "Retry",
+    "periodDay": "Period (day {{n}})",
+    "predictedRow": "Predicted period",
+    "summaryDay": "Period day {{n}}",
+    "summaryToday": "Period expected today",
+    "summaryIn_one": "Period expected in {{count}} day",
+    "summaryIn_other": "Period expected in {{count}} days",
+    "late_one": "{{count}} day late",
+    "late_other": "{{count}} days late",
+    "remindBody_one": "Period expected to start in {{count}} day",
+    "remindBody_other": "Period expected to start in {{count}} days"
   }
 }

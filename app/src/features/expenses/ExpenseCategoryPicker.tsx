@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { DialogShell } from '@/components/Dialog';
+import { AlertDialog, DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { colors, radius, space } from '@/theme';
 import { categoryName, USER_CATEGORY_MAX } from './expense';
@@ -26,6 +26,7 @@ export function ExpenseCategoryPicker({
   const { t } = useTranslation();
   const categories = useExpenseCategories().data ?? [];
   const [adding, setAdding] = useState(false);
+  const [limitOpen, setLimitOpen] = useState(false);
   const canAdd = categories.filter((c) => !c.key).length < USER_CATEGORY_MAX;
 
   return (
@@ -53,15 +54,22 @@ export function ExpenseCategoryPicker({
             );
           })}
         </ScrollView>
-        {canAdd ? (
-          <Pressable accessibilityRole="button" onPress={() => setAdding(true)} style={styles.option}>
-            <Icon name="plus" size={20} color={colors.primaryDark} />
-            <AppText weight="bold" color={colors.primaryDark}>
-              {t('expenses.form.addCategory')}
-            </AppText>
-          </Pressable>
-        ) : null}
+        <Pressable accessibilityRole="button" onPress={() => (canAdd ? setAdding(true) : setLimitOpen(true))} style={styles.option}>
+          <Icon name="plus" size={20} color={colors.primaryDark} />
+          <AppText weight="bold" color={colors.primaryDark}>
+            {t('expenses.form.addCategory')}
+          </AppText>
+        </Pressable>
       </DialogShell>
+      <AlertDialog
+        visible={limitOpen}
+        tone="warning"
+        icon="warn"
+        title={t('common.limitTitle')}
+        text={t('expenses.categoriesScreen.limitText', { max: USER_CATEGORY_MAX })}
+        buttonLabel={t('common.done')}
+        onClose={() => setLimitOpen(false)}
+      />
       {visible && adding ? (
         <ExpenseCategoryDialog
           onClose={() => setAdding(false)}

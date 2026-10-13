@@ -13,7 +13,7 @@ Thuộc: [Spec tổng](../index.md) · S5. Chốt phạm vi: [wip](../../../wip/
 
 | # | Việc | Chi tiết |
 | --- | --- | --- |
-| 1 | Todo | Tạo / sửa / xoá todo giống event + **việc phụ** + tick xong · hiện trên Lịch ([chi tiết](#todo)) |
+| 1 | Todo | Tạo / sửa / xoá todo giống event + **việc trong danh sách** + tick xong · hiện trên Lịch ([chi tiết](#todo)) |
 | 2 | Danh sách todo chưa xong | Tab Ghi chú có thêm phần Todo: Quá hạn · Hôm nay · Sắp tới ([chi tiết](#danh-sách-todo)) |
 | 3 | Chu kỳ kinh nguyệt | Bật/tắt trong Cài đặt · ghi ngày có kinh · Lịch hiện ngày dự đoán kỳ sau · nhắc trước kỳ kinh ([chi tiết](#chu-kỳ-kinh-nguyệt)) |
 | 4 | Báo lỗi | Cài đặt › Báo lỗi: nội dung + ảnh → gửi email tới nhà phát triển ([chi tiết](#báo-lỗi)) |
@@ -24,15 +24,15 @@ Thuộc: [Spec tổng](../index.md) · S5. Chốt phạm vi: [wip](../../../wip/
 
 ## Todo
 
-Todo = event có thêm **việc phụ** và **trạng thái xong**, lưu ở **bảng riêng** ([db.md](design/db.md#todo--bảng-mới-todos-todo_exceptions)). Form, lặp, ngoại lệ, nhắc làm giống event ([F2](../sprint-2/F2-event.md), [F3](../sprint-2/F3-reminders.md)), dùng lại code của event.
+Todo = event có thêm **việc trong danh sách** và **trạng thái xong**, lưu ở **bảng riêng** ([db.md](design/db.md#todo--bảng-mới-todos-todo_exceptions)). Form, lặp, ngoại lệ, nhắc làm giống event ([F2](../sprint-2/F2-event.md), [F3](../sprint-2/F3-reminders.md)), dùng lại code của event.
 
 | Trường | Quy tắc |
 | --- | --- |
 | Tiêu đề, chi tiết, cả ngày / giờ, màu, lặp, nhắc | Như event · mặc định: **cả ngày bật**, ngày đang chọn, nhắc tắt |
-| Việc phụ | 0–50 việc · mỗi việc: chữ ≤ 200 ký tự + xong / chưa · thêm, sửa chữ, xoá, kéo đổi thứ tự (dùng lại khối checklist của note) |
-| Xong | Tick ô tròn trước tiêu đề · tick todo → mọi việc phụ cũng xong · tick đủ mọi việc phụ → todo tự xong · bỏ tick 1 việc phụ → todo về chưa xong |
+| Danh sách việc | 0–50 việc · mỗi việc: chữ ≤ 200 ký tự + xong / chưa · thêm, sửa chữ, xoá, kéo đổi thứ tự (dùng lại khối checklist của note) |
+| Xong | Tick ô tròn trước tiêu đề · tick todo → mọi việc trong danh sách cũng xong · tick đủ mọi việc trong danh sách → todo tự xong · bỏ tick 1 việc trong danh sách → todo về chưa xong |
 
-- Todo lặp: **mỗi lần lặp có trạng thái xong + tick việc phụ riêng** (ngày 1 xong không làm ngày 2 xong). Danh sách việc phụ chung cho mọi lần; sửa riêng 1 lần lặp → "Chỉ lần này" như event.
+- Todo lặp: **mỗi lần lặp có trạng thái xong + tick việc trong danh sách riêng** (ngày 1 xong không làm ngày 2 xong). Danh sách việc chung cho mọi lần; sửa riêng 1 lần lặp → "Chỉ lần này" như event.
 - Ví dụ học tiếng Anh 30 ngày, mỗi ngày việc khác: tạo todo cho từng ngày, hoặc 1 todo lặp hằng ngày đến ngày 30 rồi sửa "Chỉ lần này" cho từng ngày (giống CalendarCute).
 - Tick trên Lịch, danh sách todo, màn chi tiết: lưu ngay, không cần mở form · cập nhật lạc quan (hiện ngay, lỗi → trả lại + toast).
 - **Không đồng bộ Google:** todo chỉ ở Daynest, kể cả khi bật đồng bộ.
@@ -42,7 +42,7 @@ Todo = event có thêm **việc phụ** và **trạng thái xong**, lưu ở **b
 
 - Form tạo: tiêu đề đầu màn là nút **"Todo ▾"** / **"Sự kiện ▾"** → mở lại pop-up 4 ô của nút `+` (Sự kiện · Todo · Ghi chú · Khoản chi), ô loại đang dùng được đánh dấu. Mở từ `+` › Todo → Todo · mọi chỗ khác (`+` › Sự kiện, pop-up ngày, Tuần, Ngày) → Sự kiện.
 - Chọn **Sự kiện ↔ Todo**: đổi form tại chỗ, giữ nội dung đã nhập: tiêu đề, chi tiết, cả ngày / giờ, nhắc, lặp, màu. Ô **chưa sửa** (cả ngày / giờ, nhắc) lấy mặc định của loại mới (Todo: cả ngày, nhắc tắt · Sự kiện: giờ tới, nhắc 15 phút); ô đã sửa thì giữ.
-- Việc phụ chỉ có ở Todo: sang Sự kiện thì ẩn, quay lại Todo còn nguyên · Lưu là Sự kiện → bỏ việc phụ.
+- Danh sách việc chỉ có ở Todo: sang Sự kiện thì ẩn, quay lại Todo còn nguyên · Lưu là Sự kiện → bỏ việc trong danh sách.
 - Chọn **Ghi chú / Khoản chi**: mở form đó thay form đang mở, không mang nội dung sang · đã nhập gì → hỏi "Bỏ thay đổi?" trước. Chọn lại loại đang dùng → chỉ đóng pop-up.
 - Chỉ khi **tạo mới**; màn sửa giữ tiêu đề chữ, không bấm được (event và todo ở 2 bảng khác nhau).
 
@@ -50,8 +50,8 @@ Todo = event có thêm **việc phụ** và **trạng thái xong**, lưu ở **b
 
 - Hiện cùng event, cùng màu, có ô tròn ở đầu: chưa xong = viền tròn · xong = tròn đặc có ✓, chữ gạch ngang mờ.
 - Tháng: thanh như event (ô tròn nhỏ ở đầu thanh) · Tuần, Ngày, Danh sách: dòng có ô tròn bấm được để tick.
-- Pop-up ngày: todo hiện dưới event, có ô tick · ghi "2/5" nếu có việc phụ.
-- Chi tiết todo: ô tick + tiêu đề · danh sách việc phụ tick được · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa, Xoá.
+- Pop-up ngày: todo hiện dưới event, có ô tick · ghi "2/5" nếu có việc trong danh sách.
+- Chi tiết todo: ô tick + tiêu đề · danh sách việc tick được · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa, Xoá.
 
 ## Danh sách todo
 
@@ -65,7 +65,7 @@ Phần Todo có thanh tuần ngang để chọn ngày (như Lịch › Danh sác
 | Hôm nay | Mọi todo của ngày chọn (cả đã xong, xếp cuối) · chọn ngày khác hôm nay → tên nhóm là ngày đó, vd "Thứ Hai, 12/10" |
 | Sắp tới | Todo chưa xong **7 ngày sau** ngày chọn · theo ngày |
 
-- Mỗi dòng: ô tick · tiêu đề · "2/5" việc phụ · ngày (Quá hạn, Sắp tới) · chấm màu · bấm → chi tiết todo.
+- Mỗi dòng: ô tick · tiêu đề · "2/5" việc trong danh sách · ngày (Quá hạn, Sắp tới) · chấm màu · bấm → chi tiết todo.
 - Trống cả 3 nhóm: "Chưa có việc cần làm" + nút "Thêm todo".
 - Todo lặp: mỗi lần lặp là 1 dòng.
 
@@ -127,14 +127,14 @@ Mặc định **tắt**. Tắt → không hiện gì trên Lịch, không nhắc
 ## 2 lỗi từ S4
 
 - **Màu gần nhất lên Google** (`toGoogleColorId`, `lib/google/mapping.ts`): đổi từ khoảng cách RGB thô sang khoảng cách trong không gian màu **Lab** (ΔE76, gần với mắt người). Test: `#8B1E3F` → Flamingo (đỏ hồng, không còn xám), `#FFE08A` → Banana (vàng), 11 màu Google ra chính nó. (Ban đầu ghi Tomato; không cách đo Lab chuẩn nào ra Tomato — xem [wip](../../../wip/2026-10-13-s5-step-2-s4-bugs.md).)
-- **"1 notes"**: thêm khoá `_one` cho `count` và `confirmText` trong `en.json` → "1 note" / "2 notes". Rà các chuỗi đếm khác trong `en.json` (todo "1 task", việc phụ…) cùng cách.
+- **"1 notes"**: thêm khoá `_one` cho `count` và `confirmText` trong `en.json` → "1 note" / "2 notes". Rà các chuỗi đếm khác trong `en.json` (todo "1 task", việc trong danh sách…) cùng cách.
 
 ## Màn hình
 
 ```text
 Nút + (thanh tab) → pop-up: Sự kiện · Todo · Ghi chú · Khoản chi
-Form tạo: ✕ · "Todo ▾" / "Sự kiện ▾" (bấm → pop-up 4 ô như nút +) · Lưu · tiêu đề · chi tiết · Việc phụ (chỉ Todo, + Thêm việc phụ) · cả ngày / giờ · nhắc · lặp · màu
-Chi tiết Todo: ô tick + tiêu đề · việc phụ (tick) · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa / Xoá
+Form tạo: ✕ · "Todo ▾" / "Sự kiện ▾" (bấm → pop-up 4 ô như nút +) · Lưu · tiêu đề · chi tiết · Danh sách việc (chỉ Todo, + Thêm việc) · cả ngày / giờ · nhắc · lặp · màu
+Chi tiết Todo: ô tick + tiêu đề · việc trong danh sách (tick) · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa / Xoá
 Lịch (Tháng / Tuần / Ngày / Danh sách): todo có ô tròn · giọt kỳ kinh (đặc / viền)
 Pop-up ngày: event · todo (tick, 2/5) · dòng chu kỳ + nút "Kỳ kinh"
 Tab Ghi chú: [Todo | Ghi chú] · Todo: thanh tuần chọn ngày (chỉ chấm dưới hôm nay) · Quá hạn · Hôm nay (ngày chọn) · Sắp tới
@@ -153,7 +153,7 @@ Màn Báo lỗi: nội dung · ảnh (≤ 3) · Gửi
 
 ## Xong khi (DoD)
 
-- [ ] Todo: tạo (chuyển qua lại Sự kiện ↔ Todo khi tạo), sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc phụ thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google.
+- [ ] Todo: tạo (chuyển qua lại Sự kiện ↔ Todo khi tạo), sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc trong danh sách thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google.
 - [ ] Danh sách todo: Quá hạn, Hôm nay, Sắp tới đúng theo ngày và múi giờ trong Cài đặt.
 - [ ] Chu kỳ: bật/tắt · ghi / bỏ ngày có kinh · dự đoán 3 kỳ đúng công thức (hàm thuần có test) · trễ → "Trễ N ngày" · nhắc đúng giờ nhắc, số ngày đã chọn trên máy thật.
 - [ ] Báo lỗi: gửi nội dung + 3 ảnh → email tới đủ các email trong DB, có ảnh · quá 5 lần / ngày bị chặn · user không đọc được báo cáo, ảnh, email của user khác.

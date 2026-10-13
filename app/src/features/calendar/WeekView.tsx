@@ -4,6 +4,8 @@ import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } fro
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
+import { CycleDrop } from '@/components/CycleDrop';
+import type { CycleDay } from '@/lib/cycle';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
 import { weekdayOf, type WeekStart } from '@/lib/calendar/monthGrid';
@@ -32,6 +34,7 @@ export function WeekView({
   onTickTodo,
   onPressHoliday,
   onAddAllDay,
+  cycleOf,
   refreshControl,
 }: {
   cursor: SolarDate;
@@ -46,6 +49,7 @@ export function WeekView({
   onTickTodo: (o: TodoOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
   onAddAllDay: (d: SolarDate) => void;
+  cycleOf: (d: SolarDate) => CycleDay | null;
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
@@ -60,6 +64,7 @@ export function WeekView({
           const weekday = weekdayOf(d);
           const dayColor = d.isToday ? colors.primaryDark : weekday === 0 || d.holidays.length > 0 ? colors.error : colors.text;
           const events = occurrencesOnDay(occurrences, d, timeZone).sort(calendarOrder);
+          const cycle = cycleOf(d);
           const empty = events.length === 0 && d.holidays.length === 0;
           return (
             <Pressable
@@ -71,9 +76,12 @@ export function WeekView({
                 <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted}>
                   {t(`calendar.weekdays.${weekday}`)}
                 </AppText>
-                <AppText variant="heading" weight="extrabold" color={dayColor}>
-                  {String(d.day).padStart(2, '0')}
-                </AppText>
+                <View style={styles.number}>
+                  <AppText variant="heading" weight="extrabold" color={dayColor}>
+                    {String(d.day).padStart(2, '0')}
+                  </AppText>
+                  {cycle ? <CycleDrop predicted={cycle.kind === 'predicted'} /> : null}
+                </View>
                 <AppText variant="caption" color={d.isToday ? colors.primaryDark : colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
                   {d.lunarDayMonth}
                 </AppText>
@@ -114,6 +122,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 66, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: colors.border },
   pressed: { backgroundColor: colors.primarySoft },
   date: { width: 52 },
+  number: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   none: { flex: 1 },
   cards: { gap: 6, alignItems: 'center', paddingVertical: 4, paddingRight: space.xs },
 });

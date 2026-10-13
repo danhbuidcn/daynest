@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
@@ -20,6 +20,7 @@ import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import { useCalendarNav } from '@/features/calendar/useCalendarNav';
 import { ViewModeBar } from '@/features/calendar/ViewModeBar';
 import { WeekView } from '@/features/calendar/WeekView';
+import { useCycleCalendar } from '@/features/cycle/useCycleCalendar';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { syncNow } from '@/features/google/sync';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
@@ -27,7 +28,7 @@ import { useEventsInRange, usePrefetchEvents } from '@/features/events/useEvents
 import type { TodoOccurrence } from '@/features/todos/todo';
 import { usePrefetchTodos, useSetTodoStatus, useTodosInRange } from '@/features/todos/useTodos';
 import { type BarItem } from '@/lib/calendar/eventBars';
-import { isoDate } from '@/lib/calendar/monthGrid';
+import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
 import { toggleTodo } from '@/lib/todos';
 import { colors, space } from '@/theme';
@@ -45,6 +46,16 @@ export default function CalendarScreen() {
   const [selected, setSelected] = useState<SolarDate | null>(today);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dayDialogDate, setDayDialogDate] = useState<SolarDate | null>(null);
+  const cycle = useCycleCalendar();
+  // Tapping the period reminder opens the calendar on the predicted day (S5).
+  const { date: dateParam } = useLocalSearchParams<{ date?: string }>();
+  const [appliedDate, setAppliedDate] = useState<string>();
+  if (dateParam && dateParam !== appliedDate) {
+    const d = parseIsoDate(dateParam);
+    setAppliedDate(dateParam);
+    setCursor(d);
+    setSelected(d);
+  }
   const googleSync = useGoogleSync();
   const [pulling, setPulling] = useState(false);
 
@@ -169,13 +180,13 @@ export default function CalendarScreen() {
       <GestureDetector gesture={swipe}>
         <View style={styles.swipeArea} collapsable={false}>
           {mode === 'month' ? (
-            <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} />
+            <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} cycleKind={(d) => cycle.dayOf(d)?.kind ?? null} />
           ) : mode === 'week' ? (
-            <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} />
+            <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} cycleOf={cycle.dayOf} />
           ) : mode === 'day' ? (
-            <DayView {...viewProps} onAddAt={onAddAt} />
+            <DayView {...viewProps} onAddAt={onAddAt} cycleOf={cycle.dayOf} />
           ) : (
-            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} />
+            <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} cycleOf={cycle.dayOf} />
           )}
           {eventsLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
         </View>
@@ -203,6 +214,8 @@ export default function CalendarScreen() {
           onAdd={onAddForDay}
           onPressOccurrence={onPressOccurrence}
           onTickTodo={onTickTodo}
+          cycle={cycle.enabled ? cycle.summaryOf(dayDialogDate) : undefined}
+          onOpenCycle={cycle.enabled ? () => { closeDayDialog(); router.push('/settings/period'); } : undefined}
         />
       ) : null}
       <AlertDialog

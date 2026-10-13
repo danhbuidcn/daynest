@@ -4,6 +4,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { DialogShell } from '@/components/Dialog';
 import { PopupHeader } from '@/components/PopupHeader';
+import { CycleSummary } from '@/features/cycle/CycleLine';
+import type { CycleDay } from '@/lib/cycle';
 import { dateLabel, lunarLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
@@ -26,6 +28,8 @@ export function DayEventsDialog({
   onAdd,
   onPressOccurrence,
   onTickTodo,
+  cycle,
+  onOpenCycle,
 }: {
   visible: boolean;
   date: SolarDate;
@@ -38,6 +42,9 @@ export function DayEventsDialog({
   onAdd: () => void;
   onPressOccurrence: (o: EventOccurrence) => void;
   onTickTodo: (o: TodoOccurrence) => void;
+  // Cycle tracking on (S5): summary line + button to the logging screen; undefined while off.
+  cycle?: CycleDay | null;
+  onOpenCycle?: () => void;
 }) {
   const { t } = useTranslation();
 
@@ -59,6 +66,7 @@ export function DayEventsDialog({
         onClose={onClose}
         onAdd={onAdd}
       />
+      {onOpenCycle ? <CycleSummary cycle={cycle ?? null} onOpen={onOpenCycle} /> : null}
       <ScrollView style={styles.list}>
         {holidays.map((h) => (
           <HolidayRow key={h} title={t(`holidays.${h}`)} />

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { DialogShell } from '@/components/Dialog';
+import { AlertDialog, DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { CATEGORY_MAX } from '@/lib/notes';
 import { toHex } from '@/lib/colors';
@@ -29,6 +29,7 @@ export function CategoryPickerDialog({
   const { t } = useTranslation();
   const categories = useCategories().data ?? [];
   const [adding, setAdding] = useState(false);
+  const [limitOpen, setLimitOpen] = useState(false);
 
   const option = (id: string | null, label: string, dot?: string) => {
     const on = id === selected;
@@ -58,15 +59,25 @@ export function CategoryPickerDialog({
           {option(null, t('notes.noCategory'))}
           {categories.map((c) => option(c.id, c.name, toHex(c.color)))}
         </ScrollView>
-        {categories.length < CATEGORY_MAX ? (
-          <Pressable accessibilityRole="button" onPress={() => setAdding(true)} style={styles.option}>
-            <Icon name="plus" size={20} color={colors.primaryDark} />
-            <AppText weight="bold" color={colors.primaryDark}>
-              {t('notes.categories.add')}
-            </AppText>
-          </Pressable>
-        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => (categories.length < CATEGORY_MAX ? setAdding(true) : setLimitOpen(true))}
+          style={styles.option}>
+          <Icon name="plus" size={20} color={colors.primaryDark} />
+          <AppText weight="bold" color={colors.primaryDark}>
+            {t('notes.categories.add')}
+          </AppText>
+        </Pressable>
       </DialogShell>
+      <AlertDialog
+        visible={limitOpen}
+        tone="warning"
+        icon="warn"
+        title={t('common.limitTitle')}
+        text={t('notes.categories.limitText', { max: CATEGORY_MAX })}
+        buttonLabel={t('common.done')}
+        onClose={() => setLimitOpen(false)}
+      />
       {visible && adding ? <CategoryEditDialog onClose={() => setAdding(false)} /> : null}
     </>
   );

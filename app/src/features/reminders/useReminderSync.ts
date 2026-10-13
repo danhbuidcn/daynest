@@ -13,9 +13,32 @@ export function useReminderSync() {
   const signedIn = !!profile;
 
   useEffect(() => {
-    configureReminders({ signedIn, enabled: settings.notificationsEnabled, timeZone: settings.timeZone, use24h: settings.use24h, t });
+    configureReminders({
+      signedIn,
+      enabled: settings.notificationsEnabled,
+      timeZone: settings.timeZone,
+      use24h: settings.use24h,
+      t,
+      cycle:
+        settings.cycleEnabled && settings.periodReminder
+          ? { cycleLength: settings.cycleLength, periodLength: settings.periodLength, daysBefore: settings.periodReminderDays, time: settings.periodReminderTime }
+          : null,
+    });
     void resyncReminders();
-  }, [signedIn, settings.notificationsEnabled, settings.timeZone, settings.use24h, t, i18n.language]);
+  }, [
+    signedIn,
+    settings.notificationsEnabled,
+    settings.timeZone,
+    settings.use24h,
+    settings.cycleEnabled,
+    settings.cycleLength,
+    settings.periodLength,
+    settings.periodReminder,
+    settings.periodReminderDays,
+    settings.periodReminderTime,
+    t,
+    i18n.language,
+  ]);
 
   useEffect(() => {
     const sub = AppState.addEventListener('change', (state) => {

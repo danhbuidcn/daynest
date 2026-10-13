@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { addDays, autoTickDays, cycleLength, groupPeriods, periodLength, predictPeriods } from '@/lib/cycle';
+import { addDays, autoTickDays, cycleLength, cycleOnDay, groupPeriods, periodLength, predictPeriods, reminderDates } from '@/lib/cycle';
 
 const run = (start: string, n: number) => Array.from({ length: n }, (_, i) => addDays(start, i));
 
@@ -83,5 +83,25 @@ describe('autoTickDays', () => {
   it('ticks only the day when it touches a logged one', () => {
     expect(autoTickDays('2026-01-11', new Set(['2026-01-10']), '2026-01-31', 5)).toEqual(['2026-01-11']);
     expect(autoTickDays('2026-01-09', new Set(['2026-01-10']), '2026-01-31', 5)).toEqual(['2026-01-09']);
+  });
+});
+
+describe('cycleOnDay', () => {
+  const periods = groupPeriods(run('2026-01-01', 5));
+  const predicted = predictPeriods(periods, '2026-01-10', { cycleLength: 28, periodLength: 5 });
+  it('numbers logged days', () => expect(cycleOnDay('2026-01-02', periods, predicted, '2026-01-10')).toEqual({ kind: 'period', dayNumber: 2 }));
+  it('marks the predicted start and its countdown', () =>
+    expect(cycleOnDay('2026-01-29', periods, predicted, '2026-01-10')).toEqual({ kind: 'predicted', isStart: true, daysUntil: 19, lateDays: 0 }));
+  it('is empty elsewhere', () => expect(cycleOnDay('2026-01-15', periods, predicted, '2026-01-10')).toBeNull());
+  it('reports a late period on today', () => {
+    const late = predictPeriods(periods, '2026-02-01', { cycleLength: 28, periodLength: 5 });
+    expect(cycleOnDay('2026-02-01', periods, late, '2026-02-01')).toMatchObject({ kind: 'predicted', lateDays: 3 });
+  });
+});
+
+describe('reminderDates', () => {
+  it('keeps only dates not in the past', () => {
+    const predicted = [{ start: '2026-01-29', end: '2026-02-02', lateDays: 0 }, { start: '2026-02-26', end: '2026-03-02', lateDays: 0 }];
+    expect(reminderDates(predicted, '2026-01-28', 2)).toEqual([{ date: '2026-02-24', start: '2026-02-26' }]);
   });
 });

@@ -85,3 +85,23 @@ export function autoTickDays(day: string, logged: Set<string>, today: string, le
   }
   return days;
 }
+
+export type CycleDay =
+  | { kind: 'period'; dayNumber: number }
+  | { kind: 'predicted'; isStart: boolean; daysUntil: number; lateDays: number };
+
+// What the calendar shows on `day`: a logged period day, a predicted one, or nothing.
+export function cycleOnDay(day: string, periods: Period[], predicted: PredictedPeriod[], today: string): CycleDay | null {
+  const period = periods.find((p) => day >= p.start && day <= p.end);
+  if (period) return { kind: 'period', dayNumber: daysBetween(period.start, day) + 1 };
+  const next = predicted.find((p) => day >= p.start && day <= p.end);
+  if (!next) return null;
+  return { kind: 'predicted', isStart: day === next.start, daysUntil: daysBetween(today, next.start), lateDays: day === next.start ? next.lateDays : 0 };
+}
+
+// Notification times: `daysBefore` the predicted start of the next period that is still ahead.
+export function reminderDates(predicted: PredictedPeriod[], today: string, daysBefore: number): { date: string; start: string }[] {
+  return predicted
+    .map((p) => ({ date: addDays(p.start, -daysBefore), start: p.start }))
+    .filter((r) => r.date >= today);
+}

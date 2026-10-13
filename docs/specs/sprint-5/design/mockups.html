@@ -485,11 +485,11 @@ Object.assign(I, {
 });
 // Ô tròn todo: xong = tròn đặc màu primary + ✓ trắng · chưa = viền primary
 const tk = (on, size = 22) => `<span class="tick ${on ? 'on' : ''}" style="width:${size}px;height:${size}px">${on ? I.checkW : ''}</span>`;
-// Ô vuông việc phụ (dùng lại Dòng checklist của note)
+// Ô vuông việc trong danh sách (dùng lại Dòng checklist của note)
 const sq = (on) => `<span class="tick ${on ? 'on' : ''}" style="border-radius:6px">${on ? I.checkW : ''}</span>`;
 
 // ---- Dữ liệu mẫu (hôm nay: Thứ Ba 13/10/2026 · tuần bắt đầu Thứ Hai) ----
-// [ngày, tiêu đề, màu, xong, việc phụ xong/tổng, giờ]
+// [ngày, tiêu đề, màu, xong, việc trong danh sách xong/tổng, giờ]
 const T = [
   [13, 'Học tiếng Anh — Ngày 3', 'lavender', false, [2, 4], 'Cả ngày'],
   [13, 'Nộp hồ sơ bảo hiểm', 'sky', false, null, '14:00'],
@@ -634,9 +634,9 @@ const todoForm = `<div class="content">
   <div class="form" style="padding-bottom:84px">
     <div class="fcard"><div class="title-in">Học tiếng Anh — Ngày 3</div><div class="detail-in">Giáo trình English File, unit 2</div></div>
     <div class="fcard">
-      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Việc phụ</span><span class="cap muted">2/4</span></div>
+      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Danh sách việc</span><span class="cap muted">2/4</span></div>
       ${subs.map(([s, on]) => `<div class="cl ${on ? 'done' : ''}"><span class="grip">${I.grip}</span>${sq(on)}<span class="grow">${s}</span><span class="rm">${I.close}</span></div>`).join('')}
-      <div class="addline" style="padding-left:24px">${I.plusG}Thêm việc phụ</div>
+      <div class="addline" style="padding-left:24px">${I.plusG}Thêm việc</div>
     </div>
     <div class="fcard">
       <div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw on"></span></div>
@@ -687,7 +687,7 @@ const todoDetail = `<div class="content">
   <div class="detail">
     <div class="dtitle">${tk(false, 28)}<h2>Học tiếng Anh — Ngày 3</h2></div>
     <div class="card" style="padding:4px 16px 8px">
-      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Việc phụ</span><span class="cap muted">2/4</span></div>
+      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Danh sách việc</span><span class="cap muted">2/4</span></div>
       ${subs.map(([s, on]) => `<div class="cl ${on ? 'done' : ''}">${sq(on)}<span class="grow">${s}</span></div>`).join('')}
     </div>
     <div class="card" style="padding:4px 16px">
@@ -801,12 +801,12 @@ const bugLimit = `<div class="under">${bugScreen(true)}</div>
 const groups = [
   ['Todo trên Lịch', [
     ['1. Nút + ở thanh tab', 'thêm "Todo" vào pop-up sẵn có · 4 nút 2×2: Sự kiện · Todo · Ghi chú · Khoản chi', phone(plusPopup)],
-    ['2. Form tạo — Todo', 'tiêu đề <b>"Todo ▾"</b> bấm được → màn 2b (chỉ khi tạo mới; màn sửa giữ chữ "Todo") · khối Việc phụ ngay dưới tiêu đề, trước thời gian / nhắc / lặp / màu (mặc định cả ngày, nhắc tắt) · Việc phụ: kéo ⋮⋮ đổi thứ tự, ô vuông tick, ✕ xoá, "+ Thêm việc phụ" · không có sticker, báo thức, ghim, vị trí, URL', phone(todoForm, 'tall')],
+    ['2. Form tạo — Todo', 'tiêu đề <b>"Todo ▾"</b> bấm được → màn 2b (chỉ khi tạo mới; màn sửa giữ chữ "Todo") · khối Danh sách việc ngay dưới tiêu đề, trước thời gian / nhắc / lặp / màu (mặc định cả ngày, nhắc tắt) · Danh sách việc: kéo ⋮⋮ đổi thứ tự, ô vuông tick, ✕ xoá, "+ Thêm việc" · không có sticker, báo thức, ghim, vị trí, URL', phone(todoForm, 'tall')],
     ['2b. Đổi loại', 'bấm "Todo ▾" → mở lại pop-up 4 ô của nút + · ô đang dùng có viền + dấu ✓ · Sự kiện → màn 2c (đổi tại chỗ) · Ghi chú / Khoản chi → mở form đó thay form này (đã nhập gì → hỏi "Bỏ thay đổi?") · chọn lại Todo → chỉ đóng pop-up', phone(kindPopup)],
-    ['2c. Đã chuyển sang Sự kiện', 'tiêu đề "Sự kiện ▾" · giữ tiêu đề, chi tiết, lặp, màu đã nhập · ô chưa sửa lấy mặc định Sự kiện: tắt Cả ngày, giờ tới 10:00 – 11:00, nhắc 15 phút trước · khối Việc phụ ẩn (quay lại Todo còn nguyên; lưu là Sự kiện → bỏ việc phụ)', phone(eventFromTodo, 'tall')],
-    ['3. Chi tiết Todo', 'Việc phụ ngay dưới tiêu đề, trước thời gian / lặp / chi tiết · ô tròn lớn tick cả todo (→ mọi việc phụ xong) · tick việc phụ ngay tại đây · ⋯ Sửa / Xoá (lặp: Chỉ lần này / Tất cả)', phone(todoDetail)],
+    ['2c. Đã chuyển sang Sự kiện', 'tiêu đề "Sự kiện ▾" · giữ tiêu đề, chi tiết, lặp, màu đã nhập · ô chưa sửa lấy mặc định Sự kiện: tắt Cả ngày, giờ tới 10:00 – 11:00, nhắc 15 phút trước · khối Danh sách việc ẩn (quay lại Todo còn nguyên; lưu là Sự kiện → bỏ việc trong danh sách)', phone(eventFromTodo, 'tall')],
+    ['3. Chi tiết Todo', 'Danh sách việc ngay dưới tiêu đề, trước thời gian / lặp / chi tiết · ô tròn lớn tick cả todo (→ mọi việc trong danh sách xong) · tick việc trong danh sách ngay tại đây · ⋯ Sửa / Xoá (lặp: Chỉ lần này / Tất cả)', phone(todoDetail)],
     ['4. Lịch — Tháng', 'todo là thanh có ô tròn nhỏ ở đầu (xong: tròn đặc, chữ gạch ngang, mờ) · giọt đặc = ngày có kinh (1–5/10) · giọt viền mờ = dự đoán (29/10 → 2/11) — cùng icon giọt với màn 5, 6 · chú thích dưới lưới chỉ hiện khi bật chu kỳ', phone(monthScreen)],
-    ['5. Lịch — Danh sách', 'chỉ chấm dưới hôm nay (như màn 7) · todo có ô tròn bấm để tick ngay · "2/4" việc phụ · dòng chu kỳ ở đầu ngày · Tuần, Ngày: cùng kiểu thẻ', phone(agendaScreen)],
+    ['5. Lịch — Danh sách', 'chỉ chấm dưới hôm nay (như màn 7) · todo có ô tròn bấm để tick ngay · "2/4" việc trong danh sách · dòng chu kỳ ở đầu ngày · Tuần, Ngày: cùng kiểu thẻ', phone(agendaScreen)],
     ['6. Pop-up ngày', 'dòng chu kỳ + nút "Kỳ kinh" (viền xanh) → màn 9 · event trước, todo sau (tick được)', phone(dayPopup)],
   ]],
   ['Danh sách todo (tab Ghi chú)', [

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { CycleLine } from '@/features/cycle/CycleLine';
+import type { CycleDay } from '@/lib/cycle';
 import { clockLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
@@ -29,6 +31,7 @@ export function ListView({
   onPressOccurrence,
   onTickTodo,
   onPressHoliday,
+  cycleOf,
   refreshControl,
 }: {
   cursor: SolarDate;
@@ -42,6 +45,7 @@ export function ListView({
   onPressOccurrence: (o: EventOccurrence) => void;
   onTickTodo: (o: TodoOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
+  cycleOf: (d: SolarDate) => CycleDay | null;
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
@@ -50,6 +54,7 @@ export function ListView({
   const day = days.find((d) => d.day === cursor.day && d.month === cursor.month) ?? dayDetails(cursor, today, display);
   const events = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(calendarOrder), [occurrences, cursor, timeZone]);
   const clock = (iso: string) => clockLabel(t, timeOfDayIn(new Date(iso), timeZone), use24h);
+  const cycle = cycleOf(cursor);
   const empty = events.length === 0 && day.holidays.length === 0;
 
   return (
@@ -59,6 +64,7 @@ export function ListView({
         selected={cursor}
         onSelect={onSelectDay}
       />
+      {cycle ? <CycleLine cycle={cycle} /> : null}
       {empty ? (
         <AppText color={colors.textMuted} style={styles.empty}>
           {t('events.dayDialog.empty')}

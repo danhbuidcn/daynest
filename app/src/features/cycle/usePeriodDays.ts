@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { resyncReminders } from '@/features/reminders/reminderSync';
 import { addMonths, isoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import * as api from './api';
@@ -22,6 +23,9 @@ export function useSavePeriodDays() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (vars: { add: string[]; remove: string[] }) => api.savePeriodDays(vars.add, vars.remove),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PERIOD_DAYS_KEY] }),
+    onSuccess: () => {
+      void resyncReminders();
+      return queryClient.invalidateQueries({ queryKey: [PERIOD_DAYS_KEY] });
+    },
   });
 }

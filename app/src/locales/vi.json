@@ -2,6 +2,7 @@
   "appName": "Daynest",
   "common": {
     "offline": "Không có kết nối",
+    "limitTitle": "Đã đạt giới hạn",
     "cancel": "Huỷ",
     "done": "Xong",
     "am": "SA",
@@ -372,6 +373,7 @@
     "leave": "Thoát",
     "categories": {
       "title": "Danh mục",
+      "limitText": "Tối đa {{max}} danh mục.",
       "add": "Thêm danh mục",
       "edit": "Sửa danh mục",
       "name": "Tên",
@@ -466,6 +468,7 @@
       "duplicate": "Tên này đã có"
     },
     "categoriesScreen": {
+      "limitText": "Tối đa {{max}} nhóm của bạn.",
       "builtIn": "Có sẵn",
       "mine": "Của bạn",
       "edit": "Sửa",
@@ -477,9 +480,9 @@
       "title": "Todo",
       "changeKind": "Đổi loại"
     },
-    "subtasks": "Việc phụ",
-    "addSubtask": "Thêm việc phụ",
-    "subtaskPlaceholder": "Việc phụ mới",
+    "subtasks": "Danh sách việc",
+    "addSubtask": "Thêm việc",
+    "subtaskPlaceholder": "Việc mới",
     "occurrenceTitle": "Todo đang lặp lại",
     "deleteTitle": "Xoá todo?",
     "tickFailed": "Lưu không thành công. Vui lòng thử lại.",
@@ -512,6 +515,16 @@
     "loadFailed": "Không tải được dữ liệu",
     "retry": "Thử lại",
     "days_one": "{{count}} ngày",
-    "remindSub_one": "Trước {{count}} ngày · {{time}}"
+    "remindSub_one": "Trước {{count}} ngày · {{time}}",
+    "periodDay": "Kỳ kinh (ngày {{n}})",
+    "predictedRow": "Dự đoán kỳ kinh",
+    "summaryDay": "Kỳ kinh ngày {{n}}",
+    "summaryToday": "Kỳ kinh dự kiến hôm nay",
+    "summaryIn_one": "Kỳ kinh dự kiến sau {{count}} ngày",
+    "summaryIn_other": "Kỳ kinh dự kiến sau {{count}} ngày",
+    "late_one": "Trễ {{count}} ngày",
+    "late_other": "Trễ {{count}} ngày",
+    "remindBody_one": "Kỳ kinh dự kiến bắt đầu sau {{count}} ngày",
+    "remindBody_other": "Kỳ kinh dự kiến bắt đầu sau {{count}} ngày"
   }
 }

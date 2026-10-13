@@ -14,7 +14,7 @@ Giống `events`, **bỏ** các cột Google (`google_*`), **thêm**:
 | --- | --- |
 | `subtasks jsonb not null default '[]'` | Mảng `{id, text}` ≤ 50 phần tử, `id` là uuid, `text` 1–200 ký tự · kiểm tra bằng hàm `subtasks_valid()` (check không dùng được truy vấn con) |
 | `done boolean not null default false` | Todo không lặp đã xong |
-| `done_subtasks uuid[] not null default '{}'` | `id` việc phụ đã xong (todo không lặp) |
+| `done_subtasks uuid[] not null default '{}'` | `id` việc trong danh sách đã xong (todo không lặp) |
 
 - Giữ nguyên các cột còn lại của `events`: `title`, `note`, `color` (6 tên + hex), `all_day`, `starts_at` / `ends_at` / `start_date` / `end_date`, `repeat`, `repeat_interval`, `repeat_until`, `lunar_month`, `lunar_day`, `reminder_minutes`, `span_start`, `span_end`, `deleted_at`, `created_at`, `updated_at` + cùng các check.
 - Index `todos_span_idx (user_id, span_start)` — Lịch và danh sách todo đều tải theo khoảng ngày.
@@ -28,8 +28,8 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 | --- | --- |
 | `kind` | `skip` · `override` · **`status`** (chỉ lưu trạng thái xong của 1 lần lặp, không đổi nội dung) |
 | `done boolean` | Lần lặp đã xong (null = chưa) |
-| `done_subtasks uuid[] not null default '{}'` | Việc phụ đã xong của lần lặp |
-| `subtasks jsonb` | Việc phụ riêng của lần lặp khi sửa "Chỉ lần này" (null = dùng của todo) |
+| `done_subtasks uuid[] not null default '{}'` | Danh sách việc đã xong của lần lặp |
+| `subtasks jsonb` | Danh sách việc riêng của lần lặp khi sửa "Chỉ lần này" (null = dùng của todo) |
 
 - `unique (todo_id, occurrence_date)` · tick 1 lần lặp → upsert kind `status` (đã có `override` → chỉ cập nhật `done`, `done_subtasks`).
 - RLS: như `event_exceptions` — `todo_id` phải thuộc cùng user.
@@ -110,7 +110,7 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 ## Kiểm tra tải
 
 - Như [S2](../../sprint-2/design/db.md#kiểm-tra-tải), chạy `supabase/db load` trên Supabase local.
-- Seed thêm mỗi user giả: 60 todo (10 lặp hằng ngày, mỗi todo 5 việc phụ) + 300 ngoại lệ `status` · 60 ngày có kinh (12 kỳ).
+- Seed thêm mỗi user giả: 60 todo (10 lặp hằng ngày, mỗi todo 5 việc trong danh sách) + 300 ngoại lệ `status` · 60 ngày có kinh (12 kỳ).
 - Vòng lặp user ảo thêm: đọc danh sách todo (37 ngày) → tick 1 todo → đọc `period_days` 12 tháng.
 - Đạt: 0 lỗi, p95 < 1 s · `explain analyze` truy vấn danh sách todo dùng `todos_span_idx`.
 - Đo dung lượng thêm/user → cập nhật [§3 Mục tiêu tải](../../index.md#mục-tiêu-tải).

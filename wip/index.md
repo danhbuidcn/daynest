@@ -4,6 +4,8 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-13 | Giảm cỡ giao diện Ghi chú, Chi tiêu, Lịch + tablet full màn hình | 🔄 code xong, xem trên máy ngày mai | [2026-10-13-shrink-notes-expenses-ui.md](2026-10-13-shrink-notes-expenses-ui.md) |
+| 2026-10-13 | S5 bước 7: Chu kỳ — Lịch + nhắc (giọt, dòng chu kỳ, pop-up ngày, nhắc trước) | 🔄 code xong, thử máy ngày mai | [2026-10-13-s5-step-7-cycle-calendar-reminders.md](2026-10-13-s5-step-7-cycle-calendar-reminders.md) |
 | 2026-10-13 | S5 bước 6: Chu kỳ — dữ liệu + màn (Kỳ kinh, Cài đặt) | ✅ xong | [2026-10-13-s5-step-6-cycle-data-screens.md](2026-10-13-s5-step-6-cycle-data-screens.md) |
 | 2026-10-13 | S5 bước 5: Danh sách todo (tab Ghi chú) | ✅ xong | [2026-10-13-s5-step-5-todo-list.md](2026-10-13-s5-step-5-todo-list.md) |
 | 2026-10-13 | Mockup S5 màn 5: chỉ chấm dưới hôm nay | ✅ xong | [2026-10-13-s5-mockup-list-today-dot.md](2026-10-13-s5-mockup-list-today-dot.md) |

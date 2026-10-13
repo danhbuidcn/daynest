@@ -3,13 +3,17 @@ import { useEffect } from 'react';
 
 import { launchTapData, onNotificationTap } from '@/lib/notifications/scheduler';
 
-// Tapping a reminder opens that lap's detail screen (F3) — an event's, or a todo's (S5). Mounted inside the signed-in tabs so the
+// Tapping a reminder opens that lap's detail screen (F3) — an event's, or a todo's (S5); a period reminder opens the calendar on the predicted day. Mounted inside the signed-in tabs so the
 // router is ready and the detail screen can load its data.
 export function useNotificationTap() {
   const router = useRouter();
 
   useEffect(() => {
     const open = (data: Record<string, unknown> | null) => {
+      if (typeof data?.cycleDate === 'string') {
+        router.push({ pathname: '/(tabs)/calendar', params: { date: data.cycleDate } });
+        return;
+      }
       const todoId = data?.todoId;
       const id = todoId ?? data?.eventId;
       const occurrenceDate = data?.occurrenceDate;

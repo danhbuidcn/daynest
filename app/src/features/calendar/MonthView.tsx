@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { CycleDrop } from '@/components/CycleDrop';
 import { Icon } from '@/components/Icon';
 import { dayBars, type BarItem } from '@/lib/calendar/eventBars';
 import { sameDay, weekdayOrder, type WeekStart } from '@/lib/calendar/monthGrid';
@@ -35,6 +36,7 @@ export function MonthView({
   onPressDay,
   onPressAdd,
   barsForDay,
+  cycleKind,
 }: {
   days: DayInfo[];
   selected: SolarDate | null;
@@ -43,6 +45,7 @@ export function MonthView({
   onPressDay: (day: DayInfo) => void;
   onPressAdd: (day: DayInfo) => void;
   barsForDay: (day: DayInfo) => BarItem[];
+  cycleKind: (day: DayInfo) => 'period' | 'predicted' | null;
 }) {
   const rows = Array.from({ length: 6 }, (_, r) => days.slice(r * 7, r * 7 + 7));
   return (
@@ -59,6 +62,7 @@ export function MonthView({
                 onPress={onPressDay}
                 onPressAdd={onPressAdd}
                 items={barsForDay(d)}
+                cycle={cycleKind(d)}
               />
             );
           })}
@@ -74,12 +78,14 @@ const DayCell = memo(function DayCell({
   onPress,
   onPressAdd,
   items,
+  cycle,
 }: {
   day: DayInfo;
   selected: boolean;
   onPress: (day: DayInfo) => void;
   onPressAdd: (day: DayInfo) => void;
   items: BarItem[];
+  cycle: 'period' | 'predicted' | null;
 }) {
   const red = day.weekday === 0 || day.holidays.length > 0;
   const { shown, extra } = dayBars(items);
@@ -91,6 +97,11 @@ const DayCell = memo(function DayCell({
       onPress={() => onPress(day)}
       style={[styles.cell, selected && styles.selected, !day.inMonth && styles.out]}>
       <View style={styles.top}>
+        {cycle ? (
+          <View style={styles.drop}>
+            <CycleDrop predicted={cycle === 'predicted'} />
+          </View>
+        ) : null}
         <AppText
           variant="micro"
           weight={day.lunarKey ? 'extrabold' : undefined}
@@ -147,6 +158,7 @@ const styles = StyleSheet.create({
   selected: { backgroundColor: colors.primarySoft, borderRadius: 10 },
   out: { opacity: 0.4 },
   top: { paddingHorizontal: 1 },
+  drop: { position: 'absolute', left: 28, bottom: 4 },
   lunar: { alignSelf: 'flex-end', height: 12, lineHeight: 12 },
   num: { alignSelf: 'flex-start', width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   today: { backgroundColor: colors.primary },

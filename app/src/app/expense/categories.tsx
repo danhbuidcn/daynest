@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionMenu } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
-import { ConfirmDialog } from '@/components/Dialog';
+import { AlertDialog, ConfirmDialog } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useToast } from '@/components/Toast';
@@ -28,6 +28,7 @@ export default function ExpenseCategoriesScreen() {
   const [editing, setEditing] = useState<ExpenseCategory | 'new' | null>(null);
   const [menu, setMenu] = useState<{ category: ExpenseCategory; top: number; right: number } | null>(null);
   const [deleting, setDeleting] = useState<ExpenseCategory | null>(null);
+  const [limitOpen, setLimitOpen] = useState(false);
 
   const builtIn = categories.filter((c) => c.key);
   const mine = categories.filter((c) => !c.key);
@@ -62,9 +63,8 @@ export default function ExpenseCategoriesScreen() {
           ))}
           <Pressable
             accessibilityRole="button"
-            disabled={!canAdd}
-            onPress={() => setEditing('new')}
-            style={[styles.row, mine.length > 0 && styles.divider, !canAdd && styles.disabled]}>
+            onPress={() => (canAdd ? setEditing('new') : setLimitOpen(true))}
+            style={[styles.row, mine.length > 0 && styles.divider]}>
             <View style={styles.plus}>
               <Icon name="plus" size={20} color={colors.primaryDark} />
             </View>
@@ -75,6 +75,15 @@ export default function ExpenseCategoriesScreen() {
         </Card>
       </ScrollView>
 
+      <AlertDialog
+        visible={limitOpen}
+        tone="warning"
+        icon="warn"
+        title={t('common.limitTitle')}
+        text={t('expenses.categoriesScreen.limitText', { max: USER_CATEGORY_MAX })}
+        buttonLabel={t('common.done')}
+        onClose={() => setLimitOpen(false)}
+      />
       <ActionMenu
         visible={!!menu}
         top={menu?.top}
@@ -140,6 +149,5 @@ const styles = StyleSheet.create({
   row: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   plus: { width: 34, alignItems: 'center' },
-  disabled: { opacity: 0.5 },
   flex: { flex: 1 },
 });

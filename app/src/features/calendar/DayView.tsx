@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { CycleLine } from '@/features/cycle/CycleLine';
+import type { CycleDay } from '@/lib/cycle';
 import { lunarLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
@@ -25,6 +27,7 @@ export function DayView({
   onTickTodo,
   onPressHoliday,
   onAddAt,
+  cycleOf,
   refreshControl,
 }: {
   cursor: SolarDate;
@@ -38,6 +41,7 @@ export function DayView({
   onPressHoliday: (d: SolarDate) => void;
   // Tapping an empty hour (hour) or the "Cả ngày" row (null) opens the event form for it.
   onAddAt: (d: SolarDate, hour: number | null) => void;
+  cycleOf: (d: SolarDate) => CycleDay | null;
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
@@ -46,6 +50,7 @@ export function DayView({
   const onDay = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(calendarOrder), [occurrences, cursor, timeZone]);
   const allDay = onDay.filter((o) => o.allDay);
   const spans = useMemo(() => timedSpansOnDay(occurrences, cursor, timeZone), [occurrences, cursor, timeZone]);
+  const cycle = cycleOf(cursor);
   const hasAllDay = allDay.length > 0 || day.holidays.length > 0;
 
   return (
@@ -55,6 +60,7 @@ export function DayView({
           {lunarLabel(t, cursor)}
         </AppText>
       ) : null}
+      {cycle ? <CycleLine cycle={cycle} /> : null}
       <Pressable
         accessibilityRole="button"
         onPress={() => onAddAt(cursor, null)}

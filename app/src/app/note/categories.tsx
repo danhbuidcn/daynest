@@ -8,7 +8,7 @@ import { ActionMenu, MoreButton } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
-import { ConfirmDialog } from '@/components/Dialog';
+import { AlertDialog, ConfirmDialog } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useToast } from '@/components/Toast';
@@ -31,6 +31,7 @@ export default function CategoriesScreen() {
   const [selecting, setSelecting] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [limitOpen, setLimitOpen] = useState(false);
   const noteCount = categories.filter((c) => selected.includes(c.id)).reduce((n, c) => n + c.noteCount, 0);
 
   const stopSelecting = () => {
@@ -90,8 +91,7 @@ export default function CategoriesScreen() {
           <Button
             label={t('notes.categories.add')}
             icon={<Icon name="plus" size={20} color={colors.white} />}
-            disabled={categories.length >= CATEGORY_MAX}
-            onPress={() => setEditing('new')}
+            onPress={() => (categories.length >= CATEGORY_MAX ? setLimitOpen(true) : setEditing('new'))}
           />
         )}
       </View>
@@ -102,6 +102,15 @@ export default function CategoriesScreen() {
         actions={[{ icon: 'trash', label: t('notes.categories.selectToDelete'), danger: true, onPress: () => setSelecting(true) }]}
       />
       {editing ? <CategoryEditDialog category={editing === 'new' ? undefined : editing} onClose={() => setEditing(null)} /> : null}
+      <AlertDialog
+        visible={limitOpen}
+        tone="warning"
+        icon="warn"
+        title={t('common.limitTitle')}
+        text={t('notes.categories.limitText', { max: CATEGORY_MAX })}
+        buttonLabel={t('common.done')}
+        onClose={() => setLimitOpen(false)}
+      />
       <ConfirmDialog
         visible={confirmOpen}
         icon="trash"
