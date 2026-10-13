@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-13 | S4: thử v4.0.0 trên máy thật (3 dòng DoD còn lại) | ✅ xong (DoD đạt · 2 finding chờ quyết) | [2026-10-13-s4-real-device-test.md](2026-10-13-s4-real-device-test.md) |
 | 2026-10-13 | Index `expense_categories (user_id)` (RLS tổng 6 tháng hết quét cả bảng) | ✅ xong (đã lên DB thật) | [2026-10-13-expense-categories-user-index.md](2026-10-13-expense-categories-user-index.md) |
 | 2026-10-12 | Cài đặt: "Hiện …" → "Hiển thị …" (ngày âm lịch, ngày lễ) | ✅ xong | [2026-10-12-show-holidays-label.md](2026-10-12-show-holidays-label.md) |
 | 2026-10-12 | S4 bước 8: Cuối sprint, release | ✅ xong (v4.0.0 trên GitHub; máy thật bạn tự thử) | [2026-10-12-s4-step-8-release.md](2026-10-12-s4-step-8-release.md) |
