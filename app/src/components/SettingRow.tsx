@@ -8,6 +8,7 @@ import { Icon, type IconName } from './Icon';
 export function SettingRow({
   icon,
   label,
+  sublabel,
   value,
   onPress,
   danger,
@@ -16,6 +17,8 @@ export function SettingRow({
 }: {
   icon: IconName;
   label: string;
+  // Second line under the label (e.g. reminder time).
+  sublabel?: string;
   value?: string;
   onPress?: () => void;
   danger?: boolean;
@@ -31,9 +34,14 @@ export function SettingRow({
       <View style={[styles.icon, { backgroundColor: danger ? colors.errorSoft : colors.primarySoft }]}>
         <Icon name={icon} size={20} color={danger ? colors.error : colors.primaryDark} />
       </View>
-      <AppText style={styles.label} color={danger ? colors.error : colors.text}>
-        {label}
-      </AppText>
+      <View style={styles.label}>
+        <AppText color={danger ? colors.error : colors.text}>{label}</AppText>
+        {sublabel ? (
+          <AppText variant="caption" color={colors.textMuted}>
+            {sublabel}
+          </AppText>
+        ) : null}
+      </View>
       {value ? (
         <AppText color={colors.textMuted} numberOfLines={1}>
           {value}

@@ -76,11 +76,6 @@ export default function CategoriesScreen() {
             ))}
           </Card>
         ) : null}
-        {selecting ? null : (
-          <AppText variant="caption" color={colors.textMuted} style={styles.hint}>
-            {t('notes.categories.hint', { max: CATEGORY_MAX })}
-          </AppText>
-        )}
       </ScrollView>
       <View style={styles.footer}>
         {selecting ? (
@@ -133,6 +128,5 @@ const styles = StyleSheet.create({
   tick: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   tickOn: { backgroundColor: colors.primary },
   flex: { flex: 1 },
-  hint: { paddingHorizontal: space.xs },
   footer: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.lg },
 });

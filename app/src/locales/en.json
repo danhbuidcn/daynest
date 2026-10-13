@@ -56,7 +56,8 @@
     "use24h": "24-hour time",
     "showLunar": "Show lunar dates",
     "showHolidays": "Show holidays",
-    "saveFailed": "Could not save. Please try again."
+    "saveFailed": "Could not save. Please try again.",
+    "cycle": "Menstrual cycle"
   },
   "logoutDialog": {
     "title": "Sign out?",
@@ -66,7 +67,6 @@
   },
   "devices": {
     "current": "This device",
-    "footer": "Up to 2 devices. Signing in on a 3rd one signs out the earliest device.",
     "caption": "Signed in {{signedIn}} · Last active {{lastSeen}}",
     "today": "today {{time}}",
     "yesterday": "yesterday {{time}}"
@@ -363,7 +363,6 @@
     "itemPlaceholder": "New item",
     "addItem": "Add item",
     "checklist": "Checklist",
-    "autosaveHint": "Autosaved",
     "saveFailed": "Not saved. Please check your connection.",
     "emptyTitle": "Delete empty note?",
     "emptyText": "This note has no content.",
@@ -379,7 +378,6 @@
       "duplicate": "This name already exists",
       "count_one": "{{count}} note",
       "count_other": "{{count}} notes",
-      "hint": "Up to {{max}} categories. Deleting a category also deletes its notes.",
       "selectToDelete": "Select to delete",
       "selected": "{{count}} selected",
       "deleteN": "Delete ({{count}})",
@@ -470,7 +468,6 @@
     "categoriesScreen": {
       "builtIn": "Built-in",
       "mine": "Yours",
-      "hint": "Built-in categories cannot be edited or deleted. Up to {{max}} of your own.",
       "edit": "Edit",
       "deleteTitle": "Delete category \"{{name}}\"?"
     }
@@ -486,7 +483,6 @@
     "occurrenceTitle": "Repeating todo",
     "deleteTitle": "Delete todo?",
     "tickFailed": "Could not save. Please try again.",
-    "repeatTickHint": "Ticks here apply only to {{date}}. Each repeat has its own done state.",
     "list": {
       "yesterday": "Yesterday",
       "tomorrow": "Tomorrow",
@@ -499,5 +495,23 @@
       "add": "Add todo",
       "loadFailed": "Couldn't load todos"
     }
+  },
+  "cycle": {
+    "title": "Period",
+    "track": "Track cycle",
+    "logPeriod": "Log period days",
+    "cycleLength": "Cycle length",
+    "periodLength": "Period length",
+    "remind": "Remind before period",
+    "remindSub_one": "{{count}} day before · {{time}}",
+    "remindSub_other": "{{count}} days before · {{time}}",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "before": "Before",
+    "at": "Reminder time",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loadFailed": "Could not load data",
+    "retry": "Retry"
   }
 }

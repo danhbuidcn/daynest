@@ -15,6 +15,7 @@ import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { GoogleSettings } from '@/features/google/GoogleSettings';
 import { CalendarSettings } from '@/features/settings/CalendarSettings';
+import { CycleSettings } from '@/features/settings/CycleSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
 import { colors, space } from '@/theme';
@@ -71,6 +72,9 @@ export default function SettingsScreen() {
 
         <GroupLabel text={t('settings.calendar')} />
         <CalendarSettings />
+
+        <GroupLabel text={t('settings.cycle')} />
+        <CycleSettings />
 
         <GroupLabel text={t('google.group')} />
         <GoogleSettings />

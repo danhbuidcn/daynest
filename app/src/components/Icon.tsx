@@ -148,6 +148,8 @@ const ICONS = {
   home: () => stroke('<path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>'),
   bolt: () => stroke('<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>'),
   drop: () => stroke('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  cycle: () => stroke('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>'),
+  ruler: () => stroke('<rect x="3.5" y="8" width="17" height="8" rx="2"/><path d="M7.5 8v3M11 8v4M14.5 8v3M18 8v2"/>'),
   wifi: () => stroke('<path d="M3 9.5a13 13 0 0 1 18 0M6 12.8a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19.5h.01"/>'),
   tool: () => stroke('<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z"/>'),
   bus: () => stroke('<rect x="5" y="3.5" width="14" height="14" rx="3"/><path d="M5 11h14M8 17.5v2.5M16 17.5v2.5M8.5 14.5h.01M15.5 14.5h.01"/>'),

@@ -56,7 +56,8 @@
     "use24h": "Định dạng 24 giờ",
     "showLunar": "Hiển thị ngày âm lịch",
     "showHolidays": "Hiển thị ngày lễ",
-    "saveFailed": "Chưa lưu được. Vui lòng thử lại."
+    "saveFailed": "Chưa lưu được. Vui lòng thử lại.",
+    "cycle": "Chu kỳ kinh nguyệt"
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
@@ -66,7 +67,6 @@
   },
   "devices": {
     "current": "Thiết bị đang dùng",
-    "footer": "Tối đa 2 thiết bị. Khi đăng nhập trên thiết bị thứ 3, thiết bị đăng nhập sớm nhất sẽ bị đăng xuất.",
     "caption": "Đăng nhập {{signedIn}} · Dùng lần cuối {{lastSeen}}",
     "today": "hôm nay {{time}}",
     "yesterday": "hôm qua {{time}}"
@@ -363,7 +363,6 @@
     "itemPlaceholder": "Mục mới",
     "addItem": "Thêm mục",
     "checklist": "Checklist",
-    "autosaveHint": "Tự lưu",
     "saveFailed": "Chưa lưu được. Vui lòng kiểm tra kết nối.",
     "emptyTitle": "Xoá ghi chú trống?",
     "emptyText": "Ghi chú không còn nội dung.",
@@ -379,7 +378,6 @@
       "duplicate": "Tên này đã có",
       "count_one": "{{count}} ghi chú",
       "count_other": "{{count}} ghi chú",
-      "hint": "Tối đa {{max}} danh mục. Xoá danh mục thì ghi chú bên trong cũng bị xoá.",
       "selectToDelete": "Chọn để xoá",
       "selected": "Đã chọn {{count}}",
       "deleteN": "Xoá ({{count}})",
@@ -470,7 +468,6 @@
     "categoriesScreen": {
       "builtIn": "Có sẵn",
       "mine": "Của bạn",
-      "hint": "Nhóm có sẵn không sửa, không xoá được. Tối đa {{max}} nhóm của bạn.",
       "edit": "Sửa",
       "deleteTitle": "Xoá nhóm \"{{name}}\"?"
     }
@@ -486,7 +483,6 @@
     "occurrenceTitle": "Todo đang lặp lại",
     "deleteTitle": "Xoá todo?",
     "tickFailed": "Lưu không thành công. Vui lòng thử lại.",
-    "repeatTickHint": "Tick ở đây chỉ áp dụng cho ngày {{date}}. Mỗi ngày lặp có trạng thái xong riêng.",
     "list": {
       "yesterday": "Hôm qua",
       "tomorrow": "Ngày mai",
@@ -499,5 +495,23 @@
       "add": "Thêm todo",
       "loadFailed": "Không tải được todo"
     }
+  },
+  "cycle": {
+    "title": "Kỳ kinh",
+    "track": "Theo dõi chu kỳ",
+    "logPeriod": "Ghi ngày có kinh",
+    "cycleLength": "Độ dài chu kỳ",
+    "periodLength": "Độ dài kỳ kinh",
+    "remind": "Nhắc trước kỳ kinh",
+    "remindSub_other": "Trước {{count}} ngày · {{time}}",
+    "days_other": "{{count}} ngày",
+    "before": "Trước",
+    "at": "Giờ nhắc",
+    "save": "Lưu",
+    "cancel": "Huỷ",
+    "loadFailed": "Không tải được dữ liệu",
+    "retry": "Thử lại",
+    "days_one": "{{count}} ngày",
+    "remindSub_one": "Trước {{count}} ngày · {{time}}"
   }
 }

@@ -84,7 +84,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
         saved = await loadSnapshot();
         if (saved) {
           setProfile(saved.profile);
-          setSettings(saved.settings);
+          setSettings({ ...DEFAULT_SETTINGS, ...saved.settings });
           setLoading(false);
         }
         const active = await service.checkSessionActive().catch(() => true);

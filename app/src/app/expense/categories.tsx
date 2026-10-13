@@ -73,9 +73,6 @@ export default function ExpenseCategoriesScreen() {
             </AppText>
           </Pressable>
         </Card>
-        <AppText variant="caption" color={colors.textMuted} style={styles.hint}>
-          {t('expenses.categoriesScreen.hint', { max: USER_CATEGORY_MAX })}
-        </AppText>
       </ScrollView>
 
       <ActionMenu
@@ -145,5 +142,4 @@ const styles = StyleSheet.create({
   plus: { width: 34, alignItems: 'center' },
   disabled: { opacity: 0.5 },
   flex: { flex: 1 },
-  hint: { paddingHorizontal: space.xs },
 });

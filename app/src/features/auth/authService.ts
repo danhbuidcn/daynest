@@ -18,6 +18,13 @@ export type UserSettings = {
   notificationsEnabled: boolean;
   showLunar: boolean;
   showHolidays: boolean;
+  cycleEnabled: boolean;
+  cycleLength: number;
+  periodLength: number;
+  periodReminder: boolean;
+  periodReminderDays: number;
+  // "HH:MM", 5-minute steps.
+  periodReminderTime: string;
 };
 export const DEFAULT_SETTINGS: UserSettings = {
   language: null,
@@ -27,6 +34,12 @@ export const DEFAULT_SETTINGS: UserSettings = {
   notificationsEnabled: true,
   showLunar: true,
   showHolidays: true,
+  cycleEnabled: false,
+  cycleLength: 28,
+  periodLength: 5,
+  periodReminder: true,
+  periodReminderDays: 2,
+  periodReminderTime: '09:00',
 };
 // Everything F6 lets the Settings screen change; language has its own path (saved on device first).
 export type SettingsPatch = Partial<Omit<UserSettings, 'language'>>;
@@ -38,6 +51,12 @@ const SETTING_COLUMNS: Record<keyof SettingsPatch, string> = {
   notificationsEnabled: 'notifications_enabled',
   showLunar: 'show_lunar',
   showHolidays: 'show_holidays',
+  cycleEnabled: 'cycle_enabled',
+  cycleLength: 'cycle_length',
+  periodLength: 'period_length',
+  periodReminder: 'period_reminder',
+  periodReminderDays: 'period_reminder_days',
+  periodReminderTime: 'period_reminder_time',
 };
 
 // F7 — max 2 devices per account; signing in on a 3rd kicks the earliest one out.
@@ -184,7 +203,7 @@ export const supabaseAuthService: AuthService = {
     if (!userId) return DEFAULT_SETTINGS;
     const { data, error } = await supabase
       .from('user_settings')
-      .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays')
+      .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays, cycle_enabled, cycle_length, period_length, period_reminder, period_reminder_days, period_reminder_time')
       .eq('user_id', userId)
       .single();
     // No row yet (PGRST116) means defaults; any other error (e.g. offline) must not
@@ -198,6 +217,12 @@ export const supabaseAuthService: AuthService = {
       notificationsEnabled: data?.notifications_enabled ?? true,
       showLunar: data?.show_lunar ?? true,
       showHolidays: data?.show_holidays ?? true,
+      cycleEnabled: data?.cycle_enabled ?? false,
+      cycleLength: data?.cycle_length ?? 28,
+      periodLength: data?.period_length ?? 5,
+      periodReminder: data?.period_reminder ?? true,
+      periodReminderDays: data?.period_reminder_days ?? 2,
+      periodReminderTime: String(data?.period_reminder_time ?? '09:00').slice(0, 5),
     };
   },
 

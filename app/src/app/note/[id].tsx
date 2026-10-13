@@ -13,7 +13,6 @@ import { NestableScrollContainer } from "react-native-draggable-flatlist";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ActionMenu, MoreButton } from "@/components/ActionMenu";
-import { AppText } from "@/components/AppText";
 import { ConfirmDialog } from "@/components/Dialog";
 import { Icon } from "@/components/Icon";
 import { ScreenHeader } from "@/components/ScreenHeader";
@@ -211,10 +210,6 @@ function NoteEditor({
               setPickerOpen(true);
             }}
           />
-          <View style={styles.flex} />
-          <AppText variant="caption" color={colors.textMuted}>
-            {t("notes.autosaveHint")}
-          </AppText>
         </View>
       </KeyboardAvoidingView>
 

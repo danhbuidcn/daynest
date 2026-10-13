@@ -96,11 +96,6 @@ export default function TodoDetailScreen() {
           ) : null}
           {occ.note ? <DetailRow icon="note" label={occ.note} multiline /> : null}
         </Card>
-        {occ.repeat !== 'none' ? (
-          <AppText variant="caption" color={colors.textMuted} style={styles.hint}>
-            {t('todos.repeatTickHint', { date: `${occDate.day}/${occDate.month}` })}
-          </AppText>
-        ) : null}
       </ScrollView>
 
       <ActionMenu
@@ -161,5 +156,4 @@ const styles = StyleSheet.create({
   subRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, paddingVertical: space.xs },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   rowIcon: { width: 34, height: 34, borderRadius: radius.icon, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-  hint: { paddingHorizontal: space.xs },
 });

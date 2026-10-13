@@ -72,9 +72,6 @@ export default function DevicesScreen() {
             </View>
           ))}
         </Card>
-        <AppText variant="caption" color={colors.textMuted} style={styles.footer}>
-          {t('devices.footer')}
-        </AppText>
       </ScrollView>
     </SafeAreaView>
   );
@@ -90,5 +87,4 @@ const styles = StyleSheet.create({
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   flexShrink: { flexShrink: 1 },
   tag: { backgroundColor: colors.primarySoft, borderRadius: 999, paddingHorizontal: space.sm, paddingVertical: 2 },
-  footer: { marginHorizontal: space.xs },
 });
