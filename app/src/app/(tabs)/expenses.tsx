@@ -13,11 +13,21 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import type { ExpenseCategory } from '@/features/expenses/expense';
+import { DailyChart, MonthlyChart } from '@/features/expenses/ExpenseCharts';
 import { CategoryTotalsCard, ExpenseListCard, TotalCard } from '@/features/expenses/ExpenseSummary';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
-import { useExpenseCategories, useExpensesInRange, usePrefetchExpenses } from '@/features/expenses/useExpenses';
+import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
-import { periodRange, shiftPeriod, sumAmounts, totalsByCategory, type PeriodMode } from '@/lib/expenses';
+import {
+  monthlyTotals,
+  periodRange,
+  recentMonthsRange,
+  shiftPeriod,
+  sumAmounts,
+  totalsByCategory,
+  type PeriodMode,
+} from '@/lib/expenses';
+import type { SolarDate } from '@/lib/lunar';
 import { colors, radius, space } from '@/theme';
 
 const MODES: readonly PeriodMode[] = ['day', 'week', 'month'];
@@ -32,11 +42,17 @@ export default function ExpensesScreen() {
 
   const expensesQuery = useExpensesInRange(nav.range);
   const categoriesQuery = useExpenseCategories();
+  const monthlyRange = useMemo(() => recentMonthsRange(cursor), [cursor]);
+  const monthlyQuery = useMonthlyTotals(monthlyRange, mode === 'month');
   const adjacentRanges = useMemo(
     () => [-1, 1].map((d) => periodRange(mode, shiftPeriod(mode, cursor, d), settings.weekStart)),
     [mode, cursor, settings.weekStart],
   );
-  usePrefetchExpenses(adjacentRanges, !expensesQuery.isFetching);
+  const adjacentMonthlyRanges = useMemo(
+    () => (mode === 'month' ? [-1, 1].map((d) => recentMonthsRange(shiftPeriod('month', cursor, d))) : []),
+    [mode, cursor],
+  );
+  usePrefetchExpenses(adjacentRanges, adjacentMonthlyRanges, !expensesQuery.isFetching);
 
   const expenses = expensesQuery.data;
   const categories = useMemo(
@@ -44,6 +60,12 @@ export default function ExpensesScreen() {
     [categoriesQuery.data],
   );
   const totals = useMemo(() => totalsByCategory(expenses ?? []), [expenses]);
+  const months = useMemo(() => (monthlyQuery.data ? monthlyTotals(monthlyQuery.data, cursor) : null), [monthlyQuery.data, cursor]);
+
+  const openDay = (day: SolarDate) => {
+    nav.setMode('day');
+    nav.setCursor(day);
+  };
 
   // Placeholders until the expense form (step 5) and the categories screen (step 6) exist.
   const comingSoon = () => toast(t('comingSoon'));
@@ -68,6 +90,10 @@ export default function ExpensesScreen() {
     body = (
       <ScrollView contentContainerStyle={styles.list}>
         <TotalCard total={sumAmounts(expenses)} />
+        {mode !== 'day' ? <DailyChart mode={mode} range={nav.range} expenses={expenses} today={nav.today} onDay={openDay} /> : null}
+        {mode === 'month' && months ? (
+          <MonthlyChart cursor={cursor} totals={months} onMonth={(m) => nav.setCursor({ ...m, day: 1 })} />
+        ) : null}
         <CategoryTotalsCard totals={totals} categories={categories} />
         {mode === 'day' ? <ExpenseListCard expenses={expenses} categories={categories} onPress={comingSoon} /> : null}
       </ScrollView>

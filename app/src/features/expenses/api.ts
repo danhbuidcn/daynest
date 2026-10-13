@@ -32,6 +32,13 @@ export async function fetchExpenses(from: string, to: string): Promise<Expense[]
   }));
 }
 
+// "6 tháng gần đây": the DB sums each month (`expense_monthly_totals`), no rows are downloaded.
+export async function fetchMonthlyTotals(from: string, to: string): Promise<{ month: string; total: number }[]> {
+  const { data, error } = await supabase.rpc('expense_monthly_totals', { p_from: from, p_to: to });
+  if (error) throw classify(error);
+  return ((data ?? []) as { month: string; total: number | string }[]).map((r) => ({ month: r.month, total: Number(r.total) }));
+}
+
 export async function fetchExpenseCategories(): Promise<ExpenseCategory[]> {
   const { data, error } = await supabase
     .from('expense_categories')

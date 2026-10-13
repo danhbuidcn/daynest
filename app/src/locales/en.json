@@ -421,6 +421,8 @@
     },
     "total": "Total spent",
     "byCategory": "By category",
+    "byDay": "By day",
+    "recentMonths": "Last 6 months",
     "categories": "Expense categories",
     "empty": "No expenses yet",
     "add": "Add expense",

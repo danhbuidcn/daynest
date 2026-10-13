@@ -9,7 +9,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | 2026-10-12 | S4 bước 7: Test tải | ⏳ chờ duyệt | [2026-10-12-s4-step-7-load-test.md](2026-10-12-s4-step-7-load-test.md) |
 | 2026-10-12 | S4 bước 6: Nhóm chi tiêu | ⏳ chờ duyệt | [2026-10-12-s4-step-6-expense-categories.md](2026-10-12-s4-step-6-expense-categories.md) |
 | 2026-10-12 | S4 bước 5: Form khoản chi | ⏳ chờ duyệt | [2026-10-12-s4-step-5-expense-form.md](2026-10-12-s4-step-5-expense-form.md) |
-| 2026-10-12 | S4 bước 4: Tab Chi tiêu — Tuần, Tháng + biểu đồ | ⏳ chờ duyệt | [2026-10-12-s4-step-4-expenses-week-month.md](2026-10-12-s4-step-4-expenses-week-month.md) |
+| 2026-10-12 | S4 bước 4: Tab Chi tiêu — Tuần, Tháng + biểu đồ | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-4-expenses-week-month.md](2026-10-12-s4-step-4-expenses-week-month.md) |
 | 2026-10-12 | S4 bước 3: Tab Chi tiêu — chế độ Ngày | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-3-expenses-day.md](2026-10-12-s4-step-3-expenses-day.md) |
 | 2026-10-12 | S4 bước 2: Màu bất kỳ (toàn app) | ✅ xong (thử giao diện trên máy ảo; lưu hex + Google thử ở bước 8) | [2026-10-12-s4-step-2-any-color.md](2026-10-12-s4-step-2-any-color.md) |
 | 2026-10-12 | S4 bước 1: DB (migration + test RLS) | ✅ xong (migration 1 trên DB thật, migration 2 chờ release) | [2026-10-12-s4-step-1-db.md](2026-10-12-s4-step-1-db.md) |

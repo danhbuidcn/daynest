@@ -1,4 +1,4 @@
-import { addMonths, type WeekStart } from '@/lib/calendar/monthGrid';
+import { addMonths, isoDate, parseIsoDate, type WeekStart } from '@/lib/calendar/monthGrid';
 import { addDays, startOfWeek } from '@/lib/calendar/week';
 import { jdFromDate, type SolarDate } from '@/lib/lunar';
 
@@ -64,4 +64,48 @@ export function parseAmount(input: string): number | null {
   if (!digits) return null;
   const n = Number(digits);
   return n >= 1 && n <= MAX_AMOUNT ? n : null;
+}
+
+// "Theo ngày": one bar per day from `from` to `to`, both ends included.
+export function dailyTotals(expenses: readonly { spentOn: string; amount: number }[], from: SolarDate, to: SolarDate): number[] {
+  const first = jdFromDate(from);
+  const totals = new Array<number>(jdFromDate(to) - first + 1).fill(0);
+  for (const e of expenses) {
+    const i = jdFromDate(parseIsoDate(e.spentOn)) - first;
+    if (i >= 0 && i < totals.length) totals[i] += e.amount;
+  }
+  return totals;
+}
+
+// "6 tháng gần đây": the viewed month and the five before it, oldest first.
+export const CHART_MONTHS = 6;
+
+export function recentMonths(cursor: SolarDate): { year: number; month: number }[] {
+  return Array.from({ length: CHART_MONTHS }, (_, i) => addMonths(cursor.year, cursor.month, i - CHART_MONTHS + 1));
+}
+
+export function recentMonthsRange(cursor: SolarDate): { from: SolarDate; to: SolarDate } {
+  const first = addMonths(cursor.year, cursor.month, 1 - CHART_MONTHS);
+  return { from: { ...first, day: 1 }, to: { year: cursor.year, month: cursor.month, day: daysInMonth(cursor.year, cursor.month) } };
+}
+
+// DB rows (`month` = first day, ISO) → one total per chart month; months without rows are 0.
+export function monthlyTotals(rows: readonly { month: string; total: number }[], cursor: SolarDate): number[] {
+  const sums = new Map(rows.map((r) => [r.month.slice(0, 7), r.total]));
+  return recentMonths(cursor).map(({ year, month }) => sums.get(isoDate({ year, month, day: 1 }).slice(0, 7)) ?? 0);
+}
+
+// Month axis: 1, 5, 10, 15, 20, 25 and the last day (spec).
+export function isMonthAxisDay(day: number, lastDay: number): boolean {
+  return day === 1 || day === lastDay || (day % 5 === 0 && day <= 25);
+}
+
+// Number over the tallest bar: "2,5tr", "510k".
+export function compactVnd(n: number): string {
+  const k = Math.round(n / 1000);
+  if (k < 1) return groupThousands(n);
+  if (k < 1000) return `${k}k`;
+  const tenths = Math.round(n / 100_000);
+  const rest = tenths % 10;
+  return `${groupThousands(Math.floor(tenths / 10))}${rest ? `,${rest}` : ''}tr`;
 }

@@ -421,6 +421,8 @@
     },
     "total": "Tổng chi",
     "byCategory": "Theo nhóm",
+    "byDay": "Theo ngày",
+    "recentMonths": "6 tháng gần đây",
     "categories": "Nhóm chi tiêu",
     "empty": "Chưa có khoản chi",
     "add": "Thêm khoản chi",
