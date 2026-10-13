@@ -3,6 +3,8 @@ import type { TFunction } from 'i18next';
 import * as api from '@/features/events/api';
 import { timeRangeLabel } from '@/features/events/format';
 import { occurrencesForEvents } from '@/features/events/occurrences';
+import * as todosApi from '@/features/todos/api';
+import { occurrencesForTodos } from '@/features/todos/todo';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
@@ -39,7 +41,11 @@ async function run() {
   // Fetch before cancelling: offline, the reminders already set stay in place.
   const events = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
   const exceptions = await api.fetchExceptions(events.map((e) => e.id));
-  const planned = pickReminders(occurrencesForEvents(events, exceptions, range, c.timeZone), now, c.timeZone);
+  const todos = await todosApi.fetchTodos(isoDate(range.from), isoDate(range.to));
+  const todoExceptions = await todosApi.fetchTodoExceptions(todos.map((x) => x.id));
+  // S5: todos remind like events, except a lap already ticked done.
+  const openTodos = occurrencesForTodos(todos, todoExceptions, range, c.timeZone).filter((o) => !o.status.done);
+  const planned = pickReminders([...occurrencesForEvents(events, exceptions, range, c.timeZone), ...openTodos], now, c.timeZone);
 
   await cancelAll();
   await ensureChannel(c.t('reminders.channel'));
@@ -48,7 +54,7 @@ async function run() {
       at,
       title: occurrence.title,
       body: timeRangeLabel(c.t, occurrence, c.use24h, c.timeZone),
-      data: { eventId: occurrence.eventId, occurrenceDate: occurrence.occurrenceDate },
+      data: { ['status' in occurrence ? 'todoId' : 'eventId']: occurrence.eventId, occurrenceDate: occurrence.occurrenceDate },
     })),
   );
 }

@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { byStartTime, occurrencesOnDay, timedSpansOnDay } from '@/features/calendar/dayOccurrences';
+import { byStartTime, calendarOrder, occurrencesOnDay, timedSpansOnDay } from '@/features/calendar/dayOccurrences';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TodoOccurrence } from '@/features/todos/todo';
 
 const occ = (over: Partial<EventOccurrence>): EventOccurrence => ({
   eventId: 'e1',
@@ -57,5 +58,20 @@ describe('byStartTime', () => {
     const early = occ({ eventId: 'early', allDay: false, startsAt: '2026-10-06T02:00:00.000Z', endsAt: '2026-10-06T03:00:00.000Z' });
     const allDay = occ({ eventId: 'all' });
     expect([late, allDay, early].sort(byStartTime).map((o) => o.eventId)).toEqual(['all', 'early', 'late']);
+  });
+});
+
+describe('calendarOrder', () => {
+  const todo = (id: string, done: boolean, over: Partial<EventOccurrence> = {}): TodoOccurrence => ({
+    ...occ({ eventId: id, ...over }),
+    subtasks: [],
+    status: { done, doneSubtasks: [] },
+  });
+
+  it('events first, then todos not done (by start), then done todos', () => {
+    const timedTodo = todo('timedTodo', false, { allDay: false, startsAt: '2026-10-06T07:00:00.000Z', endsAt: '2026-10-06T07:00:00.000Z' });
+    const timedEvent = occ({ eventId: 'event', allDay: false, startsAt: '2026-10-06T09:00:00.000Z', endsAt: '2026-10-06T10:00:00.000Z' });
+    const list = [todo('done', true), timedTodo, todo('allDayTodo', false), timedEvent];
+    expect(list.sort(calendarOrder).map((o) => o.eventId)).toEqual(['event', 'allDayTodo', 'timedTodo', 'done']);
   });
 });

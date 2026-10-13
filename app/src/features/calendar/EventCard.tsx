@@ -6,10 +6,14 @@ import { Icon } from '@/components/Icon';
 import { timeRangeLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { SyncIcon } from '@/features/events/SyncIcon';
+import { TodoTick } from '@/features/todos/TodoTick';
 import { toHex } from '@/lib/colors';
+import { subtaskProgress } from '@/lib/todos';
 import { colors, radius, shadow, space } from '@/theme';
+import { isTodo } from './dayOccurrences';
 
 // Week rows and the list view (màn 2, 4): colour stripe · title · time (or note) · repeat/reminder icons.
+// A todo (S5) adds a round tick before the title (`onTick`) and "2/5" after the time.
 export function EventCard({
   occurrence,
   subtitle,
@@ -17,6 +21,7 @@ export function EventCard({
   use24h,
   timeZone,
   onPress,
+  onTick,
   style,
 }: {
   occurrence: EventOccurrence;
@@ -26,9 +31,12 @@ export function EventCard({
   use24h: boolean;
   timeZone: string;
   onPress: () => void;
+  onTick?: () => void;
   style?: StyleProp<ViewStyle>;
 }) {
   const { t } = useTranslation();
+  const todo = isTodo(occurrence) ? occurrence : null;
+  const progress = todo && todo.subtasks.length > 0 ? subtaskProgress(todo.subtasks, todo.status) : null;
   const time = timeRangeLabel(t, occurrence, use24h, timeZone);
   const title = titleMaxChars ? Array.from(occurrence.title).slice(0, titleMaxChars).join('') : occurrence.title;
   return (
@@ -38,12 +46,17 @@ export function EventCard({
       onPress={onPress}
       style={({ pressed }) => [styles.card, pressed && styles.pressed, style]}>
       <View style={[styles.stripe, { backgroundColor: toHex(occurrence.color) }]} />
+      {todo && onTick ? (
+        <View style={styles.tick}>
+          <TodoTick done={todo.status.done} onPress={onTick} label={occurrence.title} />
+        </View>
+      ) : null}
       <View style={[styles.body, titleMaxChars ? styles.bodyAuto : null]}>
-        <AppText numberOfLines={1} ellipsizeMode="clip">
+        <AppText numberOfLines={1} ellipsizeMode="clip" color={todo?.status.done ? colors.textMuted : undefined} style={todo?.status.done && styles.strike}>
           {title}
         </AppText>
         <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
-          {subtitle ?? time}
+          {progress ? `${subtitle ?? time} · ${progress.done}/${progress.total}` : (subtitle ?? time)}
         </AppText>
       </View>
       <View style={styles.icons}>
@@ -91,6 +104,8 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.7 },
   holiday: { backgroundColor: colors.error },
   stripe: { width: 4 },
+  tick: { justifyContent: 'center', paddingLeft: 10 },
+  strike: { textDecorationLine: 'line-through' },
   body: { flex: 1, minWidth: 0, paddingVertical: space.sm, paddingHorizontal: 10 },
   // No fixed card width (week rows): size to the text instead of filling the card.
   bodyAuto: { flex: 0 },

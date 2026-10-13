@@ -5,11 +5,12 @@ import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TodoOccurrence } from '@/features/todos/todo';
 import { weekdayOf, type WeekStart } from '@/lib/calendar/monthGrid';
 import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
-import { byStartTime, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
+import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { EventCard, HolidayCard } from './EventCard';
 import { WeekChips } from './WeekChips';
@@ -28,6 +29,7 @@ export function WeekView({
   display,
   onSelectWeek,
   onPressOccurrence,
+  onTickTodo,
   onPressHoliday,
   onAddAllDay,
   refreshControl,
@@ -41,6 +43,7 @@ export function WeekView({
   display: DayDisplay;
   onSelectWeek: (deltaWeeks: number) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onTickTodo: (o: TodoOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
   onAddAllDay: (d: SolarDate) => void;
   // Pull down → Google sync (F4); only while syncing is on.
@@ -56,7 +59,7 @@ export function WeekView({
         {days.map((d) => {
           const weekday = weekdayOf(d);
           const dayColor = d.isToday ? colors.primaryDark : weekday === 0 || d.holidays.length > 0 ? colors.error : colors.text;
-          const events = occurrencesOnDay(occurrences, d, timeZone).sort(byStartTime);
+          const events = occurrencesOnDay(occurrences, d, timeZone).sort(calendarOrder);
           const empty = events.length === 0 && d.holidays.length === 0;
           return (
             <Pressable
@@ -92,6 +95,7 @@ export function WeekView({
                       titleMaxChars={TITLE_MAX_CHARS}
                       timeZone={timeZone}
                       onPress={() => onPressOccurrence(o)}
+                      onTick={isTodo(o) ? () => onTickTodo(o) : undefined}
                     />
                   ))}
                 </GestureScrollView>

@@ -5,9 +5,10 @@ import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } fro
 import { AppText } from '@/components/AppText';
 import { lunarLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TodoOccurrence } from '@/features/todos/todo';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
-import { byStartTime, occurrenceKey, occurrencesOnDay, timedSpansOnDay } from './dayOccurrences';
+import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay, timedSpansOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayTimeline, LABEL_WIDTH } from './DayTimeline';
 import { EventBar } from './EventBar';
@@ -21,6 +22,7 @@ export function DayView({
   timeZone,
   display,
   onPressOccurrence,
+  onTickTodo,
   onPressHoliday,
   onAddAt,
   refreshControl,
@@ -32,6 +34,7 @@ export function DayView({
   timeZone: string;
   display: DayDisplay;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onTickTodo: (o: TodoOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
   // Tapping an empty hour (hour) or the "Cả ngày" row (null) opens the event form for it.
   onAddAt: (d: SolarDate, hour: number | null) => void;
@@ -40,7 +43,7 @@ export function DayView({
 }) {
   const { t } = useTranslation();
   const day = useMemo(() => dayDetails(cursor, today, display), [cursor, today, display]);
-  const onDay = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(byStartTime), [occurrences, cursor, timeZone]);
+  const onDay = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(calendarOrder), [occurrences, cursor, timeZone]);
   const allDay = onDay.filter((o) => o.allDay);
   const spans = useMemo(() => timedSpansOnDay(occurrences, cursor, timeZone), [occurrences, cursor, timeZone]);
   const hasAllDay = allDay.length > 0 || day.holidays.length > 0;
@@ -67,9 +70,10 @@ export function DayView({
             {allDay.map((o) => (
               <EventBar
                 key={occurrenceKey(o)}
-                item={{ kind: 'event', id: occurrenceKey(o), title: o.title, color: o.color }}
+                item={{ kind: 'event', id: occurrenceKey(o), title: o.title, color: o.color, todo: isTodo(o) ? { done: o.status.done } : undefined }}
                 large
                 onPress={() => onPressOccurrence(o)}
+                onTick={isTodo(o) ? () => onTickTodo(o) : undefined}
               />
             ))}
           </ScrollView>
@@ -85,6 +89,7 @@ export function DayView({
         use24h={use24h}
         timeZone={timeZone}
         onPressOccurrence={onPressOccurrence}
+        onTickTodo={onTickTodo}
         onPressHour={(hour) => onAddAt(cursor, hour)}
         refreshControl={refreshControl}
       />

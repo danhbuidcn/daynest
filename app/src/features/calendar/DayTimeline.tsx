@@ -5,11 +5,13 @@ import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } fro
 import { AppText } from '@/components/AppText';
 import { clockLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import { TodoTick } from '@/features/todos/TodoTick';
+import type { TodoOccurrence } from '@/features/todos/todo';
 import { layoutDay } from '@/lib/calendar/dayLayout';
 import { timeOfDayIn } from '@/lib/calendar/timeZone';
 import { toHex } from '@/lib/colors';
 import { colors, space } from '@/theme';
-import type { OccurrenceSpan } from './dayOccurrences';
+import { isTodo, type OccurrenceSpan } from './dayOccurrences';
 
 const HOUR_HEIGHT = 56;
 export const LABEL_WIDTH = 56;
@@ -31,6 +33,7 @@ export function DayTimeline({
   use24h,
   timeZone,
   onPressOccurrence,
+  onTickTodo,
   onPressHour,
   refreshControl,
 }: {
@@ -39,6 +42,7 @@ export function DayTimeline({
   use24h: boolean;
   timeZone: string;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onTickTodo: (o: TodoOccurrence) => void;
   // Empty part of an hour row → new event at that hour (F1).
   onPressHour: (hour: number) => void;
   refreshControl?: ReactElement<RefreshControlProps>;
@@ -106,9 +110,17 @@ export function DayTimeline({
                   b.height <= 60 && styles.blockCentered,
                   { backgroundColor: color + BLOCK_ALPHA, borderLeftColor: color },
                 ]}>
-                <AppText variant={compact ? 'caption' : 'body'} numberOfLines={1} ellipsizeMode="clip">
-                  {occ.title}
-                </AppText>
+                <View style={styles.titleRow}>
+                  {isTodo(occ) ? <TodoTick done={occ.status.done} size={compact ? 14 : 18} onPress={() => onTickTodo(occ)} label={occ.title} /> : null}
+                  <AppText
+                    variant={compact ? 'caption' : 'body'}
+                    numberOfLines={1}
+                    ellipsizeMode="clip"
+                    color={isTodo(occ) && occ.status.done ? colors.textMuted : undefined}
+                    style={[styles.flex, isTodo(occ) && occ.status.done && styles.strike]}>
+                    {occ.title}
+                  </AppText>
+                </View>
                 {height >= TWO_LINE_BLOCK ? (
                   <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">
                     {`${clockLabel(t, timeOfDayIn(new Date(occ.startsAt!), timeZone), use24h)} – ${clockLabel(t, timeOfDayIn(new Date(occ.endsAt!), timeZone), use24h)}`}
@@ -145,6 +157,8 @@ const styles = StyleSheet.create({
   blockCompact: { paddingVertical: 2 },
   blockCentered: { justifyContent: 'center' },
   pressed: { opacity: 0.7 },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  strike: { textDecorationLine: 'line-through' },
   now: { position: 'absolute', left: LABEL_WIDTH, right: 0, height: 2, backgroundColor: colors.error },
   nowDot: { position: 'absolute', left: -4, top: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.error },
 });

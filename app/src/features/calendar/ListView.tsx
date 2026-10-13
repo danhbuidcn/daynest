@@ -5,12 +5,13 @@ import { ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-na
 import { AppText } from '@/components/AppText';
 import { clockLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TodoOccurrence } from '@/features/todos/todo';
 import type { WeekStart } from '@/lib/calendar/monthGrid';
 import { timeOfDayIn } from '@/lib/calendar/timeZone';
 import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, space } from '@/theme';
-import { byStartTime, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
+import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayStrip } from './DayStrip';
 import { EventCard, HolidayCard } from './EventCard';
@@ -26,6 +27,7 @@ export function ListView({
   display,
   onSelectDay,
   onPressOccurrence,
+  onTickTodo,
   onPressHoliday,
   refreshControl,
 }: {
@@ -38,6 +40,7 @@ export function ListView({
   display: DayDisplay;
   onSelectDay: (d: SolarDate) => void;
   onPressOccurrence: (o: EventOccurrence) => void;
+  onTickTodo: (o: TodoOccurrence) => void;
   onPressHoliday: (d: SolarDate) => void;
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
@@ -45,7 +48,7 @@ export function ListView({
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
   const day = days.find((d) => d.day === cursor.day && d.month === cursor.month) ?? dayDetails(cursor, today, display);
-  const events = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(byStartTime), [occurrences, cursor, timeZone]);
+  const events = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(calendarOrder), [occurrences, cursor, timeZone]);
   const clock = (iso: string) => clockLabel(t, timeOfDayIn(new Date(iso), timeZone), use24h);
   const empty = events.length === 0 && day.holidays.length === 0;
 
@@ -96,6 +99,7 @@ export function ListView({
                 use24h={use24h}
                 timeZone={timeZone}
                 onPress={() => onPressOccurrence(o)}
+                onTick={isTodo(o) ? () => onTickTodo(o) : undefined}
                 style={styles.flex}
               />
             </View>

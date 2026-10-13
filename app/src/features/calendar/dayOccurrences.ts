@@ -1,4 +1,5 @@
 import type { EventOccurrence } from '@/features/events/occurrences';
+import type { TodoOccurrence } from '@/features/todos/todo';
 import type { TimedSpan } from '@/lib/calendar/dayLayout';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE, timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
@@ -32,6 +33,16 @@ export function byStartTime(a: EventOccurrence, b: EventOccurrence): number {
   const ka = a.allDay ? a.startDate! : a.startsAt!;
   const kb = b.allDay ? b.startDate! : b.startsAt!;
   return ka < kb ? -1 : ka > kb ? 1 : 0;
+}
+
+export function isTodo(occ: EventOccurrence): occ is TodoOccurrence {
+  return 'status' in occ;
+}
+
+// Calendar order inside one day (S5): events, then todos not done, then done todos — each by start.
+export function calendarOrder(a: EventOccurrence, b: EventOccurrence): number {
+  const rank = (o: EventOccurrence) => (!isTodo(o) ? 0 : o.status.done ? 2 : 1);
+  return rank(a) - rank(b) || byStartTime(a, b);
 }
 
 export function occurrenceKey(occ: EventOccurrence): string {

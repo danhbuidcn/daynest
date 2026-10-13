@@ -6,12 +6,13 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AlertDialog } from '@/components/Dialog';
+import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { dayDetails, monthDays, type DayDisplay, type DayInfo } from '@/features/calendar/dayInfo';
 import { periodRange, shiftCursor } from '@/features/calendar/calendarNav';
 import { DayEventsDialog } from '@/features/calendar/DayEventsDialog';
-import { occurrencesOnDay } from '@/features/calendar/dayOccurrences';
+import { calendarOrder, isTodo, occurrencesOnDay } from '@/features/calendar/dayOccurrences';
 import { DayView } from '@/features/calendar/DayView';
 import { ListView } from '@/features/calendar/ListView';
 import { MonthView, WeekdayRow } from '@/features/calendar/MonthView';
@@ -23,9 +24,12 @@ import type { EventOccurrence } from '@/features/events/occurrences';
 import { syncNow } from '@/features/google/sync';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { useEventsInRange, usePrefetchEvents } from '@/features/events/useEvents';
+import type { TodoOccurrence } from '@/features/todos/todo';
+import { usePrefetchTodos, useSetTodoStatus, useTodosInRange } from '@/features/todos/useTodos';
 import { type BarItem } from '@/lib/calendar/eventBars';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
+import { toggleTodo } from '@/lib/todos';
 import { colors, space } from '@/theme';
 
 const SWIPE_DISTANCE = 50;
@@ -33,6 +37,7 @@ const SWIPE_DISTANCE = 50;
 export default function CalendarScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const toast = useToast();
   const { settings, newDeviceName, dismissNewDeviceName } = useAuth();
   const nav = useCalendarNav(settings.timeZone, settings.weekStart);
   const { today, mode, cursor, setCursor, go } = nav;
@@ -51,25 +56,44 @@ export default function CalendarScreen() {
     () => (mode === 'month' ? monthDays(cursor.year, cursor.month, settings.weekStart, today, display) : []),
     [mode, cursor.year, cursor.month, settings.weekStart, today, display],
   );
-  const { occurrences, isLoading: eventsLoading, isFetching: eventsFetching } = useEventsInRange(nav.range, settings.timeZone);
+  const events = useEventsInRange(nav.range, settings.timeZone);
+  const todos = useTodosInRange(nav.range, settings.timeZone);
+  // Todos (S5) show alongside events everywhere on the calendar; never synced to Google.
+  const occurrences = useMemo<EventOccurrence[]>(() => [...events.occurrences, ...todos.occurrences], [events.occurrences, todos.occurrences]);
+  const eventsLoading = events.isLoading || todos.isLoading;
+  const eventsFetching = events.isFetching || todos.isFetching;
+  const setTodoStatus = useSetTodoStatus();
   // Day view loads whole weeks, so its neighbours are the weeks before and after.
   const adjacentRanges = useMemo(() => {
     const step = mode === 'day' ? 'week' : mode;
     return [-1, 1].map((d) => periodRange(mode, shiftCursor(step, cursor, d), settings.weekStart));
   }, [mode, cursor, settings.weekStart]);
   usePrefetchEvents(adjacentRanges, !eventsFetching);
+  usePrefetchTodos(adjacentRanges, !eventsFetching);
+
+  const onTickTodo = useCallback(
+    (o: TodoOccurrence) =>
+      setTodoStatus.mutate(
+        { todo: { id: o.eventId, repeat: o.repeat }, occurrenceDate: o.occurrenceDate, status: toggleTodo(o.subtasks, o.status) },
+        { onError: () => toast(t('todos.tickFailed'), 'error') },
+      ),
+    [setTodoStatus, toast, t],
+  );
 
   const goToday = () => setSelected(nav.goToday());
 
   const barsForDay = useCallback(
     (d: DayInfo): BarItem[] => {
       const holidayItems: BarItem[] = d.holidays.map((h) => ({ kind: 'holiday', id: h, title: t(`holidaysShort.${h}`) }));
-      const eventItems: BarItem[] = occurrencesOnDay(occurrences, d, settings.timeZone).map((o) => ({
-        kind: 'event',
-        id: `${o.eventId}-${o.occurrenceDate}`,
-        title: o.title,
-        color: o.color,
-      }));
+      const eventItems: BarItem[] = occurrencesOnDay(occurrences, d, settings.timeZone)
+        .sort(calendarOrder)
+        .map((o) => ({
+          kind: 'event',
+          id: `${o.eventId}-${o.occurrenceDate}`,
+          title: o.title,
+          color: o.color,
+          todo: isTodo(o) ? { done: o.status.done } : undefined,
+        }));
       return [...holidayItems, ...eventItems];
     },
     [occurrences, settings.timeZone, t],
@@ -92,7 +116,7 @@ export default function CalendarScreen() {
   }, []);
 
   const dayDialogOccurrences = useMemo(
-    () => (dayDialogDate ? occurrencesOnDay(occurrences, dayDialogDate, settings.timeZone) : []),
+    () => (dayDialogDate ? occurrencesOnDay(occurrences, dayDialogDate, settings.timeZone).sort(calendarOrder) : []),
     [occurrences, dayDialogDate, settings.timeZone],
   );
 
@@ -106,7 +130,8 @@ export default function CalendarScreen() {
 
   const onPressOccurrence = (o: EventOccurrence) => {
     closeDayDialog();
-    router.push({ pathname: '/event/[id]', params: { id: o.eventId, occurrenceDate: o.occurrenceDate } });
+    const pathname = isTodo(o) ? '/todo/[id]' : '/event/[id]';
+    router.push({ pathname, params: { id: o.eventId, occurrenceDate: o.occurrenceDate } });
   };
 
   const onAddAt = (d: SolarDate, hour: number | null) => {
@@ -134,7 +159,7 @@ export default function CalendarScreen() {
     />
   ) : undefined;
 
-  const viewProps = { refreshControl, cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, display, onPressOccurrence, onPressHoliday: setDayDialogDate };
+  const viewProps = { refreshControl, cursor, today, occurrences, use24h: settings.use24h, timeZone: settings.timeZone, display, onPressOccurrence, onTickTodo, onPressHoliday: setDayDialogDate };
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
@@ -177,6 +202,7 @@ export default function CalendarScreen() {
           onClose={closeDayDialog}
           onAdd={onAddForDay}
           onPressOccurrence={onPressOccurrence}
+          onTickTodo={onTickTodo}
         />
       ) : null}
       <AlertDialog

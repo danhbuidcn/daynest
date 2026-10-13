@@ -1,5 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useForbiddenGuard } from '@/features/events/useEvents';
 import { resyncReminders } from '@/features/reminders/reminderSync';
@@ -46,6 +46,14 @@ export function useTodosInRange(range: DateRange, timeZone: string = DEFAULT_TIM
     [data, from, to, timeZone],
   );
   return { ...query, occurrences };
+}
+
+export function usePrefetchTodos(ranges: DateRange[], enabled: boolean) {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (!enabled) return;
+    for (const range of ranges) void queryClient.prefetchQuery(todosQueryOptions(range));
+  }, [queryClient, ranges, enabled]);
 }
 
 function useInvalidateTodos() {
@@ -111,6 +119,10 @@ export function useSetTodoStatus() {
     onError: (_e, _vars, context) => {
       for (const [key, data] of context?.before ?? []) queryClient.setQueryData(key, data);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: [TODOS_KEY] }),
+    // A done lap no longer reminds, so the tick also re-plans reminders.
+    onSettled: () => {
+      void resyncReminders();
+      return queryClient.invalidateQueries({ queryKey: [TODOS_KEY] });
+    },
   });
 }
