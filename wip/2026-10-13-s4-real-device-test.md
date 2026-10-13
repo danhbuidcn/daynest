@@ -1,4 +1,4 @@
-# 2026-10-13 — S4: thử v4.0.0 trên máy thật — ✅ xong (3 dòng DoD đạt · 2 finding chờ bạn quyết)
+# 2026-10-13 — S4: thử v4.0.0 trên máy thật — ✅ xong (3 dòng DoD đạt · 2 finding sửa ở S5)
 
 Thuộc: [S4 bước 8](2026-10-12-s4-step-8-release.md) · DoD [S4](../docs/specs/sprint-4/index.md) (3 dòng chưa tick).
 
@@ -34,7 +34,7 @@ Thuộc: [S4 bước 8](2026-10-12-s4-step-8-release.md) · DoD [S4](../docs/spe
   - Lưu ý: lúc bật sync, app kéo event thật trên Google của bạn về Daynest (vd. "Vào…" 5–11/10). Tắt sync không xoá gì ở cả 2 phía (đúng F4), nên các event này **vẫn ở trong Daynest**.
 - 2026-10-13 13:53 — Bước 4: tick 3 dòng DoD trong `sprint-4/index.md` (link về file này).
 
-## Finding chờ bạn quyết (chưa sửa)
+## Finding — sửa ở S5
 
 1. **Màu gần nhất lên Google trông sai**: `toGoogleColorId` (`app/src/lib/google/mapping.ts:39`) so theo khoảng cách RGB thô → `#8B1E3F` đỏ đậm ra Graphite xám, `#FFE08A` vàng nhạt ra Flamingo hồng. Sửa: đổi cách đo (vd. theo hue / Lab) + thêm test.
 2. **Chữ tiếng Anh sai số ít**: "1 notes" ở màn Categories và hộp xoá — `app/src/locales/en.json:375` (`count`), `:381` (`confirmText`) thiếu dạng `_one`.

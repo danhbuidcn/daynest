@@ -80,7 +80,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | [S2](sprint-2/index.md) | Lịch (4 chế độ, âm, lễ) + Event (lặp dương + âm, ngoại lệ) + Nhắc + Đồng bộ Google 2 chiều + Notes + Cài đặt liên quan | Xem lịch, quản lý event + note, nhận thông báo, đồng bộ Google |
 | [S3](sprint-3/index.md) | Hoàn thiện Lịch + Ghi chú: sửa UI, bấm tab mượt, tab "Ghi chú", phân trang + idempotency | Lịch + Ghi chú dùng mượt, không tạo trùng |
 | [S4](sprint-4/index.md) | Chi tiêu: thêm/sửa/xoá khoản chi, nhóm, xem Ngày/Tuần/Tháng, thống kê · chọn màu bất kỳ (toàn app) | Xong GĐ1 |
-| S5 | Chu kỳ kinh nguyệt · bật/tắt trong Cài đặt | Theo dõi chu kỳ trên Lịch |
+| S5 | Chu kỳ kinh nguyệt · bật/tắt trong Cài đặt · sửa 2 lỗi từ S4 ([màu gần nhất lên Google, số ít "1 note"](../../wip/2026-10-13-s4-real-device-test.md#finding--sửa-ở-s5)) | Theo dõi chu kỳ trên Lịch |
 | [S6](sprint-6/index.md) | Quảng cáo (banner AdMob) + Pro tắt quảng cáo (RevenueCat) + lên Google Play | App công khai trên Play, có quảng cáo, mua được Pro |
 
 ### Cuối sprint (mọi sprint)
