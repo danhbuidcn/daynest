@@ -79,6 +79,16 @@ describe('Google colours', () => {
     expect(toGoogleColorId('#F05020')).toBe('6'); // Tangerine
   });
 
+  it('measures by eye, not raw RGB', () => {
+    expect(toGoogleColorId('#8B1E3F')).toBe('4'); // dark red → Flamingo, not Graphite grey
+    expect(toGoogleColorId('#FFE08A')).toBe('5'); // pale yellow → Banana, not Flamingo
+  });
+
+  it('maps each of Google’s 11 colours to itself', () => {
+    const google = ['#7986CB', '#33B679', '#8E24AA', '#E67C73', '#F6BF26', '#F4511E', '#039BE5', '#616161', '#3F51B5', '#0B8043', '#D50000'] as const;
+    google.forEach((hex, i) => expect(toGoogleColorId(hex)).toBe(String(i + 1)));
+  });
+
   it('keeps a local hex while Google still shows the colour we sent', () => {
     expect(keepLocalColor('#D00000', '11', 'pink')).toBe('#D00000');
   });

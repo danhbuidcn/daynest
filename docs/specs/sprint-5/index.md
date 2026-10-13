@@ -118,7 +118,7 @@ Mặc định **tắt**. Tắt → không hiện gì trên Lịch, không nhắc
 
 ## 2 lỗi từ S4
 
-- **Màu gần nhất lên Google** (`toGoogleColorId`, `lib/google/mapping.ts`): đổi từ khoảng cách RGB thô sang khoảng cách trong không gian màu **Lab** (gần với mắt người). Test: `#8B1E3F` → Tomato (đỏ), `#FFE08A` → Banana (vàng), 11 màu Google ra chính nó.
+- **Màu gần nhất lên Google** (`toGoogleColorId`, `lib/google/mapping.ts`): đổi từ khoảng cách RGB thô sang khoảng cách trong không gian màu **Lab** (ΔE76, gần với mắt người). Test: `#8B1E3F` → Flamingo (đỏ hồng, không còn xám), `#FFE08A` → Banana (vàng), 11 màu Google ra chính nó. (Ban đầu ghi Tomato; không cách đo Lab chuẩn nào ra Tomato — xem [wip](../../../wip/2026-10-13-s5-step-2-s4-bugs.md).)
 - **"1 notes"**: thêm khoá `_one` cho `count` và `confirmText` trong `en.json` → "1 note" / "2 notes". Rà các chuỗi đếm khác trong `en.json` (todo "1 task", việc phụ…) cùng cách.
 
 ## Màn hình

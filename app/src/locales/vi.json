@@ -315,9 +315,12 @@
       "expense": "Khoản chi"
     },
     "reminderCustom": {
-      "minutes": "{{count}} phút trước",
-      "hours": "{{count}} giờ trước",
-      "days": "{{count}} ngày trước"
+      "minutes_one": "{{count}} phút trước",
+      "minutes_other": "{{count}} phút trước",
+      "hours_one": "{{count}} giờ trước",
+      "hours_other": "{{count}} giờ trước",
+      "days_one": "{{count}} ngày trước",
+      "days_other": "{{count}} ngày trước"
     }
   },
   "reminders": {
@@ -336,7 +339,8 @@
     "all": "Tất cả",
     "untitled": "Ghi chú trống",
     "progress": "{{done}}/{{total}} mục",
-    "results": "{{count}} kết quả",
+    "results_one": "{{count}} kết quả",
+    "results_other": "{{count}} kết quả",
     "empty": "Chưa có ghi chú",
     "create": "Tạo ghi chú",
     "noResults": "Không tìm thấy ghi chú",
@@ -372,13 +376,16 @@
       "edit": "Sửa danh mục",
       "name": "Tên",
       "duplicate": "Tên này đã có",
-      "count": "{{count}} ghi chú",
+      "count_one": "{{count}} ghi chú",
+      "count_other": "{{count}} ghi chú",
       "hint": "Tối đa {{max}} danh mục. Xoá danh mục thì ghi chú bên trong cũng bị xoá.",
       "selectToDelete": "Chọn để xoá",
       "selected": "Đã chọn {{count}}",
       "deleteN": "Xoá ({{count}})",
-      "confirmTitle": "Xoá {{count}} danh mục?",
-      "confirmText": "{{count}} ghi chú bên trong cũng sẽ bị xoá."
+      "confirmTitle_one": "Xoá {{count}} danh mục?",
+      "confirmTitle_other": "Xoá {{count}} danh mục?",
+      "confirmText_one": "{{count}} ghi chú bên trong cũng sẽ bị xoá.",
+      "confirmText_other": "{{count}} ghi chú bên trong cũng sẽ bị xoá."
     },
     "trash": {
       "title": "Thùng rác",

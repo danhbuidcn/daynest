@@ -315,9 +315,12 @@
       "expense": "Expense"
     },
     "reminderCustom": {
-      "minutes": "{{count}} minutes before",
-      "hours": "{{count}} hours before",
-      "days": "{{count}} days before"
+      "minutes_one": "{{count}} minute before",
+      "minutes_other": "{{count}} minutes before",
+      "hours_one": "{{count}} hour before",
+      "hours_other": "{{count}} hours before",
+      "days_one": "{{count}} day before",
+      "days_other": "{{count}} days before"
     }
   },
   "reminders": {
@@ -336,7 +339,8 @@
     "all": "All",
     "untitled": "Empty note",
     "progress": "{{done}}/{{total}} items",
-    "results": "{{count}} results",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
     "empty": "No notes yet",
     "create": "Create a note",
     "noResults": "No notes found",
@@ -372,13 +376,16 @@
       "edit": "Edit category",
       "name": "Name",
       "duplicate": "This name already exists",
-      "count": "{{count}} notes",
+      "count_one": "{{count}} note",
+      "count_other": "{{count}} notes",
       "hint": "Up to {{max}} categories. Deleting a category also deletes its notes.",
       "selectToDelete": "Select to delete",
       "selected": "{{count}} selected",
       "deleteN": "Delete ({{count}})",
-      "confirmTitle": "Delete {{count}} categories?",
-      "confirmText": "{{count}} notes inside will also be deleted."
+      "confirmTitle_one": "Delete {{count}} category?",
+      "confirmTitle_other": "Delete {{count}} categories?",
+      "confirmText_one": "{{count}} note inside will also be deleted.",
+      "confirmText_other": "{{count}} notes inside will also be deleted."
     },
     "trash": {
       "title": "Trash",

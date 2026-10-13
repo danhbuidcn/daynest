@@ -56,9 +56,22 @@ export function textOn(c: AppColor | string): string {
   return contrast(bg, colors.text) >= contrast(bg, colors.white) ? colors.text : colors.white;
 }
 
-// Squared RGB distance — enough to pick the nearest of a small fixed palette.
+// CIE Lab (D65): raw RGB distance sent dark red to grey, Lab follows what the eye sees.
+function lab(hex: string): [number, number, number] {
+  const [r, g, b] = channels(hex).map((v) => {
+    const s = v / 255;
+    return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  });
+  const f = (t: number) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
+  const x = f((0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047);
+  const y = f(0.2126 * r + 0.7152 * g + 0.0722 * b);
+  const z = f((0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883);
+  return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
+}
+
+// Squared Lab distance (ΔE76²) — enough to pick the nearest of a small fixed palette.
 export function distance(a: string, b: string): number {
-  const [x, y] = [channels(a), channels(b)];
+  const [x, y] = [lab(a), lab(b)];
   return x.reduce((sum, v, i) => sum + (v - y[i]) ** 2, 0);
 }
 
