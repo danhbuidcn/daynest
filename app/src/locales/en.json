@@ -20,7 +20,7 @@
   "tabs": {
     "calendar": "Calendar",
     "manage": "Notes",
-    "stats": "Stats",
+    "expenses": "Expenses",
     "settings": "Settings"
   },
   "empty": {
@@ -407,5 +407,29 @@
     "progressTitle": "Syncing Google Calendar",
     "progressText": "Includes events in {{year}} and repeating events.",
     "noTitle": "(No title)"
+  },
+  "expenses": {
+    "modes": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "current": {
+      "day": "Today",
+      "week": "This week",
+      "month": "This month"
+    },
+    "total": "Total spent",
+    "byCategory": "By category",
+    "categories": "Expense categories",
+    "empty": "No expenses yet",
+    "add": "Add expense",
+    "loadFailed": "Could not load expenses",
+    "retry": "Try again",
+    "defaultCategories": {
+      "food": "Food",
+      "transport": "Transport",
+      "bills": "Bills"
+    }
   }
 }

@@ -20,7 +20,7 @@
   "tabs": {
     "calendar": "Lịch",
     "manage": "Ghi chú",
-    "stats": "Thống kê",
+    "expenses": "Chi tiêu",
     "settings": "Cài đặt"
   },
   "empty": {
@@ -407,5 +407,29 @@
     "progressTitle": "Đang đồng bộ Google Calendar",
     "progressText": "Gồm sự kiện năm {{year}} và các sự kiện lặp lại.",
     "noTitle": "(Không có tiêu đề)"
+  },
+  "expenses": {
+    "modes": {
+      "day": "Ngày",
+      "week": "Tuần",
+      "month": "Tháng"
+    },
+    "current": {
+      "day": "Hôm nay",
+      "week": "Tuần này",
+      "month": "Tháng này"
+    },
+    "total": "Tổng chi",
+    "byCategory": "Theo nhóm",
+    "categories": "Nhóm chi tiêu",
+    "empty": "Chưa có khoản chi",
+    "add": "Thêm khoản chi",
+    "loadFailed": "Không tải được khoản chi",
+    "retry": "Thử lại",
+    "defaultCategories": {
+      "food": "Ăn uống",
+      "transport": "Di chuyển",
+      "bills": "Hoá đơn"
+    }
   }
 }

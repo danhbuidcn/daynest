@@ -16,7 +16,8 @@ export function CalendarHeader({
   onPrev: () => void;
   onNext: () => void;
   onTitle: () => void;
-  onToday: () => void;
+  // Chi tiêu has no chip here: its "today" button sits in the period picker (S4 mockup 1b).
+  onToday?: () => void;
 }) {
   const { t } = useTranslation();
   return (
@@ -32,11 +33,13 @@ export function CalendarHeader({
       <Pressable accessibilityRole="button" accessibilityLabel={t('calendar.next')} onPress={onNext} hitSlop={8} style={styles.nav}>
         <Icon name="chevron" size={22} color={colors.text} />
       </Pressable>
-      <Pressable accessibilityRole="button" onPress={onToday} style={styles.today}>
-        <AppText variant="caption" weight="extrabold" color={colors.primaryDark} numberOfLines={1}>
-          {t('calendar.today')}
-        </AppText>
-      </Pressable>
+      {onToday ? (
+        <Pressable accessibilityRole="button" onPress={onToday} style={styles.today}>
+          <AppText variant="caption" weight="extrabold" color={colors.primaryDark} numberOfLines={1}>
+            {t('calendar.today')}
+          </AppText>
+        </Pressable>
+      ) : null}
     </View>
   );
 }

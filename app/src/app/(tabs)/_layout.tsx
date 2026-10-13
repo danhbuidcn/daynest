@@ -35,7 +35,7 @@ export default function TabsLayout() {
         tabBar={(props) => <TabBar {...props} onPlus={() => setQuickAddOpen(true)} />}>
         <Tabs.Screen name="calendar" options={{ title: t('tabs.calendar') }} />
         <Tabs.Screen name="manage" options={{ title: t('tabs.manage') }} />
-        <Tabs.Screen name="stats" options={{ title: t('tabs.stats') }} />
+        <Tabs.Screen name="expenses" options={{ title: t('tabs.expenses') }} />
         <Tabs.Screen name="settings" options={{ title: t('tabs.settings') }} />
       </Tabs>
       <QuickAddDialog

@@ -9,7 +9,7 @@ import { Icon, type IconName } from './Icon';
 const ICONS: Record<string, IconName> = {
   calendar: 'calendar',
   manage: 'book',
-  stats: 'chart',
+  expenses: 'wallet',
   settings: 'gear',
 };
 

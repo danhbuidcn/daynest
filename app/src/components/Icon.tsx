@@ -11,6 +11,8 @@ const ICONS = {
     `<svg viewBox="0 0 24 24" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 21H19v-3" fill="none"/></svg>`,
   chart: (filled: boolean) =>
     stroke('<path d="M5 20V12M12 20V5M19 20v-5"/>', filled ? 2.6 : 1.8),
+  wallet: (filled: boolean) =>
+    `<svg viewBox="0 0 24 24" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8V7a2.5 2.5 0 0 1 2.5-2.5H16V8" fill="none"/><rect x="3.5" y="8" width="17" height="12" rx="3.5"/><circle cx="16" cy="14" r="1.3" fill="${filled ? "#fff" : "currentColor"}" stroke="none"/></svg>`,
   gear: (filled: boolean) =>
     `<svg viewBox="0 0 24 24" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.8"><path d="M12 2.8l2 1.6 2.5-.4 1 2.4 2.4 1-.4 2.5 1.6 2-1.6 2 .4 2.5-2.4 1-1 2.4-2.5-.4-2 1.6-2-1.6-2.5.4-1-2.4-2.4-1 .4-2.5L2.8 12l1.6-2-.4-2.5 2.4-1 1-2.4 2.5.4z" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="${filled ? "#fff" : "none"}"/></svg>`,
   plus: () => stroke('<path d="M12 5v14M5 12h14"/>', 2.6),
@@ -118,6 +120,22 @@ const ICONS = {
   sync: () =>
     stroke(
       '<path d="M20 11a8 8 0 0 0-14.5-4M4 13a8 8 0 0 0 14.5 4"/><path d="M5 3v4h4M19 21v-4h-4"/>',
+    ),
+  food: () =>
+    stroke(
+      '<path d="M4 11.5h16a8 8 0 0 1-16 0z"/><path d="M9.5 8c0-1.2 1-1.6 1-2.8M13.5 8c0-1.2 1-1.6 1-2.8"/>',
+    ),
+  car: () =>
+    stroke(
+      '<path d="M6 11.5l1.6-4A2 2 0 0 1 9.5 6h5a2 2 0 0 1 1.9 1.5l1.6 4"/><rect x="3.5" y="11.5" width="17" height="6" rx="2.5"/><path d="M7 17.5v2M17 17.5v2M7.5 14.5h1M15.5 14.5h1"/>',
+    ),
+  bill: () =>
+    stroke(
+      '<path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 20.5z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>',
+    ),
+  tag: () =>
+    stroke(
+      '<path d="M3.5 12.3V5a1.5 1.5 0 0 1 1.5-1.5h7.3l8.2 8.2-8.8 8.8z"/><circle cx="8.5" cy="8.5" r="1.4"/>',
     ),
 } satisfies Record<string, (filled: boolean) => string>;
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { MAX_YEAR, MIN_YEAR } from '@/lib/lunar';
@@ -14,12 +15,15 @@ export function MonthYearPicker({
   month,
   onSelect,
   onClose,
+  current,
 }: {
   visible: boolean;
   year: number;
   month: number;
   onSelect: (year: number, month: number) => void;
   onClose: () => void;
+  // "Tháng này" under the grid (Chi tiêu, S4 mockup 1b).
+  current?: { label: string; onPress: () => void };
 }) {
   const { t } = useTranslation();
   const [shownYear, setShownYear] = useState(year);
@@ -67,6 +71,7 @@ export function MonthYearPicker({
           );
         })}
       </View>
+      {current ? <Button variant="secondary" label={current.label} onPress={current.onPress} style={styles.current} /> : null}
     </DialogShell>
   );
 }
@@ -77,4 +82,5 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   option: { width: '31%', flexGrow: 1, height: 48, alignItems: 'center', justifyContent: 'center', borderRadius: radius.button },
   on: { backgroundColor: colors.primarySoft },
+  current: { marginTop: space.lg },
 });
