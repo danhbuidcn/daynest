@@ -1,5 +1,6 @@
 -- Load-test seed (LOCAL ONLY): 10,000 fake users, each with 1 signed-in device, 50 events
--- (10 repeating, 2 exceptions), 3 note categories and 20 notes. Spec: docs/specs/sprint-2/design/db.md
+-- (10 repeating, 2 exceptions), 3 note categories, 20 notes and (S4) 3 built-in + 2 own expense
+-- categories with 730 expenses. Spec: docs/specs/sprint-2/design/db.md, docs/specs/sprint-4/design/db.md
 -- User n: id = 00000000-0000-0000-0000-<n as 12 hex>, session_id = 10000000-…-<n>.
 \set ON_ERROR_STOP on
 set client_min_messages = warning;
@@ -60,7 +61,33 @@ left join lateral (
   select id from public.note_categories where user_id = x.u order by name limit 1
 ) c on true;
 
-analyze public.events, public.event_exceptions, public.note_categories, public.notes, public.user_devices;
+-- S4: the 3 built-in expense categories come from the auth.users trigger; add 2 of the user's own.
+insert into public.expense_categories (user_id, name, icon, color)
+select pg_temp.uid('00000000', n), c, 'coffee', '#C2582F'
+from generate_series(1, 10000) n
+cross join unnest(array['Cà phê', 'Con nhỏ']) c;
+
+-- 730 expenses: 2 a day through 2026, spread over the 5 categories.
+insert into public.expenses (user_id, category_id, amount, spent_on, note)
+select x.u, cats.ids[1 + (d + k) % 5], 10000 + ((d * 7 + k * 13) % 50) * 5000, date '2026-01-01' + d,
+       case when k = 0 then 'Load ' || d else '' end
+from generate_series(1, 10000) n
+cross join lateral (select pg_temp.uid('00000000', n) as u) x
+cross join lateral (select array_agg(id order by created_at, id) as ids from public.expense_categories where user_id = x.u) cats
+cross join generate_series(0, 364) d
+cross join generate_series(0, 1) k;
+
+analyze public.events, public.event_exceptions, public.note_categories, public.notes, public.user_devices,
+        public.expense_categories, public.expenses;
 
 select (select count(*) from auth.users) users, (select count(*) from public.events) events,
-       (select count(*) from public.event_exceptions) exceptions, (select count(*) from public.notes) notes;
+       (select count(*) from public.event_exceptions) exceptions, (select count(*) from public.notes) notes,
+       (select count(*) from public.expense_categories) expense_categories, (select count(*) from public.expenses) expenses;
+
+-- Size per user (S4 spec: § Kiểm tra tải → Spec tổng §3).
+select relname, pg_size_pretty(pg_total_relation_size(c.oid)) total,
+       round(pg_total_relation_size(c.oid) / 10000.0 / 1024, 1) kb_per_user
+from pg_class c join pg_namespace ns on ns.oid = c.relnamespace
+where ns.nspname = 'public' and c.relkind = 'r'
+order by pg_total_relation_size(c.oid) desc;
+select pg_size_pretty(pg_database_size(current_database())) database_size;

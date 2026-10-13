@@ -6,7 +6,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | --- | --- | --- | --- |
 | 2026-10-12 | Cài đặt: "Hiện …" → "Hiển thị …" (ngày âm lịch, ngày lễ) | ✅ xong | [2026-10-12-show-holidays-label.md](2026-10-12-show-holidays-label.md) |
 | 2026-10-12 | S4 bước 8: Cuối sprint, release | ⏳ chờ duyệt | [2026-10-12-s4-step-8-release.md](2026-10-12-s4-step-8-release.md) |
-| 2026-10-12 | S4 bước 7: Test tải | ⏳ chờ duyệt | [2026-10-12-s4-step-7-load-test.md](2026-10-12-s4-step-7-load-test.md) |
+| 2026-10-12 | S4 bước 7: Test tải | ✅ xong (0 lỗi, p95 446 ms) | [2026-10-12-s4-step-7-load-test.md](2026-10-12-s4-step-7-load-test.md) |
 | 2026-10-12 | S4 bước 6: Nhóm chi tiêu | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-6-expense-categories.md](2026-10-12-s4-step-6-expense-categories.md) |
 | 2026-10-12 | S4 bước 5: Form khoản chi | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-5-expense-form.md](2026-10-12-s4-step-5-expense-form.md) |
 | 2026-10-12 | S4 bước 4: Tab Chi tiêu — Tuần, Tháng + biểu đồ | ✅ xong (máy thật thử ở bước 8) | [2026-10-12-s4-step-4-expenses-week-month.md](2026-10-12-s4-step-4-expenses-week-month.md) |

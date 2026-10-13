@@ -1,6 +1,7 @@
 // Load test (LOCAL ONLY): VUS virtual users for DURATION_S seconds against PostgREST, each loop
-// = month read (events + exceptions) → create event → edit it → first notes page → note search.
-// Requests mirror app/src/features/events/api.ts and app/src/features/notes/api.ts.
+// = month read (events + exceptions) → create event → edit it → first notes page → note search
+// → (S4) month of expenses → 6-month totals → create expense → edit it.
+// Requests mirror app/src/features/{events,notes,expenses}/api.ts.
 // Env: API_URL, ANON_KEY, JWT_SECRET (from `supabase status -o env`), VUS=100, DURATION_S=300.
 // Pass: 0 errors and overall p95 < 1000 ms (docs/specs/sprint-2/design/db.md § Kiểm tra tải).
 import { createHmac, randomUUID } from 'node:crypto';
@@ -17,6 +18,7 @@ const EVENT_COLUMNS =
 const EXCEPTION_COLUMNS =
   'id,event_id,occurrence_date,kind,title,note,color,all_day,starts_at,ends_at,start_date,end_date,reminder_minutes';
 const NOTE_COLUMNS = 'id,category_id,title,body,checklist,pinned,deleted_at,updated_at';
+const EXPENSE_COLUMNS = 'id,category_id,amount,spent_on,note,updated_at';
 
 const b64url = (s) => Buffer.from(s).toString('base64url');
 const hex12 = (n) => n.toString(16).padStart(12, '0');
@@ -113,6 +115,36 @@ async function iteration() {
   const page = await call('notes page', token, `notes?select=${NOTE_COLUMNS}&deleted_at=is.null&${order}`);
   if (page && page.length !== 20) (errors['notes page'] ??= []).push(`expected 20 notes, got ${page.length}`);
   await call('note search', token, `notes?select=${NOTE_COLUMNS}&deleted_at=is.null&search_text=ilike.${encodeURIComponent('%milk%')}&${order}`);
+
+  const expenses = await call(
+    'month expenses',
+    token,
+    `expenses?select=${EXPENSE_COLUMNS}&spent_on=gte.2026-10-01&spent_on=lte.2026-10-31&order=spent_on.desc,created_at.desc&limit=1000`,
+  );
+  if (expenses && expenses.length < 62) (errors['month expenses'] ??= []).push(`expected ≥ 62 expenses, got ${expenses.length}`);
+  const totals = await call('6-month totals', token, 'rpc/expense_monthly_totals', {
+    method: 'POST',
+    body: { p_from: '2026-05-01', p_to: '2026-10-31' },
+  });
+  if (totals && totals.length !== 6) (errors['6-month totals'] ??= []).push(`expected 6 months, got ${totals.length}`);
+  if (expenses?.[0]) {
+    const id = randomUUID();
+    const spentOn = `2026-10-${String(day).padStart(2, '0')}`;
+    const created = await call('create expense', token, `expenses?on_conflict=id&select=${EXPENSE_COLUMNS}`, {
+      method: 'POST',
+      prefer: 'return=representation,resolution=merge-duplicates',
+      body: { id, category_id: expenses[0].category_id, amount: 50000, spent_on: spentOn, note: 'Load test' },
+    });
+    if (created?.[0]) {
+      const updated = await call(
+        'edit expense',
+        token,
+        `expenses?id=eq.${id}&updated_at=eq.${encodeURIComponent(created[0].updated_at)}&select=id`,
+        { method: 'PATCH', prefer: 'return=representation', body: { amount: 75000 } },
+      );
+      if (updated && updated.length !== 1) (errors['edit expense'] ??= []).push('optimistic lock matched 0 rows');
+    }
+  }
 }
 
 async function vu() {
