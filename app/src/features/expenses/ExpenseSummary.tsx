@@ -9,7 +9,7 @@ import { formatVnd, type CategoryTotal } from '@/lib/expenses';
 import { colors, radius, space } from '@/theme';
 import { categoryIcon, categoryName, type Expense, type ExpenseCategory } from './expense';
 
-export function CategoryIcon({ category, size = 34 }: { category: ExpenseCategory | undefined; size?: number }) {
+export function CategoryIcon({ category, size = 28 }: { category: ExpenseCategory | undefined; size?: number }) {
   const bg = toHex(category?.color ?? 'mint');
   return (
     <View style={[styles.icon, { width: size, height: size, backgroundColor: bg }]}>
@@ -25,7 +25,7 @@ export function TotalCard({ total }: { total: number }) {
       <AppText variant="caption" color={colors.textMuted}>
         {t('expenses.total')}
       </AppText>
-      <AppText variant="title" numberOfLines={1} adjustsFontSizeToFit>
+      <AppText variant="title" numberOfLines={1} adjustsFontSizeToFit style={styles.totalText}>
         {formatVnd(total)}
       </AppText>
     </Card>
@@ -36,7 +36,7 @@ export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTot
   const { t } = useTranslation();
   return (
     <Card style={styles.byCategory}>
-      <AppText variant="heading" style={styles.section}>
+      <AppText variant="heading" style={[styles.section, styles.sectionText]}>
         {t('expenses.byCategory')}
       </AppText>
       {totals.map((c) => {
@@ -46,10 +46,10 @@ export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTot
             <CategoryIcon category={category} />
             <View style={styles.grow}>
               <View style={styles.line}>
-                <AppText numberOfLines={1} style={styles.grow}>
+                <AppText numberOfLines={1} style={[styles.grow, styles.rowText]}>
                   {categoryName(t, category)}
                 </AppText>
-                <AppText weight="bold">{formatVnd(c.amount)}</AppText>
+                <AppText weight="bold" style={styles.rowText}>{formatVnd(c.amount)}</AppText>
               </View>
               <View style={styles.line}>
                 <View style={styles.track}>
@@ -85,14 +85,14 @@ export function ExpenseListCard({
           <Pressable key={e.id} accessibilityRole="button" onPress={() => onPress(e)} style={[styles.expRow, i > 0 && styles.divider]}>
             <CategoryIcon category={category} />
             <View style={styles.grow}>
-              <AppText numberOfLines={1}>{categoryName(t, category)}</AppText>
+              <AppText numberOfLines={1} style={styles.rowText}>{categoryName(t, category)}</AppText>
               {e.note ? (
                 <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
                   {e.note}
                 </AppText>
               ) : null}
             </View>
-            <AppText weight="bold">{formatVnd(e.amount)}</AppText>
+            <AppText weight="bold" style={styles.rowText}>{formatVnd(e.amount)}</AppText>
           </Pressable>
         );
       })}
@@ -102,15 +102,18 @@ export function ExpenseListCard({
 
 const styles = StyleSheet.create({
   icon: { borderRadius: radius.icon, alignItems: 'center', justifyContent: 'center' },
-  total: { paddingVertical: 14, paddingHorizontal: space.lg, alignItems: 'center' },
+  total: { paddingVertical: 10, paddingHorizontal: space.lg, alignItems: 'center' },
+  totalText: { fontSize: 20, lineHeight: 26 },
+  rowText: { fontSize: 14, lineHeight: 20 },
+  sectionText: { fontSize: 15, lineHeight: 20 },
   byCategory: { paddingBottom: space.sm },
   section: { paddingTop: space.md, paddingHorizontal: space.lg, paddingBottom: space.xs },
-  catRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: space.sm, paddingHorizontal: space.lg },
+  catRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 6, paddingHorizontal: space.lg },
   grow: { flex: 1, minWidth: 0 },
   line: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   track: { flex: 1, height: 6, borderRadius: radius.pill, backgroundColor: colors.border, overflow: 'hidden' },
   fill: { height: '100%', borderRadius: radius.pill },
   percent: { minWidth: 36, textAlign: 'right' },
-  expRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 56, paddingVertical: space.sm, paddingHorizontal: space.lg },
+  expRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 48, paddingVertical: space.sm, paddingHorizontal: space.lg },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
 });

@@ -51,3 +51,7 @@ export const shadow = {
   shadowOffset: { width: 0, height: 4 },
   elevation: 2,
 } as const;
+
+// Tablets in landscape (≥ 900 dp wide) get larger text and icons; phones and portrait tablets keep 1.
+export const WIDE_SCREEN_DP = 900;
+export const WIDE_SCALE = 1.2;

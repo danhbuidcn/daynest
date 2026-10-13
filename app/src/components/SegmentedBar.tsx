@@ -37,7 +37,7 @@ export function SegmentedBar<T extends string>({
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
-    height: 40,
+    height: 36,
     marginTop: space.xs,
     marginHorizontal: space.lg,
     marginBottom: space.sm,

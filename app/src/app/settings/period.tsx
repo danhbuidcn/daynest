@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md },
   monthTitle: { textAlign: 'center', paddingTop: 14, paddingBottom: space.sm },
   grid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: space.md },
-  cell: { width: `${100 / 7}%`, alignItems: 'center', gap: 3, paddingBottom: 6 },
+  cell: { width: '14.28%', alignItems: 'center', gap: 3, paddingBottom: 6 },
   future: { opacity: 0.45 },
   circle: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
   circleBorder: { borderWidth: 2, borderColor: colors.border },

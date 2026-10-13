@@ -113,7 +113,7 @@ export default function ExpensesScreen() {
         title={t('tabs.expenses')}
         action={
           <Pressable accessibilityRole="button" accessibilityLabel={t('expenses.categories')} onPress={() => router.push('/expense/categories')} style={styles.tagButton}>
-            <Icon name="tag" size={24} color={colors.primaryDark} />
+            <Icon name="tag" size={20} color={colors.primaryDark} />
           </Pressable>
         }
       />
@@ -167,9 +167,9 @@ function Empty({ text, action, onAction, plus }: { text: string; action: string;
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
-  tagButton: { width: 40, height: 40, borderRadius: radius.icon + 2, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
+  tagButton: { width: 36, height: 36, borderRadius: radius.icon + 2, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1 },
-  list: { gap: space.md, paddingHorizontal: space.lg, paddingBottom: 120 },
+  list: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: 120 },
   loading: { marginVertical: space.xl },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md, paddingHorizontal: 40, paddingBottom: 40 },
   bubble: { width: 72, height: 72, borderRadius: 24, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },

@@ -68,9 +68,9 @@ export function Chip({
 
 const styles = StyleSheet.create({
   scroll: { flexGrow: 0 },
-  row: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: space.md },
+  row: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: space.sm },
   chip: {
-    height: 32,
+    height: 28,
     maxWidth: 140,
     flexDirection: 'row',
     alignItems: 'center',
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
   },
   chipOn: { backgroundColor: colors.primary, borderColor: colors.primary },
   dot: { width: 8, height: 8, borderRadius: 4 },
-  label: { flexShrink: 1 },
+  label: { flexShrink: 1, fontSize: 13, lineHeight: 18 },
   countOn: { opacity: 0.85 },
 });

@@ -52,7 +52,7 @@ export function DayStrip({
 
 const styles = StyleSheet.create({
   strip: { flexDirection: 'row', gap: space.xs, paddingHorizontal: space.md, paddingBottom: 10 },
-  day: { flex: 1, height: 68, borderRadius: radius.button, alignItems: 'center', justifyContent: 'center' },
+  day: { flex: 1, height: 58, borderRadius: radius.button, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: colors.primary },
   pressed: { backgroundColor: colors.primarySoft },
   dot: { width: 5, height: 5, borderRadius: radius.pill, marginTop: 2 },

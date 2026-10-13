@@ -1,5 +1,7 @@
 import { SvgXml } from "react-native-svg";
 
+import { useUiScale } from "@/theme/useUiScale";
+
 // Paths are copied 1:1 from the mockups (docs/specs/sprint-*/design/mockups.html); keep both in sync.
 const stroke = (d: string, width = 1.9) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
@@ -190,11 +192,12 @@ export function Icon({
   color: string;
   filled?: boolean;
 }) {
+  const scale = useUiScale();
   return (
     <SvgXml
       xml={ICONS[name](filled)}
-      width={size}
-      height={size}
+      width={size * scale}
+      height={size * scale}
       color={color}
     />
   );

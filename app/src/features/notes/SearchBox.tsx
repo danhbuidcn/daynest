@@ -9,7 +9,7 @@ export function SearchBox({ value, onChange, placeholder }: { value: string; onC
   const [focused, setFocused] = useState(false);
   return (
     <View style={[styles.box, { borderColor: focused ? colors.primary : colors.border }]}>
-      <Icon name="search" size={18} color={colors.textMuted} />
+      <Icon name="search" size={16} color={colors.textMuted} />
       <TextInput
         value={value}
         onChangeText={onChange}
@@ -23,7 +23,7 @@ export function SearchBox({ value, onChange, placeholder }: { value: string; onC
       />
       {value ? (
         <Pressable accessibilityRole="button" accessibilityLabel="Clear" hitSlop={10} onPress={() => onChange('')}>
-          <Icon name="close" size={18} color={colors.textMuted} />
+          <Icon name="close" size={16} color={colors.textMuted} />
         </Pressable>
       ) : null}
     </View>
@@ -32,9 +32,9 @@ export function SearchBox({ value, onChange, placeholder }: { value: string; onC
 
 const styles = StyleSheet.create({
   box: {
-    height: 44,
+    height: 38,
     marginHorizontal: space.lg,
-    marginBottom: 10,
+    marginBottom: space.sm,
     borderRadius: 16,
     borderWidth: 1.5,
     backgroundColor: colors.surface,
@@ -43,5 +43,5 @@ const styles = StyleSheet.create({
     gap: space.sm,
     paddingHorizontal: 14,
   },
-  input: { flex: 1, ...typeScale.body, color: colors.text, paddingVertical: 0 },
+  input: { flex: 1, ...typeScale.body, fontSize: 14, color: colors.text, paddingVertical: 0 },
 });

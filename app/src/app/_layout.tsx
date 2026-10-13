@@ -9,7 +9,7 @@ import { Stack, TransitionPresets } from 'expo-router/js-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { LogBox, StyleSheet } from 'react-native';
+import { LogBox, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -69,6 +69,14 @@ function RootStack({ ready }: { ready: boolean }) {
 
   const signedIn = !!profile;
   return (
+    <View style={styles.frame}>
+      <AppStack signedIn={signedIn} />
+    </View>
+  );
+}
+
+function AppStack({ signedIn }: { signedIn: boolean }) {
+  return (
     // JS stack: swipe from the left edge to go back on both Android and iOS.
     <Stack
       screenOptions={{
@@ -93,4 +101,7 @@ function RootStack({ ready }: { ready: boolean }) {
   );
 }
 
-const styles = StyleSheet.create({ root: { flex: 1 } });
+const styles = StyleSheet.create({
+  root: { flex: 1 },
+  frame: { flex: 1, backgroundColor: colors.bg },
+});

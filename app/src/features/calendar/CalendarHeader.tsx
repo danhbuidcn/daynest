@@ -45,7 +45,7 @@ export function CalendarHeader({
 }
 
 const styles = StyleSheet.create({
-  bar: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingTop: 10, paddingRight: space.md, paddingBottom: 6, paddingLeft: space.sm },
+  bar: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingTop: 6, paddingRight: space.md, paddingBottom: 6, paddingLeft: space.sm },
   nav: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   titleWrap: { flex: 1 },
   title: { textAlign: 'center' },

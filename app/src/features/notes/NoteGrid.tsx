@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
   groups: { gap: space.lg },
   group: { gap: space.sm },
   head: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 20 },
-  grid: { flexDirection: 'row', gap: space.md, paddingHorizontal: space.lg },
-  column: { flex: 1, gap: space.md },
+  grid: { flexDirection: 'row', gap: space.sm, paddingHorizontal: space.lg },
+  column: { flex: 1, gap: space.sm },
 });

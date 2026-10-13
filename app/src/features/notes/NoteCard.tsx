@@ -47,7 +47,7 @@ export function NoteCard({
           <Icon name="pin" size={16} color={colors.primaryDark} />
         </View>
       ) : null}
-      <AppText variant="heading" numberOfLines={1} style={styles.title}>
+      <AppText variant="heading" numberOfLines={1} style={[styles.title, styles.titleText]}>
         {noteHeadline(note) || t('notes.untitled')}
       </AppText>
       {progress.total === 0 && note.title.trim() && note.body.trim() ? (
@@ -87,16 +87,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: radius.card,
     borderLeftWidth: 4,
-    paddingTop: space.md,
-    paddingRight: space.md,
-    paddingBottom: 10,
-    paddingLeft: 14,
-    gap: 6,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 8,
+    paddingLeft: 12,
+    gap: 4,
     ...shadow,
   },
   pressed: { opacity: 0.7 },
-  pin: { position: 'absolute', right: 10, top: space.md },
+  pin: { position: 'absolute', right: 10, top: 10 },
   title: { paddingRight: 18 },
+  titleText: { fontSize: 15, lineHeight: 20 },
   progress: { flexDirection: 'row', alignItems: 'center', gap: space.xs },
   foot: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 });
