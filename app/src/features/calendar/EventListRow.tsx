@@ -6,7 +6,8 @@ import { Icon } from '@/components/Icon';
 import { timeRangeLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { SyncIcon } from '@/features/events/SyncIcon';
-import { colors, eventColors, radius, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, radius, space } from '@/theme';
 
 export function HolidayRow({ title }: { title: string }) {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ export function EventListRow({
   const time = timeRangeLabel(t, occurrence, use24h, timeZone);
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.row}>
-      <View style={[styles.dot, { backgroundColor: eventColors[occurrence.color] }]} />
+      <View style={[styles.dot, { backgroundColor: toHex(occurrence.color) }]} />
       <View style={styles.flex}>
         <AppText numberOfLines={1} ellipsizeMode="clip">{occurrence.title}</AppText>
         <AppText variant="caption" color={colors.textMuted} numberOfLines={1} ellipsizeMode="clip">

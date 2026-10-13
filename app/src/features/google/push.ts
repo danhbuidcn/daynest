@@ -2,7 +2,7 @@ import { fetchExceptions } from '@/features/events/api';
 import { occurrencesForEvent } from '@/features/events/occurrences';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { shiftByDays, todayIn } from '@/lib/calendar/timeZone';
-import { fromGoogle, toGoogleBody } from '@/lib/google/mapping';
+import { fromGoogle, keepLocalColor, toGoogleBody } from '@/lib/google/mapping';
 import { googleIdFor, inSyncScope, instanceIdFor } from '@/lib/google/scope';
 import type { GoogleEvent } from '@/lib/google/types';
 import { jdFromDate } from '@/lib/lunar';
@@ -67,7 +67,7 @@ async function update(e: SyncedEvent, ctx: SyncContext): Promise<GoogleEvent | n
 
 async function applyGoogle(e: SyncedEvent, g: GoogleEvent, ctx: SyncContext): Promise<null> {
   const mapped = fromGoogle(g, { timeZone: ctx.timeZone, fallbackTitle: ctx.fallbackTitle });
-  if (mapped) await store.saveFromGoogle(e.id, mapped.fields, g, mapped.readonly);
+  if (mapped) await store.saveFromGoogle(e.id, { ...mapped.fields, color: keepLocalColor(e.color, g.colorId, mapped.fields.color) }, g, mapped.readonly);
   return null;
 }
 

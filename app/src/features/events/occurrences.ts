@@ -2,7 +2,8 @@ import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE, shiftByDays, todayIn } from '@/lib/calendar/timeZone';
 import { jdFromDate, jdToDate, type SolarDate } from '@/lib/lunar';
 import { occurrences as expandOccurrences, type DateRange, type Exception, type RecurrenceRule } from '@/lib/recurrence';
-import type { EventColor, EventRow, GoogleLink, RepeatKind } from './event';
+import type { AppColor } from '@/lib/colors';
+import type { EventRow, GoogleLink, RepeatKind } from './event';
 
 export type ExceptionKind = 'skip' | 'override';
 
@@ -14,7 +15,7 @@ export type ExceptionRow = {
   kind: ExceptionKind;
   title: string | null;
   note: string | null;
-  color: EventColor | null;
+  color: AppColor | null;
   allDay: boolean | null;
   startsAt: string | null;
   endsAt: string | null;
@@ -28,7 +29,7 @@ export type EventOccurrence = {
   occurrenceDate: string; // key for "edit/delete this occurrence only"
   title: string;
   note: string;
-  color: EventColor;
+  color: AppColor;
   allDay: boolean;
   startsAt: string | null;
   endsAt: string | null;

@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AutoGrowField } from '@/components/AutoGrowField';
 import { Button } from '@/components/Button';
+import { ColorRow } from '@/components/ColorRow';
 import { ConfirmDialog } from '@/components/Dialog';
 import { FormScreen } from '@/components/FormScreen';
 import { Switch } from '@/components/Switch';
@@ -19,7 +20,6 @@ import {
   TITLE_MAX,
   type FormState,
 } from '@/features/events/eventFormState';
-import { ColorPicker } from '@/features/events/form/ColorPicker';
 import { DateTimeRows } from '@/features/events/form/DateTimeRows';
 import { FormRow } from '@/features/events/form/FormRow';
 import { ReminderSection } from '@/features/events/form/ReminderSection';
@@ -117,7 +117,7 @@ function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; bas
         <FormRow icon="repeat" label={repeatLabel(t, form.repeat, form.repeatInterval, form.startDate).title} onPress={() => setRepeatOpen(true)} chevron />
         <View style={styles.divider} />
         <FormRow icon="palette" label={t('events.form.color')} />
-        <ColorPicker value={form.color} onChange={(color) => setForm({ ...form, color })} />
+        <ColorRow value={form.color} onChange={(color) => setForm({ ...form, color })} />
       </View>
 
       <RepeatPicker

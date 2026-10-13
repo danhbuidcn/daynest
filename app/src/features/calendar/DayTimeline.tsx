@@ -7,7 +7,8 @@ import { clockLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { layoutDay } from '@/lib/calendar/dayLayout';
 import { timeOfDayIn } from '@/lib/calendar/timeZone';
-import { colors, eventColors, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, space } from '@/theme';
 import type { OccurrenceSpan } from './dayOccurrences';
 
 const HOUR_HEIGHT = 56;
@@ -79,7 +80,7 @@ export function DayTimeline({
       <View style={styles.blocks} pointerEvents="box-none">
         {blocks.map((b) => {
           const occ = byId.get(b.id)!;
-          const color = eventColors[occ.color];
+          const color = toHex(occ.color);
           const height = Math.max((b.height / 60) * HOUR_HEIGHT - 4, 20);
           const compact = height < COMPACT_BLOCK;
           return (

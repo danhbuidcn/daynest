@@ -5,17 +5,17 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
+import { ColorRow } from '@/components/ColorRow';
 import { DialogShell } from '@/components/Dialog';
 import { TextField } from '@/components/TextField';
-import type { EventColor } from '@/features/events/event';
-import { ColorPicker } from '@/features/events/form/ColorPicker';
+import type { AppColor } from '@/lib/colors';
 import { CATEGORY_NAME_MAX } from '@/lib/notes';
 import { space } from '@/theme';
 import { DuplicateNameError } from './api';
 import type { Category } from './note';
 import { useSaveCategory } from './useNotes';
 
-// Thêm / Sửa danh mục (màn 19): tên + 6 màu · Huỷ / Lưu, no delete button (F5).
+// Thêm / Sửa danh mục (màn 19): tên + màu · Huỷ / Lưu, no delete button (F5).
 // Rendered only while open, so its state starts fresh each time.
 export function CategoryEditDialog({
   category,
@@ -30,7 +30,7 @@ export function CategoryEditDialog({
   const save = useSaveCategory();
   const [id] = useState(() => category?.id ?? Crypto.randomUUID());
   const [name, setName] = useState(category?.name ?? '');
-  const [color, setColor] = useState<EventColor>(category?.color ?? 'mint');
+  const [color, setColor] = useState<AppColor>(category?.color ?? 'mint');
   const [error, setError] = useState<string | null>(null);
 
   const submit = async () => {
@@ -60,7 +60,7 @@ export function CategoryEditDialog({
         error={error}
       />
       <View style={styles.colors}>
-        <ColorPicker value={color} onChange={setColor} />
+        <ColorRow value={color} onChange={setColor} />
       </View>
       <View style={styles.actions}>
         <Button label={t('common.cancel')} variant="secondary" onPress={onClose} style={styles.flex} />

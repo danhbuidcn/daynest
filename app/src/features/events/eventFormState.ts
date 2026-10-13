@@ -3,7 +3,8 @@
 import { isoDate, parseIsoDate, sameDay } from '@/lib/calendar/monthGrid';
 import { timeOfDayIn, todayIn, zonedDateTimeToUtc, type TimeOfDay } from '@/lib/calendar/timeZone';
 import { jdFromDate, jdToDate, toLunar, type SolarDate } from '@/lib/lunar';
-import type { EventColor, EventInput, EventRow, RepeatKind } from './event';
+import type { AppColor } from '@/lib/colors';
+import type { EventInput, EventRow, RepeatKind } from './event';
 import type { EventOccurrence } from './occurrences';
 import { ruleFromEvent } from './occurrences';
 import { DEFAULT_REMINDER_MINUTES } from './reminderOptions';
@@ -16,7 +17,7 @@ export type FormState = {
   startTime: TimeOfDay;
   endDate: SolarDate;
   endTime: TimeOfDay;
-  color: EventColor;
+  color: AppColor;
   reminderOn: boolean;
   reminderMinutes: number[];
   repeat: RepeatKind;

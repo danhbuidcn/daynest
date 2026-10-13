@@ -6,7 +6,8 @@ import { AppText } from '@/components/AppText';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { CATEGORY_MAX } from '@/lib/notes';
-import { colors, eventColors, radius, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, radius, space } from '@/theme';
 import { CategoryEditDialog } from './CategoryEditDialog';
 import { useCategories } from './useNotes';
 
@@ -55,7 +56,7 @@ export function CategoryPickerDialog({
         </AppText>
         <ScrollView style={styles.list}>
           {option(null, t('notes.noCategory'))}
-          {categories.map((c) => option(c.id, c.name, eventColors[c.color]))}
+          {categories.map((c) => option(c.id, c.name, toHex(c.color)))}
         </ScrollView>
         {categories.length < CATEGORY_MAX ? (
           <Pressable accessibilityRole="button" onPress={() => setAdding(true)} style={styles.option}>

@@ -1,5 +1,5 @@
 import { ConflictError, ForbiddenError } from '@/features/events/api';
-import type { EventColor } from '@/features/events/event';
+import type { AppColor } from '@/lib/colors';
 import { buildSearchText, ilikePattern, NOTES_PAGE_SIZE } from '@/lib/notes';
 import { supabase } from '@/lib/supabase';
 import { NOTE_COLUMNS, toNote, type Category, type Note, type NoteDraft, type NoteTableRow } from './note';
@@ -151,14 +151,14 @@ export async function fetchCategories(): Promise<Category[]> {
   return (data ?? []).map((r) => ({
     id: r.id as string,
     name: r.name as string,
-    color: r.color as EventColor,
+    color: r.color as AppColor,
     noteCount: (r.notes as { count: number }[] | null)?.[0]?.count ?? 0,
   }));
 }
 
 // Create upserts on an `id` generated when the dialog opened, so a retry doesn't hit the
 // unique-name index and wrongly report "Tên này đã có".
-export async function saveCategory(input: { id: string; isNew: boolean; name: string; color: EventColor }): Promise<void> {
+export async function saveCategory(input: { id: string; isNew: boolean; name: string; color: AppColor }): Promise<void> {
   const values = { name: input.name.trim(), color: input.color };
   const { error } = input.isNew
     ? await supabase.from('note_categories').upsert({ id: input.id, ...values }, { onConflict: 'id' })

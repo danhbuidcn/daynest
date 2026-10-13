@@ -34,12 +34,13 @@ import {
   useNote,
   useTrashNote,
 } from "@/features/notes/useNotes";
+import { toHex } from "@/lib/colors";
 import {
   CHECKLIST_MAX_ITEMS,
   NOTE_BODY_MAX,
   NOTE_TITLE_MAX,
 } from "@/lib/notes";
-import { colors, eventColors, radius, space, type as typeScale } from "@/theme";
+import { colors, radius, space, type as typeScale } from "@/theme";
 
 // Màn 17 — `/note/<id>` opens a note · `/note/<new id>?isNew=1&categoryId=…` starts one.
 // Laid out like Samsung Notes (S3 C): title in the top bar, body fills the screen, tools above the keyboard.
@@ -204,7 +205,7 @@ function NoteEditor({
           </Pressable>
           <Chip
             label={category ? category.name : t("notes.addCategory")}
-            dot={category ? eventColors[category.color] : undefined}
+            dot={category ? toHex(category.color) : undefined}
             onPress={() => {
               Keyboard.dismiss();
               setPickerOpen(true);

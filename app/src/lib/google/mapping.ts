@@ -1,12 +1,27 @@
 import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
+import { distance, isNamedColor, toHex, type AppColor, type NamedColor } from '@/lib/colors';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
 import { buildRecurrence, parseRecurrence } from './rrule';
-import type { DaynestColor, EventFields, GoogleEvent, GoogleReminders, GoogleTime } from './types';
+import type { EventFields, GoogleEvent, GoogleReminders, GoogleTime } from './types';
 
 // F4 § Map trường.
-const TO_GOOGLE_COLOR: Record<DaynestColor, string> = { mint: '2', sky: '7', lavender: '1', pink: '4', peach: '6', lemon: '5' };
-const FROM_GOOGLE_COLOR: Record<string, DaynestColor> = {
+const TO_GOOGLE_COLOR: Record<NamedColor, string> = { mint: '2', sky: '7', lavender: '1', pink: '4', peach: '6', lemon: '5' };
+// Google Calendar's 11 event colours as its web UI shows them, by colorId.
+const GOOGLE_HEX: Record<string, string> = {
+  '1': '#7986CB',
+  '2': '#33B679',
+  '3': '#8E24AA',
+  '4': '#E67C73',
+  '5': '#F6BF26',
+  '6': '#F4511E',
+  '7': '#039BE5',
+  '8': '#616161',
+  '9': '#3F51B5',
+  '10': '#0B8043',
+  '11': '#D50000',
+};
+const FROM_GOOGLE_COLOR: Record<string, NamedColor> = {
   '2': 'mint',
   '7': 'sky',
   '1': 'lavender',
@@ -19,6 +34,19 @@ const FROM_GOOGLE_COLOR: Record<string, DaynestColor> = {
   '11': 'pink',
   '8': 'sky',
 };
+
+// S4: a hex colour goes up as the nearest of Google's 11; pulling back still maps to the 6 names.
+export function toGoogleColorId(c: AppColor): string {
+  if (isNamedColor(c)) return TO_GOOGLE_COLOR[c];
+  const hex = toHex(c);
+  return Object.keys(GOOGLE_HEX).reduce((best, id) => (distance(hex, GOOGLE_HEX[id]) < distance(hex, GOOGLE_HEX[best]) ? id : best));
+}
+
+// Pulling back our own push (or a title edit on Google) must not turn a hex colour into a name:
+// keep it while Google still shows the colour we sent. Changed on Google → Google's colour wins.
+export function keepLocalColor(local: AppColor | null | undefined, colorId: string | undefined, pulled: AppColor): AppColor {
+  return local && !isNamedColor(local) && toGoogleColorId(local) === colorId ? local : pulled;
+}
 
 // Daynest all-day reminders count back from 9:00, Google's from 0:00.
 export const ALL_DAY_REMINDER_SHIFT = 540;
@@ -46,7 +74,7 @@ export function toGoogleBody(e: EventFields, timeZone: string, { instance = fals
   return {
     summary: e.title,
     description: e.note,
-    colorId: TO_GOOGLE_COLOR[e.color],
+    colorId: toGoogleColorId(e.color),
     ...times(e, timeZone),
     ...(instance ? {} : { recurrence: buildRecurrence(e.repeat, e.repeatInterval, e.repeatUntil, e.allDay, timeZone) }),
     reminders: remindersToGoogle(e.reminderMinutes, e.allDay),

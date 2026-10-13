@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useToast } from '@/components/Toast';
-import type { EventColor } from '@/features/events/event';
+import type { AppColor } from '@/lib/colors';
 import { useForbiddenGuard } from '@/features/events/useEvents';
 import * as api from './api';
 
@@ -68,7 +68,7 @@ export const useRestoreNote = () => useNotesMutation((id: string) => api.setNote
 export const useDeleteNoteForever = () => useNotesMutation((id: string) => api.deleteNoteForever(id));
 export const useEmptyTrash = () => useNotesMutation(() => api.emptyTrash());
 export const useSaveCategory = () =>
-  useNotesMutation((v: { id: string; isNew: boolean; name: string; color: EventColor }) => api.saveCategory(v));
+  useNotesMutation((v: { id: string; isNew: boolean; name: string; color: AppColor }) => api.saveCategory(v));
 export const useDeleteCategories = () => useNotesMutation((ids: string[]) => api.deleteCategories(ids));
 
 // "Xoá" on a card or in the editor: to the trash without asking, toast + "Hoàn tác" (F5).

@@ -1,4 +1,4 @@
-import type { EventColor } from '@/features/events/event';
+import type { AppColor } from '@/lib/colors';
 import type { ChecklistItem, NoteContent } from '@/lib/notes';
 
 export type Note = NoteContent & {
@@ -12,7 +12,7 @@ export type Note = NoteContent & {
 // What the editor writes: content + pin + category, no server-managed fields.
 export type NoteDraft = NoteContent & { categoryId: string | null; pinned: boolean };
 
-export type Category = { id: string; name: string; color: EventColor; noteCount: number };
+export type Category = { id: string; name: string; color: AppColor; noteCount: number };
 
 export type NoteTableRow = {
   id: string;

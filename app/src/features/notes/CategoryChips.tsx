@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { colors, eventColors, radius, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, radius, space } from '@/theme';
 import type { Category } from './note';
 
 // Chip lọc (màn 16): "Tất cả" + one chip per category. `null` = Tất cả.
@@ -23,7 +24,7 @@ export function CategoryChips({
         <Chip
           key={c.id}
           label={c.name}
-          dot={eventColors[c.color]}
+          dot={toHex(c.color)}
           count={c.noteCount}
           on={selected === c.id}
           onPress={() => onSelect(c.id)}

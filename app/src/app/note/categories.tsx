@@ -16,7 +16,8 @@ import { CategoryEditDialog } from '@/features/notes/CategoryEditDialog';
 import type { Category } from '@/features/notes/note';
 import { useCategories, useDeleteCategories } from '@/features/notes/useNotes';
 import { CATEGORY_MAX } from '@/lib/notes';
-import { colors, eventColors, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, space } from '@/theme';
 
 // Màn 18 — Danh mục · 18b chọn để xoá · 18c xác nhận · 19 thêm/sửa.
 export default function CategoriesScreen() {
@@ -65,7 +66,7 @@ export default function CategoriesScreen() {
                     {selected.includes(c.id) ? <Icon name="check" size={14} color={colors.white} /> : null}
                   </View>
                 ) : null}
-                <View style={[styles.dot, { backgroundColor: eventColors[c.color] }]} />
+                <View style={[styles.dot, { backgroundColor: toHex(c.color) }]} />
                 <AppText numberOfLines={1} style={styles.flex}>
                   {c.name}
                 </AppText>

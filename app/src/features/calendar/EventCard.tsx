@@ -6,7 +6,8 @@ import { Icon } from '@/components/Icon';
 import { timeRangeLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import { SyncIcon } from '@/features/events/SyncIcon';
-import { colors, eventColors, radius, shadow, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, radius, shadow, space } from '@/theme';
 
 // Week rows and the list view (màn 2, 4): colour stripe · title · time (or note) · repeat/reminder icons.
 export function EventCard({
@@ -36,7 +37,7 @@ export function EventCard({
       accessibilityLabel={`${occurrence.title}, ${time}`}
       onPress={onPress}
       style={({ pressed }) => [styles.card, pressed && styles.pressed, style]}>
-      <View style={[styles.stripe, { backgroundColor: eventColors[occurrence.color] }]} />
+      <View style={[styles.stripe, { backgroundColor: toHex(occurrence.color) }]} />
       <View style={[styles.body, titleMaxChars ? styles.bodyAuto : null]}>
         <AppText numberOfLines={1} ellipsizeMode="clip">
           {title}

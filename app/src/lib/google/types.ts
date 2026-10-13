@@ -1,3 +1,5 @@
+import type { AppColor } from '@/lib/colors';
+
 // Google Calendar API v3 event — only the fields Daynest reads or writes (F4).
 export type GoogleTime = { date?: string; dateTime?: string; timeZone?: string };
 
@@ -19,14 +21,13 @@ export type GoogleEvent = {
   reminders?: GoogleReminders;
 };
 
-export type DaynestColor = 'mint' | 'sky' | 'lavender' | 'pink' | 'peach' | 'lemon';
 export type DaynestRepeat = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'lunar_yearly';
 
 // Same shape as `EventInput` (features/events/event.ts), restated so lib/ doesn't import features/.
 export type EventFields = {
   title: string;
   note: string;
-  color: DaynestColor;
+  color: AppColor;
   allDay: boolean;
   startsAt: string | null;
   endsAt: string | null;

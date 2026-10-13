@@ -20,7 +20,8 @@ import { useEventDelete } from '@/features/events/useEventDelete';
 import { useEventsInRange } from '@/features/events/useEvents';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
-import { colors, eventColors, radius, space } from '@/theme';
+import { toHex } from '@/lib/colors';
+import { colors, radius, space } from '@/theme';
 
 // Màn 13 — `/event/[id]?occurrenceDate=YYYY-MM-DD`: one lap of a (possibly repeating) event.
 export default function EventDetailScreen() {
@@ -55,7 +56,7 @@ export default function EventDetailScreen() {
       <ScreenHeader title="" onBack={() => router.back()} compact action={<MoreButton onPress={() => setMenuOpen(true)} />} />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.titleRow}>
-          <View style={[styles.swatch, { backgroundColor: eventColors[occ.color] }]} />
+          <View style={[styles.swatch, { backgroundColor: toHex(occ.color) }]} />
           <AppText variant="title" style={styles.flex}>
             {occ.title}
           </AppText>

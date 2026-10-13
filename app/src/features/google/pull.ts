@@ -1,4 +1,4 @@
-import { fromGoogle, startDateOf } from '@/lib/google/mapping';
+import { fromGoogle, keepLocalColor, startDateOf } from '@/lib/google/mapping';
 import { inSyncScope, yearWindow } from '@/lib/google/scope';
 import type { GoogleEvent, GoogleReminders } from '@/lib/google/types';
 import * as google from './client';
@@ -51,7 +51,8 @@ export async function applyChanges(ctx: SyncContext, { items, defaults }: PullRe
         // Edited here too and not pushed yet: the later edit wins (F4).
         const localNewer = mine?.status === 'pending' && g.updated && new Date(mine.updatedAt) > new Date(g.updated);
         if (!localNewer) {
-          const id = await store.saveFromGoogle(mine?.id ?? null, mapped.fields, g, mapped.readonly);
+          const fields = { ...mapped.fields, color: keepLocalColor(mine?.color, g.colorId, mapped.fields.color) };
+          const id = await store.saveFromGoogle(mine?.id ?? null, fields, g, mapped.readonly);
           linked.set(g.id, { id, readonly: mapped.readonly, repeat: mapped.fields.repeat });
         }
       }
@@ -67,7 +68,8 @@ export async function applyChanges(ctx: SyncContext, { items, defaults }: PullRe
     } else if (parent.repeat !== 'none' && g.originalStartTime) {
       const date = startDateOf(g.originalStartTime, ctx.timeZone);
       const mapped = g.status === 'cancelled' ? null : fromGoogle(g, opts);
-      await store.saveExceptionFromGoogle(parent.id, date, mapped ? mapped.fields : null);
+      const fields = mapped && { ...mapped.fields, color: keepLocalColor(await store.exceptionColor(parent.id, date), g.colorId, mapped.fields.color) };
+      await store.saveExceptionFromGoogle(parent.id, date, fields);
     }
     onEach();
   }

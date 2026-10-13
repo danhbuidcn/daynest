@@ -1,6 +1,7 @@
 import * as Crypto from 'expo-crypto';
 
 import { toEvent, toEventColumns, type EventInput, type EventRow, type EventTableRow, type GoogleStatus } from '@/features/events/event';
+import type { AppColor } from '@/lib/colors';
 import type { GoogleEvent } from '@/lib/google/types';
 import { supabase } from '@/lib/supabase';
 
@@ -147,6 +148,17 @@ export async function exceptionKind(eventId: string, occurrenceDate: string): Pr
     .maybeSingle();
   if (error) throw error;
   return (data?.kind as 'skip' | 'override' | undefined) ?? null;
+}
+
+export async function exceptionColor(eventId: string, occurrenceDate: string): Promise<AppColor | null> {
+  const { data, error } = await supabase
+    .from('event_exceptions')
+    .select('color')
+    .eq('event_id', eventId)
+    .eq('occurrence_date', occurrenceDate)
+    .maybeSingle();
+  if (error) throw error;
+  return (data?.color as AppColor | null | undefined) ?? null;
 }
 
 export async function saveExceptionFromGoogle(eventId: string, occurrenceDate: string, fields: EventInput | null): Promise<void> {

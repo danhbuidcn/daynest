@@ -5,10 +5,10 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
 import { useAuth } from '@/features/auth/AuthProvider';
-import type { EventColor } from '@/features/events/event';
 import { todayIn } from '@/lib/calendar/timeZone';
+import { toHex, type AppColor } from '@/lib/colors';
 import { checklistProgress, noteHeadline } from '@/lib/notes';
-import { colors, eventColors, radius, shadow, space } from '@/theme';
+import { colors, radius, shadow, space } from '@/theme';
 import type { Note } from './note';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -23,7 +23,7 @@ export function NoteCard({
   onMore,
 }: {
   note: Note;
-  color: EventColor | null;
+  color: AppColor | null;
   dateLabel?: (date: string) => string;
   onPress?: () => void;
   onMore?: (anchor: { x: number; y: number; width: number; height: number }) => void;
@@ -41,7 +41,7 @@ export function NoteCard({
       accessibilityRole="button"
       disabled={!onPress}
       onPress={onPress}
-      style={({ pressed }) => [styles.card, { borderLeftColor: color ? eventColors[color] : colors.border }, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.card, { borderLeftColor: color ? toHex(color) : colors.border }, pressed && styles.pressed]}>
       {note.pinned ? (
         <View style={styles.pin}>
           <Icon name="pin" size={16} color={colors.primaryDark} />

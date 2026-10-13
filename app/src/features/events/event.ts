@@ -1,9 +1,8 @@
 import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
+import type { AppColor } from '@/lib/colors';
 import { jdFromDate, jdToDate, type SolarDate } from '@/lib/lunar';
 import { expandRule } from '@/lib/recurrence';
 
-export type EventColor = 'mint' | 'sky' | 'lavender' | 'pink' | 'peach' | 'lemon';
-export const EVENT_COLORS: readonly EventColor[] = ['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'];
 
 export type RepeatKind = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'lunar_yearly';
 
@@ -11,7 +10,7 @@ export type RepeatKind = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'l
 export type EventInput = {
   title: string;
   note: string;
-  color: EventColor;
+  color: AppColor;
   allDay: boolean;
   startsAt: string | null; // ISO timestamp — set when !allDay
   endsAt: string | null;
@@ -62,7 +61,7 @@ export function toEvent(row: EventTableRow): EventRow {
     updatedAt: row.updated_at,
     title: row.title,
     note: row.note ?? '',
-    color: row.color as EventColor,
+    color: row.color as AppColor,
     allDay: row.all_day,
     startsAt: row.starts_at,
     endsAt: row.ends_at,

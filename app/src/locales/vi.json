@@ -7,6 +7,11 @@
     "am": "SA",
     "pm": "CH"
   },
+  "colorPicker": {
+    "other": "Màu khác",
+    "hex": "Mã màu",
+    "pick": "Chọn"
+  },
   "tagline": "Lịch, việc cần làm và ghi chú\ngọn trong một tổ nhỏ.",
   "login": {
     "google": "Đăng nhập bằng Google",
