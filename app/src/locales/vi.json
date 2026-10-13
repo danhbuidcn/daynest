@@ -450,6 +450,21 @@
       "deleteTitle": "Xoá khoản chi này?",
       "deleteText": "Khoản chi bị xoá sẽ không khôi phục được.",
       "deleted": "Đã xoá"
+    },
+    "categoryDialog": {
+      "addTitle": "Thêm nhóm",
+      "editTitle": "Sửa nhóm",
+      "name": "Tên nhóm",
+      "icon": "Icon",
+      "color": "Màu",
+      "duplicate": "Tên này đã có"
+    },
+    "categoriesScreen": {
+      "builtIn": "Có sẵn",
+      "mine": "Của bạn",
+      "hint": "Nhóm có sẵn không sửa, không xoá được. Tối đa {{max}} nhóm của bạn.",
+      "edit": "Sửa",
+      "deleteTitle": "Xoá nhóm \"{{name}}\"?"
     }
   }
 }

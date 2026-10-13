@@ -16,7 +16,7 @@ import {
   sumAmounts,
   totalsByCategory,
 } from '@/lib/expenses';
-import { defaultCategoryId } from '@/features/expenses/expense';
+import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
 
@@ -158,5 +158,12 @@ describe('expense default category', () => {
     expect(defaultCategoryId(list, null)).toBe('f');
     expect(defaultCategoryId([cat('x', null)], null)).toBe('x');
     expect(defaultCategoryId([], null)).toBeUndefined();
+  });
+});
+
+describe('expense category icons', () => {
+  it('offers 36 distinct names the DB accepts', () => {
+    expect(new Set(PICKABLE_ICONS).size).toBe(36);
+    for (const name of PICKABLE_ICONS) expect(name).toMatch(/^[a-z]{2,20}$/);
   });
 });

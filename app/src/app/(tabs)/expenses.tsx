@@ -9,7 +9,6 @@ import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
@@ -38,7 +37,6 @@ const MODES: readonly PeriodMode[] = ['day', 'week', 'month'];
 export default function ExpensesScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
   const { settings } = useAuth();
   const nav = useExpensesNav(settings.timeZone, settings.weekStart);
   const { mode, cursor } = nav;
@@ -71,8 +69,6 @@ export default function ExpensesScreen() {
     nav.setCursor(day);
   };
 
-  // Placeholder until the categories screen (step 6) exists.
-  const comingSoon = () => toast(t('comingSoon'));
   const addExpense = () =>
     router.push({
       pathname: '/expense/edit',
@@ -116,7 +112,7 @@ export default function ExpensesScreen() {
         compact
         title={t('tabs.expenses')}
         action={
-          <Pressable accessibilityRole="button" accessibilityLabel={t('expenses.categories')} onPress={comingSoon} style={styles.tagButton}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('expenses.categories')} onPress={() => router.push('/expense/categories')} style={styles.tagButton}>
             <Icon name="tag" size={24} color={colors.primaryDark} />
           </Pressable>
         }

@@ -6,8 +6,17 @@ import type { Expense, ExpenseCategory } from './expense';
 // db.md: one period never holds more than this many rows.
 const PERIOD_LIMIT = 1000;
 
+// Unique (user_id, lower(name)): the name is already taken, case ignored.
+export class DuplicateNameError extends Error {
+  constructor() {
+    super('duplicate');
+  }
+}
+
 function classify(error: unknown): Error {
-  if (error && typeof error === 'object' && (error as { code?: string }).code === '42501') return new ForbiddenError();
+  const code = error && typeof error === 'object' ? (error as { code?: string }).code : undefined;
+  if (code === '42501') return new ForbiddenError();
+  if (code === '23505') return new DuplicateNameError();
   if (error instanceof Error) return error;
   return new Error(JSON.stringify(error));
 }
@@ -92,4 +101,21 @@ export async function fetchExpenseCategories(): Promise<ExpenseCategory[]> {
     icon: r.icon as string,
     color: r.color as AppColor,
   }));
+}
+
+export type CategoryInput = { name: string; icon: string; color: AppColor };
+
+// `id` generated once when the dialog opens, so a retried "Lưu" never makes a second category.
+export async function saveExpenseCategory(id: string, isNew: boolean, input: CategoryInput): Promise<void> {
+  const values = { name: input.name.trim(), icon: input.icon, color: input.color };
+  const { error } = isNew
+    ? await supabase.from('expense_categories').upsert({ id, ...values }, { onConflict: 'id' })
+    : await supabase.from('expense_categories').update(values).eq('id', id);
+  if (error) throw classify(error);
+}
+
+// The expenses inside go with it (FK on delete cascade, db.md).
+export async function deleteExpenseCategory(id: string): Promise<void> {
+  const { error } = await supabase.from('expense_categories').delete().eq('id', id);
+  if (error) throw classify(error);
 }

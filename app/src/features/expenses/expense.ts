@@ -21,13 +21,23 @@ export type ExpenseCategory = {
   color: AppColor;
 };
 
-// Grows to the 36 category icons in step 6; a name the app doesn't know yet shows `tag` (db.md).
-const CATEGORY_ICONS: readonly IconName[] = ['food', 'car', 'bill', 'tag'];
+// The 36 icons a user category can pick (mockup screen 11, same order); stored by name.
+export const PICKABLE_ICONS = [
+  'tag', 'coffee', 'wine', 'cart', 'bag', 'shirt', 'home', 'bolt', 'drop', 'wifi', 'phone', 'tool',
+  'bus', 'bike', 'fuel', 'plane', 'heart', 'pill', 'dumbbell', 'scissors', 'baby', 'paw', 'cap', 'briefcase',
+  'laptop', 'card', 'coins', 'umbrella', 'gift', 'film', 'music', 'game', 'ticket', 'camera', 'ball', 'tree',
+] as const satisfies readonly IconName[];
+
+// Built-in categories use food / car / bill; a name the app doesn't know yet shows `tag` (db.md).
+const CATEGORY_ICONS: readonly IconName[] = ['food', 'car', 'bill', ...PICKABLE_ICONS];
 
 export function categoryIcon(c: ExpenseCategory | undefined): IconName {
   const icon = c?.icon as IconName | undefined;
   return icon && CATEGORY_ICONS.includes(icon) ? icon : 'tag';
 }
+
+export const USER_CATEGORY_MAX = 30;
+export const CATEGORY_NAME_MAX = 30;
 
 export function categoryName(t: TFunction, c: ExpenseCategory | undefined): string {
   if (!c) return '';

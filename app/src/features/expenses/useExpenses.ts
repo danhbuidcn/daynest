@@ -57,3 +57,21 @@ export function useExpenseWrites() {
   const remove = useMutation({ mutationFn: api.deleteExpense, onSuccess });
   return { save, remove };
 }
+
+export function useExpenseCategoryWrites() {
+  const queryClient = useQueryClient();
+  const save = useMutation({
+    mutationFn: ({ id, isNew, input }: { id: string; isNew: boolean; input: api.CategoryInput }) => api.saveExpenseCategory(id, isNew, input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [EXPENSE_CATEGORIES_KEY] }),
+  });
+  // Deleting drops the category's expenses too, so every period and chart reloads.
+  const remove = useMutation({
+    mutationFn: api.deleteExpenseCategory,
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: [EXPENSE_CATEGORIES_KEY] }),
+        queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] }),
+      ]),
+  });
+  return { save, remove };
+}

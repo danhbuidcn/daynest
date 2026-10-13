@@ -450,6 +450,21 @@
       "deleteTitle": "Delete this expense?",
       "deleteText": "A deleted expense cannot be restored.",
       "deleted": "Deleted"
+    },
+    "categoryDialog": {
+      "addTitle": "Add category",
+      "editTitle": "Edit category",
+      "name": "Category name",
+      "icon": "Icon",
+      "color": "Color",
+      "duplicate": "This name already exists"
+    },
+    "categoriesScreen": {
+      "builtIn": "Built-in",
+      "mine": "Yours",
+      "hint": "Built-in categories cannot be edited or deleted. Up to {{max}} of your own.",
+      "edit": "Edit",
+      "deleteTitle": "Delete category \"{{name}}\"?"
     }
   }
 }
