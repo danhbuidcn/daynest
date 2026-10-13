@@ -58,6 +58,8 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 | `cycle_length smallint` | 28 | 21–45 |
 | `period_length smallint` | 5 | 2–10 |
 | `period_reminder boolean` | `true` | — |
+| `period_reminder_days smallint` | 2 | 1–7 |
+| `period_reminder_time time` | `09:00` | phút chia hết cho 5 |
 
 ## Báo lỗi
 
