@@ -1,7 +1,7 @@
 -- Sprint 4: any colour (hex) for events, their one-off overrides and note categories, besides the 6 named ones.
 -- Spec: docs/specs/sprint-4/index.md § Màu bất kỳ. Builds before S4 only know the 6 names,
 -- so they must update first: min_version_code = 6 (S4 build).
--- Kept in supabase/pending/ until the S4 release (step 8), then moved into migrations/.
+-- Held in supabase/pending/ until the S4 release (step 8), then moved here.
 
 alter table public.events drop constraint events_color_check;
 alter table public.events add constraint events_color_check check (

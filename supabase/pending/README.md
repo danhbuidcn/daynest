@@ -6,4 +6,3 @@ move its `rls_*.sql` test into `tests/`, run `supabase/db test`, then `supabase/
 
 | File | Release | Why held back |
 | --- | --- | --- |
-| `20261012102237_s4_any_colour.sql` + `rls_s4_colour.sql` | S4 | Hex colours + `min_version_code = 6`; builds ≤ 3.0.1 only know 6 colour names |

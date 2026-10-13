@@ -80,13 +80,13 @@ Màn Nhóm chi tiêu: nhóm có sẵn (khoá) · nhóm của bạn (bấm để 
 
 ## Xong khi (DoD)
 
-- [ ] Tab hiện "Chi tiêu" (VI) / "Expenses" (EN).
-- [ ] Thêm, sửa, xoá khoản chi trên máy thật · bấm Lưu 2 lần / gửi lại khi mạng chập chờn → không tạo trùng · sửa cùng lúc trên 2 máy → hộp "Đã thay đổi ở thiết bị khác".
-- [ ] User cũ và user mới đều có 3 nhóm có sẵn, tên đổi theo ngôn ngữ · thêm, đổi tên, xoá nhóm tự tạo → khoản chi trong nhóm bị xoá theo.
-- [ ] Ngày / Tuần / Tháng: tổng chi, theo ngày, theo nhóm, 6 tháng gần đây khớp tổng các khoản chi · Tháng, Tuần không liệt kê khoản chi · chuyển kỳ ‹ › đúng, tuần theo `week_start`.
-- [ ] Màu bất kỳ: chọn được ở form event, danh mục note, nhóm chi tiêu · hiện đúng ở Lịch (tháng, tuần, ngày, danh sách), Ghi chú, Chi tiêu · chữ trên nền màu đậm đọc được · event màu khác đồng bộ lên Google thành màu gần nhất · bản cũ hiện "Cần cập nhật".
-- [ ] Test RLS: A không đọc/sửa/xoá được nhóm, khoản chi của B · không gắn khoản chi vào nhóm của B.
-- [ ] Test tải đạt (0 lỗi, p95 < 1 s) · đo dung lượng DB thật → cập nhật [§3](../index.md#mục-tiêu-tải).
-- [ ] Hàm thuần (khoảng ngày của kỳ, cộng theo nhóm / theo ngày, định dạng / đọc số tiền, số gọn "2,5tr") có test Jest.
-- [ ] `npm run typecheck && npm run lint && npm test` qua.
-- [ ] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
+- [x] Tab hiện "Chi tiêu" (VI) / "Expenses" (EN).
+- [ ] Thêm, sửa, xoá khoản chi trên máy thật · bấm Lưu 2 lần / gửi lại khi mạng chập chờn → không tạo trùng · sửa cùng lúc trên 2 máy → hộp "Đã thay đổi ở thiết bị khác". — *máy ảo đã thử phần chính; phần cần máy thật: bạn tự thử sau khi cài v4.0.0*
+- [ ] User cũ và user mới đều có 3 nhóm có sẵn, tên đổi theo ngôn ngữ · thêm, đổi tên, xoá nhóm tự tạo → khoản chi trong nhóm bị xoá theo. — *máy ảo đã thử phần chính; phần cần máy thật: bạn tự thử sau khi cài v4.0.0*
+- [x] Ngày / Tuần / Tháng: tổng chi, theo ngày, theo nhóm, 6 tháng gần đây khớp tổng các khoản chi · Tháng, Tuần không liệt kê khoản chi · chuyển kỳ ‹ › đúng, tuần theo `week_start`.
+- [ ] Màu bất kỳ: chọn được ở form event, danh mục note, nhóm chi tiêu · hiện đúng ở Lịch (tháng, tuần, ngày, danh sách), Ghi chú, Chi tiêu · chữ trên nền màu đậm đọc được · event màu khác đồng bộ lên Google thành màu gần nhất · bản cũ hiện "Cần cập nhật". — *máy ảo đã thử phần chính; phần cần máy thật: bạn tự thử sau khi cài v4.0.0*
+- [x] Test RLS: A không đọc/sửa/xoá được nhóm, khoản chi của B · không gắn khoản chi vào nhóm của B.
+- [x] Test tải đạt (0 lỗi, p95 < 1 s) · đo dung lượng DB thật → cập nhật [§3](../index.md#mục-tiêu-tải).
+- [x] Hàm thuần (khoảng ngày của kỳ, cộng theo nhóm / theo ngày, định dạng / đọc số tiền, số gọn "2,5tr") có test Jest.
+- [x] `npm run typecheck && npm run lint && npm test` qua.
+- [x] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
