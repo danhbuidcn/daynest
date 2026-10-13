@@ -18,6 +18,7 @@ const ICONS = {
   plus: () => stroke('<path d="M12 5v14M5 12h14"/>', 2.6),
   back: () => stroke('<path d="M15 5l-7 7 7 7"/>', 2.2),
   chevron: () => stroke('<path d="M9 6l6 6-6 6"/>', 2.2),
+  chevronDown: () => stroke('<path d="M6 9l6 6 6-6"/>', 2.4),
   check: () => stroke('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 2.6),
   pen: () =>
     stroke(

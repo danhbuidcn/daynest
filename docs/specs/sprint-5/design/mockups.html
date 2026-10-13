@@ -528,6 +528,12 @@ const s5css = `<style>
   .sub svg { width: 13px; height: 13px; }
   .late { color: var(--error); font-weight: 800; }
   .seg.two { grid-template-columns: repeat(2, 1fr); }
+  /* Form tạo: tiêu đề là nút "Todo ▾" → pop-up 4 ô như nút + (chỉ khi tạo mới) */
+  .kind-title { margin: 0 auto; height: 40px; padding: 0 12px 0 16px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 22px; font-weight: 800; }
+  .kind-title svg { width: 20px; height: 20px; color: var(--muted); }
+  .qbtn.cur { box-shadow: inset 0 0 0 2px var(--primary); position: relative; }
+  .qbtn.cur .ck { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 10px; background: var(--primary); display: grid; place-items: center; }
+  .qbtn.cur .ck svg { width: 12px; height: 12px; }
   .cyc { display: flex; align-items: center; gap: 10px; background: var(--error-soft); border-radius: 16px; padding: 10px 12px; font-size: 15px; text-align: left; }
   .cyc .ci { width: 32px; height: 32px; border-radius: 10px; background: var(--surface); color: var(--error); display: grid; place-items: center; flex: none; }
   .cyc .ci svg { width: 18px; height: 18px; }
@@ -581,7 +587,7 @@ const ecard = (title, color, tm, todo) => `<div class="ecard"><span class="strip
   ${todo ? `<span style="display:grid;place-items:center;padding-left:10px">${tk(todo.done)}</span>` : ''}
   <div class="body"><div class="ttl" style="${todo && todo.done ? 'text-decoration:line-through;color:var(--muted)' : ''}">${title}</div><div class="tm">${tm}${todo && todo.sub ? ` · <span class="sub">${I.checklist}${todo.sub[0]}/${todo.sub[1]}</span>` : ''}</div></div></div>`;
 const agendaScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg4('Danh sách')}
-  <div class="daystrip">${[12, 13, 14, 15, 16, 17, 18].map((d) => `<div class="ds ${d === 13 ? 'on' : ''}"><i>${WD[new Date(2026, 9, d).getDay()]}</i><b>${d}</b>${T.some((t) => t[0] === d) || EV.some((e) => e[0] === d) ? '<span class="dot"></span>' : '<em>&nbsp;</em>'}</div>`).join('')}</div>
+  <div class="daystrip">${[12, 13, 14, 15, 16, 17, 18].map((d) => `<div class="ds ${d === 13 ? 'on' : ''}"><i>${WD[new Date(2026, 9, d).getDay()]}</i><b>${d}</b>${d === 13 ? '<span class="dot"></span>' : '<em>&nbsp;</em>'}</div>`).join('')}</div>
   <div class="agenda">
     <div class="cyc"><span class="ci">${I.cycle}</span><span class="grow">Kỳ kinh dự kiến sau <b>16 ngày</b></span></div>
     <div class="ag"><div class="times"><b>9:00</b>10:00</div>${ecard('Họp nhóm', 'mint', '9:00 – 10:00')}</div>
@@ -605,7 +611,7 @@ const dayPopup = `<div class="under">${monthScreen}</div>
   </div></div>`;
 
 // ---- Nút + ----
-const qb = (bg, color, icon, label) => `<div class="qbtn" style="background:${bg};color:var(--text)"><span class="qi" style="color:${color}">${icon}</span>${label}</div>`;
+const qb = (bg, color, icon, label, cur = false) => `<div class="qbtn${cur ? ' cur' : ''}" style="background:${bg};color:var(--text)">${cur ? `<span class="ck">${I.checkW}</span>` : ''}<span class="qi" style="color:${color}">${icon}</span>${label}</div>`;
 const plusPopup = `<div class="under">${monthScreen}</div>
   <div class="scrim"><div class="dialog" style="padding:16px 12px 16px">
     <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:12px"><span class="x">${I.close}</span><h3>Thứ Ba, 13/10 · 9:41</h3><span></span></div>
@@ -617,10 +623,14 @@ const plusPopup = `<div class="under">${monthScreen}</div>
     </div>
   </div></div>`;
 
+// ---- Form tạo: tiêu đề "Todo ▾" bấm được → pop-up 4 ô như nút + ----
+const chevDown = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+const kindSwitch = (label) => `<div class="kind-title">${label}${chevDown}</div>`;
+
 // ---- Form Todo ----
 const subs = [['Nghe podcast 15 phút', true], ['Học 20 từ mới (chủ đề du lịch)', true], ['Viết 5 câu với từ mới', false], ['Ôn ngữ pháp thì hiện tại hoàn thành', false]];
 const todoForm = `<div class="content">
-  <div class="topbar"><span class="back">${I.close}</span><div class="screen-title">Todo</div><span></span></div>
+  <div class="topbar"><span class="back">${I.close}</span>${kindSwitch('Todo')}<span></span></div>
   <div class="form" style="padding-bottom:84px">
     <div class="fcard"><div class="title-in">Học tiếng Anh — Ngày 3</div><div class="detail-in">Giáo trình English File, unit 2</div></div>
     <div class="fcard">
@@ -632,6 +642,37 @@ const todoForm = `<div class="content">
       <div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw on"></span></div>
       <div class="frow indent"><span class="fi">${I.arrowR}</span><span class="grow">T3, 13/10/2026</span></div>
       <div class="frow"><span class="fi">${I.bell}</span><span class="grow">Cài đặt nhắc nhở</span><span class="sw"></span></div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Hằng ngày · đến 11/11/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.palette}</span><span class="grow">Màu</span></div>
+      <div style="padding:0 0 12px">${colorPick('lavender')}</div>
+    </div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+
+// ---- Bấm "Todo ▾" trong form tạo → pop-up 4 ô, ô Todo được đánh dấu ----
+const kindPopup = `<div class="under">${todoForm}</div>
+  <div class="scrim"><div class="dialog" style="padding:16px 12px 16px">
+    <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:12px"><span class="x">${I.close}</span><h3>Thứ Ba, 13/10 · 9:41</h3><span></span></div>
+    <div class="quick" style="padding:0">
+      ${qb('var(--primary-soft)', 'var(--primary-dark)', I.cal(false), 'Sự kiện')}
+      ${qb('color-mix(in srgb, var(--lavender) 28%, var(--surface))', '#7E67C9', I.todo, 'Todo', true)}
+      ${qb('var(--warning-soft)', 'var(--warning)', I.note, 'Ghi chú')}
+      ${qb('color-mix(in srgb, var(--peach) 25%, var(--surface))', 'var(--text)', I.wallet(false), 'Khoản chi')}
+    </div>
+  </div></div>`;
+
+// ---- Form tạo sau khi chuyển sang Sự kiện ----
+const eventFromTodo = `<div class="content">
+  <div class="topbar"><span class="back">${I.close}</span>${kindSwitch('Sự kiện')}<span></span></div>
+  <div class="form" style="padding-bottom:84px">
+    <div class="fcard"><div class="title-in">Học tiếng Anh — Ngày 3</div><div class="detail-in">Giáo trình English File, unit 2</div></div>
+    <div class="fcard">
+      <div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw"></span></div>
+      <div class="frow indent"><span class="fi">${I.arrowR}</span><span class="grow">T3, 13/10/2026</span><span class="b">10:00</span></div>
+      <div class="frow indent"><span class="fi">${I.arrowL}</span><span class="grow">T3, 13/10/2026</span><span class="b">11:00</span></div>
+      <div class="frow"><span class="fi">${I.bell}</span><span class="grow">Cài đặt nhắc nhở</span><span class="sw on"></span></div>
+      <div class="frow indent"><span class="fi">${I.clock}</span><span class="grow">15 phút trước</span><span class="rm">${I.close}</span></div>
       <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Hằng ngày · đến 11/11/2026</span>${I.chev}</div>
       <div class="frow"><span class="fi">${I.palette}</span><span class="grow">Màu</span></div>
       <div style="padding:0 0 12px">${colorPick('lavender')}</div>
@@ -760,10 +801,12 @@ const bugLimit = `<div class="under">${bugScreen(true)}</div>
 const groups = [
   ['Todo trên Lịch', [
     ['1. Nút + ở thanh tab', 'thêm "Todo" vào pop-up sẵn có · 4 nút 2×2: Sự kiện · Todo · Ghi chú · Khoản chi', phone(plusPopup)],
-    ['2. Form Todo', 'khối Việc phụ ngay dưới tiêu đề, trước thời gian / nhắc / lặp / màu (mặc định cả ngày, nhắc tắt) · Việc phụ: kéo ⋮⋮ đổi thứ tự, ô vuông tick, ✕ xoá, "+ Thêm việc phụ" · không có sticker, báo thức, ghim, vị trí, URL', phone(todoForm, 'tall')],
+    ['2. Form tạo — Todo', 'tiêu đề <b>"Todo ▾"</b> bấm được → màn 2b (chỉ khi tạo mới; màn sửa giữ chữ "Todo") · khối Việc phụ ngay dưới tiêu đề, trước thời gian / nhắc / lặp / màu (mặc định cả ngày, nhắc tắt) · Việc phụ: kéo ⋮⋮ đổi thứ tự, ô vuông tick, ✕ xoá, "+ Thêm việc phụ" · không có sticker, báo thức, ghim, vị trí, URL', phone(todoForm, 'tall')],
+    ['2b. Đổi loại', 'bấm "Todo ▾" → mở lại pop-up 4 ô của nút + · ô đang dùng có viền + dấu ✓ · Sự kiện → màn 2c (đổi tại chỗ) · Ghi chú / Khoản chi → mở form đó thay form này (đã nhập gì → hỏi "Bỏ thay đổi?") · chọn lại Todo → chỉ đóng pop-up', phone(kindPopup)],
+    ['2c. Đã chuyển sang Sự kiện', 'tiêu đề "Sự kiện ▾" · giữ tiêu đề, chi tiết, lặp, màu đã nhập · ô chưa sửa lấy mặc định Sự kiện: tắt Cả ngày, giờ tới 10:00 – 11:00, nhắc 15 phút trước · khối Việc phụ ẩn (quay lại Todo còn nguyên; lưu là Sự kiện → bỏ việc phụ)', phone(eventFromTodo, 'tall')],
     ['3. Chi tiết Todo', 'Việc phụ ngay dưới tiêu đề, trước thời gian / lặp / chi tiết · ô tròn lớn tick cả todo (→ mọi việc phụ xong) · tick việc phụ ngay tại đây · ⋯ Sửa / Xoá (lặp: Chỉ lần này / Tất cả)', phone(todoDetail)],
     ['4. Lịch — Tháng', 'todo là thanh có ô tròn nhỏ ở đầu (xong: tròn đặc, chữ gạch ngang, mờ) · giọt đặc = ngày có kinh (1–5/10) · giọt viền mờ = dự đoán (29/10 → 2/11) — cùng icon giọt với màn 5, 6 · chú thích dưới lưới chỉ hiện khi bật chu kỳ', phone(monthScreen)],
-    ['5. Lịch — Danh sách', 'todo có ô tròn bấm để tick ngay · "2/4" việc phụ · dòng chu kỳ ở đầu ngày · Tuần, Ngày: cùng kiểu thẻ', phone(agendaScreen)],
+    ['5. Lịch — Danh sách', 'chỉ chấm dưới hôm nay (như màn 7) · todo có ô tròn bấm để tick ngay · "2/4" việc phụ · dòng chu kỳ ở đầu ngày · Tuần, Ngày: cùng kiểu thẻ', phone(agendaScreen)],
     ['6. Pop-up ngày', 'dòng chu kỳ + nút "Kỳ kinh" (viền xanh) → màn 9 · event trước, todo sau (tick được)', phone(dayPopup)],
   ]],
   ['Danh sách todo (tab Ghi chú)', [

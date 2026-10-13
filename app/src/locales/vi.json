@@ -477,7 +477,8 @@
   },
   "todos": {
     "form": {
-      "title": "Todo"
+      "title": "Todo",
+      "changeKind": "Đổi loại"
     },
     "subtasks": "Việc phụ",
     "addSubtask": "Thêm việc phụ",

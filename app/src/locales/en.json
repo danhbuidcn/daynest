@@ -477,7 +477,8 @@
   },
   "todos": {
     "form": {
-      "title": "Todo"
+      "title": "Todo",
+      "changeKind": "Change type"
     },
     "subtasks": "Subtasks",
     "addSubtask": "Add subtask",

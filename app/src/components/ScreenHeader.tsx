@@ -11,6 +11,8 @@ export function ScreenHeader({
   closeIcon,
   action,
   compact,
+  onPressTitle,
+  titleHint,
 }: {
   title: string;
   onBack?: () => void;
@@ -19,6 +21,9 @@ export function ScreenHeader({
   action?: ReactNode;
   // Mockup `.topbar` (8 / 12 padding) — screens with no title, e.g. event detail.
   compact?: boolean;
+  // Create form: the title is a "Todo ▾" button that reopens the `+` popup (S5).
+  onPressTitle?: () => void;
+  titleHint?: string;
 }) {
   return (
     <View style={[styles.bar, compact && styles.compact]}>
@@ -29,9 +34,20 @@ export function ScreenHeader({
           </Pressable>
         ) : null}
       </View>
-      <AppText variant="title" style={styles.title} numberOfLines={1}>
-        {title}
-      </AppText>
+      {onPressTitle ? (
+        <View style={styles.titleSlot}>
+          <Pressable accessibilityRole="button" accessibilityHint={titleHint} onPress={onPressTitle} hitSlop={8} style={styles.titleButton}>
+            <AppText variant="title" numberOfLines={1}>
+              {title}
+            </AppText>
+            <Icon name="chevronDown" size={20} color={colors.textMuted} />
+          </Pressable>
+        </View>
+      ) : (
+        <AppText variant="title" style={styles.title} numberOfLines={1}>
+          {title}
+        </AppText>
+      )}
       <View style={styles.side}>{action}</View>
     </View>
   );
@@ -43,4 +59,6 @@ const styles = StyleSheet.create({
   side: { width: 40 },
   back: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
   title: { flex: 1, textAlign: 'center' },
+  titleSlot: { flex: 1, alignItems: 'center' },
+  titleButton: { flexDirection: 'row', alignItems: 'center', gap: space.xs, height: 40, paddingLeft: space.lg, paddingRight: space.md },
 });

@@ -27,3 +27,17 @@ export function toTodoInput(f: FormState, items: ChecklistItem[], done: boolean,
 export function sameStatus(a: TodoStatus, b: TodoStatus): boolean {
   return a.done === b.done && a.doneSubtasks.join() === b.doneSubtasks.join();
 }
+
+const TIME_FIELDS = ['allDay', 'startDate', 'startTime', 'endDate', 'endTime'] as const;
+const REMINDER_FIELDS = ['reminderOn', 'reminderMinutes'] as const;
+
+// Create form switched between Sự kiện ↔ Todo (S5): what was typed stays; the "Cả ngày / giờ"
+// and "Nhắc" groups the user never touched take the new type's defaults instead.
+export function switchKind(form: FormState, fromDefaults: FormState, toDefaults: FormState): FormState {
+  const untouched = (fields: readonly (keyof FormState)[]) => fields.every((k) => JSON.stringify(form[k]) === JSON.stringify(fromDefaults[k]));
+  const next = { ...form };
+  for (const group of [TIME_FIELDS, REMINDER_FIELDS]) {
+    if (untouched(group)) for (const k of group) Object.assign(next, { [k]: toDefaults[k] });
+  }
+  return next;
+}

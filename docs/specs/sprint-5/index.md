@@ -38,6 +38,14 @@ Todo = event có thêm **việc phụ** và **trạng thái xong**, lưu ở **b
 - **Không đồng bộ Google:** todo chỉ ở Daynest, kể cả khi bật đồng bộ.
 - Lưu an toàn: như event (app sinh `id`, khoá lạc quan `updated_at`).
 
+### Chuyển loại khi tạo
+
+- Form tạo: tiêu đề đầu màn là nút **"Todo ▾"** / **"Sự kiện ▾"** → mở lại pop-up 4 ô của nút `+` (Sự kiện · Todo · Ghi chú · Khoản chi), ô loại đang dùng được đánh dấu. Mở từ `+` › Todo → Todo · mọi chỗ khác (`+` › Sự kiện, pop-up ngày, Tuần, Ngày) → Sự kiện.
+- Chọn **Sự kiện ↔ Todo**: đổi form tại chỗ, giữ nội dung đã nhập: tiêu đề, chi tiết, cả ngày / giờ, nhắc, lặp, màu. Ô **chưa sửa** (cả ngày / giờ, nhắc) lấy mặc định của loại mới (Todo: cả ngày, nhắc tắt · Sự kiện: giờ tới, nhắc 15 phút); ô đã sửa thì giữ.
+- Việc phụ chỉ có ở Todo: sang Sự kiện thì ẩn, quay lại Todo còn nguyên · Lưu là Sự kiện → bỏ việc phụ.
+- Chọn **Ghi chú / Khoản chi**: mở form đó thay form đang mở, không mang nội dung sang · đã nhập gì → hỏi "Bỏ thay đổi?" trước. Chọn lại loại đang dùng → chỉ đóng pop-up.
+- Chỉ khi **tạo mới**; màn sửa giữ tiêu đề chữ, không bấm được (event và todo ở 2 bảng khác nhau).
+
 ### Todo trên Lịch
 
 - Hiện cùng event, cùng màu, có ô tròn ở đầu: chưa xong = viền tròn · xong = tròn đặc có ✓, chữ gạch ngang mờ.
@@ -125,7 +133,7 @@ Mặc định **tắt**. Tắt → không hiện gì trên Lịch, không nhắc
 
 ```text
 Nút + (thanh tab) → pop-up: Sự kiện · Todo · Ghi chú · Khoản chi
-Form Todo: ✕ · "Todo" · Lưu · tiêu đề · chi tiết · Việc phụ (+ Thêm việc phụ) · cả ngày / giờ · nhắc · lặp · màu
+Form tạo: ✕ · "Todo ▾" / "Sự kiện ▾" (bấm → pop-up 4 ô như nút +) · Lưu · tiêu đề · chi tiết · Việc phụ (chỉ Todo, + Thêm việc phụ) · cả ngày / giờ · nhắc · lặp · màu
 Chi tiết Todo: ô tick + tiêu đề · việc phụ (tick) · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa / Xoá
 Lịch (Tháng / Tuần / Ngày / Danh sách): todo có ô tròn · giọt kỳ kinh (đặc / viền)
 Pop-up ngày: event · todo (tick, 2/5) · dòng chu kỳ + nút "Kỳ kinh"
@@ -141,11 +149,11 @@ Màn Báo lỗi: nội dung · ảnh (≤ 3) · Gửi
 ## Thiết kế
 
 - [DB](design/db.md): `todos`, `todo_exceptions`, `period_days`, cột chu kỳ trong `user_settings`, `bug_reports`, `developer_emails`, Storage, Edge Function, test tải.
-- [Mockup S5](design/mockups.html) — 18 màn: nút +, form / chi tiết Todo, Lịch Tháng + Danh sách + pop-up ngày (todo, kỳ kinh), tab Ghi chú › Todo (+ chọn ngày khác, trống), màn Kỳ kinh (+ lần đầu), Cài đặt + độ dài chu kỳ + pop-up nhắc trước kỳ kinh, Báo lỗi (+ đủ 3 ảnh, đã gửi, quá 5 lần).
+- [Mockup S5](design/mockups.html) — 20 màn: nút +, form tạo (đổi loại qua pop-up 4 ô) / chi tiết Todo, Lịch Tháng + Danh sách + pop-up ngày (todo, kỳ kinh), tab Ghi chú › Todo (+ chọn ngày khác, trống), màn Kỳ kinh (+ lần đầu), Cài đặt + độ dài chu kỳ + pop-up nhắc trước kỳ kinh, Báo lỗi (+ đủ 3 ảnh, đã gửi, quá 5 lần).
 
 ## Xong khi (DoD)
 
-- [ ] Todo: tạo, sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc phụ thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google.
+- [ ] Todo: tạo (chuyển qua lại Sự kiện ↔ Todo khi tạo), sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc phụ thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google.
 - [ ] Danh sách todo: Quá hạn, Hôm nay, Sắp tới đúng theo ngày và múi giờ trong Cài đặt.
 - [ ] Chu kỳ: bật/tắt · ghi / bỏ ngày có kinh · dự đoán 3 kỳ đúng công thức (hàm thuần có test) · trễ → "Trễ N ngày" · nhắc đúng giờ nhắc, số ngày đã chọn trên máy thật.
 - [ ] Báo lỗi: gửi nội dung + 3 ảnh → email tới đủ các email trong DB, có ảnh · quá 5 lần / ngày bị chặn · user không đọc được báo cáo, ảnh, email của user khác.

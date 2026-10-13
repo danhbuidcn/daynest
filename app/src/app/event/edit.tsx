@@ -11,6 +11,8 @@ import { FormScreen } from '@/components/FormScreen';
 import { Switch } from '@/components/Switch';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { EntryForm } from '@/features/todos/EntryForm';
+import { newTodoFormState } from '@/features/todos/todoFormState';
 import type { EventRow } from '@/features/events/event';
 import {
   formStateFromOccurrence,
@@ -35,7 +37,7 @@ import { colors, radius, space } from '@/theme';
 
 const NO_DATE = { year: 1900, month: 1, day: 1 };
 
-// Màn 9 — create: `?date=YYYY-MM-DD` · edit: `?eventId=…&occurrenceDate=YYYY-MM-DD`.
+// Màn 9 — create: `?date=YYYY-MM-DD` (shared EntryForm) · edit: `?eventId=…&occurrenceDate=YYYY-MM-DD`.
 export default function EventFormScreen() {
   const { settings } = useAuth();
   const params = useLocalSearchParams<{ eventId?: string; occurrenceDate?: string; date?: string; hour?: string; allDay?: string }>();
@@ -46,16 +48,19 @@ export default function EventFormScreen() {
   const baseEvent = isEdit ? loaded.data?.events.find((e) => e.id === params.eventId) : undefined;
   const occurrence = isEdit ? loaded.occurrences.find((o) => o.eventId === params.eventId && o.occurrenceDate === params.occurrenceDate) : undefined;
 
-  const initial = useMemo<FormState | null>(() => {
-    if (!isEdit) {
-      const slot = { hour: params.hour ? Number(params.hour) : undefined, allDay: params.allDay === '1' };
-      return newFormState(params.date ? parseIsoDate(params.date) : todayIn(settings.timeZone), settings.timeZone, new Date(), slot);
-    }
-    return baseEvent && occurrence ? formStateFromOccurrence(baseEvent, occurrence, settings.timeZone) : null;
-  }, [isEdit, baseEvent, occurrence, params.date, params.hour, params.allDay, settings.timeZone]);
+  // Creating: the shared event + todo form, which can switch to a todo (S5).
+  const defaults = useMemo(() => {
+    if (isEdit) return undefined;
+    const date = params.date ? parseIsoDate(params.date) : todayIn(settings.timeZone);
+    const slot = { hour: params.hour ? Number(params.hour) : undefined, allDay: params.allDay === '1' };
+    const now = new Date();
+    return { event: newFormState(date, settings.timeZone, now, slot), todo: newTodoFormState(date, settings.timeZone, now) };
+  }, [isEdit, params.date, params.hour, params.allDay, settings.timeZone]);
 
+  if (defaults) return <EntryForm kind="event" initial={{ form: defaults.event, items: [], done: false }} defaults={defaults} />;
+  const initial = baseEvent && occurrence ? formStateFromOccurrence(baseEvent, occurrence, settings.timeZone) : null;
   if (!initial) return null;
-  return <EventForm key={params.eventId ?? 'create'} initial={initial} baseEvent={baseEvent} occurrence={occurrence} />;
+  return <EventForm key={params.eventId} initial={initial} baseEvent={baseEvent} occurrence={occurrence} />;
 }
 
 function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; baseEvent?: EventRow; occurrence?: EventOccurrence }) {

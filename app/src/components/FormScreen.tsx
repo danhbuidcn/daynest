@@ -12,6 +12,8 @@ export function FormScreen({
   closeIcon,
   footer,
   nestable,
+  onPressTitle,
+  titleHint,
   children,
 }: {
   title: string;
@@ -20,11 +22,13 @@ export function FormScreen({
   footer: ReactNode;
   // A draggable list inside (ChecklistBlock) needs its scroll parent to be nestable.
   nestable?: boolean;
+  onPressTitle?: () => void;
+  titleHint?: string;
   children: ReactNode;
 }) {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
-      <ScreenHeader title={title} onBack={onBack} closeIcon={closeIcon} />
+      <ScreenHeader title={title} onBack={onBack} closeIcon={closeIcon} onPressTitle={onPressTitle} titleHint={titleHint} />
       <KeyboardAvoidingView style={styles.flex} behavior="padding">
         {nestable ? (
           <NestableScrollContainer style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
