@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-13 | S5: viết spec (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | ✅ xong | [2026-10-13-s5-spec.md](2026-10-13-s5-spec.md) |
 | 2026-10-13 | S5: lộ trình — Todo trên Lịch + chu kỳ + báo lỗi (xem Flo, CalendarCute) | ✅ xong (chốt phạm vi S5) | [2026-10-13-s5-plan.md](2026-10-13-s5-plan.md) |
 | 2026-10-13 | Đưa 2 lỗi S4 (màu Google, "1 notes") vào S5 | ✅ xong | [2026-10-13-s5-carry-s4-bugs.md](2026-10-13-s5-carry-s4-bugs.md) |
 | 2026-10-13 | S4: thử v4.0.0 trên máy thật (3 dòng DoD còn lại) | ✅ xong (DoD đạt · 2 finding sửa ở S5) | [2026-10-13-s4-real-device-test.md](2026-10-13-s4-real-device-test.md) |

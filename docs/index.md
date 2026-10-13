@@ -22,6 +22,7 @@ docs/
 | [specs/sprint-2/](specs/sprint-2/index.md) | Sprint 2: lịch, event, nhắc, đồng bộ Google, notes |
 | [specs/sprint-3/](specs/sprint-3/index.md) | Sprint 3: hoàn thiện lịch + ghi chú |
 | [specs/sprint-4/](specs/sprint-4/index.md) | Sprint 4: chi tiêu |
+| [specs/sprint-5/](specs/sprint-5/index.md) | Sprint 5: todo trên lịch, chu kỳ kinh nguyệt, báo lỗi |
 | [specs/sprint-6/](specs/sprint-6/index.md) | Sprint 6: quảng cáo + Pro + lên Google Play |
 
 Quy tắc:
