@@ -4,6 +4,8 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-13 | S5 bước 1: DB (migration + test RLS) | ✅ xong (đã lên DB thật) | [2026-10-13-s5-step-1-db.md](2026-10-13-s5-step-1-db.md) |
+| 2026-10-13 | S5: lộ trình code (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | 🔄 đang làm (bước 1) | [2026-10-13-s5-code-plan.md](2026-10-13-s5-code-plan.md) |
 | 2026-10-13 | S5: mockup (Todo, chu kỳ, báo lỗi) | ✅ xong | [2026-10-13-s5-mockups.md](2026-10-13-s5-mockups.md) |
 | 2026-10-13 | S5: viết spec (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | ✅ xong | [2026-10-13-s5-spec.md](2026-10-13-s5-spec.md) |
 | 2026-10-13 | S5: lộ trình — Todo trên Lịch + chu kỳ + báo lỗi (xem Flo, CalendarCute) | ✅ xong (chốt phạm vi S5) | [2026-10-13-s5-plan.md](2026-10-13-s5-plan.md) |

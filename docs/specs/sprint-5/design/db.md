@@ -12,7 +12,7 @@ Giống `events`, **bỏ** các cột Google (`google_*`), **thêm**:
 
 | Cột | Quy tắc |
 | --- | --- |
-| `subtasks jsonb not null default '[]'` | Mảng `{id, text}` ≤ 50 phần tử, `text` 1–200 ký tự |
+| `subtasks jsonb not null default '[]'` | Mảng `{id, text}` ≤ 50 phần tử, `id` là uuid, `text` 1–200 ký tự · kiểm tra bằng hàm `subtasks_valid()` (check không dùng được truy vấn con) |
 | `done boolean not null default false` | Todo không lặp đã xong |
 | `done_subtasks uuid[] not null default '{}'` | `id` việc phụ đã xong (todo không lặp) |
 
@@ -28,7 +28,7 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 | --- | --- |
 | `kind` | `skip` · `override` · **`status`** (chỉ lưu trạng thái xong của 1 lần lặp, không đổi nội dung) |
 | `done boolean` | Lần lặp đã xong (null = chưa) |
-| `done_subtasks uuid[]` | Việc phụ đã xong của lần lặp |
+| `done_subtasks uuid[] not null default '{}'` | Việc phụ đã xong của lần lặp |
 | `subtasks jsonb` | Việc phụ riêng của lần lặp khi sửa "Chỉ lần này" (null = dùng của todo) |
 
 - `unique (todo_id, occurrence_date)` · tick 1 lần lặp → upsert kind `status` (đã có `override` → chỉ cập nhật `done`, `done_subtasks`).
@@ -76,7 +76,7 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 | `created_at` | timestamptz |
 
 - RLS: user chỉ **insert** báo cáo của mình · không select / update / delete (báo cáo chỉ nhà phát triển xem trên Supabase).
-- Giới hạn 5 / ngày: trigger `before insert` đếm báo cáo của user trong 24 giờ qua → ≥ 5 thì báo lỗi `rate_limited`.
+- Giới hạn 5 / ngày: trigger `before insert` đếm báo cáo của user trong 24 giờ qua → ≥ 5 thì báo lỗi `rate_limited` (mã `P0001`) · trigger chạy `security definer` (user không đọc được bảng) + khoá theo user để 2 lần gửi cùng lúc không vượt 5.
 
 ### `developer_emails`
 
@@ -90,7 +90,7 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 ### Storage
 
 - Bucket private `bug-reports` · đường dẫn `<user_id>/<report_id>/<1..3>.jpg` · ≤ 2 MB/ảnh, chỉ `image/jpeg`.
-- Policy: user chỉ upload vào thư mục `<user_id>/` của mình · không đọc, không xoá.
+- Policy: user chỉ upload vào thư mục `<user_id>/` của mình · không đọc, không xoá · upload không ghi đè (gửi lại cùng ảnh → lỗi trùng, app coi như đã có).
 - Ước tính: 3 ảnh × ~300 KB · ít báo cáo → không đáng kể so với 1 GB gói Free.
 
 ### Edge Function `send-bug-report`
