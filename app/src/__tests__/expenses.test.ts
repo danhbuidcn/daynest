@@ -3,16 +3,20 @@ import { describe, expect, it } from '@jest/globals';
 import {
   compactVnd,
   dailyTotals,
+  defaultSpentOn,
+  formatAmountInput,
   formatVnd,
   isMonthAxisDay,
   monthlyTotals,
   parseAmount,
   periodRange,
   recentMonthsRange,
+  relativeDay,
   shiftPeriod,
   sumAmounts,
   totalsByCategory,
 } from '@/lib/expenses';
+import { defaultCategoryId } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
 
@@ -117,5 +121,42 @@ describe('expense charts', () => {
     expect(compactVnd(999_600)).toBe('1tr');
     expect(compactVnd(1_234_000_000)).toBe('1.234tr');
     expect(compactVnd(400)).toBe('400');
+  });
+});
+
+describe('expense form', () => {
+  it('adds dots while typing and keeps the limit', () => {
+    expect(formatAmountInput('50000')).toBe('50.000');
+    expect(formatAmountInput('50.0001')).toBe('500.001');
+    expect(formatAmountInput('007')).toBe('7');
+    expect(formatAmountInput('0')).toBe('');
+    expect(formatAmountInput('1234567890123')).toBe('123.456.789.012');
+  });
+
+  it('names today and yesterday', () => {
+    expect(relativeDay(d(2026, 10, 13), d(2026, 10, 13))).toBe('today');
+    expect(relativeDay(d(2026, 9, 30), d(2026, 10, 1))).toBe('yesterday');
+    expect(relativeDay(d(2026, 10, 14), d(2026, 10, 13))).toBeNull();
+  });
+
+  it('picks the date of a new expense from the tab', () => {
+    const today = d(2026, 10, 13);
+    expect(defaultSpentOn('day', d(2026, 10, 2), today, 1)).toEqual(d(2026, 10, 2));
+    expect(defaultSpentOn('month', d(2026, 10, 1), today, 1)).toEqual(today);
+    expect(defaultSpentOn('month', d(2026, 9, 13), today, 1)).toEqual(d(2026, 9, 1));
+    expect(defaultSpentOn('week', d(2026, 10, 5), today, 1)).toEqual(d(2026, 10, 5));
+  });
+});
+
+describe('expense default category', () => {
+  const cat = (id: string, key: string | null) => ({ id, key, name: key ? null : id, icon: 'tag', color: 'mint' as const });
+  const list = [cat('b', 'bills'), cat('f', 'food'), cat('mine', null)];
+
+  it('uses the last one, else Food, else the first', () => {
+    expect(defaultCategoryId(list, 'mine')).toBe('mine');
+    expect(defaultCategoryId(list, 'deleted')).toBe('f');
+    expect(defaultCategoryId(list, null)).toBe('f');
+    expect(defaultCategoryId([cat('x', null)], null)).toBe('x');
+    expect(defaultCategoryId([], null)).toBeUndefined();
   });
 });

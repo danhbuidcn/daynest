@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { isoDate } from '@/lib/calendar/monthGrid';
@@ -24,8 +24,8 @@ function monthlyTotalsQueryOptions(range: Range) {
 }
 
 // Paging keeps the last period on screen until the next one arrives (same as the calendar).
-export function useExpensesInRange(range: Range) {
-  return useQuery({ ...expensesQueryOptions(range), placeholderData: keepPreviousData });
+export function useExpensesInRange(range: Range, enabled = true) {
+  return useQuery({ ...expensesQueryOptions(range), enabled, placeholderData: keepPreviousData });
 }
 
 export function useMonthlyTotals(range: Range, enabled: boolean) {
@@ -43,4 +43,17 @@ export function usePrefetchExpenses(ranges: Range[], monthlyRanges: Range[], ena
 
 export function useExpenseCategories() {
   return useQuery({ queryKey: [EXPENSE_CATEGORIES_KEY], queryFn: api.fetchExpenseCategories });
+}
+
+// Any write refreshes every period and the 6-month chart (all under EXPENSES_KEY).
+export function useExpenseWrites() {
+  const queryClient = useQueryClient();
+  const onSuccess = () => queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] });
+  const save = useMutation({
+    mutationFn: ({ id, updatedAt, input }: { id: string; updatedAt?: string; input: api.ExpenseInput }) =>
+      updatedAt ? api.updateExpense(id, updatedAt, input) : api.createExpense(id, input),
+    onSuccess,
+  });
+  const remove = useMutation({ mutationFn: api.deleteExpense, onSuccess });
+  return { save, remove };
 }

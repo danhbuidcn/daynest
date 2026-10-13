@@ -311,7 +311,8 @@
     },
     "quickAdd": {
       "event": "Sự kiện",
-      "note": "Ghi chú"
+      "note": "Ghi chú",
+      "expense": "Khoản chi"
     },
     "reminderCustom": {
       "minutes": "{{count}} phút trước",
@@ -432,6 +433,23 @@
       "food": "Ăn uống",
       "transport": "Di chuyển",
       "bills": "Hoá đơn"
+    },
+    "form": {
+      "addTitle": "Thêm khoản chi",
+      "editTitle": "Sửa khoản chi",
+      "amount": "Số tiền",
+      "category": "Nhóm",
+      "addCategory": "Thêm nhóm",
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "notePlaceholder": "Ghi chú (không bắt buộc)",
+      "save": "Lưu",
+      "saved": "Đã lưu",
+      "saveFailed": "Lưu không thành công. Vui lòng thử lại.",
+      "delete": "Xoá",
+      "deleteTitle": "Xoá khoản chi này?",
+      "deleteText": "Khoản chi bị xoá sẽ không khôi phục được.",
+      "deleted": "Đã xoá"
     }
   }
 }

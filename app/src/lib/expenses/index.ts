@@ -109,3 +109,25 @@ export function compactVnd(n: number): string {
   const rest = tenths % 10;
   return `${groupThousands(Math.floor(tenths / 10))}${rest ? `,${rest}` : ''}tr`;
 }
+
+export const NOTE_MAX = 200;
+
+// Amount field: whatever was typed → "50.000" (dots added while typing), capped at 12 digits.
+export function formatAmountInput(input: string): string {
+  const digits = input.replace(/\D/g, '').replace(/^0+/, '').slice(0, String(MAX_AMOUNT).length);
+  return digits ? groupThousands(Number(digits)) : '';
+}
+
+// Date row of the form: "Hôm nay, …" / "Hôm qua, …" in front of the date.
+export function relativeDay(date: SolarDate, today: SolarDate): 'today' | 'yesterday' | null {
+  const diff = jdFromDate(today) - jdFromDate(date);
+  return diff === 0 ? 'today' : diff === 1 ? 'yesterday' : null;
+}
+
+// Add button of the tab: the viewed day (Ngày), else today when it is in the period, else its first day.
+export function defaultSpentOn(mode: PeriodMode, cursor: SolarDate, today: SolarDate, weekStart: WeekStart): SolarDate {
+  if (mode === 'day') return cursor;
+  const { from, to } = periodRange(mode, cursor, weekStart);
+  const t = jdFromDate(today);
+  return t >= jdFromDate(from) && t <= jdFromDate(to) ? today : from;
+}

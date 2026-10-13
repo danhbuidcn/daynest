@@ -33,3 +33,8 @@ export function categoryName(t: TFunction, c: ExpenseCategory | undefined): stri
   if (!c) return '';
   return c.key ? t(`expenses.defaultCategories.${c.key}`) : (c.name ?? '');
 }
+
+// Form default: the category used last on this device, else "Ăn uống", else the first one.
+export function defaultCategoryId(categories: readonly ExpenseCategory[], lastUsed: string | null): string | undefined {
+  return (categories.find((c) => c.id === lastUsed) ?? categories.find((c) => c.key === 'food') ?? categories[0])?.id;
+}

@@ -311,7 +311,8 @@
     },
     "quickAdd": {
       "event": "Event",
-      "note": "Note"
+      "note": "Note",
+      "expense": "Expense"
     },
     "reminderCustom": {
       "minutes": "{{count}} minutes before",
@@ -432,6 +433,23 @@
       "food": "Food",
       "transport": "Transport",
       "bills": "Bills"
+    },
+    "form": {
+      "addTitle": "Add expense",
+      "editTitle": "Edit expense",
+      "amount": "Amount",
+      "category": "Category",
+      "addCategory": "Add category",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "notePlaceholder": "Note (optional)",
+      "save": "Save",
+      "saved": "Saved",
+      "saveFailed": "Could not save. Please try again.",
+      "delete": "Delete",
+      "deleteTitle": "Delete this expense?",
+      "deleteText": "A deleted expense cannot be restored.",
+      "deleted": "Deleted"
     }
   }
 }

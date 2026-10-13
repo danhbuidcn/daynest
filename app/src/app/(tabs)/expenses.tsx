@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -12,13 +13,14 @@ import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
-import type { ExpenseCategory } from '@/features/expenses/expense';
+import type { Expense, ExpenseCategory } from '@/features/expenses/expense';
 import { DailyChart, MonthlyChart } from '@/features/expenses/ExpenseCharts';
 import { CategoryTotalsCard, ExpenseListCard, TotalCard } from '@/features/expenses/ExpenseSummary';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
 import {
+  defaultSpentOn,
   monthlyTotals,
   periodRange,
   recentMonthsRange,
@@ -27,6 +29,7 @@ import {
   totalsByCategory,
   type PeriodMode,
 } from '@/lib/expenses';
+import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
 import { colors, radius, space } from '@/theme';
 
@@ -34,6 +37,7 @@ const MODES: readonly PeriodMode[] = ['day', 'week', 'month'];
 
 export default function ExpensesScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const toast = useToast();
   const { settings } = useAuth();
   const nav = useExpensesNav(settings.timeZone, settings.weekStart);
@@ -67,8 +71,14 @@ export default function ExpensesScreen() {
     nav.setCursor(day);
   };
 
-  // Placeholders until the expense form (step 5) and the categories screen (step 6) exist.
+  // Placeholder until the categories screen (step 6) exists.
   const comingSoon = () => toast(t('comingSoon'));
+  const addExpense = () =>
+    router.push({
+      pathname: '/expense/edit',
+      params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)) },
+    });
+  const editExpense = (e: Expense) => router.push({ pathname: '/expense/edit', params: { id: e.id, date: e.spentOn } });
 
   const modeOptions = MODES.map((m) => ({ value: m, label: t(`expenses.modes.${m}`) }));
   const currentLabel = t(`expenses.current.${mode}`);
@@ -85,7 +95,7 @@ export default function ExpensesScreen() {
       <ActivityIndicator color={colors.primary} style={styles.loading} />
     );
   } else if (expenses.length === 0) {
-    body = <Empty text={t('expenses.empty')} action={t('expenses.add')} onAction={comingSoon} plus />;
+    body = <Empty text={t('expenses.empty')} action={t('expenses.add')} onAction={addExpense} plus />;
   } else {
     body = (
       <ScrollView contentContainerStyle={styles.list}>
@@ -95,7 +105,7 @@ export default function ExpensesScreen() {
           <MonthlyChart cursor={cursor} totals={months} onMonth={(m) => nav.setCursor({ ...m, day: 1 })} />
         ) : null}
         <CategoryTotalsCard totals={totals} categories={categories} />
-        {mode === 'day' ? <ExpenseListCard expenses={expenses} categories={categories} onPress={comingSoon} /> : null}
+        {mode === 'day' ? <ExpenseListCard expenses={expenses} categories={categories} onPress={editExpense} /> : null}
       </ScrollView>
     );
   }

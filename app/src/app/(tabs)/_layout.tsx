@@ -50,6 +50,10 @@ export default function TabsLayout() {
           setQuickAddOpen(false);
           router.push(newNoteHref());
         }}
+        onCreateExpense={() => {
+          setQuickAddOpen(false);
+          router.push('/expense/edit');
+        }}
       />
     </>
   );
