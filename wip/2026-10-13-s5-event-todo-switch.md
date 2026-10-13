@@ -36,4 +36,4 @@ Bạn đổi thiết kế (16:45, chọn A): **không dùng thanh chọn**; tiê
   - Đã nhập → Ghi chú → hỏi "Bỏ thay đổi?" → Bỏ → mở ghi chú trống; Back 2 lần ra màn hình chính (form cũ không còn) ✓ · chưa nhập → Khoản chi → mở thẳng, Back 1 lần về Lịch ✓
   - Màn sửa todo: tiêu đề "Todo" chữ thường, bấm không mở pop-up ✓
   - Đã dọn: 2 todo + 1 sự kiện thử (xoá trên app); không có ghi chú trống nào bị tạo.
-  - **Phát hiện (ngoài phạm vi, có từ trước):** ô ở chế độ Tuần cắt tiêu đề dài mà không có "…" ("Thu doi loai" → "Thu doi lo").
+  - Ô ở chế độ Tuần cắt tiêu đề dài, không có "…" ("Thu doi loai" → "Thu doi lo"): bạn xác nhận là thiết kế, không phải lỗi.

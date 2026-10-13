@@ -4,6 +4,7 @@ import type { TimedSpan } from '@/lib/calendar/dayLayout';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE, timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
 import { jdFromDate, type SolarDate } from '@/lib/lunar';
+import type { ListSpan } from '@/lib/todos/list';
 
 function occurrenceRange(occ: EventOccurrence, timeZone: string): { start: number; end: number } {
   if (occ.allDay) {
@@ -43,6 +44,12 @@ export function isTodo(occ: EventOccurrence): occ is TodoOccurrence {
 export function calendarOrder(a: EventOccurrence, b: EventOccurrence): number {
   const rank = (o: EventOccurrence) => (!isTodo(o) ? 0 : o.status.done ? 2 : 1);
   return rank(a) - rank(b) || byStartTime(a, b);
+}
+
+// Input of `groupTodoList` (lib/todos/list): the days a todo covers in `timeZone`, all-day first.
+export function todoListSpan(occ: TodoOccurrence, timeZone: string): ListSpan {
+  const { start, end } = occurrenceRange(occ, timeZone);
+  return { start, end, done: occ.status.done, order: occ.allDay ? '0' : `1${occ.startsAt}` };
 }
 
 export function occurrenceKey(occ: EventOccurrence): string {

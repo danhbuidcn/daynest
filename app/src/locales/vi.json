@@ -486,6 +486,18 @@
     "occurrenceTitle": "Todo đang lặp lại",
     "deleteTitle": "Xoá todo?",
     "tickFailed": "Lưu không thành công. Vui lòng thử lại.",
-    "repeatTickHint": "Tick ở đây chỉ áp dụng cho ngày {{date}}. Mỗi ngày lặp có trạng thái xong riêng."
+    "repeatTickHint": "Tick ở đây chỉ áp dụng cho ngày {{date}}. Mỗi ngày lặp có trạng thái xong riêng.",
+    "list": {
+      "yesterday": "Hôm qua",
+      "tomorrow": "Ngày mai",
+      "overdue": "Quá hạn",
+      "upcoming": "Sắp tới",
+      "upcomingSpan_one": "{{count}} ngày",
+      "upcomingSpan_other": "{{count}} ngày",
+      "doneCount": "{{done}}/{{total}} xong",
+      "empty": "Chưa có việc cần làm",
+      "add": "Thêm todo",
+      "loadFailed": "Không tải được todo"
+    }
   }
 }

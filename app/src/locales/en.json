@@ -486,6 +486,18 @@
     "occurrenceTitle": "Repeating todo",
     "deleteTitle": "Delete todo?",
     "tickFailed": "Could not save. Please try again.",
-    "repeatTickHint": "Ticks here apply only to {{date}}. Each repeat has its own done state."
+    "repeatTickHint": "Ticks here apply only to {{date}}. Each repeat has its own done state.",
+    "list": {
+      "yesterday": "Yesterday",
+      "tomorrow": "Tomorrow",
+      "overdue": "Overdue",
+      "upcoming": "Upcoming",
+      "upcomingSpan_one": "{{count}} day",
+      "upcomingSpan_other": "{{count}} days",
+      "doneCount": "{{done}}/{{total}} done",
+      "empty": "Nothing to do yet",
+      "add": "Add todo",
+      "loadFailed": "Couldn't load todos"
+    }
   }
 }
