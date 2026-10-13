@@ -311,6 +311,7 @@
     },
     "quickAdd": {
       "event": "Event",
+      "todo": "Todo",
       "note": "Note",
       "expense": "Expense"
     },
@@ -473,5 +474,17 @@
       "edit": "Edit",
       "deleteTitle": "Delete category \"{{name}}\"?"
     }
+  },
+  "todos": {
+    "form": {
+      "title": "Todo"
+    },
+    "subtasks": "Subtasks",
+    "addSubtask": "Add subtask",
+    "subtaskPlaceholder": "New subtask",
+    "occurrenceTitle": "Repeating todo",
+    "deleteTitle": "Delete todo?",
+    "tickFailed": "Could not save. Please try again.",
+    "repeatTickHint": "Ticks here apply only to {{date}}. Each repeat has its own done state."
   }
 }

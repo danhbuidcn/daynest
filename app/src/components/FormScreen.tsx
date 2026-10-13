@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { NestableScrollContainer } from 'react-native-draggable-flatlist';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { colors, space } from '@/theme';
@@ -10,21 +11,30 @@ export function FormScreen({
   onBack,
   closeIcon,
   footer,
+  nestable,
   children,
 }: {
   title: string;
   onBack: () => void;
   closeIcon?: boolean;
   footer: ReactNode;
+  // A draggable list inside (ChecklistBlock) needs its scroll parent to be nestable.
+  nestable?: boolean;
   children: ReactNode;
 }) {
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
       <ScreenHeader title={title} onBack={onBack} closeIcon={closeIcon} />
       <KeyboardAvoidingView style={styles.flex} behavior="padding">
-        <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          {children}
-        </ScrollView>
+        {nestable ? (
+          <NestableScrollContainer style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+            {children}
+          </NestableScrollContainer>
+        ) : (
+          <ScrollView style={styles.flex} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+            {children}
+          </ScrollView>
+        )}
         <View style={styles.footer}>{footer}</View>
       </KeyboardAvoidingView>
     </SafeAreaView>

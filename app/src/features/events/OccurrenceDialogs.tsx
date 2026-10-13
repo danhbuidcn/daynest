@@ -9,11 +9,13 @@ import { colors, radius, space } from '@/theme';
 // "Hỏi lần lặp" (màn 14) — sửa/xoá một event đang lặp: chỉ lần này hay cả chuỗi.
 export function OccurrenceActionDialog({
   visible,
+  title,
   onThisOccurrence,
   onAllOccurrences,
   onCancel,
 }: {
   visible: boolean;
+  title?: string;
   onThisOccurrence: () => void;
   onAllOccurrences: () => void;
   onCancel: () => void;
@@ -22,7 +24,7 @@ export function OccurrenceActionDialog({
   return (
     <DialogShell visible={visible} onClose={onCancel} compact>
       <AppText variant="heading" style={styles.center}>
-        {t('events.occurrenceDialog.title')}
+        {title ?? t('events.occurrenceDialog.title')}
       </AppText>
       <View style={styles.options}>
         <Pressable accessibilityRole="button" onPress={onThisOccurrence} style={styles.option}>

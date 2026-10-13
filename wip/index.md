@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-13 | S5 bước 3: Todo — dữ liệu + form + chi tiết | ✅ xong | [2026-10-13-s5-step-3-todo-data-form.md](2026-10-13-s5-step-3-todo-data-form.md) |
 | 2026-10-13 | S5 bước 2: sửa 2 lỗi S4 (màu Google, "1 notes") | ✅ xong (máy ảo thử ở bước 4) | [2026-10-13-s5-step-2-s4-bugs.md](2026-10-13-s5-step-2-s4-bugs.md) |
 | 2026-10-13 | S5 bước 1: DB (migration + test RLS) | ✅ xong (đã lên DB thật) | [2026-10-13-s5-step-1-db.md](2026-10-13-s5-step-1-db.md) |
 | 2026-10-13 | S5: lộ trình code (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | 🔄 đang làm (bước 1) | [2026-10-13-s5-code-plan.md](2026-10-13-s5-code-plan.md) |

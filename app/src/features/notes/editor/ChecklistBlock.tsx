@@ -27,11 +27,22 @@ export function ChecklistBlock({
   onChange,
   focusId,
   onFocusHandled,
+  maxItems = CHECKLIST_MAX_ITEMS,
+  addLabel,
+  placeholder,
+  showWhenEmpty = false,
+  rowBackground = colors.bg,
 }: {
   items: ChecklistItem[];
   onChange: (items: ChecklistItem[], focusId?: string) => void;
   focusId: string | null;
   onFocusHandled: () => void;
+  // Todo subtasks (S5): 50 items, own labels, "+ Thêm việc phụ" shown even with none yet.
+  maxItems?: number;
+  addLabel?: string;
+  placeholder?: string;
+  showWhenEmpty?: boolean;
+  rowBackground?: string;
 }) {
   const { t } = useTranslation();
   const inputs = useRef(new Map<string, TextInput>());
@@ -45,7 +56,7 @@ export function ChecklistBlock({
   const update = (id: string, patch: Partial<ChecklistItem>) =>
     onChange(items.map((i) => (i.id === id ? { ...i, ...patch } : i)));
   const insertAfter = (index: number) => {
-    if (items.length >= CHECKLIST_MAX_ITEMS) return;
+    if (items.length >= maxItems) return;
     const item = newChecklistItem();
     onChange(
       [...items.slice(0, index + 1), item, ...items.slice(index + 1)],
@@ -59,7 +70,7 @@ export function ChecklistBlock({
     isActive,
     getIndex,
   }: RenderItemParams<ChecklistItem>) => (
-    <View style={[styles.row, isActive && styles.dragging]}>
+    <View style={[styles.row, { backgroundColor: rowBackground }, isActive && styles.dragging]}>
       <Pressable
         accessibilityLabel="Reorder"
         hitSlop={10}
@@ -92,7 +103,7 @@ export function ChecklistBlock({
         submitBehavior="submit"
         multiline
         maxLength={CHECKLIST_ITEM_MAX}
-        placeholder={t("notes.itemPlaceholder")}
+        placeholder={placeholder ?? t("notes.itemPlaceholder")}
         placeholderTextColor={colors.textMuted}
         style={[styles.input, item.done && styles.done]}
       />
@@ -107,7 +118,7 @@ export function ChecklistBlock({
     </View>
   );
 
-  if (items.length === 0) return null;
+  if (items.length === 0 && !showWhenEmpty) return null;
   return (
     <View>
       <NestableDraggableFlatList
@@ -117,7 +128,7 @@ export function ChecklistBlock({
         activationDistance={8}
         renderItem={renderItem}
       />
-      {items.length < CHECKLIST_MAX_ITEMS ? (
+      {items.length < maxItems ? (
         <Pressable
           accessibilityRole="button"
           onPress={() => insertAfter(items.length - 1)}
@@ -125,7 +136,7 @@ export function ChecklistBlock({
         >
           <Icon name="plus" size={22} color={colors.primaryDark} />
           <AppText weight="bold" color={colors.primaryDark}>
-            {t("notes.addItem")}
+            {addLabel ?? t("notes.addItem")}
           </AppText>
         </Pressable>
       ) : null}
@@ -139,7 +150,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: space.md,
-    backgroundColor: colors.bg,
   },
   dragging: {
     backgroundColor: colors.surface,

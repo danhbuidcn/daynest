@@ -311,6 +311,7 @@
     },
     "quickAdd": {
       "event": "Sự kiện",
+      "todo": "Todo",
       "note": "Ghi chú",
       "expense": "Khoản chi"
     },
@@ -473,5 +474,17 @@
       "edit": "Sửa",
       "deleteTitle": "Xoá nhóm \"{{name}}\"?"
     }
+  },
+  "todos": {
+    "form": {
+      "title": "Todo"
+    },
+    "subtasks": "Việc phụ",
+    "addSubtask": "Thêm việc phụ",
+    "subtaskPlaceholder": "Việc phụ mới",
+    "occurrenceTitle": "Todo đang lặp lại",
+    "deleteTitle": "Xoá todo?",
+    "tickFailed": "Lưu không thành công. Vui lòng thử lại.",
+    "repeatTickHint": "Tick ở đây chỉ áp dụng cho ngày {{date}}. Mỗi ngày lặp có trạng thái xong riêng."
   }
 }

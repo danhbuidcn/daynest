@@ -46,6 +46,10 @@ export default function TabsLayout() {
           setQuickAddOpen(false);
           router.push({ pathname: '/event/edit', params: { date: isoDate(todayIn(settings.timeZone)) } });
         }}
+        onCreateTodo={() => {
+          setQuickAddOpen(false);
+          router.push({ pathname: '/todo/edit', params: { date: isoDate(todayIn(settings.timeZone)) } });
+        }}
         onCreateNote={() => {
           setQuickAddOpen(false);
           router.push(newNoteHref());

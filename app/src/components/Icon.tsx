@@ -106,6 +106,7 @@ const ICONS = {
     stroke('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>'),
   pin: () =>
     '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3l6 6-3 1-3.5 3.5L15 18l-2 2-4-4-5 5-1-1 5-5-4-4 2-2 4.5.5L14 6z"/></svg>',
+  todo: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/>'),
   checklist: () =>
     stroke(
       '<path d="M4 6.5l1.5 1.5L8.5 5M4 12.5l1.5 1.5 3-3M4 18.5l1.5 1.5 3-3M12 7h8M12 13h8M12 19h8"/>',

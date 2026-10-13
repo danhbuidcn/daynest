@@ -1,0 +1,116 @@
+import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
+
+import { useForbiddenGuard } from '@/features/events/useEvents';
+import { resyncReminders } from '@/features/reminders/reminderSync';
+import { narrowestCovering } from '@/lib/calendar/coveringRange';
+import { isoDate } from '@/lib/calendar/monthGrid';
+import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
+import type { DateRange } from '@/lib/recurrence';
+import type { TodoStatus } from '@/lib/todos';
+import * as api from './api';
+import { occurrencesForTodos, withStatus, type TodoInput, type TodosData } from './todo';
+
+export const TODOS_KEY = 'todos';
+
+function todosQueryOptions(range: DateRange) {
+  return {
+    queryKey: [TODOS_KEY, isoDate(range.from), isoDate(range.to)] as const,
+    queryFn: async (): Promise<TodosData> => {
+      const todos = await api.fetchTodos(isoDate(range.from), isoDate(range.to));
+      const exceptions = await api.fetchTodoExceptions(todos.map((t) => t.id));
+      return { todos, exceptions };
+    },
+  };
+}
+
+// As for events: a wider range already loaded shows at once while the exact one loads.
+function cachedCovering(queryClient: QueryClient, range: DateRange): TodosData | undefined {
+  const loaded = queryClient
+    .getQueriesData<TodosData>({ queryKey: [TODOS_KEY] })
+    .flatMap(([key, data]) => (data ? [{ from: key[1] as string, to: key[2] as string, value: data }] : []));
+  return narrowestCovering(loaded, isoDate(range.from), isoDate(range.to));
+}
+
+export function useTodosInRange(range: DateRange, timeZone: string = DEFAULT_TIME_ZONE, enabled = true) {
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    ...todosQueryOptions(range),
+    enabled,
+    placeholderData: (previous) => cachedCovering(queryClient, range) ?? keepPreviousData(previous),
+  });
+  const { data } = query;
+  const { from, to } = range;
+  const occurrences = useMemo(
+    () => (data ? occurrencesForTodos(data.todos, data.exceptions, { from, to }, timeZone) : []),
+    [data, from, to, timeZone],
+  );
+  return { ...query, occurrences };
+}
+
+function useInvalidateTodos() {
+  const queryClient = useQueryClient();
+  return () => {
+    void resyncReminders();
+    return queryClient.invalidateQueries({ queryKey: [TODOS_KEY] });
+  };
+}
+
+export type SaveTodoVars = { id: string; updatedAt?: string; input: TodoInput; clearExceptions?: boolean };
+
+export function useSaveTodo() {
+  const guard = useForbiddenGuard();
+  const invalidate = useInvalidateTodos();
+  return useMutation({
+    mutationFn: (vars: SaveTodoVars) =>
+      guard(() =>
+        vars.updatedAt
+          ? api.updateTodo(vars.id, vars.updatedAt, vars.input, { clearExceptions: vars.clearExceptions })
+          : api.createTodo(vars.id, vars.input),
+      ),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteTodo() {
+  const guard = useForbiddenGuard();
+  const invalidate = useInvalidateTodos();
+  return useMutation({
+    mutationFn: (id: string) => guard(() => api.deleteTodo(id)),
+    onSuccess: invalidate,
+  });
+}
+
+export type SetTodoExceptionVars = { todoId: string; occurrenceDate: string; kind: 'skip' | 'override'; override?: TodoInput };
+
+export function useSetTodoException() {
+  const guard = useForbiddenGuard();
+  const invalidate = useInvalidateTodos();
+  return useMutation({
+    mutationFn: (vars: SetTodoExceptionVars) => guard(() => api.upsertTodoException(vars.todoId, vars.occurrenceDate, vars.kind, vars.override)),
+    onSuccess: invalidate,
+  });
+}
+
+export type SetTodoStatusVars = { todo: { id: string; repeat: string }; occurrenceDate: string; status: TodoStatus };
+
+// Tick (S5): shows at once; on failure the cache goes back and the caller shows a toast.
+export function useSetTodoStatus() {
+  const queryClient = useQueryClient();
+  const guard = useForbiddenGuard();
+  return useMutation({
+    mutationFn: (vars: SetTodoStatusVars) => guard(() => api.setTodoStatus(vars.todo, vars.occurrenceDate, vars.status)),
+    onMutate: async (vars) => {
+      await queryClient.cancelQueries({ queryKey: [TODOS_KEY] });
+      const before = queryClient.getQueriesData<TodosData>({ queryKey: [TODOS_KEY] });
+      queryClient.setQueriesData<TodosData>({ queryKey: [TODOS_KEY] }, (data) =>
+        data ? withStatus(data, vars.todo.id, vars.occurrenceDate, vars.status) : data,
+      );
+      return { before };
+    },
+    onError: (_e, _vars, context) => {
+      for (const [key, data] of context?.before ?? []) queryClient.setQueryData(key, data);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: [TODOS_KEY] }),
+  });
+}
