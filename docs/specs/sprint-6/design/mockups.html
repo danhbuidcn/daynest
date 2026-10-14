@@ -842,7 +842,6 @@ const expForm = ({ offline: off = false } = {}) => `<div class="content">${off ?
       <div class="frow ${off ? '' : 'hl2'}" style="${off ? '' : 'margin:0 -8px;padding:0 8px'}"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="${off ? 'muted' : 'b'}">${off ? 'Không' : 'Hằng tháng, ngày 13'}</span>${I.chev}</div>
       <div class="frow"><span class="fi">${I.note}</span><span class="grow">Tiền nhà</span></div>
     </div>
-    ${off ? '' : '<div class="cap muted" style="padding:0 4px">Từ 13/11, khoản chi này được tự ghi vào ngày 13 mỗi tháng.</div>'}
   </div>
   <div class="form-footer"><button class="btn btn-primary" ${off ? 'disabled' : ''}>Lưu</button></div>
 </div>`;
@@ -854,8 +853,7 @@ const repeatPick = `<div class="under">${expForm()}</div>
 const RULES = [['bills', 'Tiền nhà', 2500000, 'Hằng tháng', '01/11'], ['bills', 'Internet', 220000, 'Hằng tháng', '07/11'], ['kid', 'Học phí bơi', 300000, 'Hằng tháng', '05/11'], ['coffee', 'Cà phê sáng', 35000, 'Hằng tuần', 'T3, 20/10']];
 const rulesScreen = `<div class="content">
   <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Khoản chi lặp lại</div><span></span></div>
-  <div class="xlist" style="padding-bottom:90px"><div class="card">${RULES.map(([k, n, a, f, next]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${n}</div><span>${f} · lần tới ${next}</span></div><span class="am">${vnd(a)}</span></div>`).join('')}</div>
-  <div class="cap muted" style="padding:0 4px">App tự ghi các khoản chi này khi tới ngày.</div></div>
+  <div class="xlist" style="padding-bottom:90px"><div class="card">${RULES.map(([k, n, a, f, next]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${n}</div><span>${f} · lần tới ${next}</span></div><span class="am">${vnd(a)}</span></div>`).join('')}</div></div>
   <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm khoản chi lặp lại</button></div>
 </div>`;
 const ruleEdit = `<div class="content">
@@ -970,7 +968,7 @@ const groupsS6 = (st) => [
     ['10. Hộp Ngân sách — mọi tháng', 'công tắc "Dùng cho mọi tháng" bật (mặc định) → ngân sách chung · "Bỏ ngân sách" chỉ hiện khi đã đặt', phoneT(budgetDialog(true))],
     ['10b. Hộp Ngân sách — chỉ tháng này', 'tắt công tắc → ngân sách riêng tháng 10 (vd tháng Tết) · thanh ở màn 9 ghi "ngân sách riêng" · các tháng khác vẫn dùng ngân sách chung', phoneT(budgetDialog(false))],
     ['11. Cảnh báo ngân sách', 'Lưu khoản chi làm tổng tháng vượt 80% lần đầu → toast có chấm warning · vượt 100% lần đầu: "Bạn đã vượt ngân sách tháng 10: 250.000 ₫."', phoneT(budgetToast)],
-    ['12. Form — Lặp lại', 'dòng "Lặp lại" (viền xanh) chỉ khi tạo mới · chọn lặp → chú thích ngày tự ghi', phoneT(expForm())],
+    ['12. Form — Lặp lại', 'dòng "Lặp lại" (viền xanh) chỉ khi tạo mới', phoneT(expForm())],
     ['12b. Chọn kiểu lặp', 'Hằng tuần theo thứ của ngày đã chọn · Hằng tháng theo ngày (29–31 mà tháng thiếu → ngày cuối tháng)', phoneT(repeatPick)],
     ['13. Màn Nhóm chi tiêu', 'nút Nhóm ở đầu Chi tiêu (có từ S4) · S6 thêm dòng đầu "Khoản chi lặp lại ›" (viền xanh) → màn 13a', phoneT(catsScreen)],
     ['13a. Màn Khoản chi lặp lại', 'mở từ màn 13 · bấm dòng → 13b · "Thêm khoản chi lặp lại" mở form 12 với Lặp lại = Hằng tháng', phoneT(rulesScreen)],
