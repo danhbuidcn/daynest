@@ -57,7 +57,7 @@ Todo = event có thêm **việc trong danh sách** và **trạng thái xong**, l
 
 Tab "Ghi chú" có nút chuyển ở đầu màn: **Todo | Ghi chú** (mặc định Ghi chú, nhớ lựa chọn trên máy). Phần Ghi chú giữ nguyên.
 
-Phần Todo có thanh tuần ngang để chọn ngày (như Lịch › Danh sách: ‹ › đổi tuần, nút "Hôm nay"; chỉ có chấm dưới hôm nay). Ngày chọn mặc định là hôm nay; mở lại tab → về hôm nay. 3 nhóm tính theo **ngày chọn**:
+Phần Todo có thanh tuần ngang để chọn ngày (như Lịch › Danh sách: ‹ › đổi tuần, nút "Hôm nay"; hôm nay chữ màu primaryDark, không chấm). Ngày chọn mặc định là hôm nay; mở lại tab → về hôm nay. 3 nhóm tính theo **ngày chọn**:
 
 | Nhóm | Gồm |
 | --- | --- |
@@ -137,7 +137,7 @@ Form tạo: ✕ · "Todo ▾" / "Sự kiện ▾" (bấm → pop-up 4 ô như n�
 Chi tiết Todo: ô tick + tiêu đề · việc trong danh sách (tick) · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa / Xoá
 Lịch (Tháng / Tuần / Ngày / Danh sách): todo có ô tròn · giọt kỳ kinh (đặc / viền)
 Pop-up ngày: event · todo (tick, 2/5) · dòng chu kỳ + nút "Kỳ kinh"
-Tab Ghi chú: [Todo | Ghi chú] · Todo: thanh tuần chọn ngày (chỉ chấm dưới hôm nay) · Quá hạn · Hôm nay (ngày chọn) · Sắp tới
+Tab Ghi chú: [Todo | Ghi chú] · Todo: thanh tuần chọn ngày (hôm nay chữ màu primaryDark) · Quá hạn · Hôm nay (ngày chọn) · Sắp tới
 Màn Kỳ kinh: lịch cuộn dọc, ô tròn tick ngày có kinh · Lưu
 Cài đặt: nhóm "Chu kỳ kinh nguyệt" (sau nhóm Lịch) · nhóm Ứng dụng thêm "Báo lỗi"
 Màn Báo lỗi: nội dung · ảnh (≤ 3) · Gửi
