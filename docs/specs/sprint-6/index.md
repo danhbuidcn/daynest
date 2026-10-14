@@ -56,7 +56,7 @@ Hiện tại: bấm Lưu → chờ server ghi → tải lại **mọi** khoảng
 
 ### Mất mạng
 
-- **Banner chung** ở đầu mọi màn khi mất mạng: "Không có kết nối mạng. Bạn vẫn xem được dữ liệu đã lưu." · có mạng lại → banner ẩn.
+- **Banner chung** ở đầu mọi màn khi mất mạng: "Không có kết nối mạng." · có mạng lại → banner ẩn.
 - Mất mạng → **khoá mọi thao tác ghi** ở mọi màn: Lưu, Xoá, tick todo, tick ngày có kinh, Gửi báo lỗi, nút `+` mở form vẫn được nhưng Lưu bị khoá · dùng chung 1 hook, bỏ các chỗ tự kiểm tra mạng riêng lẻ.
 - Có mạng lại → tự tải lại dữ liệu đang xem.
 

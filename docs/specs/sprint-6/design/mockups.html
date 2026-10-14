@@ -721,7 +721,7 @@ const themeCss = `<style>
 
 // ---- Lịch (S6: nút 🔍 cạnh thanh chế độ) ----
 const segRow = (on, hl) => `<div class="segrow"><div class="seg">${['Tháng', 'Danh sách', 'Tuần', 'Ngày'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div><span class="ibtn ${hl ? 'hl' : ''}">${I.search}</span></div>`;
-const offline = `<div class="offline">${I.wifiOff}<span>Không có kết nối mạng. Bạn vẫn xem được dữ liệu đã lưu.</span></div>`;
+const offline = `<div class="offline">${I.wifiOff}<span>Không có kết nối mạng.</span></div>`;
 const calMonth = ({ banner = '', hl = false, grid = monthCal() } = {}) => `<div class="content">${banner}${calHead('Tháng 10, 2026')}${segRow('Tháng', hl)}${grid}</div>${tabbar('cal')}`;
 
 // Khung xương lịch tháng: lưới, số ngày, ngày âm có ngay (tính trên máy) · chỉ thanh event chờ tải
