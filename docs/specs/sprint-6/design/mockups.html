@@ -815,9 +815,11 @@ const groupPopup = (k, rows, period, under, toast = '') => {
     <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:10px"><span class="x">${I.close}</span>
       <h3 style="display:flex;gap:8px;align-items:center;justify-content:center">${cico(k, 28)}${C[k][2]}</h3><span class="round-plus">${I.plus}</span></div>
     <div style="text-align:center;margin-bottom:12px"><div class="cap muted">${period}</div><div style="font-size:22px;line-height:28px;font-weight:800">${vnd(sum)}</div></div>
-    <div style="display:flex;flex-direction:column;gap:8px">${days.map((d) => `${days.length > 1 || period.startsWith('Tháng') ? `<div class="dhead" style="padding:2px 4px 0"><b>${d === 13 ? 'Hôm nay' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`}</b></div>` : ''}<div class="card" style="box-shadow:none;border:1px solid var(--border)">${rows.filter((r) => r[0] === d).map(xrow).join('')}</div>`).join('')}</div>
+    <div style="display:flex;flex-direction:column;gap:8px">${days.map((d) => `${days.length > 1 || period.startsWith('Tháng') ? `<div class="dhead" style="padding:2px 4px 0"><b>${d === 13 ? 'Hôm nay' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`}</b></div>` : ''}<div class="card" style="box-shadow:none;border:1px solid var(--border)">${rows.filter((r) => r[0] === d).map(prow).join('')}</div>`).join('')}</div>
   </div></div>${toast}`;
 };
+// Dòng trong pop-up nhóm: không lặp lại icon + tên nhóm (đã ở tiêu đề) · chỉ ghi chú + số tiền
+const prow = ([, , a, note, auto]) => `<div class="xrow" style="min-height:48px"><div class="mid"><div class="${note ? '' : 'muted'}">${note || 'Không có ghi chú'}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div></div><span class="am">${vnd(a)}</span></div>`;
 const undoToast = '<div class="toast" style="z-index:7">Đã xoá<span class="act">Hoàn tác</span></div>';
 const expDayUndo = groupPopup('food', X.filter((r) => r[1] === 'food' && r[0] !== 13), 'Tháng 10, 2026', expMonth(7800000), undoToast);
 
