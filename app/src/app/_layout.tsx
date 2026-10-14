@@ -93,6 +93,7 @@ function AppStack({ signedIn }: { signedIn: boolean }) {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="settings/devices" />
         <Stack.Screen name="settings/period" />
+        <Stack.Screen name="settings/bug-report" />
         <Stack.Screen name="note/[id]" />
         <Stack.Screen name="note/categories" />
         <Stack.Screen name="note/trash" />

@@ -58,7 +58,8 @@
     "showLunar": "Hiển thị ngày âm lịch",
     "showHolidays": "Hiển thị ngày lễ",
     "saveFailed": "Chưa lưu được. Vui lòng thử lại.",
-    "cycle": "Chu kỳ kinh nguyệt"
+    "cycle": "Chu kỳ kinh nguyệt",
+    "bugReport": "Báo lỗi"
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
@@ -526,5 +527,20 @@
     "late_other": "Trễ {{count}} ngày",
     "remindBody_one": "Kỳ kinh dự kiến bắt đầu sau {{count}} ngày",
     "remindBody_other": "Kỳ kinh dự kiến bắt đầu sau {{count}} ngày"
+  },
+  "bugReport": {
+    "title": "Báo lỗi",
+    "body": "Nội dung",
+    "bodyHint": "Mô tả lỗi: bạn đã làm gì, thấy gì",
+    "images": "Ảnh ({{n}}/{{max}})",
+    "addImage": "Thêm ảnh",
+    "removeImage": "Bỏ ảnh",
+    "imageFailed": "Chưa thêm được ảnh. Vui lòng thử lại.",
+    "send": "Gửi",
+    "sent": "Đã gửi. Cảm ơn bạn!",
+    "sendFailed": "Chưa gửi được. Vui lòng thử lại.",
+    "limitTitle": "Đã gửi đủ 5 báo cáo hôm nay",
+    "limitText": "Hãy thử lại vào ngày mai.",
+    "limitOk": "Đã hiểu"
   }
 }

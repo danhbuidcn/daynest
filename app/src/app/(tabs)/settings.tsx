@@ -82,6 +82,7 @@ export default function SettingsScreen() {
         <GroupLabel text={t('settings.app')} />
         <Card>
           <SettingRow first icon="globe" label={t('settings.language')} value={currentLabel} onPress={() => setLangOpen(true)} />
+          <SettingRow icon="bug" label={t('settings.bugReport')} onPress={() => router.push('/settings/bug-report')} />
           <SettingRow icon="info" label={t('settings.version')} value={Constants.expoConfig?.version ?? ''} />
         </Card>
 

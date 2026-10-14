@@ -60,6 +60,10 @@ const ICONS = {
       '<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M11 18h2"/>',
     ),
   close: () => stroke('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+  image: () =>
+    stroke('<rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="9.5" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/>'),
+  bug: () =>
+    stroke('<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9.5 8a2.5 2.5 0 0 1 5 0M12 12v8M7 13H3.5M20.5 13H17M7.5 17.5l-3 2M16.5 17.5l3 2M7.5 9.5l-3-2M16.5 9.5l3-2"/>'),
   grip: () =>
     `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>`,
   more: () =>

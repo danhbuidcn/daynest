@@ -24,5 +24,14 @@ case "${1:-}" in
   status)  remote && sb migration list --linked -p "$SUPABASE_DB_PASSWORD" ;;
   migrate) remote && sb db push --linked --dry-run -p "$SUPABASE_DB_PASSWORD" &&
            sb db push --linked --yes -p "$SUPABASE_DB_PASSWORD" ;;
-  *)       echo "Usage: supabase/db <new NAME|test|load|status|migrate>"; exit 1 ;;
+  functions)
+           : "${GMAIL_USER:?Missing GMAIL_USER in supabase/.env}"
+           : "${GMAIL_APP_PASSWORD:?Missing GMAIL_APP_PASSWORD in supabase/.env}"
+           remote
+           # Secrets go through a temp file, never the command line (ps) or the log.
+           secrets=$(mktemp) && trap 'rm -f "$secrets"' EXIT
+           printf 'GMAIL_USER=%s\nGMAIL_APP_PASSWORD=%s\n' "$GMAIL_USER" "$GMAIL_APP_PASSWORD" > "$secrets"
+           sb secrets set --project-ref "$SUPABASE_PROJECT_REF" --env-file "$secrets" &&
+           sb functions deploy send-bug-report --project-ref "$SUPABASE_PROJECT_REF" --use-api ;;
+  *)       echo "Usage: supabase/db <new NAME|test|load|status|migrate|functions>"; exit 1 ;;
 esac

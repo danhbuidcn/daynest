@@ -58,7 +58,8 @@
     "showLunar": "Show lunar dates",
     "showHolidays": "Show holidays",
     "saveFailed": "Could not save. Please try again.",
-    "cycle": "Menstrual cycle"
+    "cycle": "Menstrual cycle",
+    "bugReport": "Report a problem"
   },
   "logoutDialog": {
     "title": "Sign out?",
@@ -526,5 +527,20 @@
     "late_other": "{{count}} days late",
     "remindBody_one": "Period expected to start in {{count}} day",
     "remindBody_other": "Period expected to start in {{count}} days"
+  },
+  "bugReport": {
+    "title": "Report a problem",
+    "body": "Description",
+    "bodyHint": "Describe the problem: what you did and what you saw",
+    "images": "Photos ({{n}}/{{max}})",
+    "addImage": "Add photo",
+    "removeImage": "Remove photo",
+    "imageFailed": "Could not add the photo. Please try again.",
+    "send": "Send",
+    "sent": "Sent. Thank you!",
+    "sendFailed": "Could not send. Please try again.",
+    "limitTitle": "You have sent 5 reports today",
+    "limitText": "Please try again tomorrow.",
+    "limitOk": "OK"
   }
 }
