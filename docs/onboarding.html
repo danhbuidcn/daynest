@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daynest cho người mới</title>
+<style>
+:root {
+  --bg: #f6f5f1;
+  --panel: #ffffff;
+  --text: #1f2328;
+  --muted: #5f6670;
+  --line: #d4d2cb;
+  --edge: #6b7280;
+  --accent: #2f6f5e;
+  --accent-soft: #e3efe9;
+  --warn: #a56a00;
+  --warn-soft: #fbf0d9;
+  --err: #b4362b;
+  --err-soft: #f8e1de;
+  --group: #efeee9;
+  --code-bg: #f0efea;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a;
+    --panel: #1d2024;
+    --text: #e6e6e3;
+    --muted: #a0a6ad;
+    --line: #3a3f45;
+    --edge: #8b929a;
+    --accent: #6cc3a6;
+    --accent-soft: #1f3530;
+    --warn: #e0b04d;
+    --warn-soft: #3a3020;
+    --err: #ec7e72;
+    --err-soft: #3d2422;
+    --group: #202328;
+    --code-bg: #24272c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a;
+  --panel: #1d2024;
+  --text: #e6e6e3;
+  --muted: #a0a6ad;
+  --line: #3a3f45;
+  --edge: #8b929a;
+  --accent: #6cc3a6;
+  --accent-soft: #1f3530;
+  --warn: #e0b04d;
+  --warn-soft: #3a3020;
+  --err: #ec7e72;
+  --err-soft: #3d2422;
+  --group: #202328;
+  --code-bg: #24272c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 32px 16px 64px; }
+header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+h1 { font-size: 30px; line-height: 1.25; margin: 0 0 6px; }
+.lead { color: var(--muted); margin: 0; }
+#theme {
+  flex: none; border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  border-radius: 8px; padding: 6px 12px; font: inherit; font-size: 14px; cursor: pointer;
+}
+nav { margin: 24px 0 8px; display: flex; flex-wrap: wrap; gap: 8px; }
+nav a {
+  font-size: 14px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line);
+  color: var(--text); text-decoration: none; background: var(--panel);
+}
+nav a:hover { border-color: var(--accent); color: var(--accent); }
+section { margin-top: 40px; }
+h2 { font-size: 21px; margin: 0 0 12px; padding-top: 8px; }
+h2 .n { color: var(--accent); margin-right: 6px; }
+p, ul, ol { margin: 0 0 12px; }
+li { margin-bottom: 4px; }
+a { color: var(--accent); }
+code { font: 0.88em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; overflow-x: auto; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.key { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 0 0 14px; }
+.note { border-left: 3px solid var(--warn); background: var(--warn-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.src { font-size: 14px; color: var(--muted); }
+figure { margin: 0 0 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; overflow-x: auto; }
+figure svg { display: block; width: 100%; min-width: 560px; height: auto; }
+table { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: 15px; }
+.tbl { overflow-x: auto; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 14px; }
+footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+
+/* SVG */
+svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.g { fill: var(--group); stroke: var(--line); stroke-dasharray: 5 4; }
+.gt { fill: var(--muted); font-size: 13px; font-weight: 700; }
+.b { fill: var(--panel); stroke: var(--line); stroke-width: 1.4; }
+.b.ac { fill: var(--accent-soft); stroke: var(--accent); }
+.b.wr { fill: var(--warn-soft); stroke: var(--warn); }
+.b.er { fill: var(--err-soft); stroke: var(--err); }
+.b.ds { stroke-dasharray: 5 4; }
+.t { fill: var(--text); font-size: 14px; font-weight: 600; text-anchor: middle; }
+.s { fill: var(--muted); font-size: 12px; text-anchor: middle; }
+.e { stroke: var(--edge); stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+.e.ds { stroke-dasharray: 5 4; }
+.l { fill: var(--muted); font-size: 12px; paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
+.ah { fill: var(--edge); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="ah" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+</svg>
+
+<div class="wrap">
+<header>
+  <div>
+    <h1>Daynest cho người mới</h1>
+    <p class="lead">Hệ thống chạy thế nào, qua sơ đồ và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14. Gặp chỗ lệch với code → tin code.</p>
+  </div>
+  <button id="theme" type="button">Đổi sáng/tối</button>
+</header>
+
+<nav>
+  <a href="#s1">1. Daynest là gì</a>
+  <a href="#s2">2. Không có backend</a>
+  <a href="#s3">3. Thư mục</a>
+  <a href="#s4">4. Đăng nhập</a>
+  <a href="#s5">5. Đọc lịch</a>
+  <a href="#s6">6. Ghi dữ liệu</a>
+  <a href="#s7">7. Google</a>
+  <a href="#s8">8. Nhắc nhở</a>
+  <a href="#s9">9. Database</a>
+  <a href="#s10">10. Tuần đầu</a>
+</nav>
+
+<section id="s1">
+  <h2><span class="n">1.</span>Daynest là gì</h2>
+  <p>App cá nhân trên điện thoại, 3 phần: <b>Lịch</b> (dương + âm, ngày lễ, event, todo, chu kỳ kinh nguyệt), <b>Ghi chú</b>, <b>Chi tiêu</b>. Android + iOS, viết bằng Expo (React Native + TypeScript).</p>
+</section>
+
+<section id="s2">
+  <h2><span class="n">2.</span>Quyết định lớn nhất: không có backend tự viết</h2>
+  <figure>
+    <svg viewBox="0 0 760 380" role="img" aria-label="Tổng quan: app trên điện thoại gọi thẳng Supabase và Google">
+      <rect class="g" x="20" y="20" width="260" height="340" rx="12"/>
+      <text class="gt" x="36" y="44">Điện thoại (Android / iOS)</text>
+      <rect class="b ac" x="40" y="60" width="220" height="64" rx="10"/>
+      <text class="t" x="150" y="88">Expo app</text>
+      <text class="s" x="150" y="108">UI + toàn bộ logic nghiệp vụ</text>
+      <rect class="b" x="40" y="150" width="220" height="48" rx="8"/>
+      <text class="t" x="150" y="171">AsyncStorage</text>
+      <text class="s" x="150" y="189">phiên · cache 7 ngày · ngôn ngữ</text>
+      <rect class="b" x="40" y="212" width="220" height="48" rx="8"/>
+      <text class="t" x="150" y="233">TanStack Query</text>
+      <text class="s" x="150" y="251">cache trong RAM</text>
+      <rect class="b" x="40" y="274" width="220" height="48" rx="8"/>
+      <text class="t" x="150" y="295">expo-notifications</text>
+      <text class="s" x="150" y="313">nhắc đặt sẵn trên máy</text>
+
+      <rect class="g" x="460" y="20" width="280" height="236" rx="12"/>
+      <text class="gt" x="476" y="44">Supabase (gói Free)</text>
+      <rect class="b" x="480" y="60" width="240" height="38" rx="8"/>
+      <text class="t" x="600" y="84">Auth: idToken → JWT</text>
+      <rect class="b" x="480" y="106" width="240" height="38" rx="8"/>
+      <text class="t" x="600" y="130">PostgREST: API tự sinh</text>
+      <rect class="b ac" x="480" y="152" width="240" height="38" rx="8"/>
+      <text class="t" x="600" y="176">Postgres + RLS</text>
+      <rect class="b" x="480" y="198" width="240" height="38" rx="8"/>
+      <text class="t" x="600" y="222">Storage · Edge Function</text>
+
+      <rect class="g" x="460" y="276" width="280" height="84" rx="12"/>
+      <text class="gt" x="476" y="300">Google</text>
+      <rect class="b" x="480" y="310" width="112" height="36" rx="8"/>
+      <text class="t" x="536" y="333">OAuth</text>
+      <rect class="b" x="608" y="310" width="112" height="36" rx="8"/>
+      <text class="t" x="664" y="333">Calendar API</text>
+
+      <path class="e" d="M260,80 H458"/>
+      <text class="l" x="360" y="72" text-anchor="middle">supabase-js + JWT</text>
+      <path class="e" d="M260,108 H370 V328 H458"/>
+      <text class="l" x="362" y="214" text-anchor="end">REST +</text>
+      <text class="l" x="362" y="230" text-anchor="end">token Google</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Không có server Go/Node.</b> PostgREST tự sinh REST API từ bảng. App gọi thẳng <code>supabase.from('events').select()</code>.</li>
+    <li><b>Quyền truy cập do Postgres quyết định.</b> Mọi bảng có RLS (Row Level Security, luật lọc dòng ngay trong DB): <code>user_id = auth.uid() AND session_active()</code>. App không tự kiểm tra quyền.</li>
+    <li><b>Logic nghiệp vụ nằm trong app:</b> trải event lặp, âm lịch, đặt nhắc, đồng bộ Google đều chạy trên máy.</li>
+  </ul>
+  <p>Lý do: app cá nhân, gói Supabase Free, không muốn vận hành server. Đổi lại, app phải tự lo nhiều việc.</p>
+</section>
+
+<section id="s3">
+  <h2><span class="n">3.</span>Bản đồ thư mục</h2>
+<pre>daynest/
+├─ app/                    ← app Expo (phần lớn thời gian làm ở đây)
+│  └─ src/
+│     ├─ app/              ← MÀN HÌNH (Expo Router: đường dẫn file = route)
+│     │   ├─ _layout.tsx   ← gốc: Provider, kiểm tra đăng nhập
+│     │   ├─ (auth)/login.tsx
+│     │   ├─ (tabs)/       ← calendar · expenses · manage · settings
+│     │   └─ event/ note/ todo/ expense/ settings/  ← màn chi tiết, form
+│     ├─ features/&lt;tên&gt;/   ← UI tính năng + hook + api.ts (gọi Supabase)
+│     ├─ lib/              ← hàm THUẦN, không mạng, không React → có test Jest
+│     ├─ components/       ← UI dùng chung (AppText, Button, Dialog…)
+│     ├─ theme/ i18n/ locales/ (en.json + vi.json)
+│     └─ __tests__/        ← test cho lib/
+├─ supabase/
+│  ├─ migrations/*.sql     ← bảng, RLS, hàm SQL (cách DUY NHẤT đổi DB)
+│  ├─ functions/send-bug-report/
+│  └─ db                   ← script: new | test | status | migrate
+├─ docs/                   ← spec theo sprint + kiến trúc (tiếng Việt)
+└─ wip/                    ← todo từng việc (tiếng Việt)</pre>
+  <p>Các lớp phụ thuộc một chiều:</p>
+  <figure>
+    <svg viewBox="0 0 760 230" role="img" aria-label="Các lớp: màn hình gọi hook, hook gọi api.ts và lib, api.ts gọi Supabase client">
+      <rect class="b" x="20" y="30" width="160" height="64" rx="10"/>
+      <text class="t" x="100" y="58">Màn hình</text>
+      <text class="s" x="100" y="78">app/src/app/</text>
+      <rect class="b ac" x="210" y="30" width="160" height="64" rx="10"/>
+      <text class="t" x="290" y="58">Hook</text>
+      <text class="s" x="290" y="78">features/*/useXxx.ts</text>
+      <rect class="b" x="400" y="30" width="160" height="64" rx="10"/>
+      <text class="t" x="480" y="58">API</text>
+      <text class="s" x="480" y="78">features/*/api.ts</text>
+      <rect class="b" x="590" y="30" width="150" height="64" rx="10"/>
+      <text class="t" x="665" y="58">Supabase client</text>
+      <text class="s" x="665" y="78">lib/supabase.ts</text>
+      <path class="e" d="M180,62 H208"/>
+      <path class="e" d="M370,62 H398"/>
+      <path class="e" d="M560,62 H588"/>
+      <rect class="b" x="210" y="150" width="530" height="56" rx="10"/>
+      <text class="t" x="475" y="173">Hàm thuần: app/src/lib/</text>
+      <text class="s" x="475" y="193">lunar · recurrence · holidays · notifications · google/mapping (có test Jest)</text>
+      <path class="e" d="M290,94 V148"/>
+    </svg>
+  </figure>
+  <p>Đọc 1 tính năng theo thứ tự: màn hình → hook <code>useXxx.ts</code> → <code>api.ts</code> → migration của bảng.</p>
+</section>
+
+<section id="s4">
+  <h2><span class="n">4.</span>Flow 1: mở app và đăng nhập</h2>
+  <p class="src">Code: <code>app/src/app/_layout.tsx</code>, <code>app/src/features/auth/AuthProvider.tsx</code></p>
+  <figure>
+    <svg viewBox="0 0 760 620" role="img" aria-label="Luồng mở app và đăng nhập">
+      <rect class="b ac" x="280" y="20" width="200" height="40" rx="20"/>
+      <text class="t" x="380" y="45">Mở app</text>
+      <rect class="b" x="230" y="84" width="300" height="44" rx="8"/>
+      <text class="t" x="380" y="111">Tải font, ngôn ngữ, khôi phục cache</text>
+      <path class="e" d="M380,60 V82"/>
+      <path class="e" d="M380,128 V146"/>
+
+      <polygon class="b" points="380,148 490,180 380,212 270,180"/>
+      <text class="t" x="380" y="185">Có phiên trên máy?</text>
+      <path class="e" d="M490,180 H598"/>
+      <text class="l" x="545" y="172" text-anchor="middle">Không</text>
+      <rect class="b" x="600" y="160" width="140" height="40" rx="8"/>
+      <text class="t" x="670" y="185">Màn Login</text>
+      <path class="e" d="M670,200 V234"/>
+      <rect class="b" x="590" y="236" width="160" height="52" rx="8"/>
+      <text class="t" x="670" y="258">idToken → JWT</text>
+      <text class="s" x="670" y="277">register_device (≤ 2 máy)</text>
+      <path class="e" d="M670,288 V580 H482"/>
+
+      <path class="e" d="M380,212 V238"/>
+      <text class="l" x="390" y="230">Có</text>
+      <rect class="b" x="230" y="240" width="300" height="48" rx="8"/>
+      <text class="t" x="380" y="261">Vẽ ngay từ snapshot đã lưu</text>
+      <text class="s" x="380" y="279">không chờ mạng</text>
+      <path class="e" d="M380,288 V316"/>
+
+      <polygon class="b" points="380,318 490,350 380,382 270,350"/>
+      <text class="t" x="380" y="355">session_active()?</text>
+      <path class="e" d="M270,350 H192"/>
+      <text class="l" x="231" y="342" text-anchor="middle">false</text>
+      <rect class="b er" x="20" y="326" width="170" height="48" rx="8"/>
+      <text class="t" x="105" y="347">Máy đã bị đá ra</text>
+      <text class="s" x="105" y="365">xoá cache, đăng xuất, báo</text>
+      <path class="e" d="M380,382 V408"/>
+      <text class="l" x="390" y="400">true</text>
+      <rect class="b" x="230" y="410" width="300" height="40" rx="8"/>
+      <text class="t" x="380" y="435">touch_device(), tải settings mới</text>
+      <path class="e" d="M380,450 V466"/>
+
+      <polygon class="b" points="380,468 490,500 380,532 270,500"/>
+      <text class="t" x="380" y="505">Bản app đủ mới?</text>
+      <path class="e" d="M270,500 H192"/>
+      <text class="l" x="231" y="492" text-anchor="middle">Không</text>
+      <rect class="b wr" x="20" y="476" width="170" height="48" rx="8"/>
+      <text class="t" x="105" y="497">Màn "Cần cập nhật"</text>
+      <text class="s" x="105" y="515">min_version_code</text>
+      <path class="e" d="M380,532 V558"/>
+      <text class="l" x="390" y="550">Có</text>
+      <rect class="b ac" x="280" y="560" width="200" height="40" rx="20"/>
+      <text class="t" x="380" y="585">Tab Lịch</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Đăng nhập:</b> Google Sign-In SDK → <code>idToken</code> → <code>supabase.auth.signInWithIdToken</code> → phiên Supabase (JWT) → <code>rpc('register_device')</code>.</li>
+    <li><b>Giới hạn 2 thiết bị:</b> bảng <code>user_devices</code>. Máy thứ 3 đăng nhập → <code>register_device</code> đá máy sớm nhất. Máy bị đá biết khi:
+      <ul>
+        <li>app quay lại foreground → gọi <code>session_active()</code>;</li>
+        <li>1 lệnh ghi bị RLS từ chối (<code>42501</code>) → <code>ForbiddenError</code> → <code>useForbiddenGuard</code> kiểm tra lại phiên.</li>
+      </ul>
+    </li>
+    <li>Server không đẩy thông báo xuống máy, nên app phải tự hỏi.</li>
+  </ul>
+</section>
+
+<section id="s5">
+  <h2><span class="n">5.</span>Flow 2: đọc lịch (phần khó nhất)</h2>
+  <p class="src">Code: <code>features/events/useEvents.ts</code>, <code>features/events/api.ts</code>, <code>lib/recurrence/</code></p>
+  <p class="key"><b>DB lưu quy tắc, app trải ra từng lần.</b> Event "hằng tháng âm lịch" chỉ là 1 dòng <code>events</code> + vài dòng <code>event_exceptions</code> (bỏ 1 lần / sửa 1 lần).</p>
+  <figure>
+    <svg viewBox="0 0 760 320" role="img" aria-label="Luồng đọc lịch">
+      <rect class="b ac" x="20" y="30" width="150" height="52" rx="10"/>
+      <text class="t" x="95" y="52">Xem tháng 10</text>
+      <text class="s" x="95" y="71">useEventsInRange</text>
+      <path class="e" d="M170,56 H188"/>
+      <polygon class="b" points="300,20 410,56 300,92 190,56"/>
+      <text class="t" x="300" y="53">Cache còn mới?</text>
+      <text class="s" x="300" y="71">(&lt; 2 phút)</text>
+      <path class="e" d="M410,56 H448"/>
+      <text class="l" x="429" y="48" text-anchor="middle">Không</text>
+      <rect class="b" x="450" y="30" width="290" height="52" rx="10"/>
+      <text class="t" x="595" y="52">fetchEvents + fetchExceptions</text>
+      <text class="s" x="595" y="71">lọc theo span_start / span_end (±1 ngày)</text>
+
+      <path class="e" d="M300,92 V138"/>
+      <text class="l" x="310" y="120">Có</text>
+      <rect class="b" x="190" y="140" width="220" height="52" rx="10"/>
+      <text class="t" x="300" y="162">Dùng cache</text>
+      <text class="s" x="300" y="181">không gọi mạng</text>
+      <path class="e" d="M410,166 H448"/>
+      <path class="e" d="M595,82 V138"/>
+      <rect class="b ac" x="450" y="140" width="290" height="52" rx="10"/>
+      <text class="t" x="595" y="162">occurrencesForEvents</text>
+      <text class="s" x="595" y="181">trải quy tắc lặp (dương/âm) + ngoại lệ</text>
+      <path class="e" d="M595,192 V248"/>
+      <rect class="b" x="450" y="250" width="290" height="52" rx="10"/>
+      <text class="t" x="595" y="272">Vẽ lưới tháng</text>
+      <text class="s" x="595" y="291">danh sách "lần xảy ra"</text>
+      <path class="e ds" d="M450,276 H302"/>
+      <text class="l" x="376" y="268" text-anchor="middle">sau khi hiện</text>
+      <rect class="b ds" x="20" y="250" width="280" height="52" rx="10"/>
+      <text class="t" x="160" y="272">Tải trước tháng trước / sau</text>
+      <text class="s" x="160" y="291">usePrefetchEvents → vuốt không chờ</text>
+    </svg>
+  </figure>
+  <ul>
+    <li>Đang tải khoảng mới → tạm hiện khoảng rộng hơn đã tải, hoặc dữ liệu cũ. Lưới không nháy rỗng.</li>
+    <li>Nới ±1 ngày vì <code>span_start/span_end</code> của event có giờ lưu theo ngày UTC.</li>
+  </ul>
+  <div class="tbl"><table>
+    <tr><th>Tầng cache</th><th>Giữ bao lâu</th><th>Ghi chú</th></tr>
+    <tr><td>RAM (TanStack Query)</td><td>Coi là mới trong 2 phút</td><td>Lưu xong → <code>invalidateQueries</code> tải lại ngay</td></tr>
+    <tr><td>AsyncStorage</td><td>7 ngày</td><td>Xoá khi lên version mới, khi đăng xuất (user sau không thấy dữ liệu user trước)</td></tr>
+  </table></div>
+  <p>Todo (<code>features/todos/</code>) và chu kỳ (<code>features/cycle/</code>) dùng cùng mẫu.</p>
+</section>
+
+<section id="s6">
+  <h2><span class="n">6.</span>Flow 3: ghi dữ liệu (không trùng, không mất)</h2>
+  <figure>
+    <svg viewBox="0 0 760 430" role="img" aria-label="Luồng ghi dữ liệu">
+      <rect class="b ac" x="260" y="20" width="240" height="44" rx="10"/>
+      <text class="t" x="380" y="47">Mở form: sinh id = uuid</text>
+      <path class="e" d="M380,64 V86"/>
+      <rect class="b" x="300" y="88" width="160" height="40" rx="20"/>
+      <text class="t" x="380" y="113">Bấm Lưu</text>
+      <path class="e" d="M380,128 V146"/>
+      <polygon class="b" points="380,148 470,180 380,212 290,180"/>
+      <text class="t" x="380" y="185">Tạo mới?</text>
+
+      <path class="e" d="M290,180 H222"/>
+      <text class="l" x="256" y="172" text-anchor="middle">Có</text>
+      <rect class="b" x="20" y="156" width="200" height="48" rx="8"/>
+      <text class="t" x="120" y="177">upsert theo id</text>
+      <text class="s" x="120" y="195">gửi lại không tạo trùng</text>
+
+      <path class="e" d="M470,180 H538"/>
+      <text class="l" x="504" y="172" text-anchor="middle">Sửa</text>
+      <rect class="b" x="540" y="156" width="200" height="48" rx="8"/>
+      <text class="t" x="640" y="177">update WHERE id</text>
+      <text class="s" x="640" y="195">AND updated_at = đã đọc</text>
+      <path class="e" d="M640,204 V256"/>
+      <polygon class="b" points="640,258 740,290 640,322 540,290"/>
+      <text class="t" x="640" y="295">Sửa được dòng?</text>
+      <path class="e" d="M640,322 V358"/>
+      <text class="l" x="650" y="344">0 dòng</text>
+      <rect class="b wr" x="540" y="360" width="200" height="52" rx="8"/>
+      <text class="t" x="640" y="382">ConflictError</text>
+      <text class="s" x="640" y="401">Tải bản mới / Ghi đè</text>
+
+      <path class="e" d="M540,290 H482"/>
+      <text class="l" x="510" y="282" text-anchor="middle">1 dòng</text>
+      <path class="e" d="M150,204 V290 H258"/>
+      <rect class="b ac" x="260" y="262" width="220" height="122" rx="10"/>
+      <text class="t" x="370" y="288">Thành công (onSuccess)</text>
+      <text class="s" x="370" y="316">1. Đẩy lên Google (nếu bật)</text>
+      <text class="s" x="370" y="340">2. Đặt lại toàn bộ nhắc</text>
+      <text class="s" x="370" y="364">3. Tải lại lịch (invalidate)</text>
+
+      <path class="e ds" d="M60,204 V358"/>
+      <text class="l" x="70" y="290">42501</text>
+      <rect class="b er" x="20" y="360" width="200" height="52" rx="8"/>
+      <text class="t" x="120" y="382">ForbiddenError</text>
+      <text class="s" x="120" y="401">kiểm tra lại phiên</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Không trùng (idempotency):</b> id sinh lúc mở form, nên mạng chập chờn, gửi lại, bấm 2 lần vẫn chỉ 1 dòng.</li>
+    <li><b>Khoá lạc quan:</b> 0 dòng được sửa nghĩa là máy khác đã sửa trước → hộp "Đã thay đổi ở thiết bị khác".</li>
+    <li>Lỗi <code>42501</code> có ở cả tạo mới và sửa: máy có thể đã bị đá ra.</li>
+  </ul>
+  <p class="note">2 bẫy cần nhớ:<br>
+  • Giữ <code>updated_at</code> nguyên chuỗi API trả về. Đổi qua <code>Date</code> mất micro giây → so sánh sai → báo xung đột giả.<br>
+  • Supabase client gửi <code>Cache-Control: no-cache</code>: lớp HTTP của Android từng trả dữ liệu cũ (<code>lib/supabase.ts</code>).</p>
+</section>
+
+<section id="s7">
+  <h2><span class="n">7.</span>Flow 4: đồng bộ Google Calendar 2 chiều</h2>
+  <p class="src">Code: <code>features/google/</code>: <code>sync.ts</code> điều phối, <code>push.ts</code>, <code>pull.ts</code>, <code>lib/google/mapping.ts</code> đổi định dạng</p>
+  <figure>
+    <svg viewBox="0 0 760 360" role="img" aria-label="Đồng bộ Google 2 chiều">
+      <rect class="g" x="10" y="10" width="740" height="150" rx="12"/>
+      <text class="gt" x="26" y="34">Daynest → Google (ngay sau khi lưu, xếp hàng)</text>
+      <rect class="b" x="20" y="60" width="150" height="52" rx="8"/>
+      <text class="t" x="95" y="91">Lưu event vào DB</text>
+      <path class="e" d="M170,86 H208"/>
+      <rect class="b ac" x="210" y="60" width="150" height="52" rx="8"/>
+      <text class="t" x="285" y="82">Đẩy lên Google</text>
+      <text class="s" x="285" y="101">insert · patch · delete</text>
+      <path class="e" d="M360,78 H380 V64 H398"/>
+      <path class="e" d="M360,94 H380 V122 H398"/>
+      <rect class="b" x="400" y="44" width="150" height="40" rx="8"/>
+      <text class="t" x="475" y="69">OK → xong</text>
+      <rect class="b wr" x="400" y="96" width="150" height="52" rx="8"/>
+      <text class="t" x="475" y="118">Lỗi mạng</text>
+      <text class="s" x="475" y="137">google_status = pending</text>
+      <path class="e" d="M550,122 H588"/>
+      <rect class="b" x="590" y="96" width="150" height="52" rx="8"/>
+      <text class="t" x="665" y="118">pushPending()</text>
+      <text class="s" x="665" y="137">đẩy lại lần sau</text>
+
+      <rect class="g" x="10" y="180" width="740" height="170" rx="12"/>
+      <text class="gt" x="26" y="204">Google → Daynest</text>
+      <rect class="b" x="20" y="220" width="150" height="52" rx="8"/>
+      <text class="t" x="95" y="242">Mở app (&gt; 5 phút)</text>
+      <text class="s" x="95" y="261">hoặc "Đồng bộ ngay"</text>
+      <path class="e" d="M170,246 H208"/>
+      <rect class="b ac" x="210" y="220" width="150" height="52" rx="8"/>
+      <text class="t" x="285" y="242">events.list</text>
+      <text class="s" x="285" y="261">(syncToken)</text>
+      <path class="e" d="M360,246 H398"/>
+      <rect class="b" x="400" y="220" width="150" height="52" rx="8"/>
+      <text class="t" x="475" y="242">Upsert theo</text>
+      <text class="s" x="475" y="261">google_event_id</text>
+      <path class="e" d="M550,246 H588"/>
+      <rect class="b" x="590" y="220" width="150" height="52" rx="8"/>
+      <text class="t" x="665" y="242">Làm mới lịch</text>
+      <text class="s" x="665" y="261">+ đặt lại nhắc</text>
+      <path class="e ds" d="M285,272 V292"/>
+      <rect class="b wr ds" x="210" y="294" width="150" height="44" rx="8"/>
+      <text class="t" x="285" y="314">410 Gone</text>
+      <text class="s" x="285" y="330">kéo lại cả năm</text>
+      <path class="e ds" d="M360,316 H475 V274"/>
+    </svg>
+  </figure>
+  <ul>
+    <li>id trên Google = id Daynest bỏ dấu <code>-</code>. Hai máy cùng đồng bộ vẫn không tạo trùng.</li>
+    <li>Google trả <code>cancelled</code> → xoá. Kiểu lặp Daynest không biểu diễn được → lưu từng lần thành event chỉ xem (<code>google_readonly</code>).</li>
+    <li>Token Google chỉ ở trên máy, không lưu DB. Bảng <code>google_sync_state</code> giữ <code>sync_token</code>.</li>
+    <li>Tắt đồng bộ → không xoá gì 2 bên; giữ <code>google_event_id</code> để bật lại ghép đúng.</li>
+  </ul>
+</section>
+
+<section id="s8">
+  <h2><span class="n">8.</span>Flow 5: nhắc nhở</h2>
+  <p class="src">Code: <code>features/reminders/reminderSync.ts</code>, <code>lib/notifications/pickReminders.ts</code></p>
+  <p class="key">Không có server gửi push. Mọi thông báo là <b>thông báo đặt sẵn trên máy</b>.</p>
+  <figure>
+    <svg viewBox="0 0 760 190" role="img" aria-label="Luồng đặt lại nhắc nhở">
+      <rect class="b ac" x="20" y="30" width="150" height="64" rx="10"/>
+      <text class="t" x="95" y="58">Lưu / mở app /</text>
+      <text class="t" x="95" y="78">đổi cài đặt</text>
+      <path class="e" d="M170,62 H208"/>
+      <rect class="b" x="210" y="30" width="150" height="64" rx="10"/>
+      <text class="t" x="285" y="58">cancelAll()</text>
+      <text class="s" x="285" y="78">huỷ toàn bộ</text>
+      <path class="e" d="M360,62 H398"/>
+      <rect class="b" x="400" y="30" width="150" height="64" rx="10"/>
+      <text class="t" x="475" y="58">pickReminders</text>
+      <text class="s" x="475" y="78">mốc gần nhất, ≤ 64</text>
+      <path class="e" d="M550,62 H588"/>
+      <rect class="b" x="590" y="30" width="150" height="64" rx="10"/>
+      <text class="t" x="665" y="58">scheduleAll()</text>
+      <text class="s" x="665" y="78">đặt trên máy</text>
+      <path class="e ds" d="M665,94 V124"/>
+      <rect class="b ds" x="400" y="126" width="340" height="44" rx="10"/>
+      <text class="t" x="570" y="153">Bấm thông báo → mở đúng event</text>
+    </svg>
+  </figure>
+  <ul>
+    <li>Nguồn: event + todo + chu kỳ sắp tới. Mỗi (lần xảy ra × mốc nhắc) là 1 thông báo.</li>
+    <li>Chạy lần lượt, không chồng nhau. Giới hạn 64 vì iOS chỉ giữ chừng đó thông báo chờ.</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <h2><span class="n">9.</span>Database</h2>
+  <div class="tbl"><table>
+    <tr><th>Nhóm</th><th>Bảng</th></tr>
+    <tr><td>Tài khoản</td><td><code>profiles</code>, <code>user_settings</code>, <code>user_devices</code>, <code>app_config</code></td></tr>
+    <tr><td>Lịch</td><td><code>events</code>, <code>event_exceptions</code>, <code>google_sync_state</code>, <code>todos</code>, <code>todo_exceptions</code>, <code>period_days</code></td></tr>
+    <tr><td>Ghi chú</td><td><code>notes</code>, <code>note_categories</code></td></tr>
+    <tr><td>Chi tiêu</td><td><code>expenses</code>, <code>expense_categories</code></td></tr>
+    <tr><td>Báo lỗi</td><td><code>bug_reports</code> (+ bucket Storage + Edge Function gửi mail)</td></tr>
+  </table></div>
+  <ul>
+    <li>Mọi bảng: <code>id</code>, <code>user_id</code>, <code>created_at</code>, <code>updated_at</code>, RLS, index bắt đầu bằng <code>user_id</code>.</li>
+    <li>Logic SQL: <code>register_device</code> / <code>session_active</code> / <code>touch_device</code>, <code>expense_monthly_totals</code>, trigger tạo dữ liệu mặc định cho user mới (<code>handle_new_user*</code>), <code>check_bug_report_limit</code> (≤ 5 báo lỗi/ngày).</li>
+  </ul>
+</section>
+
+<section id="s10">
+  <h2><span class="n">10.</span>Tuần đầu</h2>
+  <ol>
+    <li><b>Chạy app:</b> điền <code>app/.env</code> (xin secrets từ người phụ trách; không commit, không dán vào chat) → <code>cd app &amp;&amp; npm install &amp;&amp; npm run android</code>.</li>
+    <li><b>Đọc theo thứ tự:</b> <a href="specs/index.md">specs/index.md</a> → <a href="specs/architecture/index.md">specs/architecture/index.md</a> → <code>_layout.tsx</code> → <code>AuthProvider.tsx</code> → <code>useEvents.ts</code>.</li>
+    <li><b>Chạy test:</b> <code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm test</code>. Đọc <code>lunar.test.ts</code>, <code>recurrence.test.ts</code> để hiểu phần lõi nhanh nhất.</li>
+    <li><b>Đổi DB:</b> chỉ qua <code>supabase/db new &lt;tên&gt;</code> → viết SQL + RLS → <code>supabase/db test</code> (cần Docker).</li>
+    <li><b>Quy tắc code:</b> theme token <code>@/theme</code>, chữ qua <code>AppText</code>, mọi chuỗi qua i18n (cùng key ở <code>en.json</code> + <code>vi.json</code>). Mỗi việc 1 file trong <code>wip/</code>, duyệt xong mới làm.</li>
+  </ol>
+  <p class="note"><b>Tài liệu kiến trúc đã cũ.</b> <a href="specs/architecture/index.md">specs/architecture/</a> ghi "theo code tới S2 bước 6": còn đánh dấu "(chưa code)" cho Google sync và nhắc nhở (code đã có), ghi "chưa dùng Edge Functions" (đã có <code>send-bug-report</code>), chưa có todo, chu kỳ, chi tiêu, báo lỗi.</p>
+</section>
+
+<footer>Bản chữ: <a href="onboarding.md">onboarding.md</a> · Mục lục tài liệu: <a href="index.md">docs/index.md</a></footer>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme');
+  try {
+    var saved = localStorage.getItem('daynest-onboarding-theme');
+    if (saved) root.setAttribute('data-theme', saved);
+  } catch (e) {}
+  btn.addEventListener('click', function () {
+    var current = root.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('daynest-onboarding-theme', next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
