@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-14 | Lộ trình S6: nhanh, bền và tính năng (S6 cũ → S7) | ✅ xong (đã sửa spec; tiếp: viết spec S6) | [2026-10-14-speed-ux-improvements-plan.md](2026-10-14-speed-ux-improvements-plan.md) |
 | 2026-10-14 | Release 5.0.1 (bỏ chấm dưới hôm nay) | ✅ xong (release v5.0.1) | [2026-10-14-release-5-0-1.md](2026-10-14-release-5-0-1.md) |
 | 2026-10-14 | Bỏ chấm dưới hôm nay (thanh ngày), chỉ đổi màu chữ | ✅ xong (v5.0.1, đã xem trên máy) | [2026-10-14-remove-today-dot.md](2026-10-14-remove-today-dot.md) |
 | 2026-10-14 | Kế hoạch tiếng Anh 4 tháng (phỏng vấn IT) + thói quen → nhập Daynest | ✅ xong (đã nhập DB, tài khoản danhpoutch; chờ bạn xem trên app) | [2026-10-14-english-and-life-plan.md](2026-10-14-english-and-life-plan.md) |

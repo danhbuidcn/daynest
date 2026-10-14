@@ -109,7 +109,7 @@ Mặc định **tắt**. Tắt → không hiện gì trên Lịch, không nhắc
 | Nhắc trước kỳ kinh | Công tắc · bật → pop-up chọn số ngày (1–7) + giờ : phút (bước 5 phút) · dòng phụ "Trước 2 ngày · 9:00" | Bật · 2 ngày · 9:00 |
 
 - Tắt "Theo dõi chu kỳ" ẩn các dòng dưới · "Nhắc trước kỳ kinh": bấm dòng khi đang bật → mở lại pop-up · Huỷ pop-up khi vừa bật → công tắc về tắt · tắt → ẩn dòng phụ. Chú thích dưới nhóm: "Dữ liệu chu kỳ chỉ bạn xem được."
-- Dữ liệu sức khoẻ: chỉ chủ tài khoản đọc được (RLS) · khai báo Data safety ở [S6](../sprint-6/index.md).
+- Dữ liệu sức khoẻ: chỉ chủ tài khoản đọc được (RLS) · khai báo Data safety ở [S7](../sprint-7/index.md).
 
 ## Báo lỗi
 

@@ -32,4 +32,4 @@
 - **S5 làm gì?** Spec hiện có S4 = Chi tiêu (hết GĐ1). Sau GĐ1 đã ghi: chu kỳ kinh nguyệt, web. → S5 = chu kỳ kinh nguyệt? hay để trống "chưa chốt"? → Bạn: **A, chu kỳ kinh nguyệt**.
 
 ## Kết quả
-- 2026-10-12 16:15 — Bạn duyệt (S5 = chu kỳ kinh nguyệt). Tạo [sprint-6/index.md](../docs/specs/sprint-6/index.md) · sửa Spec tổng §1, §2, §4, §6 · thêm S6 vào [docs/index.md](../docs/index.md). Commit + push.
+- 2026-10-12 16:15 — Bạn duyệt (S5 = chu kỳ kinh nguyệt). Tạo [sprint-6/index.md](../docs/specs/sprint-7/index.md) · sửa Spec tổng §1, §2, §4, §6 · thêm S6 vào [docs/index.md](../docs/index.md). Commit + push.

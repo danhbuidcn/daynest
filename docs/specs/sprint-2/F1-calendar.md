@@ -67,7 +67,7 @@ Tab Lịch → chế độ lần cuối (mặc định Tháng)
 
 ## Không làm
 
-- Thời tiết, sticker, theme/font, tìm kiếm event, số tuần, widget.
+- Thời tiết, sticker, theme/font, tìm kiếm event (đã đổi: làm ở S6), số tuần, widget.
 
 ## Test
 

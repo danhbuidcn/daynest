@@ -1,6 +1,6 @@
-# Sprint 6 — Quảng cáo + Pro + lên Google Play
+# Sprint 7 — Quảng cáo + Pro + lên Google Play
 
-Thuộc: [Spec tổng](../index.md) · S6. Chốt phạm vi: [wip](../../../wip/2026-10-12-s6-plan-monetization-play.md).
+Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm vi: [wip](../../../wip/2026-10-12-s6-plan-monetization-play.md).
 
 ## Mục tiêu
 
@@ -33,7 +33,7 @@ Thuộc: [Spec tổng](../index.md) · S6. Chốt phạm vi: [wip](../../../wip/
 | 4 | Pro | RevenueCat + 3 gói trên Play Console · màn "Daynest Pro" trong Cài đặt (3 gói + khôi phục giao dịch) · có Pro thì ẩn banner |
 | 5 | Lên bản công khai | Khai "Có quảng cáo", Data safety (thêm advertising ID), quyền `AD_ID` · chính sách quyền riêng tư thêm phần quảng cáo + mua trong app · đủ 14 ngày → Apply for production |
 
-**Không làm ở S6:** iOS, quảng cáo toàn màn hình / khi mở app, dùng thử.
+**Không làm ở S7:** iOS, quảng cáo toàn màn hình / khi mở app, dùng thử.
 
 ## Rủi ro
 
