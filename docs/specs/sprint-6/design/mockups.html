@@ -829,7 +829,6 @@ const budgetDialog = (all) => `<div class="under">${expMonth(all ? 7800000 : 150
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
     <div style="margin-top:14px;font-size:15px;font-weight:700;color:var(--error)">Bỏ ngân sách</div>
   </div></div>`;
-const budgetToast = `<div class="under">${expMonth(7800000, { spent: 6400000 })}</div><div class="toast wrap"><span class="dot" style="background:var(--warning)"></span>Bạn đã dùng 82% ngân sách tháng 10.</div>`;
 
 // Form khoản chi có dòng "Lặp lại" (chỉ khi tạo mới)
 const expForm = ({ offline: off = false } = {}) => `<div class="content">${off ? offline : ''}
@@ -967,7 +966,6 @@ const groupsS6 = (st) => [
     ['9c. Chưa đặt', 'nút "Đặt ngân sách tháng" (viền xanh) → hộp 10 · Ngày, Tuần không hiện ngân sách', phoneT(expMonth(0))],
     ['10. Hộp Ngân sách — mọi tháng', 'công tắc "Dùng cho mọi tháng" bật (mặc định) → ngân sách chung · "Bỏ ngân sách" chỉ hiện khi đã đặt', phoneT(budgetDialog(true))],
     ['10b. Hộp Ngân sách — chỉ tháng này', 'tắt công tắc → ngân sách riêng tháng 10 (vd tháng Tết) · thanh ở màn 9 ghi "ngân sách riêng" · các tháng khác vẫn dùng ngân sách chung', phoneT(budgetDialog(false))],
-    ['11. Cảnh báo ngân sách', 'Lưu khoản chi làm tổng tháng vượt 80% lần đầu → toast có chấm warning · vượt 100% lần đầu: "Bạn đã vượt ngân sách tháng 10: 250.000 ₫."', phoneT(budgetToast)],
     ['12. Form — Lặp lại', 'dòng "Lặp lại" (viền xanh) chỉ khi tạo mới', phoneT(expForm())],
     ['12b. Chọn kiểu lặp', 'Hằng tuần theo thứ của ngày đã chọn · Hằng tháng theo ngày (29–31 mà tháng thiếu → ngày cuối tháng)', phoneT(repeatPick)],
     ['13. Màn Nhóm chi tiêu', 'nút Nhóm ở đầu Chi tiêu (có từ S4) · S6 thêm dòng đầu "Khoản chi lặp lại ›" (viền xanh) → màn 13a', phoneT(catsScreen)],

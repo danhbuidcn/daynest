@@ -20,13 +20,13 @@ Thuộc: [Spec tổng](../index.md) · S6. Chốt phạm vi: [wip](../../../wip/
 | 3 | Lỗi API, server, mạng | Thời gian chờ tối đa · tự tải lại khi có mạng, mở lại app · banner mất mạng chung · lỗi trên tab Lịch · thông báo lỗi rõ ([chi tiết](#3-lỗi-api-server-mạng)) |
 | 4 | Rung nhẹ, khung xương | ([chi tiết](#4-rung-nhẹ-khung-xương)) |
 | 5 | Hoàn tác sau khi xoá | Event, todo, khoản chi ([chi tiết](#5-hoàn-tác-sau-khi-xoá)) |
-| 6 | Ngân sách tháng | Dùng cho mọi tháng hoặc riêng 1 tháng · thanh tiến độ ở Chi tiêu › Tháng · báo khi sắp vượt ([chi tiết](#6-ngân-sách-tháng)) |
+| 6 | Ngân sách tháng | Dùng cho mọi tháng hoặc riêng 1 tháng · thanh tiến độ ở Chi tiêu › Tháng ([chi tiết](#6-ngân-sách-tháng)) |
 | 7 | Khoản chi lặp lại | Hằng tuần / hằng tháng · app tự ghi khoản chi tới hạn ([chi tiết](#7-khoản-chi-lặp-lại)) |
 | 8 | Giao diện | Chủ đề màu (cả chế độ tối, tự chọn màu chủ đạo) · nền (cả màu tự chọn) · font + cỡ chữ · đổi xong áp dụng ngay ([chi tiết](#8-giao-diện)) |
 | 9 | Lịch Tháng rộng hơn | Ô ngày cao hơn (tới 5 thanh event) · cuộn dọc · cuộn xuống thu gọn đầu lịch ([chi tiết](#9-lịch-tháng-rộng-hơn)) |
 | 10 | Chi tiêu theo nhóm | Mọi chế độ chỉ hiện danh sách nhóm · bấm nhóm → pop-up các khoản chi của nhóm ([chi tiết](#10-chi-tiêu-theo-nhóm)) |
 
-**Không làm ở S6:** ghi khi mất mạng (hàng chờ), widget, sticker, sửa riêng từng token màu (chỉ tự chọn màu chủ đạo), lưu nhiều chủ đề tự tạo, font tải từ mạng, ngân sách theo nhóm / theo tuần, thông báo đẩy khi vượt ngân sách, khoản thu, khoản chi lặp hằng năm / có ngày kết thúc, tìm kiếm event / todo / khoản chi (bạn bỏ 2026-10-14: màn Lịch đã đủ nhiều thứ; note vẫn có tìm kiếm riêng), công tắc tắt rung.
+**Không làm ở S6:** ghi khi mất mạng (hàng chờ), widget, sticker, sửa riêng từng token màu (chỉ tự chọn màu chủ đạo), lưu nhiều chủ đề tự tạo, font tải từ mạng, ngân sách theo nhóm / theo tuần, thông báo (toast, đẩy) khi sắp vượt / vượt ngân sách — thanh tiến độ đã đủ, khoản thu, khoản chi lặp hằng năm / có ngày kết thúc, tìm kiếm event / todo / khoản chi (bạn bỏ 2026-10-14: màn Lịch đã đủ nhiều thứ; note vẫn có tìm kiếm riêng), công tắc tắt rung.
 
 ## 1. Lưu nhanh
 
@@ -119,10 +119,6 @@ Giống Gmail: xoá xong có 4 s để Hoàn tác.
   - Hàm "ngân sách của tháng" là hàm thuần, có test.
 - Chế độ Ngày, Tuần: không hiện ngân sách.
 - Dòng dưới thanh: trái "71% ngân sách 7.800.000 ₫" (ngân sách riêng: "71% ngân sách riêng 7.800.000 ₫") · phải "Còn 2.320.000 ₫" (vượt: "Vượt …" chữ `error`) · chưa đặt: nút "Đặt ngân sách tháng" (nền `primarySoft`) trong thẻ Tổng chi · "Bỏ ngân sách" là chữ `error` dưới 2 nút Huỷ / Lưu.
-- **Báo khi sắp vượt:** Lưu khoản chi làm tổng tháng của khoản đó vượt ngưỡng → toast cảnh báo (không thông báo đẩy):
-  - Lần đầu ≥ 80%: "Bạn đã dùng 82% ngân sách tháng 10."
-  - Lần đầu > 100%: "Bạn đã vượt ngân sách tháng 10: 250.000 ₫."
-  - "Lần đầu" = trước khi lưu dưới ngưỡng, sau khi lưu trên ngưỡng · tính từ tổng tháng trên máy · hàm thuần, có test.
 
 ## 7. Khoản chi lặp lại
 
@@ -221,7 +217,7 @@ Hộp Ngân sách tháng: ô số tiền · công tắc "Dùng cho mọi tháng"
 Màn Nhóm chi tiêu: dòng đầu "Khoản chi lặp lại ›"
 Form khoản chi (tạo mới): thêm dòng "Lặp lại"
 Màn Khoản chi lặp lại: danh sách quy tắc → form sửa quy tắc (Xoá)
-Toast: "Đã xoá · Hoàn tác" · cảnh báo ngân sách · lỗi theo loại
+Toast: "Đã xoá · Hoàn tác" · lỗi theo loại
 Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · Chủ đề màu (8 + Theo hệ thống + Tự chọn → hộp chọn màu + Sáng / Tối) · Nền (Trơn / Màu khác / chuyển màu / Ảnh của bạn + độ mờ) · Font (4) · Cỡ chữ (Nhỏ / Vừa / Lớn)
 ```
 
@@ -230,7 +226,7 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 ## Thiết kế
 
 - [DB](design/db.md): cột `monthly_budget` trong `user_settings`, bảng `expense_month_budgets`, bảng `expense_recurrences`, cột `recurrence_id` trong `expenses`, hàm ghi khoản chi tới hạn, cột giao diện trong `user_settings`, test tải.
-- [Mockup S6](design/mockups.html) — 33 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này / cảnh báo), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59 · nút ở đầu trang đổi bộ màu / font cho mọi màn.
+- [Mockup S6](design/mockups.html) — 32 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59 · nút ở đầu trang đổi bộ màu / font cho mọi màn.
 
 ## Xong khi (DoD)
 
@@ -240,12 +236,12 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 - [ ] Giả lập server chậm / sai địa chỉ Supabase: sau ≤ 15 s hiện "Máy chủ đang gặp sự cố…", không treo · tab Lịch chưa có dữ liệu → thẻ lỗi + Thử lại.
 - [ ] Rung nhẹ, khung xương thấy trên máy thật.
 - [ ] Hoàn tác: xoá event (cả event đồng bộ Google), todo, khoản chi → Hoàn tác → còn nguyên, Google không bị xoá · không Hoàn tác → xoá thật sau 4 s · ra nền trong 4 s → vẫn xoá.
-- [ ] Ngân sách: đặt / sửa / bỏ chung và riêng 1 tháng (tháng riêng ghi đè, tháng khác dùng chung) · thanh đúng màu theo % · toast 80% và 100% đúng 1 lần mỗi lần vượt ngưỡng · 2 máy thấy cùng ngân sách.
+- [ ] Ngân sách: đặt / sửa / bỏ chung và riêng 1 tháng (tháng riêng ghi đè, tháng khác dùng chung) · thanh đúng màu theo % · 2 máy thấy cùng ngân sách.
 - [ ] Khoản chi lặp: tạo hằng tuần / hằng tháng (cả ngày 31) · tự ghi khi mở tab, ghi bù kỳ đã qua · 2 máy cùng mở không ghi trùng · sửa / xoá quy tắc không đổi khoản chi đã ghi · xoá khoản chi tự ghi không bị ghi lại.
 - [ ] Giao diện: đổi bộ màu (cả Tối, Theo hệ thống, Tự chọn với màu rất nhạt / rất đậm vẫn đọc được chữ), nền màu tự chọn, nền (chuyển màu, ảnh + độ mờ), font, cỡ chữ → áp dụng ngay mọi màn, không màn nào còn màu / font cũ · mở lại app đúng giao diện, không nháy · máy thứ 2 nhận cùng giao diện (trừ ảnh).
 - [ ] Chi tiêu: mọi chế độ chỉ danh sách nhóm · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
 - [ ] Lịch Tháng: ô 5 thanh + "+N" · cuộn dọc mượt trên máy thật · cuộn xuống thu gọn đầu, cuộn lên hiện lại · vuốt ngang đổi tháng vẫn đúng · mở Lịch cuộn tới tuần hôm nay.
-- [ ] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngưỡng ngân sách, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
+- [ ] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
 - [ ] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
 - [ ] `npm run typecheck && npm run lint && npm test` qua.
 - [ ] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
@@ -262,3 +258,4 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 8. **Tự chọn màu chủ đạo + nền** (bạn chốt 2026-10-14): 1 màu chủ đạo bất kỳ + Sáng / Tối, app tự tính các màu còn lại · nền thêm "Màu khác" · không sửa riêng từng màu.
 9. **Lịch Tháng rộng hơn** (bạn chốt 2026-10-14): ô ngày cao hơn (5 thanh) + cuộn dọc + cuộn xuống thu gọn đầu lịch.
 10. **Chi tiêu theo nhóm** (bạn chốt 2026-10-14): mọi chế độ chỉ danh sách nhóm, bấm nhóm → pop-up khoản chi · giữ biểu đồ ở Tuần, Tháng.
+11. **Không báo khi sắp vượt ngân sách** (bạn chốt 2026-10-14): người dùng tự thấy trên thanh tiến độ.
