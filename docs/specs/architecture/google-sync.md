@@ -54,9 +54,9 @@ sequenceDiagram
   end
 ```
 
-- Token Google chỉ ở trên máy (SDK tự làm mới), không lưu DB. `401` → thử lại 1 lần với token mới → vẫn lỗi: "Cần kết nối lại Google".
+- Token Google chỉ ở trên máy (SDK tự làm mới), không lưu DB. `401` → thử lại 1 lần với token mới → vẫn lỗi: "Cần kết nối lại Google". Mỗi lượt gọi Google chờ tối đa 15 s.
 - Không gọi riêng `session_active()`: máy đã bị đá ra thì RLS từ chối mọi lệnh ghi DB.
 - Không đẩy lên Google: event lặp âm lịch, event chỉ xem (`google_readonly` — kiểu lặp của Google mà Daynest không biểu diễn được, lưu từng lần trong năm).
-- Xoá event đã liên kết: ẩn trước (`deleted_at`), xoá hẳn khi Google xác nhận.
+- Xoá event: Hoàn tác 4 s trước ([data-writes.md](data-writes.md#xoá-hoàn-tác-4-s)) · hết 4 s → event đã liên kết ẩn (`deleted_at`), xoá hẳn khi Google xác nhận.
 - Năm mới (`synced_year` khác năm nay) → kéo lại cả năm.
 - Tắt đồng bộ → giữ nguyên dữ liệu 2 bên, giữ `google_event_id` để bật lại ghép đúng, không trùng.

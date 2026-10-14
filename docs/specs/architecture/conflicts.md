@@ -17,7 +17,8 @@ flowchart LR
 
 - A sửa/xoá dòng của B → 0 dòng bị ảnh hưởng (như không tồn tại).
 - A không gắn được note vào danh mục của B, không gắn ngoại lệ vào event của B (`with check`).
-- Test: `supabase/tests/rls_s1.sql`, `rls_s2.sql`, `rls_s4.sql`, `rls_s4_colour.sql`, `rls_s5.sql` (chạy `supabase/db test`).
+- A không gắn khoản chi / quy tắc lặp vào nhóm của B; A gọi `generate_due_expenses` chỉ ghi khoản chi của A.
+- Test: `supabase/tests/rls_s*.sql` — mỗi sprint có bảng mới thêm 1 file (chạy `supabase/db test`).
 
 ## Cùng tài khoản, 2 máy sửa cùng 1 event / note
 
@@ -62,3 +63,7 @@ sequenceDiagram
 | 2 máy cùng bật đồng bộ Google | Xem [Đồng bộ Google](google-sync.md): id cố định + upsert theo `google_event_id` |
 | Sửa ở Daynest và trên Google giữa 2 lần đồng bộ | Bản sửa sau cùng thắng (so `updated` Google với `updated_at`) |
 | Bấm Lưu 2 lần / mạng chập chờn | `id` app sinh → không tạo trùng |
+| 2 máy cùng tự ghi khoản chi lặp | `generate_due_expenses` khoá dòng quy tắc (`for update`) → máy sau thấy `next_on` đã dời, không ghi trùng ([expenses.md](expenses.md)) |
+| 2 máy cùng sửa 1 quy tắc khoản chi lặp | Khoá lạc quan theo `updated_at`, như khoản chi |
+| 2 máy cùng đặt ngân sách / đổi giao diện | Ghi đè theo dòng (`user_settings`, upsert `expense_month_budgets`) → bản lưu sau cùng thắng |
+| Xoá rồi bấm Hoàn tác trong 4 s | Chưa gửi gì tới server → máy kia không thấy thay đổi |

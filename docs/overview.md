@@ -2,7 +2,7 @@
 
 Thuộc: [Tài liệu Daynest](index.md). Bản có sơ đồ: [overview.html](overview.html) (mở bằng trình duyệt).
 
-Kiến trúc, cấu trúc code và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14.
+Kiến trúc, cấu trúc code và 5 luồng chính.
 
 ## 1. Daynest là gì
 
@@ -107,9 +107,9 @@ Màn Lịch đang xem tháng 10
      ├─ queryKey = ['events', '2026-10-01', '2026-10-31']
      ├─ Có cache, chưa quá 2 phút → dùng luôn, không gọi mạng
      ├─ Chưa có → tạm hiện khoảng rộng hơn đã tải / dữ liệu cũ (lưới không nháy rỗng)
-     ├─ queryFn:
-     │    fetchEvents: span_start ≤ to và span_end ≥ from (nới ±1 ngày vì lệch UTC)
-     │    fetchExceptions: event_exceptions của các event đó
+     ├─ queryFn: 1 lượt gọi, select lồng bảng events → event_exceptions
+     │    lọc span_start ≤ to và span_end ≥ from (nới ±1 ngày vì lệch UTC)
+     │    lỗi → tự thử lại 2 lần (chờ 1 s, rồi 3 s) · mỗi lượt chờ tối đa 15 s
      └─ useMemo → occurrencesForEvents(events, exceptions, range, timeZone)
            = trải quy tắc lặp (dương/âm) → bỏ/sửa theo ngoại lệ → danh sách "lần xảy ra"
  └─ usePrefetchEvents: tải trước tháng trước/sau → vuốt không chờ
@@ -119,16 +119,20 @@ Cache 2 tầng ([queryClient.ts](../app/src/features/cache/queryClient.ts)):
 
 | Tầng | Giữ bao lâu | Ghi chú |
 | --- | --- | --- |
-| RAM (TanStack Query) | Coi là mới trong 2 phút | Lưu xong → `invalidateQueries` tải lại ngay |
+| RAM (TanStack Query) | Coi là mới trong 2 phút | Lưu xong → đặt dòng đã lưu thẳng vào cache, không tải lại · có mạng lại → tải lại phần đang xem · mở lại app → tải lại nếu cũ hơn 2 phút |
 | AsyncStorage | 7 ngày | Xoá khi lên version mới, khi đăng xuất (user sau không thấy dữ liệu user trước) |
 
-Todo ([features/todos/](../app/src/features/todos/)) và chu kỳ ([features/cycle/](../app/src/features/cycle/)) dùng cùng mẫu.
+Tải lỗi: đã có dữ liệu trên máy → giữ nguyên + dòng "Chưa cập nhật được · Thử lại" · chưa có → thẻ lỗi giữa màn + nút "Thử lại".
+
+Todo ([features/todos/](../app/src/features/todos/)) dùng cùng mẫu (`todos` → `todo_exceptions`). Chu kỳ ([features/cycle/](../app/src/features/cycle/)): tải ngày có kinh 12 tháng gần nhất.
 
 ## 6. Flow 3: ghi dữ liệu (không trùng, không mất)
 
+Chi tiết: [data-writes.md](specs/architecture/data-writes.md).
+
 ```text
 Mở form → app sinh id = uuid NGAY LÚC MỞ
-Bấm Lưu
+Bấm Lưu   (mất mạng → nút Lưu bị khoá, banner ở đầu màn)
  ├─ Tạo mới: upsert({id, …}, onConflict 'id')
  │     → mạng chập chờn, gửi lại, bấm 2 lần vẫn chỉ 1 dòng   (idempotency)
  ├─ Sửa: update … WHERE id = :id AND updated_at = :giá_trị_đã_đọc
@@ -136,9 +140,16 @@ Bấm Lưu
  │       → hộp "Đã thay đổi ở thiết bị khác": Tải bản mới / Ghi đè   (khoá lạc quan)
  ├─ Lỗi 42501 → ForbiddenError → kiểm tra lại phiên (có thể đã bị đá ra)
  └─ Thành công (onSuccess):
-       1. googleSync.afterEventSaved(id)  → đẩy lên Google (nếu bật đồng bộ)
-       2. resyncReminders()               → đặt lại toàn bộ thông báo
-       3. invalidateQueries(['events'])   → lịch tự tải lại
+       1. Đặt dòng đã lưu thẳng vào cache → đóng form, KHÔNG tải lại
+       2. Đẩy lên Google (nếu bật đồng bộ)
+       3. Đặt lại toàn bộ thông báo
+   Lỗi khác (hết 15 s, 5xx…) → toast theo loại, giữ form · ghi không tự thử lại
+
+Bấm Xoá (event, todo, khoản chi)
+ └─ Biến mất ngay + toast "Đã xoá · Hoàn tác" (4 s)
+     ├─ Hoàn tác → hiện lại, không gửi gì
+     ├─ Hết 4 s / app ra nền → gửi lệnh xoá (cả Google)
+     └─ Gửi lỗi → hiện lại + toast lỗi
 ```
 
 2 bẫy cần nhớ:
@@ -186,14 +197,14 @@ Bảng chính ([supabase/migrations/](../supabase/migrations/)):
 
 | Nhóm | Bảng |
 | --- | --- |
-| Tài khoản | `profiles`, `user_settings`, `user_devices`, `app_config` |
+| Tài khoản | `profiles`, `user_settings` (cả ngân sách chung, giao diện), `user_devices`, `app_config` |
 | Lịch | `events`, `event_exceptions`, `google_sync_state`, `todos`, `todo_exceptions`, `period_days` |
 | Ghi chú | `notes`, `note_categories` |
-| Chi tiêu | `expenses`, `expense_categories` |
+| Chi tiêu | `expenses`, `expense_categories`, `expense_month_budgets` (ngân sách riêng 1 tháng), `expense_recurrences` (khoản chi lặp) |
 | Báo lỗi | `bug_reports` (+ bucket Storage + Edge Function gửi mail) |
 
 - Mọi bảng: `id`, `user_id`, `created_at`, `updated_at`, RLS, index bắt đầu bằng `user_id`.
-- Logic SQL: `register_device` / `session_active` / `touch_device`, `expense_monthly_totals`, trigger tạo dữ liệu mặc định cho user mới (`handle_new_user*`), `check_bug_report_limit` (≤ 5 báo lỗi/ngày).
+- Logic SQL: `register_device` / `session_active` / `touch_device`, `expense_monthly_totals`, `generate_due_expenses` (ghi khoản chi lặp tới hạn), trigger tạo dữ liệu mặc định cho user mới (`handle_new_user*`), `check_bug_report_limit` (≤ 5 báo lỗi/ngày).
 
 ## 10. Chạy và phát triển
 

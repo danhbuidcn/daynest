@@ -128,7 +128,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
 <header>
   <div>
     <h1>Tổng quan hệ thống Daynest</h1>
-    <p class="lead">Kiến trúc, cấu trúc code và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14.</p>
+    <p class="lead">Kiến trúc, cấu trúc code và 5 luồng chính.</p>
   </div>
   <button id="theme" type="button">Đổi sáng/tối</button>
 </header>
@@ -336,8 +336,8 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
       <path class="e" d="M410,56 H448"/>
       <text class="l" x="429" y="48" text-anchor="middle">Không</text>
       <rect class="b" x="450" y="30" width="290" height="52" rx="10"/>
-      <text class="t" x="595" y="52">fetchEvents + fetchExceptions</text>
-      <text class="s" x="595" y="71">lọc theo span_start / span_end (±1 ngày)</text>
+      <text class="t" x="595" y="52">Tải 1 lượt: events + ngoại lệ</text>
+      <text class="s" x="595" y="71">select lồng bảng · lọc span (±1 ngày)</text>
 
       <path class="e" d="M300,92 V138"/>
       <text class="l" x="310" y="120">Có</text>
@@ -363,13 +363,15 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
   <ul>
     <li>Đang tải khoảng mới → tạm hiện khoảng rộng hơn đã tải, hoặc dữ liệu cũ. Lưới không nháy rỗng.</li>
     <li>Nới ±1 ngày vì <code>span_start/span_end</code> của event có giờ lưu theo ngày UTC.</li>
+    <li>Mỗi lượt chờ tối đa 15 s · lỗi → tự thử lại 2 lần (chờ 1 s, rồi 3 s).</li>
+    <li>Tải lỗi: đã có dữ liệu → giữ nguyên + dòng "Chưa cập nhật được · Thử lại" · chưa có → thẻ lỗi giữa màn + "Thử lại".</li>
   </ul>
   <div class="tbl"><table>
     <tr><th>Tầng cache</th><th>Giữ bao lâu</th><th>Ghi chú</th></tr>
-    <tr><td>RAM (TanStack Query)</td><td>Coi là mới trong 2 phút</td><td>Lưu xong → <code>invalidateQueries</code> tải lại ngay</td></tr>
+    <tr><td>RAM (TanStack Query)</td><td>Coi là mới trong 2 phút</td><td>Lưu xong → đặt dòng đã lưu thẳng vào cache, không tải lại · có mạng lại → tải lại phần đang xem · mở lại app → tải lại nếu cũ hơn 2 phút</td></tr>
     <tr><td>AsyncStorage</td><td>7 ngày</td><td>Xoá khi lên version mới, khi đăng xuất (user sau không thấy dữ liệu user trước)</td></tr>
   </table></div>
-  <p>Todo (<code>features/todos/</code>) và chu kỳ (<code>features/cycle/</code>) dùng cùng mẫu.</p>
+  <p>Todo (<code>features/todos/</code>) dùng cùng mẫu (<code>todos</code> → <code>todo_exceptions</code>). Chu kỳ (<code>features/cycle/</code>): tải ngày có kinh 12 tháng gần nhất.</p>
 </section>
 
 <section id="s6">
@@ -410,9 +412,9 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
       <path class="e" d="M150,204 V290 H258"/>
       <rect class="b ac" x="260" y="262" width="220" height="122" rx="10"/>
       <text class="t" x="370" y="288">Thành công (onSuccess)</text>
-      <text class="s" x="370" y="316">1. Đẩy lên Google (nếu bật)</text>
-      <text class="s" x="370" y="340">2. Đặt lại toàn bộ nhắc</text>
-      <text class="s" x="370" y="364">3. Tải lại lịch (invalidate)</text>
+      <text class="s" x="370" y="316">1. Đặt dòng vào cache, đóng form</text>
+      <text class="s" x="370" y="340">2. Đẩy lên Google (nếu bật)</text>
+      <text class="s" x="370" y="364">3. Đặt lại toàn bộ nhắc</text>
 
       <path class="e ds" d="M60,204 V358"/>
       <text class="l" x="70" y="290">42501</text>
@@ -425,7 +427,33 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
     <li><b>Không trùng (idempotency):</b> id sinh lúc mở form, nên mạng chập chờn, gửi lại, bấm 2 lần vẫn chỉ 1 dòng.</li>
     <li><b>Khoá lạc quan:</b> 0 dòng được sửa nghĩa là máy khác đã sửa trước → hộp "Đã thay đổi ở thiết bị khác".</li>
     <li>Lỗi <code>42501</code> có ở cả tạo mới và sửa: máy có thể đã bị đá ra.</li>
+    <li><b>Không tải lại:</b> server trả dòng đã lưu → đặt thẳng vào mọi khoảng ngày đang có trong cache (hàm thuần, có test).</li>
+    <li>Mất mạng → banner ở đầu màn, nút Lưu bị khoá. Lỗi khác (hết 15 s, 5xx) → toast theo loại, giữ form · ghi không tự thử lại.</li>
   </ul>
+  <p>Xoá event, todo, khoản chi: không hỏi lại, có <b>Hoàn tác 4 s</b> (như Gmail).</p>
+  <figure>
+    <svg viewBox="0 0 760 152" role="img" aria-label="Xoá có Hoàn tác 4 giây">
+      <rect class="b ac" x="20" y="40" width="130" height="52" rx="10"/>
+      <text class="t" x="85" y="71">Bấm Xoá</text>
+      <path class="e" d="M150,66 H188"/>
+      <rect class="b" x="190" y="40" width="190" height="52" rx="10"/>
+      <text class="t" x="285" y="62">Biến mất ngay</text>
+      <text class="s" x="285" y="81">toast "Đã xoá · Hoàn tác"</text>
+      <path class="e" d="M380,56 H400 V36 H418"/>
+      <path class="e" d="M380,76 H400 V116 H418"/>
+      <rect class="b" x="420" y="14" width="150" height="44" rx="10"/>
+      <text class="t" x="495" y="33">Hoàn tác</text>
+      <text class="s" x="495" y="50">hiện lại, không gửi gì</text>
+      <rect class="b" x="420" y="94" width="150" height="44" rx="10"/>
+      <text class="t" x="495" y="113">Hết 4 s / ra nền</text>
+      <text class="s" x="495" y="130">gửi xoá (cả Google)</text>
+      <path class="e ds" d="M570,116 H598"/>
+      <text class="l" x="584" y="108" text-anchor="middle">lỗi</text>
+      <rect class="b er" x="600" y="94" width="140" height="44" rx="10"/>
+      <text class="t" x="670" y="113">Hiện lại</text>
+      <text class="s" x="670" y="130">+ toast lỗi</text>
+    </svg>
+  </figure>
   <p class="note">2 bẫy cần nhớ:<br>
   • Giữ <code>updated_at</code> nguyên chuỗi API trả về. Đổi qua <code>Date</code> mất micro giây → so sánh sai → báo xung đột giả.<br>
   • Supabase client gửi <code>Cache-Control: no-cache</code>: lớp HTTP của Android từng trả dữ liệu cũ (<code>lib/supabase.ts</code>).</p>
@@ -525,15 +553,15 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
   <h2><span class="n">9.</span>Database</h2>
   <div class="tbl"><table>
     <tr><th>Nhóm</th><th>Bảng</th></tr>
-    <tr><td>Tài khoản</td><td><code>profiles</code>, <code>user_settings</code>, <code>user_devices</code>, <code>app_config</code></td></tr>
+    <tr><td>Tài khoản</td><td><code>profiles</code>, <code>user_settings</code> (cả ngân sách chung, giao diện), <code>user_devices</code>, <code>app_config</code></td></tr>
     <tr><td>Lịch</td><td><code>events</code>, <code>event_exceptions</code>, <code>google_sync_state</code>, <code>todos</code>, <code>todo_exceptions</code>, <code>period_days</code></td></tr>
     <tr><td>Ghi chú</td><td><code>notes</code>, <code>note_categories</code></td></tr>
-    <tr><td>Chi tiêu</td><td><code>expenses</code>, <code>expense_categories</code></td></tr>
+    <tr><td>Chi tiêu</td><td><code>expenses</code>, <code>expense_categories</code>, <code>expense_month_budgets</code> (ngân sách riêng 1 tháng), <code>expense_recurrences</code> (khoản chi lặp)</td></tr>
     <tr><td>Báo lỗi</td><td><code>bug_reports</code> (+ bucket Storage + Edge Function gửi mail)</td></tr>
   </table></div>
   <ul>
     <li>Mọi bảng: <code>id</code>, <code>user_id</code>, <code>created_at</code>, <code>updated_at</code>, RLS, index bắt đầu bằng <code>user_id</code>.</li>
-    <li>Logic SQL: <code>register_device</code> / <code>session_active</code> / <code>touch_device</code>, <code>expense_monthly_totals</code>, trigger tạo dữ liệu mặc định cho user mới (<code>handle_new_user*</code>), <code>check_bug_report_limit</code> (≤ 5 báo lỗi/ngày).</li>
+    <li>Logic SQL: <code>register_device</code> / <code>session_active</code> / <code>touch_device</code>, <code>expense_monthly_totals</code>, <code>generate_due_expenses</code> (ghi khoản chi lặp tới hạn), trigger tạo dữ liệu mặc định cho user mới (<code>handle_new_user*</code>), <code>check_bug_report_limit</code> (≤ 5 báo lỗi/ngày).</li>
   </ul>
 </section>
 

@@ -2,7 +2,7 @@
 
 Thuộc: [Kiến trúc](index.md).
 
-Chi tiết cột: [S1 db.md](../sprint-1/design/db.md) · [S2 db.md](../sprint-2/design/db.md) · [S4 db.md](../sprint-4/design/db.md) · [S5 db.md](../sprint-5/design/db.md). Sơ đồ chỉ ghi cột chính.
+Chi tiết cột: [S1 db.md](../sprint-1/design/db.md) · [S2 db.md](../sprint-2/design/db.md) · [S4 db.md](../sprint-4/design/db.md) · [S5 db.md](../sprint-5/design/db.md) · [S6 db.md](../sprint-6/design/db.md). Sơ đồ chỉ ghi cột chính.
 
 ```mermaid
 erDiagram
@@ -20,6 +20,9 @@ erDiagram
   AUTH_USERS ||--o{ PERIOD_DAYS : "ngày có kinh"
   AUTH_USERS ||--o{ EXPENSE_CATEGORIES : "3 nhóm có sẵn + tự tạo"
   EXPENSE_CATEGORIES ||--o{ EXPENSES : "cascade khi xoá nhóm"
+  AUTH_USERS ||--o{ EXPENSE_MONTH_BUDGETS : "ngân sách riêng 1 tháng"
+  EXPENSE_CATEGORIES ||--o{ EXPENSE_RECURRENCES : "cascade khi xoá nhóm"
+  EXPENSE_RECURRENCES |o--o{ EXPENSES : "set null khi xoá quy tắc"
   AUTH_USERS ||--o{ BUG_REPORTS : "≤ 5 / 24 giờ"
 
   PROFILES {
@@ -38,6 +41,12 @@ erDiagram
     smallint cycle_length
     smallint period_length
     time period_reminder_time
+    bigint monthly_budget "ngân sách chung, null = chưa đặt"
+    text theme "8 bộ, system, custom"
+    text theme_primary
+    text background "trừ ảnh: ảnh chỉ trên máy"
+    text font
+    real font_scale
   }
   USER_DEVICES {
     uuid user_id PK
@@ -117,9 +126,24 @@ erDiagram
   EXPENSES {
     uuid id PK
     uuid category_id FK
+    uuid recurrence_id FK "null = khoản chi thường"
     bigint amount
     date spent_on
     text note
+  }
+  EXPENSE_MONTH_BUDGETS {
+    uuid user_id PK
+    date month PK "ngày 1 của tháng"
+    bigint amount "null = tháng này không có ngân sách"
+  }
+  EXPENSE_RECURRENCES {
+    uuid id PK "app tự sinh"
+    uuid category_id FK
+    bigint amount
+    text frequency "weekly, monthly"
+    smallint anchor_day "thứ 1-7 hoặc ngày 1-31"
+    date next_on "kỳ tới chưa ghi"
+    timestamptz updated_at "khoá lạc quan"
   }
   BUG_REPORTS {
     uuid id PK "app tự sinh"
@@ -148,6 +172,9 @@ Nguyên tắc lưu:
 | Ghi chú xoá mềm (`deleted_at`) | Thùng rác khôi phục được |
 | Todo lặp: trạng thái xong lưu theo từng lần (`todo_exceptions.kind = status`) | Tick 1 lần không ảnh hưởng các lần khác; quy tắc lặp vẫn 1 dòng |
 | Khoản chi xoá hẳn, không `deleted_at`; tổng tháng tính ở DB (`expense_monthly_totals`) | Đơn giản; biểu đồ không phải tải từng khoản |
+| Ngân sách của tháng = dòng `expense_month_budgets` của tháng đó (kể cả `amount` null), không thì `monthly_budget` | Riêng 1 tháng ghi đè ngân sách chung |
+| Khoản chi lặp = 1 dòng quy tắc + hàm DB `generate_due_expenses` ghi khoản chi tới hạn | Khoản chi tự ghi là dòng thường, sửa/xoá được; khoá dòng → 2 máy không ghi trùng ([expenses.md](expenses.md)) |
+| Giao diện lưu theo tài khoản (cột `user_settings`), ảnh nền chỉ trên máy | 2 máy giống nhau; không tốn Storage cho ảnh |
 | Nhóm chi có sẵn (`key` khác null) không sửa/xoá được — chặn bằng RLS | User mới luôn có 3 nhóm (trigger) |
 | Báo lỗi: chỉ insert, ≤ 5 / 24 giờ (trigger khoá theo user) | Chặn spam email; user không đọc lại báo cáo |
 | `app_config`, `developer_emails`: không theo user | `app_config` ai cũng đọc; `developer_emails` không policy → chỉ service role |

@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-14 | Tài liệu kiến trúc + tổng quan theo spec chốt mới nhất (tới S6) | ✅ xong | [2026-10-14-architecture-docs-latest-spec.md](2026-10-14-architecture-docs-latest-spec.md) |
 | 2026-10-14 | S6 bước 1: DB (migration + test RLS) | ⏸ chờ duyệt (làm 2026-10-15) | [2026-10-14-s6-step-1-db.md](2026-10-14-s6-step-1-db.md) |
 | 2026-10-14 | S6: lộ trình code (nhanh, bền, tính năng, giao diện) | ⏸ dừng trước bước 1 (làm 2026-10-15) | [2026-10-14-s6-code-plan.md](2026-10-14-s6-code-plan.md) |
 | 2026-10-14 | S6: mockup (nhanh, bền, tính năng, giao diện) | ✅ xong (tiếp: lộ trình code S6) | [2026-10-14-s6-mockups.md](2026-10-14-s6-mockups.md) |

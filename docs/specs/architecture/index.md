@@ -2,7 +2,7 @@
 
 Thuộc: [Spec tổng](../index.md) §3. Biểu đồ Mermaid; chi tiết nằm ở spec gốc (link ở mỗi file).
 
-Trạng thái: theo code v5.0.1 (hết S5), cập nhật 2026-10-14. Bản tóm tắt 1 trang có sơ đồ: [overview.md](../../overview.md).
+Bản tóm tắt 1 trang có sơ đồ: [overview.md](../../overview.md).
 
 ## Các file
 
@@ -14,6 +14,7 @@ Trạng thái: theo code v5.0.1 (hết S5), cập nhật 2026-10-14. Bản tóm 
 | [calendar.md](calendar.md) | Đọc lịch: event, todo, kỳ kinh; trải lần lặp |
 | [data-writes.md](data-writes.md) | Ghi dữ liệu: không trùng, không mất |
 | [conflicts.md](conflicts.md) | Xung đột: 2 tài khoản, 2 máy cùng tài khoản |
+| [expenses.md](expenses.md) | Chi tiêu: ngân sách tháng, khoản chi lặp tự ghi |
 | [google-sync.md](google-sync.md) | Đồng bộ Google Calendar 2 chiều |
 | [reminders.md](reminders.md) | Nhắc nhở bằng thông báo trên máy |
 | [traffic.md](traffic.md) | Xử lý traffic, mục tiêu tải |
@@ -29,7 +30,7 @@ Không có server riêng. App gọi thẳng Supabase (dữ liệu) và Google (�
 flowchart LR
   subgraph Device["Điện thoại (Android / iOS)"]
     App["Expo app<br/>React Native + TypeScript"]
-    AS[("AsyncStorage<br/>phiên Supabase, device_id, ngôn ngữ<br/>cache dữ liệu 7 ngày")]
+    AS[("AsyncStorage + file<br/>phiên Supabase, device_id, ngôn ngữ<br/>cache dữ liệu 7 ngày · giao diện · ảnh nền")]
     Cache[("TanStack Query<br/>cache trong RAM")]
     Notif["Thông báo trên máy<br/>expo-notifications"]
     GSI["Google Sign-In SDK<br/>token Google"]
@@ -65,7 +66,7 @@ flowchart LR
 
 | Thành phần | Vai trò | Không làm |
 | --- | --- | --- |
-| Expo app | Toàn bộ UI + logic: trải event/todo lặp, âm lịch, dự đoán kỳ kinh, chọn mốc nhắc, đồng bộ Google | Không chạy nền khi app đóng (trừ thông báo đã đặt) |
+| Expo app | Toàn bộ UI + logic: trải event/todo lặp, âm lịch, dự đoán kỳ kinh, ngân sách tháng, chọn mốc nhắc, đồng bộ Google, cache (lưu xong đặt thẳng vào cache), phân loại lỗi, banner mất mạng | Không chạy nền khi app đóng (trừ thông báo đã đặt) |
 | Supabase Auth | Đổi `idToken` Google → phiên Supabase (JWT có `session_id`) | Không lưu token Google |
 | Postgres + RLS | Lưu dữ liệu, chặn truy cập chéo user, chặn máy đã bị đăng xuất | Không có logic nghiệp vụ ngoài vài hàm (`register_device`…) |
 | Storage + Edge Function | Giữ ảnh báo lỗi; gửi email báo lỗi qua Gmail SMTP cho nhà phát triển ([bug-report.md](bug-report.md)) | Không làm việc nghiệp vụ khác |
@@ -81,7 +82,7 @@ flowchart LR
   App -->|"rpc('register_device')"| PGR
   PGR --> RLS{"RLS"} --> Tables[("Bảng")]
   App -->|"functions.invoke"| EF["Edge Function<br/>send-bug-report"]
-  PGR --> Fn["Hàm SQL<br/>register_device · session_active · touch_device<br/>delete_note_categories · expense_monthly_totals"]
+  PGR --> Fn["Hàm SQL<br/>register_device · session_active · touch_device<br/>delete_note_categories · expense_monthly_totals<br/>generate_due_expenses"]
   Fn --> Tables
 ```
 
