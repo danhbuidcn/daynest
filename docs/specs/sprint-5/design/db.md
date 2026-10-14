@@ -114,3 +114,5 @@ Giống `event_exceptions` (bỏ `google_status`), `todo_id` thay `event_id`, **
 - Vòng lặp user ảo thêm: đọc danh sách todo (37 ngày) → tick 1 todo → đọc `period_days` 12 tháng.
 - Đạt: 0 lỗi, p95 < 1 s · `explain analyze` truy vấn danh sách todo dùng `todos_span_idx`.
 - Đo dung lượng thêm/user → cập nhật [§3 Mục tiêu tải](../../index.md#mục-tiêu-tải).
+- Kết quả (2026-10-14): 144.187 request, 0 lỗi, p50 138 ms, **p95 633 ms**, p99 1.142 ms, 475 req/s → **đạt**. Danh sách todo dùng `todos_span_idx` (Bitmap, 17 dòng); ngày có kinh dùng `period_days_user_id_day_key` (Index Only Scan, 60 dòng). p95 cao hơn S4 (325 ms) vì mỗi vòng có 15 request thay vì 10 và DB local nặng 2,96 GB (S4 1,76 GB).
+- Dung lượng đo (2026-10-14): `todos` 361 MB = 37 KB/user (60 dòng) · `todo_exceptions` 748 MB = 77 KB/user (300 dòng, ~260 byte/dòng cả index) · `period_days` 89 MB = 9 KB/user (60 dòng) → S5 thêm **~123 KB/user** · cả DB 2.959 MB ≈ 296 KB/user. Số này là user dùng nhiều (tick 300 lần lặp/năm); phần lớn là `todo_exceptions`, tăng theo số lần tick todo lặp.

@@ -1,4 +1,4 @@
--- EXPLAIN ANALYZE of the 6 main queries as load user #1234, through RLS (LOCAL ONLY, after seed.sql).
+-- EXPLAIN ANALYZE of the main queries as load user #1234, through RLS (LOCAL ONLY, after seed.sql).
 \set ON_ERROR_STOP on
 begin;
 set local role authenticated;
@@ -40,4 +40,13 @@ select date_trunc('month', e.spent_on)::date, sum(e.amount)::bigint
 from public.expenses e
 where e.user_id = (select auth.uid()) and e.spent_on between '2026-05-01' and '2026-10-31'
 group by 1 order by 1;
+
+\echo '--- 7. todo list (week of 2026-10-12, 30 days overdue + 7 upcoming)'
+explain (analyze, costs off, timing off, summary off)
+select id, title, all_day, starts_at, start_date, repeat, subtasks, done, done_subtasks, updated_at from public.todos
+where deleted_at is null and span_start <= '2026-10-26' and span_end >= '2026-09-11';
+
+\echo '--- 8. period days of the last 12 months'
+explain (analyze, costs off, timing off, summary off)
+select day from public.period_days where day >= '2025-10-01' order by day;
 rollback;

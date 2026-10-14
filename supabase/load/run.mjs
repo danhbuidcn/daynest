@@ -1,7 +1,8 @@
 // Load test (LOCAL ONLY): VUS virtual users for DURATION_S seconds against PostgREST, each loop
 // = month read (events + exceptions) → create event → edit it → first notes page → note search
-// → (S4) month of expenses → 6-month totals → create expense → edit it.
-// Requests mirror app/src/features/{events,notes,expenses}/api.ts.
+// → (S4) month of expenses → 6-month totals → create expense → edit it → (S5) todo list (37 days)
+// + its exceptions → tick one repeat → 12 months of period days.
+// Requests mirror app/src/features/{events,notes,expenses,todos,cycle}/api.ts.
 // Env: API_URL, ANON_KEY, JWT_SECRET (from `supabase status -o env`), VUS=100, DURATION_S=300.
 // Pass: 0 errors and overall p95 < 1000 ms (docs/specs/sprint-2/design/db.md § Kiểm tra tải).
 import { createHmac, randomUUID } from 'node:crypto';
@@ -19,6 +20,10 @@ const EXCEPTION_COLUMNS =
   'id,event_id,occurrence_date,kind,title,note,color,all_day,starts_at,ends_at,start_date,end_date,reminder_minutes';
 const NOTE_COLUMNS = 'id,category_id,title,body,checklist,pinned,deleted_at,updated_at';
 const EXPENSE_COLUMNS = 'id,category_id,amount,spent_on,note,updated_at';
+const TODO_COLUMNS =
+  'id,title,note,color,all_day,starts_at,ends_at,start_date,end_date,repeat,repeat_interval,repeat_until,lunar_month,lunar_day,reminder_minutes,subtasks,done,done_subtasks,updated_at';
+const TODO_EXCEPTION_COLUMNS =
+  'id,todo_id,occurrence_date,kind,title,note,color,all_day,starts_at,ends_at,start_date,end_date,reminder_minutes,subtasks,done,done_subtasks';
 
 const b64url = (s) => Buffer.from(s).toString('base64url');
 const hex12 = (n) => n.toString(16).padStart(12, '0');
@@ -145,6 +150,33 @@ async function iteration() {
       if (updated && updated.length !== 1) (errors['edit expense'] ??= []).push('optimistic lock matched 0 rows');
     }
   }
+
+  // Todo list of the week 2026-10-12: 30 days overdue + 7 upcoming, widened a day each side.
+  const todos = await call('todo list', token, `todos?select=${TODO_COLUMNS}&deleted_at=is.null&span_start=lte.2026-10-26&span_end=gte.2026-09-11`);
+  if (todos && todos.length < 10) (errors['todo list'] ??= []).push(`expected ≥ 10 todos, got ${todos.length}`);
+  if (todos?.length) {
+    await call('todo exceptions', token, `todo_exceptions?select=${TODO_EXCEPTION_COLUMNS}&todo_id=in.(${todos.map((t) => t.id).join(',')})`);
+    // Tick like setTodoStatus: update this repeat's exception, else add a 'status' row.
+    const todo = todos.find((t) => t.repeat === 'daily');
+    if (todo) {
+      const occurrence = `2026-10-${String(day).padStart(2, '0')}`;
+      const values = { done: true, done_subtasks: [todo.subtasks[0].id] };
+      const updated = await call('tick todo', token, `todo_exceptions?todo_id=eq.${todo.id}&occurrence_date=eq.${occurrence}&select=id`, {
+        method: 'PATCH',
+        prefer: 'return=representation',
+        body: values,
+      });
+      if (updated && updated.length === 0) {
+        await call('tick todo', token, 'todo_exceptions', {
+          method: 'POST',
+          body: { todo_id: todo.id, occurrence_date: occurrence, kind: 'status', ...values },
+        });
+      }
+    }
+  }
+
+  const periodDays = await call('period days', token, 'period_days?select=day&day=gte.2025-10-01&order=day');
+  if (periodDays && periodDays.length !== 60) (errors['period days'] ??= []).push(`expected 60 days, got ${periodDays.length}`);
 }
 
 async function vu() {

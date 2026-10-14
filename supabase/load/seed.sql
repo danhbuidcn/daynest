@@ -1,6 +1,8 @@
 -- Load-test seed (LOCAL ONLY): 10,000 fake users, each with 1 signed-in device, 50 events
 -- (10 repeating, 2 exceptions), 3 note categories, 20 notes and (S4) 3 built-in + 2 own expense
--- categories with 730 expenses. Spec: docs/specs/sprint-2/design/db.md, docs/specs/sprint-4/design/db.md
+-- categories with 730 expenses, (S5) 60 todos (10 repeating daily, 5 subtasks each), 300 status
+-- exceptions and 60 period days (12 periods).
+-- Spec: docs/specs/sprint-2/design/db.md, docs/specs/sprint-4/design/db.md, docs/specs/sprint-5/design/db.md
 -- User n: id = 00000000-0000-0000-0000-<n as 12 hex>, session_id = 10000000-…-<n>.
 \set ON_ERROR_STOP on
 set client_min_messages = warning;
@@ -77,14 +79,49 @@ cross join lateral (select array_agg(id order by created_at, id) as ids from pub
 cross join generate_series(0, 364) d
 cross join generate_series(0, 1) k;
 
+-- S5: 50 one-off timed todos spread over 2026 (every 7 days, 1 h, the first half done) and
+-- 10 all-day todos repeating daily (never ending). Subtask ids: md5 is valid uuid hex.
+insert into public.todos (user_id, title, color, all_day, starts_at, ends_at, start_date, end_date, repeat,
+                          span_start, span_end, subtasks, done)
+select x.u, 'Todo ' || i, 'mint', r, case when not r then t end, case when not r then t + interval '1 hour' end,
+       case when r then d end, case when r then d end, case when r then 'daily' else 'none' end,
+       case when r then d else (t at time zone 'Asia/Ho_Chi_Minh')::date end,
+       case when r then 'infinity' else (t at time zone 'Asia/Ho_Chi_Minh')::date end,
+       st.subtasks, not r and i <= 25
+from generate_series(1, 10000) n
+cross join lateral (select pg_temp.uid('00000000', n) as u) x
+cross join generate_series(1, 60) i
+cross join lateral (select i > 50 as r, date '2026-01-01' + (i - 50) as d,
+                           timestamptz '2026-01-01 08:00+07' + (i * 7 + n % 7) * interval '1 day' as t) y
+cross join lateral (
+  select jsonb_agg(jsonb_build_object('id', md5(n || '-' || i || '-' || k)::uuid, 'text', 'Step ' || k) order by k) subtasks
+  from generate_series(1, 5) k
+) st;
+
+-- 30 days ticked on each repeating todo: 300 'status' exceptions per user.
+insert into public.todo_exceptions (user_id, todo_id, occurrence_date, kind, done, done_subtasks)
+select t.user_id, t.id, date '2026-09-01' + k, 'status', true, array[(t.subtasks -> 0 ->> 'id')::uuid]
+from public.todos t
+cross join generate_series(0, 29) k
+where t.repeat = 'daily';
+
+-- 12 periods of 5 days, every 28 days from 2025-11-01: all inside the app's 12-month window.
+insert into public.period_days (user_id, day)
+select pg_temp.uid('00000000', n), date '2025-11-01' + p * 28 + k
+from generate_series(1, 10000) n
+cross join generate_series(0, 11) p
+cross join generate_series(0, 4) k;
+
 analyze public.events, public.event_exceptions, public.note_categories, public.notes, public.user_devices,
-        public.expense_categories, public.expenses;
+        public.expense_categories, public.expenses, public.todos, public.todo_exceptions, public.period_days;
 
 select (select count(*) from auth.users) users, (select count(*) from public.events) events,
        (select count(*) from public.event_exceptions) exceptions, (select count(*) from public.notes) notes,
-       (select count(*) from public.expense_categories) expense_categories, (select count(*) from public.expenses) expenses;
+       (select count(*) from public.expense_categories) expense_categories, (select count(*) from public.expenses) expenses,
+       (select count(*) from public.todos) todos, (select count(*) from public.todo_exceptions) todo_exceptions,
+       (select count(*) from public.period_days) period_days;
 
--- Size per user (S4 spec: § Kiểm tra tải → Spec tổng §3).
+-- Size per user (S4, S5 spec: § Kiểm tra tải → Spec tổng §3).
 select relname, pg_size_pretty(pg_total_relation_size(c.oid)) total,
        round(pg_total_relation_size(c.oid) / 10000.0 / 1024, 1) kb_per_user
 from pg_class c join pg_namespace ns on ns.oid = c.relnamespace
