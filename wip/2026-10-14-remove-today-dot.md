@@ -1,4 +1,4 @@
-# 2026-10-14 — Bỏ chấm dưới hôm nay, chỉ đổi màu chữ — 🔄 chờ bạn xem trên máy
+# 2026-10-14 — Bỏ chấm dưới hôm nay, chỉ đổi màu chữ — ✅ xong (v5.0.1)
 
 ## Input
 
