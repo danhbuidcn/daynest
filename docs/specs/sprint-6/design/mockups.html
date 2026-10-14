@@ -910,8 +910,7 @@ const appearance = (state) => `<div class="content">
       <div class="group-label">Chủ đề màu</div>
       <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div><div class="swi"><span class="swc" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)"><i style="background:#fff;display:grid;place-items:center;font-size:14px;font-weight:800;line-height:1;color:#2F2D33">+</i></span>Tự chọn</div></div>
       <div class="group-label">Nền</div>
-      <div class="card"><div class="tiles"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);color:#2F2D33;font-weight:800">Màu</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile">${I.image}</span></div>
-        <div class="cap muted" style="padding:0 16px 12px">Ảnh của bạn chỉ lưu trên máy này.</div></div>
+      <div class="card"><div class="tiles"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);color:#2F2D33;font-weight:800">Màu</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile">${I.image}</span></div></div>
       <div class="group-label">Font chữ</div>
       <div class="card">${Object.entries(FONTS).map(([k, [n, f]]) => `<div class="frow2" onclick="setFont('${k}')"><span class="aa" style="font-family:${f}">Aa</span><span class="grow" style="font-family:${f}">${n}</span>${state.font === k ? I.check : ''}</div>`).join('')}</div>
       <div class="group-label">Cỡ chữ</div>
@@ -927,7 +926,7 @@ const customPick = `<div class="under">${'__APP__'}</div>
     <div style="height:16px;border-radius:999px;margin:12px 0;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);position:relative"><span style="position:absolute;left:3%;top:-3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></span></div>
     <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span style="width:44px;height:44px;border-radius:14px;background:#FF7A59;flex:none"></span><div class="input" style="flex:1">#FF7A59</div></div>
     <div class="seg two" style="margin:0 0 10px"><span class="on">Sáng</span><span>Tối</span></div>
-    <div class="cap muted" style="margin:0 4px 14px">Các màu còn lại được tính tự động để chữ luôn dễ đọc.</div>
+    <div style="height:6px"></div>
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary" style="background:#FF7A59">Chọn</button></div>
   </div></div>`;
 const CUSTOM = '--primary:#FF7A59;--primary-dark:#C4472A;--primary-soft:#FFEBE5;--bg:#FFFAF8;--surface:#FFFFFF;--border:#F3E6E1;--text:#33292A;--muted:#93827E;--toast:#33292A';
@@ -936,8 +935,7 @@ const photoPicked = `<div class="content">
   <div class="settings" style="gap:14px">
     <div class="group-label">Nền</div>
     <div class="card"><div class="tiles"><span class="tile" style="background:var(--bg)">Trơn</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile on" style="background:${photoBg(40)}"></span><span class="tile">${I.image}</span></div>
-      <div class="frow2" style="cursor:default"><span class="grow" style="flex:none">Độ mờ</span><span class="slider"><i></i><b></b></span><span class="b" style="width:40px;text-align:right">40%</span></div>
-      <div class="cap muted" style="padding:0 16px 12px">Ảnh của bạn chỉ lưu trên máy này. Thẻ và hộp thoại vẫn giữ nền trơn để chữ dễ đọc.</div></div>
+      <div class="frow2" style="cursor:default"><span class="grow" style="flex:none">Độ mờ</span><span class="slider"><i></i><b></b></span><span class="b" style="width:40px;text-align:right">40%</span></div></div>
   </div>
 </div>`;
 
