@@ -167,13 +167,18 @@ Cài đặt › nhóm **"Giao diện"** (đầu danh sách) → màn **Giao di�
 ### Nền
 
 - Áp dụng cho nền các tab chính (Lịch, Ghi chú, Chi tiêu) · thẻ, hộp thoại vẫn nền `surface` để chữ dễ đọc.
-- Chọn: **Trơn** (màu `bg` của bộ màu, mặc định) · **Màu khác** (màu nền bất kỳ, hộp chọn màu S4; quá tối với bộ sáng / quá sáng với bộ Tối → app báo "Màu này làm chữ khó đọc" và không cho chọn) · **6 nền chuyển màu** tự làm theo bộ màu · **Ảnh của bạn** (chọn từ thư viện máy, app thu nhỏ cạnh dài ≤ 1600 px, chỉ lưu **trên máy**, không lên server) · ô **độ mờ** cho ảnh (0–80%, mặc định 40%) để chữ dễ đọc.
+- Chọn (bạn thêm 2026-10-14: nhiều nền đẹp hơn, như CalendarCute):
+  - **Trơn** — màu `bg` của bộ màu (mặc định).
+  - **Màu** — 8 màu pastel có sẵn (bộ sáng: kem, hồng phấn, xanh nhạt, bạc hà nhạt, tím nhạt, cam nhạt, vàng nhạt, xám nhạt · bộ Tối: 8 màu tối tương ứng) + **Màu khác** (màu bất kỳ, hộp chọn màu S4; quá tối với bộ sáng / quá sáng với bộ Tối → app báo "Màu này làm chữ khó đọc" và không cho chọn).
+  - **Chuyển màu** — 8 nền chuyển màu tự làm từ màu bộ màu + màu event.
+  - **Hoạ tiết** — 6 hoạ tiết tự vẽ, màu nhạt theo `primary` (hoặc màu event): chấm bi · giấy kẻ ô · kẻ dòng · sọc chéo · sao nhỏ · tim nhỏ · thưa, mờ để không lấn chữ (bộ Tối mờ hơn nữa).
+  - **Ảnh của bạn** (chọn từ thư viện máy, app thu nhỏ cạnh dài ≤ 1600 px, chỉ lưu **trên máy**, không lên server) · ô **độ mờ** cho ảnh (0–80%, mặc định 40%) để chữ dễ đọc.
 - Không chép hình, sticker của CalendarCute ([design-system](../design-system.md)).
 - Ảnh nền chỉ ở máy đã chọn; máy kia thấy nền Trơn · đăng xuất → xoá ảnh trên máy.
 
 ### Font
 
-- **4 font** Google Fonts, đủ dấu tiếng Việt, gói sẵn trong app (không tải từ mạng): Nunito (mặc định) · Be Vietnam Pro · Quicksand · Itim (kiểu viết tay).
+- **6 font** Google Fonts, đủ dấu tiếng Việt, gói sẵn trong app (không tải từ mạng): Nunito (mặc định) · Be Vietnam Pro · Quicksand · Baloo 2 (tròn, dễ thương) · Itim (viết tay) · Patrick Hand (viết tay).
 - **Cỡ chữ:** Nhỏ (0,9) · Vừa (1, mặc định) · Lớn (1,15) · nhân vào mọi cỡ trong `type` · gộp với hệ số màn rộng (`WIDE_SCALE`) hiện có.
 - Mỗi font cần đủ 3 độ đậm đang dùng (600, 700, 800); font thiếu độ đậm → dùng độ gần nhất.
 
@@ -218,7 +223,7 @@ Màn Nhóm chi tiêu: dòng đầu "Khoản chi lặp lại ›"
 Form khoản chi (tạo mới): thêm dòng "Lặp lại"
 Màn Khoản chi lặp lại: danh sách quy tắc → form sửa quy tắc (Xoá)
 Toast: "Đã xoá · Hoàn tác" · lỗi theo loại
-Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · Chủ đề màu (8 + Theo hệ thống + Tự chọn → hộp chọn màu + Sáng / Tối) · Nền (Trơn / Màu khác / chuyển màu / Ảnh của bạn + độ mờ) · Font (4) · Cỡ chữ (Nhỏ / Vừa / Lớn)
+Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · Chủ đề màu (8 + Theo hệ thống + Tự chọn → hộp chọn màu + Sáng / Tối) · Nền (Trơn / Màu: 8 + Màu khác / Chuyển màu: 8 / Hoạ tiết: 6 / Ảnh của bạn + độ mờ) · Font (6) · Cỡ chữ (Nhỏ / Vừa / Lớn)
 ```
 
 - Mọi chữ qua i18n (VI + EN), lời lẽ theo [design-system § Câu chữ](../design-system.md).
@@ -226,7 +231,7 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 ## Thiết kế
 
 - [DB](design/db.md): cột `monthly_budget` trong `user_settings`, bảng `expense_month_budgets`, bảng `expense_recurrences`, cột `recurrence_id` trong `expenses`, hàm ghi khoản chi tới hạn, cột giao diện trong `user_settings`, test tải.
-- [Mockup S6](design/mockups.html) — 32 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59 · nút ở đầu trang đổi bộ màu / font cho mọi màn.
+- [Mockup S6](design/mockups.html) — 35 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59, hoạ tiết (Bạc hà chấm bi · Vàng chanh kẻ ô + Baloo 2 · Tối sao + Patrick Hand) · nút ở đầu trang đổi bộ màu / font cho mọi màn.
 
 ## Xong khi (DoD)
 
@@ -260,3 +265,4 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 10. **Chi tiêu theo nhóm** (bạn chốt 2026-10-14): mọi chế độ chỉ danh sách nhóm, bấm nhóm → pop-up khoản chi · giữ biểu đồ ở Tuần, Tháng.
 11. **Không báo khi sắp vượt ngân sách** (bạn chốt 2026-10-14): người dùng tự thấy trên thanh tiến độ.
 12. **Không có nút "Bỏ ngân sách"** (bạn chốt 2026-10-14): xoá trống số tiền rồi Lưu là bỏ.
+13. **Thêm nền + font** (bạn chốt 2026-10-14, giữ phần còn lại như cũ): 8 màu nền có sẵn, 8 chuyển màu, 6 hoạ tiết tự vẽ · thêm font Baloo 2, Patrick Hand (6 font) · không thêm sticker, hiệu ứng, chủ đề trọn gói.

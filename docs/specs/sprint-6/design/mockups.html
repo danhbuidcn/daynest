@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daynest — Mockup Sprint 6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@600;700;800&family=Quicksand:wght@600;700&family=Itim&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@600;700;800&family=Quicksand:wght@600;700&family=Itim&family=Baloo+2:wght@600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
   /* Token — đồng bộ với docs/specs/design-system.md */
   :root {
@@ -618,7 +618,7 @@ const THEMES = {
   slate: ['Xám than', { primary: '#66788A', 'primary-dark': '#4A5A6A', 'primary-soft': '#E8ECF0', bg: '#F6F7F8', surface: '#FFFFFF', border: '#E5E7EA', text: '#24272B', muted: '#80868D' }],
   dark: ['Tối', { primary: '#5BBE98', 'primary-dark': '#7FD1B0', 'primary-soft': '#1F3A30', bg: '#17171B', surface: '#232328', border: '#34343B', text: '#EDEBF0', muted: '#A29EAB', 'error-soft': '#3D2628', 'warning-soft': '#3B3122', toast: '#3A3A42' }],
 };
-const FONTS = { nunito: ['Nunito', "'Nunito'"], bvp: ['Be Vietnam Pro', "'Be Vietnam Pro'"], quicksand: ['Quicksand', "'Quicksand'"], itim: ['Itim', "'Itim'"] };
+const FONTS = { nunito: ['Nunito', "'Nunito'"], bvp: ['Be Vietnam Pro', "'Be Vietnam Pro'"], quicksand: ['Quicksand', "'Quicksand'"], baloo: ['Baloo 2', "'Baloo 2'"], itim: ['Itim', "'Itim'"], patrick: ['Patrick Hand', "'Patrick Hand'"] };
 // Nền chuyển màu: tự làm từ token + màu event (không chép hình của app khác)
 const mix = (c, p) => `color-mix(in srgb, var(--${c}) ${p}%, var(--bg))`;
 const GRADS = [
@@ -628,6 +628,24 @@ const GRADS = [
   `linear-gradient(180deg, ${mix('sky', 40)}, var(--bg) 70%)`,
   `linear-gradient(135deg, ${mix('peach', 35)}, ${mix('pink', 25)})`,
   `linear-gradient(180deg, ${mix('lavender', 35)}, ${mix('mint', 25)})`,
+  `linear-gradient(180deg, ${mix('mint', 35)}, ${mix('sky', 30)})`,
+  `radial-gradient(circle at 50% 0%, ${mix('peach', 45)}, transparent 55%), radial-gradient(circle at 50% 100%, ${mix('lavender', 40)}, transparent 55%), var(--bg)`,
+];
+// Màu nền có sẵn (S6 §8): 8 pastel cho bộ sáng · 8 màu tối cho bộ Tối
+const BGC_LIGHT = ['#FDF6E3', '#FCE8EF', '#E6F2FB', '#E9F6EF', '#F1ECFB', '#FFF0E0', '#FFF8D6', '#EFEFEC'];
+const BGC_DARK = ['#24201A', '#2A1F24', '#1B2430', '#1C2A24', '#231F2E', '#2B2219', '#2A2716', '#222225'];
+// Hoạ tiết tự vẽ: chấm bi · kẻ ô · kẻ dòng · sọc chéo · sao · tim — màu nhạt theo primary / màu event
+const tint = (n) => `color-mix(in srgb, var(--primary) ${n}%, transparent)`;
+// Bộ Tối: hoạ tiết mờ hơn (op thấp) để không lấn chữ
+const svgTile = (path, fill, op = 0.55) => `url('data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="${path}" fill="#${fill}" fill-opacity="${op}"/></svg>`)}') 0 0/40px 40px`;
+const STAR = 'M14 6l2 5h5l-4 3 1.6 5L14 16l-4.6 3L11 14l-4-3h5z';
+const PATTERNS = [
+  `radial-gradient(${tint(30)} 1.6px, transparent 1.8px) 0 0/16px 16px, var(--bg)`,
+  `linear-gradient(${tint(16)} 1px, transparent 1px) 0 0/18px 18px, linear-gradient(90deg, ${tint(16)} 1px, transparent 1px) 0 0/18px 18px, var(--bg)`,
+  `repeating-linear-gradient(180deg, transparent 0 23px, ${tint(22)} 23px 24px), var(--bg)`,
+  `repeating-linear-gradient(135deg, ${tint(10)} 0 10px, transparent 10px 20px), var(--bg)`,
+  `${svgTile(STAR, 'F2D67A')}, var(--bg)`,
+  `${svgTile('M14 20s-6-3.6-6-8a3.4 3.4 0 0 1 6-2 3.4 3.4 0 0 1 6 2c0 4.4-6 8-6 8z', 'F4A6C0')}, var(--bg)`,
 ];
 // "Ảnh của bạn": minh hoạ bằng CSS (biển, nắng) · lớp phủ màu nền theo độ mờ
 const PHOTO = 'radial-gradient(circle at 78% 18%, #FFF4C9 0 7%, transparent 8%), linear-gradient(180deg, #8EC9EC 0%, #CBE7F6 42%, #7FB8D8 43%, #5E9CC2 58%, #F3E2C0 59%, #E6CB98 100%)';
@@ -680,6 +698,9 @@ const themeCss = `<style>
   .swi.on { font-weight: 800; }
   .tiles { display: flex; gap: 8px; padding: 12px; overflow: hidden; }
   .tile { flex: none; width: 54px; height: 76px; border-radius: 14px; border: 1px solid var(--border); display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+  .tiles.sm { padding: 6px 12px 10px; } .tiles.sm .tile { width: 42px; height: 58px; border-radius: 12px; }
+  .bgsec { font-size: 12px; line-height: 16px; font-weight: 800; color: var(--muted); padding: 4px 12px 0; }
+  .bgdot { width: 28px; height: 28px; border-radius: 50%; flex: none; border: 1px solid var(--border); }
   .tile.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
   .tile svg { width: 22px; height: 22px; color: var(--primary-dark); }
   .frow2 { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; cursor: pointer; }
@@ -911,7 +932,12 @@ const appearance = (state) => `<div class="content">
       <div class="group-label">Chủ đề màu</div>
       <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div><div class="swi"><span class="swc" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)"><i style="background:#fff;display:grid;place-items:center;font-size:14px;font-weight:800;line-height:1;color:#2F2D33">+</i></span>Tự chọn</div></div>
       <div class="group-label">Nền</div>
-      <div class="card"><div class="tiles"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);color:#2F2D33;font-weight:800">Màu</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile">${I.image}</span></div></div>
+      <div class="card" style="padding-bottom:4px">
+        <div class="tiles sm"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile">${I.image}</span><span class="cap muted" style="align-self:center">Trơn · Ảnh của bạn</span></div>
+        <div class="bgsec">Màu</div><div class="tiles sm" style="gap:10px;align-items:center">${(state.theme === 'dark' ? BGC_DARK : BGC_LIGHT).map((c) => `<span class="bgdot" style="background:${c}"></span>`).join('')}<span class="bgdot" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);display:grid;place-items:center;color:#2F2D33;font-weight:800">+</span></div>
+        <div class="bgsec">Chuyển màu</div><div class="tiles sm">${GRADS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+        <div class="bgsec">Hoạ tiết</div><div class="tiles sm">${PATTERNS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+      </div>
       <div class="group-label">Font chữ</div>
       <div class="card">${Object.entries(FONTS).map(([k, [n, f]]) => `<div class="frow2" onclick="setFont('${k}')"><span class="aa" style="font-family:${f}">Aa</span><span class="grow" style="font-family:${f}">${n}</span>${state.font === k ? I.check : ''}</div>`).join('')}</div>
       <div class="group-label">Cỡ chữ</div>
@@ -978,12 +1004,15 @@ const groupsS6 = (st) => [
   ]],
   ['Giao diện', [
     ['14. Cài đặt', 'nhóm "Giao diện" đầu danh sách (viền xanh) → màn 15 · dòng phụ tóm tắt lựa chọn', phoneT(settingsS6(st))],
-    ['15. Màn Giao diện', '<b>bấm ô màu hoặc font ở đây (hoặc nút ở đầu trang) → mọi khung không ghi bộ màu riêng đổi theo</b> · ô xem trước ở đầu · 8 bộ màu + Theo hệ thống · nền: Trơn, 6 chuyển màu, Ảnh của bạn · 4 font · cỡ chữ Nhỏ / Vừa / Lớn · đổi xong áp dụng ngay', phoneT(appearance(st), { cls: 'tall' })],
+    ['15. Màn Giao diện', '<b>bấm ô màu hoặc font ở đây (hoặc nút ở đầu trang) → mọi khung không ghi bộ màu riêng đổi theo</b> · ô xem trước ở đầu · 8 bộ màu + Theo hệ thống + Tự chọn · nền: Trơn, Ảnh của bạn, 8 màu + Màu khác, 8 chuyển màu, 6 hoạ tiết · 6 font · cỡ chữ Nhỏ / Vừa / Lớn · đổi xong áp dụng ngay', phoneT(appearance(st), { cls: 'tall' })],
     ['15a. Tự chọn màu chủ đạo', 'ô "Tự chọn" ở màn 15 → hộp chọn màu (như S4) + Sáng / Tối · app tự tính màu đậm, nhạt, nền, viền; màu quá nhạt tự đậm lên cho chữ dễ đọc', phoneT(customPick.replace('__APP__', appearance(state)))],
     ['15b. Chọn ảnh nền', 'chọn ảnh từ máy → ô độ mờ 0–80% (mặc định 40%)', phoneT(photoPicked)],
     ['16. Bộ Tối — Lịch', 'chữ trên thanh event giữ màu tối cố định (nền pastel) · toast nền xám đậm', phoneT(calMonth() + '<div class="toast">Đã lưu</div>', { theme: 'dark' })],
     ['16b. Bộ Tối — Chi tiêu', '', phoneT(darkExp, { theme: 'dark' })],
     ['17. Hồng đào + nền chuyển màu', 'nền chuyển màu sau lưới lịch · thanh tab vẫn nền surface', phoneT(calMonth(), { theme: 'peach', wall: GRADS[1] })],
+    ['17b. Bạc hà + chấm bi', 'hoạ tiết màu nhạt theo primary', phoneT(calMonth(), { wall: PATTERNS[0] })],
+    ['17c. Vàng chanh + giấy kẻ ô + Baloo 2', '', phoneT(notesScreen, { theme: 'lemon', font: 'baloo', wall: PATTERNS[1] })],
+    ['17d. Tối + sao nhỏ + Patrick Hand', '', phoneT(calMonth(), { theme: 'dark', font: 'patrick', wall: `${svgTile(STAR, 'F2D67A', 0.18)}, var(--bg)` })],
     ['18. Xanh biển + ảnh + Quicksand', 'ảnh nền mờ 40% · thẻ note nền surface', phoneT(notesScreen, { theme: 'sky', font: 'quicksand', wall: photoBg(40) })],
     ['18b. Oải hương + Itim', '', phoneT(expMonth(7800000), { theme: 'lavender', font: 'itim' })],
     ['18c. Tự chọn #FF7A59 (Sáng)', 'các màu còn lại do app tính', phoneT(calMonth(), { vars: CUSTOM })],

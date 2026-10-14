@@ -4,7 +4,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 
 - Phong cách: dễ thương, pastel, bo tròn.
 - Không chép sticker, icon, hình minh hoạ của app gốc.
-- Token dưới đây là bộ màu mặc định **Bạc hà**. Từ S6 có 8 bộ màu (cả chế độ tối), 4 font, 3 cỡ chữ — [S6 §8](sprint-6/index.md#8-giao-diện). Mọi màn chỉ dùng token, không viết mã màu.
+- Token dưới đây là bộ màu mặc định **Bạc hà**. Từ S6 có 8 bộ màu (cả chế độ tối), 6 font, 3 cỡ chữ — [S6 §8](sprint-6/index.md#8-giao-diện). Mọi màn chỉ dùng token, không viết mã màu.
 - Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html), [Sprint 3](sprint-3/design/mockups.html), [Sprint 4](sprint-4/design/mockups.html), [Sprint 5](sprint-5/design/mockups.html), [Sprint 6](sprint-6/design/mockups.html).
 
 ## Màu

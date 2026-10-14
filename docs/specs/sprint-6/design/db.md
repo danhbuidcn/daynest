@@ -35,9 +35,9 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 | `theme text not null default 'mint'` | check in 8 bộ màu + `system` + `custom` |
 | `theme_primary text` | Màu chủ đạo tự chọn `#RRGGBB` (khi `theme = 'custom'`) · check dạng hex |
 | `theme_dark boolean not null default false` | Tự chọn: nền Tối |
-| `background text not null default 'plain'` | `plain` · `color` · `gradient-1` … `gradient-6` · `photo` (ảnh chỉ trên máy; máy không có ảnh → coi như `plain`) |
+| `background text not null default 'plain'` | `plain` · `color-1` … `color-8` · `color` (Màu khác) · `gradient-1` … `gradient-8` · `pattern-1` … `pattern-6` · `photo` (ảnh chỉ trên máy; máy không có ảnh → coi như `plain`) |
 | `background_color text` | Màu nền tự chọn `#RRGGBB` (khi `background = 'color'`) · check dạng hex |
-| `font text not null default 'nunito'` | check in (`nunito`, `be-vietnam-pro`, `quicksand`, `itim`) |
+| `font text not null default 'nunito'` | check in (`nunito`, `be-vietnam-pro`, `quicksand`, `baloo-2`, `itim`, `patrick-hand`) |
 | `font_scale real not null default 1` | check in (0.9, 1, 1.15) |
 
 - Bản app cũ không đọc các cột này → vẫn chạy với giao diện mặc định.
