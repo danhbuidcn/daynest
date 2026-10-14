@@ -4,7 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-14 | Kế hoạch tiếng Anh 4 tháng (phỏng vấn IT) + thói quen → bảng nhập Daynest | ✅ xong (bạn tự nhập Daynest tối 14/10) | [2026-10-14-english-and-life-plan.md](2026-10-14-english-and-life-plan.md) |
+| 2026-10-14 | Kế hoạch tiếng Anh 4 tháng (phỏng vấn IT) + thói quen → nhập Daynest | ✅ xong (đã nhập DB, tài khoản danhpoutch; chờ bạn xem trên app) | [2026-10-14-english-and-life-plan.md](2026-10-14-english-and-life-plan.md) |
 | 2026-10-14 | S5 bước 10: Cuối sprint, release v5.0.0 | ✅ xong (v5.0.0 trên GitHub; nhắc đúng giờ bạn tự xem) | [2026-10-14-s5-step-10-release.md](2026-10-14-s5-step-10-release.md) |
 | 2026-10-14 | S5 bước 9: Test tải (Todo, chu kỳ) | ✅ xong (0 lỗi, p95 633 ms) | [2026-10-14-s5-step-9-load-test.md](2026-10-14-s5-step-9-load-test.md) |
 | 2026-10-14 | S5 bước 8: Báo lỗi (màn, ảnh, Edge Function gửi Gmail) | ✅ xong | [2026-10-14-s5-step-8-bug-report.md](2026-10-14-s5-step-8-bug-report.md) |

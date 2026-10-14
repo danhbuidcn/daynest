@@ -1,6 +1,6 @@
 # Kế hoạch tiếng Anh 4 tháng + mục tiêu sống → nhập vào Daynest
 
-Trạng thái: ✅ xong (bạn tự nhập Daynest tối 14/10)
+Trạng thái: ✅ xong — Claude đã nhập Daynest (tài khoản danhpoutch@gmail.com), chờ bạn xem trên app
 
 ## Input
 
@@ -94,6 +94,34 @@ Dữ liệu: trên Daily Dictation, bài có 💎 = "PRO lesson" = **mọi bài 
 - [x] G1. Bảng "Từng ngày": bỏ Short Stories 10, 20, 30 → giai đoạn 1 thành bài 3 → 37; bỏ Conversations 20, 30, 40 → giai đoạn 2 thành bài 11 → 41. Sửa dòng giai đoạn 1 trong bảng "4 giai đoạn" + Chi tiết todo tuần 1–3 cho khớp.
 - [x] G2. Giai đoạn 3–4 + "Cách làm 1 buổi": ghi luật "gặp bài có 💎 → bỏ qua, làm bài kế tiếp". Bỏ dòng lưu ý 💎 cũ ở mục Dữ liệu.
 - [x] G3. Kiểm lại link, commit `docs: skip pro lessons in english plan` + push.
+
+### Sửa thêm 2026-10-14: Claude nhập thẳng vào Daynest qua DB (bạn chọn cách 1)
+
+Dữ liệu (đọc schema + code app):
+- Bảng `events`, `todos` (việc nhỏ = `subtasks` jsonb `[{id, text}]`), `notes` (`search_text` = `buildSearchText`, bỏ dấu + chữ thường).
+- Lặp: `repeat` + `repeat_interval` + `repeat_until`; `span_start`/`span_end` tính như `computeSpan` (lặp không kết thúc → `infinity`). Có giờ → `starts_at`/`ends_at` (giờ VN +07); cả ngày → `start_date`/`end_date`.
+- Nhắc: `reminder_minutes` (0 = đúng giờ, 30, 60). Điện thoại tự đặt thông báo khi app tải dữ liệu.
+- Ghi DB thật qua Supabase Management API (SQL) bằng `SUPABASE_ACCESS_TOKEN` trong `supabase/.env` (không in ra).
+
+Sẽ thêm (~42 dòng): 8 sự kiện (hiến máu, về quê, lên thành phố, 5 "Đi làm") · 17 todo "Tiếng Anh · Tuần 1…17" (Chi tiết = bài từng ngày có link; tuần 9–17 = luật của tuần) · "Đo tiến bộ tháng" · 3 todo hằng ngày · 11 todo hằng tuần/tháng (bỏ "Nhập todo tiếng Anh tuần tới" vì đã nhập đủ 17 tuần) · 1 ghi chú "Nguyên tắc sống". Màu: tiếng Anh `lavender`, thói quen `mint`, mục tiêu sống `peach`, công việc `sky`, sự kiện một lần `pink`.
+
+- [x] H1. Viết script sinh SQL (ở scratchpad, không commit vì có dữ liệu cá nhân) theo đúng định dạng app: span, subtasks, search_text, giờ +07. Mọi dòng dùng id cố định, ghi danh sách id vào file này để xoá lại được.
+- [x] H2. Chạy thử trên DB local (Docker) với 1 user giả: mọi ràng buộc qua.
+- [x] H3. DB thật: tìm `user_id` theo email (chỉ đọc). → bạn chọn tài khoản **danhpoutch@gmail.com** (`5d326fc9-d12d-4729-9988-68ef61670064`).
+- [x] H4. DB thật: thêm tất cả trong 1 transaction (lỗi 1 dòng → không thêm gì).
+- [x] H5. Kiểm tra: đếm số dòng theo user; bạn mở app, kéo tải lại, xem Lịch 15/10 + tab Todo.
+- [x] H6. Cập nhật file này + `wip/index.md`, commit + push.
+
+**Kết quả H (2026-10-14):** đã thêm vào DB thật, tài khoản danhpoutch@gmail.com: **8 sự kiện · 32 todo · 1 ghi chú** (đếm lại khớp). Chạy thử local trước: qua mọi ràng buộc. Todo "🗓 Nhập todo tiếng Anh tuần tới" ở bảng D **không tạo** (đã nhập đủ 17 tuần). Bạn chưa xem trên app.
+
+Xoá lại toàn bộ (nếu cần) — chạy trên DB thật:
+
+```sql
+delete from public.events where user_id = '5d326fc9-d12d-4729-9988-68ef61670064' and id in ('e4dd8360-5067-56c3-87c1-ca7e63ba48f5', '082d8c89-99bc-52bc-aa67-fd0534f46b2b', 'a2cf749f-891d-5b4d-899b-c1852aec0711', '1739d477-9d9b-548e-9927-9bde5fab2c2d', 'aa672ef7-df21-568a-a0b8-8f7928c8e175', 'cae3f443-19f7-5550-bc50-8e4f0b9ff4c4', 'a9c45914-61e9-5667-80bc-4c96866c19d3', '1f285720-a38a-50df-9d68-33bd5bb83399');
+delete from public.todos where user_id = '5d326fc9-d12d-4729-9988-68ef61670064' and id in ('7d79d26e-84f5-5805-9e6e-93d7356d611d', 'c0f5aa8d-6aaf-54ba-bb33-37b36f3c4b7d', '44b573d6-4037-5ad9-a5e6-1d0f8a7cc705', 'a42fafb8-654e-5f41-a584-07c7864ba6ff', 'a4179c1a-ccd1-509d-8d57-275cf0e1620f', 'ddcd9017-c25c-57c5-a5b3-d430df2feca8', '0039a5e7-2e8c-5af9-b457-a08d7722e0a9', '28984719-4f4d-5502-a395-38432a44f0c7', 'e04235b4-eb9e-5cbe-90ab-7bbefd522b68', '909f2d0b-fb2d-5669-a942-5ca43f37d7da', '3321ad3b-757a-5132-b3a5-8c90166d5822', 'c374103b-a759-5965-9a9f-2521de4ff4e9', 'a0929083-b9cc-57b9-9dc1-4d460dd37ce7', '1f877c59-fd2a-52c3-8da5-317c9d153372', '6124fccc-c944-5174-95a9-d4ae4e8aaa7f', 'eafc852e-f63e-5a31-ad9a-9fd84a699cda', 'a7f26eaf-4bf6-59b8-84f3-36847ab6688f', '97e66264-f033-5d11-b4c3-bd6d9b445086', '329f0e28-08fd-5029-b3cb-b16898158eaa', 'affb1919-1029-5dc5-880e-33335f1d30fb', 'ec31f212-2596-5980-bf27-e7d2bba626c6', '864be9c8-b0e6-5767-81be-4e4c2f807267', 'ad96f324-8d46-53f3-9a33-0d03cb5aefa6', '50ac0588-8502-5731-97cf-71181f4215d2', '2c593eea-ed03-544a-b96e-f2d47c5b88b6', '90abea87-2276-5992-88e9-42b5f99fd31c', '2de44180-42c6-5056-88c7-6a05ee267e33', 'e63713f6-48c1-5690-b748-2b0b4e33c898', 'f447c149-91f8-540a-ae6c-af0c855ec76e', '8e0654be-c345-55b5-82ce-13db75962142', 'dfdcd7c6-d126-5cbd-9ca3-c58506b703d8', 'd79fae11-a4da-554b-a7e0-5c77165278fb');
+delete from public.notes where user_id = '5d326fc9-d12d-4729-9988-68ef61670064' and id = '7771e483-60aa-5bbe-8dcc-39d95f9c7945';
+```
+
 
 ## Kết quả
 
