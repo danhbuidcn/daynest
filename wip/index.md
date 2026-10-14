@@ -4,7 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-14 | S5 bước 8: Báo lỗi (màn, ảnh, Edge Function gửi Gmail) | 🔄 đang làm | [2026-10-14-s5-step-8-bug-report.md](2026-10-14-s5-step-8-bug-report.md) |
+| 2026-10-14 | S5 bước 8: Báo lỗi (màn, ảnh, Edge Function gửi Gmail) | ✅ xong | [2026-10-14-s5-step-8-bug-report.md](2026-10-14-s5-step-8-bug-report.md) |
 | 2026-10-13 | Giảm cỡ giao diện Ghi chú, Chi tiêu, Lịch + tablet full màn hình | 🔄 chờ bạn xem trên máy | [2026-10-13-shrink-notes-expenses-ui.md](2026-10-13-shrink-notes-expenses-ui.md) |
 | 2026-10-13 | S5 bước 7: Chu kỳ — Lịch + nhắc (giọt, dòng chu kỳ, pop-up ngày, nhắc trước) | ✅ xong | [2026-10-13-s5-step-7-cycle-calendar-reminders.md](2026-10-13-s5-step-7-cycle-calendar-reminders.md) |
 | 2026-10-13 | S5 bước 6: Chu kỳ — dữ liệu + màn (Kỳ kinh, Cài đặt) | ✅ xong | [2026-10-13-s5-step-6-cycle-data-screens.md](2026-10-13-s5-step-6-cycle-data-screens.md) |

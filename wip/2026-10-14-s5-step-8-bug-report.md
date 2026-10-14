@@ -1,4 +1,4 @@
-# 2026-10-14 — S5 bước 8: Báo lỗi — 🔄 đang làm
+# 2026-10-14 — S5 bước 8: Báo lỗi — ✅ xong
 
 Thuộc: [S5 lộ trình code](2026-10-13-s5-code-plan.md) · spec [§ Báo lỗi](../docs/specs/sprint-5/index.md#báo-lỗi) · [db.md](../docs/specs/sprint-5/design/db.md#báo-lỗi) · [mockup](../docs/specs/sprint-5/design/mockups.html) màn Báo lỗi.
 
@@ -14,8 +14,8 @@ Thuộc: [S5 lộ trình code](2026-10-13-s5-code-plan.md) · spec [§ Báo lỗ
 - [x] 3. `features/bugReport/`: chọn ảnh (≤ 3), thu nhỏ JPEG, insert báo cáo (id app sinh) → upload ảnh → gọi function · lỗi `rate_limited` → hộp "Đã gửi đủ 5 báo cáo hôm nay".
 - [x] 4. Màn `settings/bug-report.tsx` + dòng "Báo lỗi" trong nhóm Ứng dụng · mất mạng khoá Gửi · i18n VI/EN.
 - [x] 5. Edge Function `supabase/functions/send-bug-report/` (SMTP Gmail 465, ảnh đính kèm, lỗi mail vẫn 200) · lệnh `supabase/db functions` (đặt secret từ `supabase/.env` + deploy).
-- [ ] 6. **Bạn**: tạo mật khẩu ứng dụng Gmail → dán vào `supabase/.env` dòng `GMAIL_APP_PASSWORD=` (tôi không đọc, không in ra).
-- [ ] 7. Deploy function · typecheck/lint/test · build · máy ảo: gửi 1 báo cáo có ảnh → mail tới · commit `feat(app): bug report` + push.
+- [x] 6. **Bạn**: tạo mật khẩu ứng dụng Gmail → dán vào `supabase/.env` dòng `GMAIL_APP_PASSWORD=` (tôi không đọc, không in ra).
+- [x] 7. Deploy function · typecheck/lint/test · build · máy ảo: gửi 1 báo cáo có ảnh → mail tới · commit `feat(app): bug report` + push.
 
 ## Kết quả
 - 2026-10-14 — Bạn: "bạn tự làm cho tôi" → làm luôn. Việc 1–5 xong:
@@ -27,3 +27,4 @@ Thuộc: [S5 lộ trình code](2026-10-13-s5-code-plan.md) · spec [§ Báo lỗ
 - 2026-10-14 09:28 — Build (8 phút 50 giây), cài máy ảo, thử: màn Báo lỗi đúng mockup · Gửi khoá khi nội dung < 10 ký tự · chọn 1 ảnh qua trình chọn ảnh của Android (không cần quyền) → thu nhỏ, hiện ô ảnh có ✕, "Ảnh (1/3)" · Gửi → quay lại Cài đặt. Mail chưa đi vì chưa có mật khẩu Gmail (function trả 200, đúng spec).
   - Chưa kiểm được dòng `bug_reports` + ảnh trên DB thật: hệ thống chặn tôi đọc DB thật. Báo cáo thử "Test bao loi tu may ao…" còn trên DB (app không xoá được).
 - Còn lại: việc 6 (bạn dán mật khẩu ứng dụng) → `supabase/db functions` → gửi thử lại, xem mail tới.
+- 2026-10-14 09:37 — Bạn dán mật khẩu ứng dụng (16 ký tự) → `supabase/db functions`: đặt 2 secret + deploy. Máy ảo gửi báo cáo "Test gui mail bao loi tu may ao lan 2." + 1 ảnh → mail tới `danhbuidcn@gmail.com` lúc 09:37, tiêu đề `[Daynest] Báo lỗi 4.0.0 (6) — <email tài khoản máy ảo>`, có máy, Android 14, ngôn ngữ, thời gian, mã báo cáo, ảnh đính kèm (~85 KB). Chưa thử: quá 5 lần/ngày (trigger đã có test RLS ở bước 1), mất mạng khoá Gửi (dùng chung cách của form khoản chi).
