@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-14 | Tài liệu tổng quan: bỏ câu chữ "cho người mới" | ✅ xong (đổi tên → overview.md/.html) | [2026-10-14-overview-doc-wording.md](2026-10-14-overview-doc-wording.md) |
 | 2026-10-14 | Tài liệu giới thiệu hệ thống cho người mới (md + html) | ✅ xong | [2026-10-14-onboarding-guide.md](2026-10-14-onboarding-guide.md) |
 | 2026-10-14 | S6: viết spec (nhanh, bền, tính năng, giao diện) | ✅ xong (tiếp: mockup S6) | [2026-10-14-s6-spec.md](2026-10-14-s6-spec.md) |
 | 2026-10-14 | Lộ trình S6: nhanh, bền và tính năng (S6 cũ → S7) | ✅ xong (đã sửa spec; tiếp: viết spec S6) | [2026-10-14-speed-ux-improvements-plan.md](2026-10-14-speed-ux-improvements-plan.md) |

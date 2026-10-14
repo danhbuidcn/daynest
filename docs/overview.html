@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Daynest cho người mới</title>
+<title>Tổng quan Daynest</title>
 <style>
 :root {
   --bg: #f6f5f1;
@@ -127,8 +127,8 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
 <div class="wrap">
 <header>
   <div>
-    <h1>Daynest cho người mới</h1>
-    <p class="lead">Hệ thống chạy thế nào, qua sơ đồ và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14. Gặp chỗ lệch với code → tin code.</p>
+    <h1>Tổng quan hệ thống Daynest</h1>
+    <p class="lead">Kiến trúc, cấu trúc code và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14.</p>
   </div>
   <button id="theme" type="button">Đổi sáng/tối</button>
 </header>
@@ -143,7 +143,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
   <a href="#s7">7. Google</a>
   <a href="#s8">8. Nhắc nhở</a>
   <a href="#s9">9. Database</a>
-  <a href="#s10">10. Tuần đầu</a>
+  <a href="#s10">10. Chạy và phát triển</a>
 </nav>
 
 <section id="s1">
@@ -537,10 +537,9 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
 </section>
 
 <section id="s10">
-  <h2><span class="n">10.</span>Tuần đầu</h2>
+  <h2><span class="n">10.</span>Chạy và phát triển</h2>
   <ol>
-    <li><b>Chạy app:</b> điền <code>app/.env</code> (xin secrets từ người phụ trách; không commit, không dán vào chat) → <code>cd app &amp;&amp; npm install &amp;&amp; npm run android</code>.</li>
-    <li><b>Đọc theo thứ tự:</b> <a href="specs/index.md">specs/index.md</a> → <a href="specs/architecture/index.md">specs/architecture/index.md</a> → <code>_layout.tsx</code> → <code>AuthProvider.tsx</code> → <code>useEvents.ts</code>.</li>
+    <li><b>Chạy app:</b> điền <code>app/.env</code> (không commit, không dán vào chat) → <code>cd app &amp;&amp; npm install &amp;&amp; npm run android</code>.</li>
     <li><b>Chạy test:</b> <code>npm run typecheck &amp;&amp; npm run lint &amp;&amp; npm test</code>. Đọc <code>lunar.test.ts</code>, <code>recurrence.test.ts</code> để hiểu phần lõi nhanh nhất.</li>
     <li><b>Đổi DB:</b> chỉ qua <code>supabase/db new &lt;tên&gt;</code> → viết SQL + RLS → <code>supabase/db test</code> (cần Docker).</li>
     <li><b>Quy tắc code:</b> theme token <code>@/theme</code>, chữ qua <code>AppText</code>, mọi chuỗi qua i18n (cùng key ở <code>en.json</code> + <code>vi.json</code>). Mỗi việc 1 file trong <code>wip/</code>, duyệt xong mới làm.</li>
@@ -548,7 +547,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
   <p class="note"><b>Tài liệu kiến trúc đã cũ.</b> <a href="specs/architecture/index.md">specs/architecture/</a> ghi "theo code tới S2 bước 6": còn đánh dấu "(chưa code)" cho Google sync và nhắc nhở (code đã có), ghi "chưa dùng Edge Functions" (đã có <code>send-bug-report</code>), chưa có todo, chu kỳ, chi tiêu, báo lỗi.</p>
 </section>
 
-<footer>Bản chữ: <a href="onboarding.md">onboarding.md</a> · Mục lục tài liệu: <a href="index.md">docs/index.md</a></footer>
+<footer>Bản chữ: <a href="overview.md">overview.md</a> · Mục lục tài liệu: <a href="index.md">docs/index.md</a></footer>
 </div>
 
 <script>
@@ -556,7 +555,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
   var root = document.documentElement;
   var btn = document.getElementById('theme');
   try {
-    var saved = localStorage.getItem('daynest-onboarding-theme');
+    var saved = localStorage.getItem('daynest-overview-theme');
     if (saved) root.setAttribute('data-theme', saved);
   } catch (e) {}
   btn.addEventListener('click', function () {
@@ -564,7 +563,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
       (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     var next = current === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
-    try { localStorage.setItem('daynest-onboarding-theme', next); } catch (e) {}
+    try { localStorage.setItem('daynest-overview-theme', next); } catch (e) {}
   });
 })();
 </script>

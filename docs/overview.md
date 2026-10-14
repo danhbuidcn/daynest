@@ -1,8 +1,8 @@
-# Giới thiệu hệ thống Daynest cho người mới
+# Tổng quan hệ thống Daynest
 
-Thuộc: [Tài liệu Daynest](index.md). Bản có sơ đồ: [onboarding.html](onboarding.html) (mở bằng trình duyệt).
+Thuộc: [Tài liệu Daynest](index.md). Bản có sơ đồ: [overview.html](overview.html) (mở bằng trình duyệt).
 
-Cập nhật: 2026-10-14, theo code v5.0.1 (hết S5). Gặp chỗ lệch với code → tin code.
+Kiến trúc, cấu trúc code và 5 luồng chính. Theo code v5.0.1 (hết S5), cập nhật 2026-10-14.
 
 ## 1. Daynest là gì
 
@@ -196,13 +196,12 @@ Bảng chính ([supabase/migrations/](../supabase/migrations/)):
 - Mọi bảng: `id`, `user_id`, `created_at`, `updated_at`, RLS, index bắt đầu bằng `user_id`.
 - Logic SQL: `register_device` / `session_active` / `touch_device`, `expense_monthly_totals`, trigger tạo dữ liệu mặc định cho user mới (`handle_new_user*`), `check_bug_report_limit` (≤ 5 báo lỗi/ngày).
 
-## 10. Tuần đầu
+## 10. Chạy và phát triển
 
-1. **Chạy app:** điền `app/.env` (xin secrets từ người phụ trách; không commit, không dán vào chat) → `cd app && npm install && npm run android`.
-2. **Đọc theo thứ tự:** [specs/index.md](specs/index.md) → [specs/architecture/index.md](specs/architecture/index.md) → [_layout.tsx](../app/src/app/_layout.tsx) → [AuthProvider.tsx](../app/src/features/auth/AuthProvider.tsx) → [useEvents.ts](../app/src/features/events/useEvents.ts).
-3. **Chạy test:** `npm run typecheck && npm run lint && npm test`. Đọc `lunar.test.ts`, `recurrence.test.ts` để hiểu phần lõi nhanh nhất.
-4. **Đổi DB:** chỉ qua `supabase/db new <tên>` → viết SQL + RLS → `supabase/db test` (cần Docker).
-5. **Quy tắc code:** theme token `@/theme`, chữ qua `AppText`, mọi chuỗi qua i18n (cùng key ở `en.json` + `vi.json`). Mỗi việc 1 file trong `wip/`, duyệt xong mới làm.
+1. **Chạy app:** điền `app/.env` (không commit, không dán vào chat) → `cd app && npm install && npm run android`.
+2. **Chạy test:** `npm run typecheck && npm run lint && npm test`. Đọc `lunar.test.ts`, `recurrence.test.ts` để hiểu phần lõi nhanh nhất.
+3. **Đổi DB:** chỉ qua `supabase/db new <tên>` → viết SQL + RLS → `supabase/db test` (cần Docker).
+4. **Quy tắc code:** theme token `@/theme`, chữ qua `AppText`, mọi chuỗi qua i18n (cùng key ở `en.json` + `vi.json`). Mỗi việc 1 file trong `wip/`, duyệt xong mới làm.
 
 ## Lưu ý: tài liệu kiến trúc đã cũ
 

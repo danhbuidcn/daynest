@@ -5,7 +5,7 @@
 ```text
 docs/
   index.md                  # file này
-  onboarding.md|.html       # giới thiệu hệ thống cho người mới
+  overview.md|.html         # tổng quan hệ thống
   specs/
     index.md                # spec tổng: sản phẩm, quyết định, kiến trúc, danh sách sprint
     design-system.md        # màu, chữ, khoảng cách, icon, thành phần dùng chung
@@ -17,7 +17,7 @@ docs/
 
 | Đường dẫn | Nội dung |
 | --- | --- |
-| [onboarding.md](onboarding.md) · [onboarding.html](onboarding.html) | Người mới: hệ thống chạy thế nào (sơ đồ, 5 luồng chính) — đọc trước |
+| [overview.md](overview.md) · [overview.html](overview.html) | Tổng quan hệ thống: kiến trúc, sơ đồ, 5 luồng chính |
 | [specs/index.md](specs/index.md) | Spec tổng — đọc đầu tiên |
 | [specs/design-system.md](specs/design-system.md) | Design system dùng chung mọi sprint |
 | [specs/sprint-1/](specs/sprint-1/index.md) | Sprint 1: nền móng (khung app, đăng nhập Google, DB, ký app) |
