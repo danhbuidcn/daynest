@@ -71,7 +71,7 @@ Hiện tại: bấm Lưu → chờ server ghi → tải lại **mọi** khoảng
 | Có dữ liệu trên máy, tải mới lỗi | Giữ dữ liệu cũ · dòng nhỏ dưới tiêu đề "Chưa cập nhật được · Thử lại" |
 | Chưa có dữ liệu trên máy, tải lỗi | Thẻ lỗi giữa màn: icon · tiêu đề theo loại lỗi · nút "Thử lại" |
 
-- Áp dụng cho tab Lịch (mọi chế độ), tab Ghi chú (Todo + Ghi chú), tab Chi tiêu, màn tìm kiếm. Tab Lịch hiện chưa có trạng thái lỗi → lỗi trông như "không có event".
+- Áp dụng cho tab Lịch (mọi chế độ), tab Ghi chú (Todo + Ghi chú), tab Chi tiêu, màn tìm kiếm · lỗi khác khi tải: "Chưa tải được. Hãy thử lại." Tab Lịch hiện chưa có trạng thái lỗi → lỗi trông như "không có event".
 
 ### Thông báo lỗi theo loại
 
@@ -88,7 +88,7 @@ Hiện tại: bấm Lưu → chờ server ghi → tải lại **mọi** khoảng
 ## 4. Rung nhẹ, khung xương
 
 - **Rung nhẹ** (`expo-haptics`): tick / bỏ tick todo, việc trong danh sách, ngày có kinh → rung nhẹ · Lưu xong → rung "thành công" · Xoá → rung nhẹ · kéo đổi thứ tự → rung khi nhấc lên.
-- **Khung xương** khi tải lần đầu (chưa có dữ liệu trên máy) thay cho màn trống / vòng quay: Lịch Tháng (thanh xám trong ô ngày), Lịch Danh sách, Ghi chú (thẻ xám), Todo, Chi tiêu (khối tổng + cột xám) · nhấp nháy nhẹ.
+- **Khung xương** khi tải lần đầu (chưa có dữ liệu trên máy) thay cho màn trống / vòng quay: Lịch Tháng (lưới, số ngày, ngày âm hiện ngay vì tính trên máy — chỉ thanh event là khối xám), Lịch Danh sách, Ghi chú (thẻ xám), Todo, Chi tiêu (khối tổng + cột xám) · nhấp nháy nhẹ.
 
 ## 5. Hoàn tác sau khi xoá
 
@@ -110,6 +110,7 @@ Giống Gmail: xoá xong có 4 s để Hoàn tác.
   - Chưa đặt → dòng "Đặt ngân sách tháng" (bấm được).
 - Bấm thanh / dòng → hộp "Ngân sách tháng": ô số tiền (bàn phím số, chấm ngàn như form khoản chi) · "Lưu" · "Bỏ ngân sách" (khi đã đặt).
 - Chế độ Ngày, Tuần: không hiện ngân sách.
+- Dòng dưới thanh: trái "71% ngân sách 7.800.000 ₫" · phải "Còn 2.320.000 ₫" (vượt: "Vượt …" chữ `error`) · chưa đặt: nút "Đặt ngân sách tháng" (nền `primarySoft`) trong thẻ Tổng chi · "Bỏ ngân sách" là chữ `error` dưới 2 nút Huỷ / Lưu.
 - **Báo khi sắp vượt:** Lưu khoản chi làm tổng tháng của khoản đó vượt ngưỡng → toast cảnh báo (không thông báo đẩy):
   - Lần đầu ≥ 80%: "Bạn đã dùng 82% ngân sách tháng 10."
   - Lần đầu > 100%: "Bạn đã vượt ngân sách tháng 10: 250.000 ₫."
@@ -135,16 +136,16 @@ Tiền nhà, điện, mạng, học phí… app tự ghi, người dùng không 
 
 ### Quản lý
 
-- Chi tiêu: cạnh nút Nhóm có nút mở màn **"Khoản chi lặp lại"**: danh sách quy tắc (icon nhóm · ghi chú hoặc tên nhóm · số tiền · "Hằng tháng, ngày 5" · "Lần tới: 05/11") · trống: "Chưa có khoản chi lặp lại."
+- Chi tiêu: cạnh nút Nhóm có nút (icon lặp) mở màn **"Khoản chi lặp lại"**: danh sách quy tắc (icon nhóm · ghi chú hoặc tên nhóm · số tiền · "Hằng tháng · lần tới 05/11") · trống: "Chưa có khoản chi lặp lại." · nút đáy "Thêm khoản chi lặp lại" → form khoản chi với Lặp lại = Hằng tháng.
 - Bấm 1 quy tắc → form sửa quy tắc: số tiền, nhóm, ghi chú, kiểu lặp, ngày lần tới · Lưu → chỉ áp dụng cho các lần **sau** · khoản chi đã ghi giữ nguyên.
 - Xoá quy tắc: "Xoá khoản chi lặp lại này? Các khoản chi đã ghi vẫn giữ." → chỉ dừng lặp.
 - Xoá nhóm chi tiêu → xoá cả quy tắc thuộc nhóm (như khoản chi, S4).
 
 ## 8. Tìm kiếm event + todo
 
-- Tab Lịch: icon kính lúp ở thanh đầu → màn **Tìm kiếm**: ô tìm (tự focus) · kết quả hiện sau khi ngừng gõ 300 ms · không phân biệt dấu, hoa thường ("tet" ra "Tết").
+- Tab Lịch: nút kính lúp **cạnh thanh chế độ** (cả 4 chế độ; thanh đầu đã đủ chật) → màn **Tìm kiếm**: ô tìm (tự focus) · kết quả hiện sau khi ngừng gõ 300 ms · không phân biệt dấu, hoa thường ("tet" ra "Tết").
 - Tìm trong: tiêu đề + chi tiết của event và todo chưa xoá · cả event kéo về từ Google.
-- Kết quả: 1 danh sách, mỗi dòng: chấm màu · tiêu đề (đoạn khớp in đậm) · ngày (event lặp: "Lặp hằng tuần · lần tới 20/10") · nhãn "Todo" với todo · xếp: sắp tới gần nhất trước, rồi đã qua gần nhất trước.
+- Kết quả: 1 danh sách, mỗi dòng: chấm màu · tiêu đề (đoạn khớp in đậm) · ngày (event lặp: "Lặp hằng tuần · lần tới 20/10") · nhãn "Todo" với todo · 2 nhóm có tiêu đề: **Sắp tới** (gần nhất trước) · **Đã qua** (gần nhất trước) · đoạn khớp in đậm trên nền `primarySoft`.
 - Tối đa 50 event + 50 todo · đủ 50 → dòng cuối "Hãy gõ thêm để thu hẹp kết quả".
 - Bấm 1 dòng → chi tiết event / todo (lần lặp gần hôm nay nhất).
 - Không có kết quả: "Không tìm thấy kết quả cho "…"" · ô trống: gợi ý "Tìm sự kiện và todo".
@@ -159,6 +160,8 @@ Cài đặt › nhóm **"Giao diện"** (đầu danh sách) → màn **Giao di�
 - **8 bộ màu** có sẵn, mỗi bộ đủ các token của [design-system](../design-system.md) (`primary`, `primaryDark`, `primarySoft`, `bg`, `surface`, `border`, `text`, `textMuted`…): Bạc hà (mặc định, như hiện tại) · Hồng đào · Xanh biển · Oải hương · Cam đất · Vàng chanh · Xám than · **Tối** (chế độ tối).
 - Thêm lựa chọn **"Theo hệ thống"**: máy đang chế độ tối → bộ Tối, sáng → bộ đã chọn.
 - Màu event, nhóm chi tiêu, danh mục note giữ nguyên màu người dùng chọn ở mọi bộ · chữ trên nền màu vẫn tự chọn tối / trắng ([S4](../sprint-4/index.md#màu-bất-kỳ)).
+- Thêm 1 token mỗi bộ: `toast` (nền toast; bộ sáng = `text`, bộ Tối = `#3A3A42`, vì nền toast = `text` sẽ sáng ở bộ Tối) · bộ Tối: `primaryDark` sáng hơn `primary` (chữ link trên nền tối).
+- Chữ / icon trên nền màu event, nhóm chi tiêu: màu tối **cố định** `#2F2D33` ở mọi bộ (không theo `text`, vì `text` của bộ Tối là màu sáng) — vẫn tự đổi sang trắng khi nền màu tối ([S4](../sprint-4/index.md#màu-bất-kỳ)).
 - Mọi bộ màu đạt tương phản chữ ≥ 4,5:1 (`text` trên `bg`, `surface`) · có test kiểm tương phản (hàm thuần).
 - Thanh trạng thái, nền màn chờ khởi động theo bộ màu (bộ Tối → chữ thanh trạng thái sáng).
 
@@ -202,7 +205,7 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 ## Thiết kế
 
 - [DB](design/db.md): cột `monthly_budget` trong `user_settings`, bảng `expense_recurrences`, cột `recurrence_id` trong `expenses`, hàm ghi khoản chi tới hạn, cột `search_text` cho `events` + `todos`, cột giao diện trong `user_settings`, test tải.
-- Mockup S6 (bước sau): `design/mockups.html`.
+- [Mockup S6](design/mockups.html) — 29 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, tìm kiếm, ngân sách (đủ / vượt / chưa đặt / hộp / cảnh báo), khoản chi lặp (form, chọn kiểu, danh sách, sửa, xoá), Cài đặt, màn Giao diện (+ ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim · nút ở đầu trang đổi bộ màu / font cho mọi màn.
 
 ## Xong khi (DoD)
 
