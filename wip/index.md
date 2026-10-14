@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-14 | Release 5.0.1 (bỏ chấm dưới hôm nay) | 🔄 đang làm | [2026-10-14-release-5-0-1.md](2026-10-14-release-5-0-1.md) |
 | 2026-10-14 | Bỏ chấm dưới hôm nay (thanh ngày), chỉ đổi màu chữ | 🔄 chờ bạn xem trên máy | [2026-10-14-remove-today-dot.md](2026-10-14-remove-today-dot.md) |
 | 2026-10-14 | Kế hoạch tiếng Anh 4 tháng (phỏng vấn IT) + thói quen → nhập Daynest | ✅ xong (đã nhập DB, tài khoản danhpoutch; chờ bạn xem trên app) | [2026-10-14-english-and-life-plan.md](2026-10-14-english-and-life-plan.md) |
 | 2026-10-14 | S5 bước 10: Cuối sprint, release v5.0.0 | ✅ xong (v5.0.0 trên GitHub; nhắc đúng giờ bạn tự xem) | [2026-10-14-s5-step-10-release.md](2026-10-14-s5-step-10-release.md) |
