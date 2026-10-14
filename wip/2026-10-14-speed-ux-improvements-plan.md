@@ -43,13 +43,13 @@ Trạng thái: ✅ xong (bước 1–4) · tiếp: viết spec S6 · Tạo: 2026
 | # | Việc | Sprint |
 | --- | --- | --- |
 | U6 | Rung nhẹ khi tick, lưu, xoá · khung xương khi tải lần đầu | S6 |
-| U8 | Nút Hoàn tác trên toast sau khi xoá | S6 |
+| U8 | Nút Hoàn tác trên toast sau khi xoá | S6 · note đã có (thùng rác, `useNotes.ts:83`) → chỉ thêm cho event, todo, khoản chi |
 | U3 | Ngân sách tháng cho chi tiêu, báo khi sắp vượt | S6 |
 | U4 | Khoản chi lặp lại (tiền nhà, điện, mạng) | S6 |
 | U2 | Tìm kiếm event, todo | S6 · spec S2 `F1-calendar.md:70` từng loại → đổi quyết định |
-| U7 | Note dạng checklist | S6 |
+| U7 | ~~Note dạng checklist~~ | **Bỏ** — đã có từ trước (`features/notes/editor/ChecklistBlock.tsx`), tôi rà sai |
 | U1 | Widget màn hình chính | Sau Play (code native, rủi ro build) · S2 từng loại |
-| U5 | Chế độ tối | Sau Play (rà mọi màu) · S2 từng loại "theme" |
+| U5 | Chế độ tối | **S6** — gộp vào tính năng Giao diện (bạn yêu cầu 2026-10-14: đổi màu, nền, font như CalendarCute) |
 
 ### Plan (bước này chỉ sửa tài liệu, chưa sửa code)
 

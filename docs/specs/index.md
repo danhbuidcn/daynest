@@ -8,7 +8,7 @@ App cá nhân 3 phần: **Lịch** + **Ghi chú** + **Chi tiêu**. Mobile (Andro
 - **Chi tiêu:** theo ngày, tuần, tháng (S4).
 - **Lịch:** dương + âm, ngày lễ VN, event (lặp dương + âm), todo theo ngày, nhắc nhở, đồng bộ Google Calendar 2 chiều, chu kỳ kinh nguyệt.
 - **Giai đoạn 1 (GĐ1)** = sprint 1–4. Sau GĐ1: chu kỳ kinh nguyệt + todo trên Lịch (S5), nhanh, bền và tính năng (S6), quảng cáo + Pro + lên Google Play (S7), web.
-- Không làm: diary, học tập, thể dục, dashboard, habit, sticker/theme, xu. Quảng cáo + gói Pro tắt quảng cáo: [S7](sprint-7/index.md).
+- Không làm: diary, học tập, thể dục, dashboard, habit, sticker, xu. (Đổi giao diện — màu, nền, font — làm ở [S6](sprint-6/index.md#9-giao-diện).) Quảng cáo + gói Pro tắt quảng cáo: [S7](sprint-7/index.md).
 
 ## 2. Quyết định chung
 
@@ -81,7 +81,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | [S3](sprint-3/index.md) | Hoàn thiện Lịch + Ghi chú: sửa UI, bấm tab mượt, tab "Ghi chú", phân trang + idempotency | Lịch + Ghi chú dùng mượt, không tạo trùng |
 | [S4](sprint-4/index.md) | Chi tiêu: thêm/sửa/xoá khoản chi, nhóm, xem Ngày/Tuần/Tháng, thống kê · chọn màu bất kỳ (toàn app) | Xong GĐ1 |
 | [S5](sprint-5/index.md) | Todo trên Lịch (việc cần làm theo ngày, giống CalendarCute) · Chu kỳ kinh nguyệt (chỉ dự đoán kỳ sau) · bật/tắt trong Cài đặt · Báo lỗi trong Cài đặt (gửi email nhà phát triển) · sửa 2 lỗi từ S4 ([màu gần nhất lên Google, số ít "1 note"](../../wip/2026-10-13-s4-real-device-test.md#finding--sửa-ở-s5)) | Quản lý việc cần làm theo ngày + theo dõi chu kỳ trên Lịch |
-| S6 | Nhanh, bền và tính năng: Lưu hiện ngay, gộp lượt gọi API · xử lý lỗi API / server / mất mạng (thời gian chờ, banner chung, lỗi trên Lịch, thông báo rõ) · rung nhẹ, khung xương khi tải, Hoàn tác sau khi xoá · ngân sách tháng, khoản chi lặp lại · tìm kiếm event + todo · note checklist ([lộ trình](../../wip/2026-10-14-speed-ux-improvements-plan.md)) | App lưu/tải nhanh, chịu được lỗi mạng/server, có thêm 4 tính năng |
+| [S6](sprint-6/index.md) | Nhanh, bền và tính năng: Lưu hiện ngay, gộp lượt gọi API · xử lý lỗi API / server / mất mạng (thời gian chờ, banner chung, lỗi trên Lịch, thông báo rõ) · rung nhẹ, khung xương khi tải, Hoàn tác sau khi xoá · ngân sách tháng, khoản chi lặp lại · tìm kiếm event + todo · đổi giao diện (màu, chế độ tối, nền, font) ([lộ trình](../../wip/2026-10-14-speed-ux-improvements-plan.md)) | App lưu/tải nhanh, chịu được lỗi mạng/server, có thêm 4 tính năng |
 | [S7](sprint-7/index.md) | Quảng cáo (banner AdMob) + Pro tắt quảng cáo (RevenueCat) + lên Google Play | App công khai trên Play, có quảng cáo, mua được Pro |
 
 ### Cuối sprint (mọi sprint)
@@ -99,6 +99,8 @@ Khi DoD sprint đạt, làm theo thứ tự (todo: 1 file mới trong `wip/`, th
 Folder `sprint-N/` chỉ tạo khi bắt đầu sprint đó (riêng S7 — trước đây S6 — viết sớm theo yêu cầu).
 
 ## 5. Xử lý lỗi chung
+
+Từ S6: thời gian chờ, banner chung, lỗi theo loại, Hoàn tác — [S6 §3](sprint-6/index.md#3-lỗi-api-server-mạng).
 
 - Mất mạng → banner, khoá nút Lưu.
 - Lưu lỗi → toast, giữ form.
