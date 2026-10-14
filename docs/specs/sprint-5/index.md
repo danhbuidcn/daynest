@@ -153,14 +153,14 @@ Màn Báo lỗi: nội dung · ảnh (≤ 3) · Gửi
 
 ## Xong khi (DoD)
 
-- [ ] Todo: tạo (chuyển qua lại Sự kiện ↔ Todo khi tạo), sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc trong danh sách thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google.
-- [ ] Danh sách todo: Quá hạn, Hôm nay, Sắp tới đúng theo ngày và múi giờ trong Cài đặt.
-- [ ] Chu kỳ: bật/tắt · ghi / bỏ ngày có kinh · dự đoán 3 kỳ đúng công thức (hàm thuần có test) · trễ → "Trễ N ngày" · nhắc đúng giờ nhắc, số ngày đã chọn trên máy thật.
-- [ ] Báo lỗi: gửi nội dung + 3 ảnh → email tới đủ các email trong DB, có ảnh · quá 5 lần / ngày bị chặn · user không đọc được báo cáo, ảnh, email của user khác.
-- [ ] 2 lỗi S4: màu gần nhất đúng theo test · "1 note" ở màn Categories và hộp xoá.
-- [ ] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
-- [ ] `npm run typecheck && npm run lint && npm test` qua.
-- [ ] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
+- [x] Todo: tạo (chuyển qua lại Sự kiện ↔ Todo khi tạo), sửa, xoá, lặp, sửa "Chỉ lần này", nhắc · việc trong danh sách thêm / sửa / xoá / kéo đổi thứ tự · tick trên Lịch, pop-up ngày, chi tiết, danh sách todo · todo lặp tick riêng từng lần · bật đồng bộ Google → todo không lên Google. *(2026-10-14 thử trên điện thoại thật; đồng bộ Google đang tắt trên máy nên chưa thử dòng Google — todo không có đường đồng bộ trong code)*
+- [x] Danh sách todo: Quá hạn, Hôm nay, Sắp tới đúng theo ngày và múi giờ trong Cài đặt. *(máy thật: đúng theo ngày chọn; múi giờ do hàm thuần có test)*
+- [ ] Chu kỳ: bật/tắt · ghi / bỏ ngày có kinh · dự đoán 3 kỳ đúng công thức (hàm thuần có test) · trễ → "Trễ N ngày" · nhắc đúng giờ nhắc, số ngày đã chọn trên máy thật. *(máy thật: phần còn lại đạt; nhắc đã đặt đúng 11/11 09:00 — bạn tự xem nhắc có tới đúng giờ)*
+- [x] Báo lỗi: gửi nội dung + 3 ảnh → email tới đủ các email trong DB, có ảnh · quá 5 lần / ngày bị chặn · user không đọc được báo cáo, ảnh, email của user khác.
+- [x] 2 lỗi S4: màu gần nhất đúng theo test · "1 note" ở màn Categories và hộp xoá.
+- [x] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
+- [x] `npm run typecheck && npm run lint && npm test` qua.
+- [x] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
 
 ## Đã chốt (2026-10-13)
 

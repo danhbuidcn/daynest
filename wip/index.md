@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-14 | S5 bước 10: Cuối sprint, release v5.0.0 | ✅ xong (v5.0.0 trên GitHub; nhắc đúng giờ bạn tự xem) | [2026-10-14-s5-step-10-release.md](2026-10-14-s5-step-10-release.md) |
 | 2026-10-14 | S5 bước 9: Test tải (Todo, chu kỳ) | ✅ xong (0 lỗi, p95 633 ms) | [2026-10-14-s5-step-9-load-test.md](2026-10-14-s5-step-9-load-test.md) |
 | 2026-10-14 | S5 bước 8: Báo lỗi (màn, ảnh, Edge Function gửi Gmail) | ✅ xong | [2026-10-14-s5-step-8-bug-report.md](2026-10-14-s5-step-8-bug-report.md) |
 | 2026-10-13 | Giảm cỡ giao diện Ghi chú, Chi tiêu, Lịch + tablet full màn hình | 🔄 chờ bạn xem trên máy | [2026-10-13-shrink-notes-expenses-ui.md](2026-10-13-shrink-notes-expenses-ui.md) |
@@ -16,7 +17,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | 2026-10-13 | S5 bước 3: Todo — dữ liệu + form + chi tiết | ✅ xong | [2026-10-13-s5-step-3-todo-data-form.md](2026-10-13-s5-step-3-todo-data-form.md) |
 | 2026-10-13 | S5 bước 2: sửa 2 lỗi S4 (màu Google, "1 notes") | ✅ xong (máy ảo thử ở bước 4) | [2026-10-13-s5-step-2-s4-bugs.md](2026-10-13-s5-step-2-s4-bugs.md) |
 | 2026-10-13 | S5 bước 1: DB (migration + test RLS) | ✅ xong (đã lên DB thật) | [2026-10-13-s5-step-1-db.md](2026-10-13-s5-step-1-db.md) |
-| 2026-10-13 | S5: lộ trình code (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | 🔄 đang làm (bước 1) | [2026-10-13-s5-code-plan.md](2026-10-13-s5-code-plan.md) |
+| 2026-10-13 | S5: lộ trình code (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | ✅ xong (v5.0.0) | [2026-10-13-s5-code-plan.md](2026-10-13-s5-code-plan.md) |
 | 2026-10-13 | S5: mockup (Todo, chu kỳ, báo lỗi) | ✅ xong | [2026-10-13-s5-mockups.md](2026-10-13-s5-mockups.md) |
 | 2026-10-13 | S5: viết spec (Todo, chu kỳ, báo lỗi, 2 lỗi S4) | ✅ xong | [2026-10-13-s5-spec.md](2026-10-13-s5-spec.md) |
 | 2026-10-13 | S5: lộ trình — Todo trên Lịch + chu kỳ + báo lỗi (xem Flo, CalendarCute) | ✅ xong (chốt phạm vi S5) | [2026-10-13-s5-plan.md](2026-10-13-s5-plan.md) |

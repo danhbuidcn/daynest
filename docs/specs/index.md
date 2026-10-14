@@ -66,7 +66,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | User đăng nhập/tháng | ≤ 10.000 | 50.000 MAU | Đủ |
 | Request cùng lúc | ~100 req/s lúc cao điểm | Chịu được khi có index | Đủ |
 | Dung lượng DB | Đo test tải S4 (2026-10-13): Lịch + Ghi chú ~20 KB/user · Chi tiêu ~157 KB/user/năm nếu ghi 2 khoản/ngày ([S4 db.md](sprint-4/design/db.md#kiểm-tra-tải)) · S5 (2026-10-14): Todo + chu kỳ ~123 KB/user nếu dùng nhiều (60 todo, 300 lần tick todo lặp, 12 kỳ) ([S5 db.md](sprint-5/design/db.md#kiểm-tra-tải)) → 10.000 user dùng đều ≈ 2,96 GB/năm | 500 MB | **Vượt** nếu nhiều user ghi chi tiêu, tick todo đều — thực tế ít user ghi mỗi ngày. Theo dõi dung lượng DB thật; gần 500 MB → cân nhắc gói Pro ($25/tháng) cùng lúc có thu nhập ở [S6](sprint-6/index.md) |
-| Storage | Không lưu file (ảnh đại diện lấy từ Google, không cho sửa) | 1 GB | Đủ |
+| Storage | Chỉ ảnh báo lỗi (S5): bucket `bug-reports`, ≤ 3 ảnh × ~300 KB/báo cáo, ≤ 5 báo cáo/ngày/user ([S5 db.md](sprint-5/design/db.md)) · ảnh đại diện lấy từ Google, không cho sửa | 1 GB | Đủ (ít báo cáo) |
 | Bỏ không 7 ngày bị tạm dừng | — | — | Ổn — app được dùng hằng ngày |
 
 - Giới hạn gói Free ở trên theo hiểu biết lúc viết; kiểm lại trang giá Supabase trước khi lên Play.
