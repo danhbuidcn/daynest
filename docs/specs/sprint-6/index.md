@@ -112,13 +112,13 @@ Giống Gmail: xoá xong có 4 s để Hoàn tác.
 - Chi tiêu › **Tháng**: dưới "Tổng chi" có thanh tiến độ.
   - Màu thanh: < 80% `primary` · 80–100% `warning` · > 100% `error`.
   - Chưa đặt → dòng "Đặt ngân sách tháng" (bấm được).
-- Bấm thanh / dòng → hộp "Ngân sách tháng 10": ô số tiền (bàn phím số, chấm ngàn như form khoản chi) · công tắc **"Dùng cho mọi tháng"** (mặc định bật; tháng đang có ngân sách riêng → tắt) · "Lưu" · "Bỏ ngân sách" (khi đã đặt).
-  - Lưu, công tắc bật → đặt ngân sách chung + bỏ ngân sách riêng của tháng này (nếu có).
-  - Lưu, công tắc tắt → đặt ngân sách riêng cho tháng này.
-  - Bỏ ngân sách, công tắc bật → bỏ ngân sách chung (và riêng của tháng này) · công tắc tắt → tháng này không có ngân sách, các tháng khác giữ ngân sách chung.
+- Bấm thanh / dòng → hộp "Ngân sách tháng 10": ô số tiền (bàn phím số, chấm ngàn như form khoản chi) · công tắc **"Dùng cho mọi tháng"** (mặc định bật; tháng đang có ngân sách riêng → tắt) · Huỷ / Lưu.
+  - Lưu, công tắc **bật** → số trong ô là ngân sách chung · tháng này bỏ ngân sách riêng (nếu có).
+  - Lưu, công tắc **tắt** → số trong ô là ngân sách riêng của tháng này.
+  - Ô để trống = "không có ngân sách" (không có nút "Bỏ ngân sách" riêng).
   - Hàm "ngân sách của tháng" là hàm thuần, có test.
 - Chế độ Ngày, Tuần: không hiện ngân sách.
-- Dòng dưới thanh: trái "71% ngân sách 7.800.000 ₫" (ngân sách riêng: "71% ngân sách riêng 7.800.000 ₫") · phải "Còn 2.320.000 ₫" (vượt: "Vượt …" chữ `error`) · chưa đặt: nút "Đặt ngân sách tháng" (nền `primarySoft`) trong thẻ Tổng chi · "Bỏ ngân sách" là chữ `error` dưới 2 nút Huỷ / Lưu.
+- Dòng dưới thanh: trái "71% ngân sách 7.800.000 ₫" (ngân sách riêng: "71% ngân sách riêng 7.800.000 ₫") · phải "Còn 2.320.000 ₫" (vượt: "Vượt …" chữ `error`) · chưa đặt: nút "Đặt ngân sách tháng" (nền `primarySoft`) trong thẻ Tổng chi.
 
 ## 7. Khoản chi lặp lại
 
@@ -213,7 +213,7 @@ Mọi màn: banner mất mạng ở đầu (khi mất mạng)
 Lịch Tháng: ô cao hơn (5 thanh), cuộn dọc, cuộn xuống → đầu thu gọn 1 dòng · thẻ lỗi / dòng "Chưa cập nhật được · Thử lại" · khung xương khi tải lần đầu
 Ghi chú (Todo + Ghi chú): khung xương · thẻ lỗi
 Chi tiêu (Ngày / Tuần / Tháng): Tổng chi · thanh ngân sách (Tháng) · biểu đồ (Tuần, Tháng) · danh sách nhóm → pop-up khoản chi của nhóm (✕ · nhóm · +)
-Hộp Ngân sách tháng: ô số tiền · công tắc "Dùng cho mọi tháng" · Lưu · Bỏ ngân sách
+Hộp Ngân sách tháng: ô số tiền (để trống = bỏ ngân sách) · công tắc "Dùng cho mọi tháng" · Huỷ / Lưu
 Màn Nhóm chi tiêu: dòng đầu "Khoản chi lặp lại ›"
 Form khoản chi (tạo mới): thêm dòng "Lặp lại"
 Màn Khoản chi lặp lại: danh sách quy tắc → form sửa quy tắc (Xoá)
@@ -259,3 +259,4 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 9. **Lịch Tháng rộng hơn** (bạn chốt 2026-10-14): ô ngày cao hơn (5 thanh) + cuộn dọc + cuộn xuống thu gọn đầu lịch.
 10. **Chi tiêu theo nhóm** (bạn chốt 2026-10-14): mọi chế độ chỉ danh sách nhóm, bấm nhóm → pop-up khoản chi · giữ biểu đồ ở Tuần, Tháng.
 11. **Không báo khi sắp vượt ngân sách** (bạn chốt 2026-10-14): người dùng tự thấy trên thanh tiến độ.
+12. **Không có nút "Bỏ ngân sách"** (bạn chốt 2026-10-14): xoá trống số tiền rồi Lưu là bỏ.
