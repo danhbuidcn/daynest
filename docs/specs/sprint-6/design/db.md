@@ -2,7 +2,7 @@
 
 Thuộc: [Sprint 6](../index.md).
 
-1 migration `s6_budget_recurring_search`, **chỉ thêm** (cột có mặc định, bảng mới, hàm, trigger) → bản app cũ chạy bình thường, **không** tăng `app_config.min_version_code`.
+1 migration `s6_budget_recurring_appearance`, **chỉ thêm** (cột có mặc định, bảng mới, hàm, trigger) → bản app cũ chạy bình thường, **không** tăng `app_config.min_version_code`.
 
 Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không đổi DB.
 
@@ -10,16 +10,33 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 
 | Cột | Quy tắc |
 | --- | --- |
-| `monthly_budget bigint` | null = chưa đặt · check `monthly_budget between 1 and 100000000000` |
+| `monthly_budget bigint` | Ngân sách **chung** · null = chưa đặt · check `monthly_budget between 1 and 100000000000` |
 
 - RLS giữ như `user_settings` hiện tại. App đọc / ghi cùng các cột Cài đặt khác.
+
+### Bảng `expense_month_budgets` — ngân sách riêng 1 tháng
+
+| Cột | Quy tắc |
+| --- | --- |
+| `user_id uuid` | `default auth.uid()` · `references auth.users on delete cascade` |
+| `month date not null` | Ngày 1 của tháng · check `extract(day from month) = 1` |
+| `amount bigint` | null = tháng này **không** có ngân sách (dù có ngân sách chung) · check 1 → 100.000.000.000 |
+| `updated_at` | trigger `set_updated_at` |
+
+- Khoá chính `(user_id, month)` · app upsert / xoá dòng.
+- RLS `user_id = auth.uid()` + `session_active()`.
+- Ngân sách của tháng M = dòng tháng M nếu có (kể cả `amount` null), không thì `monthly_budget`.
+- Dung lượng nhỏ: tối đa vài dòng / user / năm.
 
 ## Giao diện — cột trong `user_settings`
 
 | Cột | Quy tắc |
 | --- | --- |
-| `theme text not null default 'mint'` | check in 8 bộ màu + `system` |
-| `background text not null default 'plain'` | `plain` · `gradient-1` … `gradient-6` · `photo` (ảnh chỉ trên máy; máy không có ảnh → coi như `plain`) |
+| `theme text not null default 'mint'` | check in 8 bộ màu + `system` + `custom` |
+| `theme_primary text` | Màu chủ đạo tự chọn `#RRGGBB` (khi `theme = 'custom'`) · check dạng hex |
+| `theme_dark boolean not null default false` | Tự chọn: nền Tối |
+| `background text not null default 'plain'` | `plain` · `color` · `gradient-1` … `gradient-6` · `photo` (ảnh chỉ trên máy; máy không có ảnh → coi như `plain`) |
+| `background_color text` | Màu nền tự chọn `#RRGGBB` (khi `background = 'color'`) · check dạng hex |
 | `font text not null default 'nunito'` | check in (`nunito`, `be-vietnam-pro`, `quicksand`, `itim`) |
 | `font_scale real not null default 1` | check in (0.9, 1, 1.15) |
 
@@ -60,19 +77,6 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 - `p_today` do app gửi theo múi giờ Cài đặt · chặn `p_today > current_date + 1` (máy để sai ngày không ghi trước tương lai xa).
 - Cùng cách tính ngày kế tiếp có ở app (`lib/expenses/`, hàm thuần có test) để hiện "Lần tới" và tạo `next_on` ban đầu · test SQL so khớp vài ca (ngày 31, tháng 2 năm nhuận, hằng tuần).
 
-## Tìm kiếm — cột `search_text` trong `events`, `todos`
-
-| Cột | Quy tắc |
-| --- | --- |
-| `search_text text not null default ''` | Tiêu đề + chi tiết, bỏ dấu, chữ thường, `đ` → `d` |
-
-- Điền bằng **trigger** `before insert or update of title, note` → mọi nơi ghi (app mới, app cũ, kéo về từ Google) đều có `search_text` đúng, app không phải tự điền.
-- Bỏ dấu: hàm `public.fold_text(text)` dùng extension `unaccent` (có sẵn trên Supabase) + `replace` `đ`/`Đ` + `lower` · kết quả khớp `foldText` của app (`lib/notes`) để chữ người dùng gõ (app bỏ dấu) so được với `search_text`.
-- Migration điền `search_text` cho mọi dòng có sẵn.
-- App tìm: `search_text ilike '%…%'` + `deleted_at is null` + giới hạn 50, như note (`ilikePattern`).
-- Không thêm index trigram: mỗi user vài trăm – vài nghìn event, lọc theo `user_id` trước (index có sẵn `(user_id, span_start)`) là đủ nhanh · test tải kiểm lại.
-- `event_exceptions`, `todo_exceptions` không có `search_text`: tiêu đề sửa "Chỉ lần này" không tìm được (hiếm, ghi ở "Không làm" của spec).
-
 ## Tải event + todo 1 lượt (không đổi DB)
 
 - `events` → `event_exceptions` và `todos` → `todo_exceptions` đã có khoá ngoại → select lồng bảng của Supabase dùng được ngay · ngoại lệ vẫn bị RLS lọc như cũ.
@@ -81,12 +85,12 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 
 - `expense_recurrences`: user A không đọc / sửa / xoá được quy tắc của B · không tạo được quy tắc với `category_id` của B.
 - `generate_due_expenses`: A gọi chỉ ghi khoản chi của A · máy bị đăng xuất (`session_active()` false) không ghi được.
-- `monthly_budget`, cột giao diện: A không đọc / sửa được của B (theo RLS `user_settings` có sẵn).
+- `monthly_budget`, cột giao diện, `expense_month_budgets`: A không đọc / sửa được của B (theo RLS `user_settings` có sẵn).
 
 ## Kiểm tra tải
 
 - Như [S2](../../sprint-2/design/db.md#kiểm-tra-tải), chạy `supabase/db load` trên Supabase local.
-- Seed thêm mỗi user giả: 5 quy tắc lặp (3 hằng tháng, 2 hằng tuần) · `monthly_budget` · điền `search_text` cho event / todo đã seed.
-- Vòng lặp user ảo thêm: gọi `generate_due_expenses` → tìm kiếm event + todo 1 từ → đọc event + todo 1 lượt (select lồng bảng).
-- Đạt: 0 lỗi, p95 < 1 s · `explain analyze` tìm kiếm lọc theo `user_id` bằng index.
+- Seed thêm mỗi user giả: 5 quy tắc lặp (3 hằng tháng, 2 hằng tuần) · `monthly_budget` + 2 tháng riêng.
+- Vòng lặp user ảo thêm: gọi `generate_due_expenses` → đọc event + todo 1 lượt (select lồng bảng).
+- Đạt: 0 lỗi, p95 < 1 s · `explain analyze` `generate_due_expenses` dùng index `(user_id)` của `expense_recurrences`.
 - Đo dung lượng thêm / user → cập nhật [§3 Mục tiêu tải](../../index.md#mục-tiêu-tải).

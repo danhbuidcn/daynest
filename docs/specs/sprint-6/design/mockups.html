@@ -659,30 +659,6 @@ const themeCss = `<style>
   /* Khung xương: khối xám nhấp nháy nhẹ */
   .sk { background: linear-gradient(90deg, var(--border) 25%, color-mix(in srgb, var(--border) 35%, var(--surface)) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 6px; }
   @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
-  /* Thanh chế độ + nút tìm kiếm */
-  .segrow { display: flex; gap: 8px; align-items: center; margin: 4px 16px 8px; flex: none; }
-  .segrow .seg { flex: 1; margin: 0; padding: 3px 2px; }
-  .segrow .seg span { white-space: nowrap; }
-  .ibtn { width: 40px; margin-left: -2px; height: 40px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; color: var(--text); flex: none; }
-  .ibtn svg { width: 22px; height: 22px; }
-  .ibtn.hl { box-shadow: 0 0 0 2px var(--primary); }
-  /* Tìm kiếm */
-  .sbar { display: flex; gap: 8px; align-items: center; padding: 8px 12px 8px 4px; flex: none; }
-  .sbar .back { width: 40px; height: 40px; display: grid; place-items: center; } .sbar .back svg { width: 24px; height: 24px; }
-  .sbar .search { flex: 1; margin: 0; border-color: var(--primary); color: var(--text); }
-  .sbar .search .x2 { margin-left: auto; color: var(--muted); width: 18px; height: 18px; }
-  .rlist { flex: 1; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 6px; }
-  .rhead { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; padding: 8px 4px 2px; }
-  .rrow { display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 60px; }
-  .rrow + .rrow { border-top: 1px solid var(--border); }
-  .rrow .cd { width: 10px; height: 10px; border-radius: 50%; flex: none; margin: 0 6px; }
-  .rrow .mid { flex: 1; min-width: 0; }
-  .rrow .mid div { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .rrow .mid div b { font-weight: 800; background: var(--primary-soft); border-radius: 4px; padding: 0 2px; }
-  .rrow .mid span { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
-  .rrow .mid span svg { width: 13px; height: 13px; }
-  .rrow.done .mid div { text-decoration: line-through; color: var(--muted); }
-  .ttag { height: 20px; padding: 0 8px; border-radius: 999px; background: color-mix(in srgb, var(--lavender) 28%, var(--surface)); color: var(--text); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; flex: none; }
   /* Ngân sách */
   .bud { margin-top: 10px; }
   .bud .progress { height: 10px; margin: 0 0 6px; }
@@ -720,9 +696,9 @@ const themeCss = `<style>
 </style>`;
 
 // ---- Lịch (S6: nút 🔍 cạnh thanh chế độ) ----
-const segRow = (on, hl) => `<div class="segrow"><div class="seg">${['Tháng', 'Danh sách', 'Tuần', 'Ngày'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div><span class="ibtn ${hl ? 'hl' : ''}">${I.search}</span></div>`;
+const segRow = (on) => seg4(on);
 const offline = `<div class="offline">${I.wifiOff}<span>Không có kết nối mạng.</span></div>`;
-const calMonth = ({ banner = '', hl = false, grid = monthCal() } = {}) => `<div class="content">${banner}${calHead('Tháng 10, 2026')}${segRow('Tháng', hl)}${grid}</div>${tabbar('cal')}`;
+const calMonth = ({ banner = '', grid = monthCal() } = {}) => `<div class="content">${banner}${calHead('Tháng 10, 2026')}${segRow('Tháng')}${grid}</div>${tabbar('cal')}`;
 
 // Khung xương lịch tháng: lưới, số ngày, ngày âm có ngay (tính trên máy) · chỉ thanh event chờ tải
 const monthSkeleton = () => {
@@ -735,12 +711,34 @@ const monthSkeleton = () => {
   }).join('')}</div>`;
 };
 
+// Lịch Tháng rộng hơn (S6 §9): ô 5 thanh, lưới cuộn dọc, cuộn xuống → đầu thu gọn
+const EV2 = [[12, 'Tập yoga', 'mint'], [13, 'Gọi mẹ', 'peach'], [14, 'Tập yoga', 'mint'], [16, 'Đi siêu thị', 'mint'], [16, 'Trả sách', 'sky'], [16, 'Tập yoga', 'mint'], [20, 'Họp phụ huynh', 'lemon'], [21, 'Tập yoga', 'mint'], [23, 'Cắt tóc', 'lavender'], [27, 'Tập yoga', 'mint']];
+const tallGrid = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="month" style="flex:none;grid-template-rows:repeat(6,118px)">${cells.map((dt) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate(); const key = inM ? d : dt.getMonth() === 10 ? 31 + d : -1; const [ld, lm] = lunar(dt);
+    const evs = inM ? [...EV, ...EV2].filter((e) => e[0] === d).map((e) => `<div class="bar ev-${e[2]}">${e[1]}</div>`) : [];
+    const tds = inM ? T.filter((t) => t[0] === d).map((t) => `<div class="bar ev-${t[2]} tbar ${t[3] ? 'done' : ''}"><span class="o"></span>${t[1]}</div>`) : [];
+    const all = [...evs, ...tds];
+    const dot = inM && PERIOD.includes(d) ? `<span class="pdot">${I.drop(true)}</span>` : PRED.includes(key) ? `<span class="pdot pred">${I.drop(false)}</span>` : '';
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}"><div class="top"><span class="d">${d}</span><span class="l ${ld === 1 || ld === 15 ? 'key' : ''}">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${dot}
+      ${all.slice(0, 5).join('')}${all.length > 5 ? `<div class="more">+${all.length - 5}</div>` : ''}</div>`;
+  }).join('')}</div>`;
+};
+const wkRow = `<div class="wk" style="background:var(--wall, var(--bg));position:relative;z-index:1">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>`;
+const calTall = (scrolled) => `<div class="content">${scrolled
+  ? `<div class="cal-head" style="padding:4px 12px 2px 8px"><span class="nav">${I.left}</span><div class="t" style="font-size:17px;line-height:24px">Tháng 10, 2026</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`
+  : `${calHead('Tháng 10, 2026')}${seg4('Tháng')}`}
+  ${wkRow}<div style="flex:1;overflow:hidden;position:relative"><div style="transform:translateY(${scrolled ? -236 : 0}px)">${tallGrid()}</div>
+  <span style="position:absolute;right:2px;top:${scrolled ? 34 : 4}%;width:3px;height:38%;border-radius:3px;background:var(--muted);opacity:.45"></span></div>
+</div>${tabbar('cal')}`;
+
 // ---- Lỗi ----
 const errCard = (icon, title, text) => `<div class="card errcard"><span class="ei">${icon}</span><h3>${title}</h3><p>${text}</p><button class="btn btn-secondary" style="width:auto;padding:0 28px">${I.restore}Thử lại</button></div>`;
 const calError = `<div class="content">${calHead('Tháng 10, 2026')}${segRow('Danh sách')}
   ${errCard(I.cloudOff, 'Máy chủ đang gặp sự cố.', 'Hãy thử lại sau ít phút.')}
 </div>${tabbar('cal')}`;
-const calStale = agendaScreen.replace(seg4('Danh sách'), `${segRow('Danh sách')}<div class="stale">Chưa cập nhật được · <b>Thử lại</b></div>`);
+const calStale = agendaScreen.replace(seg4('Danh sách'), `${seg4('Danh sách')}<div class="stale">Chưa cập nhật được · <b>Thử lại</b></div>`);
 
 // ---- Ghi chú ----
 const notesHead = (on) => `<div class="screen-title">Ghi chú</div><div class="seg two" style="margin-top:0">${['Todo', 'Ghi chú'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
@@ -776,8 +774,7 @@ const X = [
 const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`;
 const cico = (k, size) => `<span class="cico ev-${C[k][0]}"${size ? ` style="width:${size}px;height:${size}px"` : ''}>${I[C[k][1]]}</span>`;
 const total = X.reduce((s, r) => s + r[2], 0);
-const expHead = (hlRep) => `<div class="topbar" style="grid-template-columns:88px 1fr 88px"><span></span><div class="screen-title">Chi tiêu</div>
-  <span style="display:flex;gap:8px;justify-content:flex-end"><span class="act ${hlRep ? 'hl2' : ''}" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:12px">${I.repeat}</span><span class="act" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:12px">${I.tag}</span></span></div>`;
+const expHead = (hlTag) => `<div class="topbar"><span></span><div class="screen-title">Chi tiêu</div><span class="act ${hlTag ? 'hl2' : ''}" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:12px">${I.tag}</span></div>`;
 const seg3 = (on) => `<div class="seg three">${['Ngày', 'Tuần', 'Tháng'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
 const periodHead = (t) => `<div class="cal-head" style="grid-template-columns:32px 1fr 32px"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span></div>`;
 const byCat = (rows) => {
@@ -794,26 +791,41 @@ const barChart = (title, vals, labs, onIdx, showLab = () => true) => { const max
 const days31 = Array.from({ length: 31 }, (_, i) => i + 1);
 const dayChart = barChart('Theo ngày', days31.map((d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0)), days31.map(String), 12, (i) => [0, 4, 9, 14, 19, 24, 30].includes(i));
 // Ngân sách: < 80% primary · 80–100% warning · > 100% error
-const budgetCard = (budget, spent = total) => {
+const budgetCard = (budget, spent = total, own = false) => {
   if (!budget) return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div><div class="setbud hl2">${I.budget}Đặt ngân sách tháng</div></div>`;
   const pc = Math.round((spent / budget) * 100); const color = pc > 100 ? 'error' : pc >= 80 ? 'warning' : 'primary';
   return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div>
     <div class="bud"><div class="progress"><i style="width:${Math.min(pc, 100)}%;background:var(--${color})"></i></div>
-    <div class="line"><span>${pc}% ngân sách ${vnd(budget)}</span>${pc > 100 ? `<b class="over">Vượt ${vnd(spent - budget)}</b>` : `<b>Còn ${vnd(budget - spent)}</b>`}</div></div></div>`;
+    <div class="line"><span>${pc}% ngân sách ${own ? 'riêng ' : ''}${vnd(budget)}</span>${pc > 100 ? `<b class="over">Vượt ${vnd(spent - budget)}</b>` : `<b>Còn ${vnd(budget - spent)}</b>`}</div></div></div>`;
 };
-const expMonth = (budget, { hlRep = false, spent } = {}) => `<div class="content">${expHead(hlRep)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
-  <div class="xlist">${budgetCard(budget, spent)}${dayChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
+const expMonth = (budget, { hlTag = false, spent, own = false } = {}) => `<div class="content">${expHead(hlTag)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
+  <div class="xlist">${budgetCard(budget, spent, own)}${dayChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
 </div>${tabbar('exp')}`;
 const dayRows = X.filter((r) => r[0] === 13);
-const expDayUndo = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
-  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(65000)}</div></div>
-  <div class="card">${dayRows.slice(1).map(xrow).join('')}</div></div>
-</div>${tabbar('exp')}<div class="toast">Đã xoá<span class="act">Hoàn tác</span></div>`;
+// Chi tiêu theo nhóm (S6 §10): mọi chế độ chỉ danh sách nhóm · bấm nhóm → pop-up khoản chi của nhóm
+const groupCard = (rows, hl) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(rows).replace('<div class="crow">', hl ? '<div class="crow hl2">' : '<div class="crow">')}</div>`;
+const expDay = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(dayRows.reduce((t, r) => t + r[2], 0))}</div></div>${groupCard(dayRows, true)}</div>
+</div>${tabbar('exp')}`;
+const groupPopup = (k, rows, period, under, toast = '') => {
+  const sum = rows.reduce((t, r) => t + r[2], 0);
+  const days = [...new Set(rows.map((r) => r[0]))].sort((a, b) => b - a);
+  return `<div class="under">${under}</div>
+  <div class="scrim big"><div class="dialog big" style="text-align:left;padding:16px 14px 18px">
+    <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:10px"><span class="x">${I.close}</span>
+      <h3 style="display:flex;gap:8px;align-items:center;justify-content:center">${cico(k, 28)}${C[k][2]}</h3><span class="round-plus">${I.plus}</span></div>
+    <div style="text-align:center;margin-bottom:12px"><div class="cap muted">${period}</div><div style="font-size:22px;line-height:28px;font-weight:800">${vnd(sum)}</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">${days.map((d) => `${days.length > 1 || period.startsWith('Tháng') ? `<div class="dhead" style="padding:2px 4px 0"><b>${d === 13 ? 'Hôm nay' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`}</b></div>` : ''}<div class="card" style="box-shadow:none;border:1px solid var(--border)">${rows.filter((r) => r[0] === d).map(xrow).join('')}</div>`).join('')}</div>
+  </div></div>${toast}`;
+};
+const undoToast = '<div class="toast" style="z-index:7">Đã xoá<span class="act">Hoàn tác</span></div>';
+const expDayUndo = groupPopup('food', X.filter((r) => r[1] === 'food' && r[0] !== 13), 'Tháng 10, 2026', expMonth(7800000), undoToast);
 
-const budgetDialog = `<div class="under">${expMonth(7800000)}</div>
-  <div class="scrim"><div class="dialog"><span class="dicon">${I.budget}</span><h3>Ngân sách tháng</h3>
-    <div class="amtin" style="padding:14px 0 6px"><div class="v"><span class="u">7.800.000 ₫<span class="caret"></span></span></div></div>
-    <p style="margin:4px 0 18px">Dùng cho mọi tháng.</p>
+const budgetDialog = (all) => `<div class="under">${expMonth(all ? 7800000 : 15000000, { own: !all })}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon">${I.budget}</span><h3>Ngân sách tháng 10</h3>
+    <div class="amtin" style="padding:14px 0 6px"><div class="v"><span class="u">${all ? '7.800.000' : '15.000.000'} ₫<span class="caret"></span></span></div></div>
+    <div class="frow2" style="padding:0 4px;cursor:default;text-align:left"><span class="grow">Dùng cho mọi tháng</span><span class="sw ${all ? 'on' : ''}"></span></div>
+    <p style="margin:0 0 18px;text-align:left;padding:0 4px;font-size:12px;line-height:16px">${all ? 'Tháng nào chưa đặt riêng sẽ dùng số này.' : 'Chỉ áp dụng cho tháng 10. Các tháng khác vẫn dùng 7.800.000 ₫.'}</p>
     <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
     <div style="margin-top:14px;font-size:15px;font-weight:700;color:var(--error)">Bỏ ngân sách</div>
   </div></div>`;
@@ -861,30 +873,21 @@ const ruleEdit = `<div class="content">
   <div class="form-footer" style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-danger">${I.trash}Xoá</button><button class="btn btn-primary">Lưu</button></div>
 </div>`;
 const ruleDel = `<div class="under">${ruleEdit}</div>
-  <div class="scrim"><div class="dialog"><span class="dicon err">${I.trash}</span><h3>Xoá khoản chi lặp lại này?</h3><p>Các khoản chi đã ghi vẫn được giữ.</p>
+  <div class="scrim"><div class="dialog"><span class="dicon err">${I.trash}</span><h3 style="margin-bottom:20px">Xoá khoản chi lặp lại này?</h3>
   <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div></div></div>`;
 
-// ---- Tìm kiếm ----
-const RES = [
-  ['up', 'todo', 'Học tiếng Anh — Ngày 4', 'lavender', 'Ngày mai, 14/10', false],
-  ['up', 'ev', 'Học bơi cho bé', 'sky', 'Lặp hằng tuần · lần tới T7, 17/10', false, true],
-  ['up', 'todo', 'Đóng tiền học bơi', 'peach', 'T6, 16/10', false],
-  ['past', 'todo', 'Học tiếng Anh — Ngày 2', 'lavender', 'Hôm qua, 12/10', true],
-  ['past', 'ev', 'Họp phụ huynh đầu học kỳ', 'mint', 'T7, 3/10 · 8:00', false],
-  ['past', 'ev', 'Ôn thi chứng chỉ — học nhóm', 'lemon', 'CN, 20/9 · 14:00', false],
-];
-const hiHoc = (t) => t.replace(/(Học|học)/, '<b>$1</b>');
-const rrow = ([, kind, t, c, when, done, rep]) => `<div class="rrow ${done ? 'done' : ''}">${kind === 'todo' ? tk(done) : `<span class="cd ev-${c}"></span>`}<div class="mid"><div>${hiHoc(t)}</div><span>${rep ? I.repeat : ''}${when}</span></div>${kind === 'todo' ? '<span class="ttag">Todo</span>' : ''}</div>`;
-const searchBar = (q) => `<div class="sbar"><span class="back">${I.left}</span><div class="search">${I.search}<span>${q}<span class="caret"></span></span><span class="x2">${I.close}</span></div></div>`;
-const searchScreen = `<div class="content">${searchBar('hoc')}
-  <div class="rlist"><div class="rhead">Sắp tới</div><div class="card">${RES.filter((r) => r[0] === 'up').map(rrow).join('')}</div>
-  <div class="rhead">Đã qua</div><div class="card">${RES.filter((r) => r[0] === 'past').map(rrow).join('')}</div></div>
-</div>`;
-const searchEmpty = `<div class="content">${searchBar('sinh nhat bo')}
-  <div class="empty"><span class="ei">${I.search}</span><div style="font-size:17px;font-weight:700">Không tìm thấy kết quả cho "sinh nhat bo"</div></div>
-</div>`;
-const searchStart = `<div class="content">${searchBar('')}
-  <div class="empty"><span class="ei">${I.search}</span><div class="muted" style="font-size:15px">Tìm sự kiện và todo</div></div>
+// Màn Nhóm chi tiêu (S4) — S6 thêm dòng đầu "Khoản chi lặp lại ›"
+const catLine = (k, own) => `<div class="row">${cico(k)}<span class="label">${C[k][2]}</span>${own ? `<span class="muted" style="width:24px;height:24px">${I.more}</span>` : `<span class="lock">${I.lock}</span>`}</div>`;
+const catsScreen = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>
 </div>`;
 
 // ---- Cài đặt + màn Giao diện ----
@@ -909,9 +912,9 @@ const appearance = (state) => `<div class="content">
     ${preview}
     <div class="settings" style="gap:14px">
       <div class="group-label">Chủ đề màu</div>
-      <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div></div>
+      <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div><div class="swi"><span class="swc" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)"><i style="background:#fff;display:grid;place-items:center;font-size:14px;font-weight:800;line-height:1;color:#2F2D33">+</i></span>Tự chọn</div></div>
       <div class="group-label">Nền</div>
-      <div class="card"><div class="tiles"><span class="tile on" style="background:var(--bg)">Trơn</span>${GRADS.slice(0, 4).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile">${I.image}</span></div>
+      <div class="card"><div class="tiles"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);color:#2F2D33;font-weight:800">Màu</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile">${I.image}</span></div>
         <div class="cap muted" style="padding:0 16px 12px">Ảnh của bạn chỉ lưu trên máy này.</div></div>
       <div class="group-label">Font chữ</div>
       <div class="card">${Object.entries(FONTS).map(([k, [n, f]]) => `<div class="frow2" onclick="setFont('${k}')"><span class="aa" style="font-family:${f}">Aa</span><span class="grow" style="font-family:${f}">${n}</span>${state.font === k ? I.check : ''}</div>`).join('')}</div>
@@ -920,6 +923,18 @@ const appearance = (state) => `<div class="content">
     </div>
   </div>
 </div>`;
+// Hộp Tự chọn: hộp chọn màu S4 + Sáng / Tối · app tự tính các màu còn lại
+const customPick = `<div class="under">${'__APP__'}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left">
+    <h3 style="text-align:center;margin-bottom:12px">Tự chọn màu chủ đạo</h3>
+    <div style="height:130px;border-radius:16px;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,#FF5A36);position:relative"><span style="position:absolute;left:78%;top:18%;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></span></div>
+    <div style="height:16px;border-radius:999px;margin:12px 0;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);position:relative"><span style="position:absolute;left:3%;top:-3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span style="width:44px;height:44px;border-radius:14px;background:#FF7A59;flex:none"></span><div class="input" style="flex:1">#FF7A59</div></div>
+    <div class="seg two" style="margin:0 0 10px"><span class="on">Sáng</span><span>Tối</span></div>
+    <div class="cap muted" style="margin:0 4px 14px">Các màu còn lại được tính tự động để chữ luôn dễ đọc.</div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary" style="background:#FF7A59">Chọn</button></div>
+  </div></div>`;
+const CUSTOM = '--primary:#FF7A59;--primary-dark:#C4472A;--primary-soft:#FFEBE5;--bg:#FFFAF8;--surface:#FFFFFF;--border:#F3E6E1;--text:#33292A;--muted:#93827E;--toast:#33292A';
 const photoPicked = `<div class="content">
   <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Giao diện</div><span></span></div>
   <div class="settings" style="gap:14px">
@@ -931,7 +946,7 @@ const photoPicked = `<div class="content">
 </div>`;
 
 // Màn đặt bộ màu riêng (không theo nút thử ở đầu trang)
-const phoneT = (inner, { theme, font, wall, cls = '' } = {}) => `<div class="phone ${cls}" ${theme ? `data-theme="${theme}"` : ''} ${font ? `data-font="${font}"` : ''} ${wall ? `style="--wall:${wall}"` : ''}>${status}${inner}</div>`;
+const phoneT = (inner, { theme, font, wall, vars = '', cls = '' } = {}) => `<div class="phone ${cls}" ${theme ? `data-theme="${theme}"` : ''} ${font ? `data-font="${font}"` : ''} style="${wall ? `--wall:${wall};` : ''}${vars}">${status}${inner}</div>`;
 const darkExp = expMonth(7800000);
 
 const state = { theme: 'mint', font: 'nunito' };
@@ -945,35 +960,39 @@ const groupsS6 = (st) => [
     ['4b. Khung xương — Ghi chú', 'chip + thẻ xám · Todo, Chi tiêu cùng kiểu (khối tổng + cột xám)', phoneT(notesSkeleton)],
   ]],
   ['Hoàn tác', [
-    ['5. Đã xoá', 'không còn hộp "Xoá …?" · bấm Xoá → mục biến mất ngay + toast 4 s "Đã xoá · Hoàn tác" · hết 4 s mới xoá thật · khoản chi tự ghi có icon lặp nhỏ (Cà phê sáng)', phoneT(expDayUndo)],
+    ['5. Đã xoá', 'không còn hộp "Xoá …?" · bấm Xoá trong form sửa → về pop-up nhóm, mục biến mất ngay + toast 4 s "Đã xoá · Hoàn tác" · hết 4 s mới xoá thật', phoneT(expDayUndo)],
   ]],
-  ['Tìm kiếm event + todo', [
-    ['6. Nút 🔍 trên Lịch', 'cạnh thanh chế độ (viền xanh), ở cả 4 chế độ', phoneT(calMonth({ hl: true }))],
-    ['6b. Mở tìm kiếm', 'ô tìm tự focus, bàn phím mở · gợi ý', phoneT(searchStart)],
-    ['7. Kết quả', 'gõ "hoc" ra "Học" (không dấu, không hoa thường) · đoạn khớp in đậm · Sắp tới (gần nhất trước) rồi Đã qua (gần nhất trước) · todo có ô tick + nhãn "Todo" · event lặp: "lần tới" · bấm → chi tiết', phoneT(searchScreen)],
-    ['8. Không thấy', '', phoneT(searchEmpty)],
-  ]],
-  ['Chi tiêu: ngân sách, khoản chi lặp lại', [
-    ['9. Tháng — có ngân sách', 'thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · nút lặp mới cạnh nút Nhóm (viền xanh) → màn 12', phoneT(expMonth(7800000, { hlRep: true }))],
+  ['Chi tiêu: theo nhóm, ngân sách, khoản chi lặp lại', [
+    ['9. Tháng — có ngân sách', 'thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · đầu màn giữ như S4 (chỉ nút Nhóm, viền xanh → màn 13)', phoneT(expMonth(7800000, { hlTag: true }))],
+    ['9a. Chi tiêu chỉ theo nhóm', 'Ngày (cũng như Tuần, Tháng): Tổng chi + danh sách nhóm, không còn từng khoản chi · bấm nhóm (viền xanh) → pop-up 9d', phoneT(expDay)],
+    ['9d. Pop-up nhóm', 'bấm nhóm Hoá đơn ở Tháng → khoản chi của nhóm trong tháng, nhóm theo ngày, mới nhất trước · icon lặp = tự ghi · bấm khoản → form sửa · + thêm khoản chi vào nhóm này', phoneT(groupPopup('bills', X.filter((r) => r[1] === 'bills'), 'Tháng 10, 2026', expMonth(7800000)))],
     ['9b. Vượt ngân sách', '> 100% → thanh đầy màu error · "Vượt …" chữ error · 80–100%: màu warning', phoneT(expMonth(5000000))],
     ['9c. Chưa đặt', 'nút "Đặt ngân sách tháng" (viền xanh) → hộp 10 · Ngày, Tuần không hiện ngân sách', phoneT(expMonth(0))],
-    ['10. Hộp Ngân sách tháng', 'nhập số (chấm ngàn như form khoản chi) · "Bỏ ngân sách" chỉ hiện khi đã đặt', phoneT(budgetDialog)],
+    ['10. Hộp Ngân sách — mọi tháng', 'công tắc "Dùng cho mọi tháng" bật (mặc định) → ngân sách chung · "Bỏ ngân sách" chỉ hiện khi đã đặt', phoneT(budgetDialog(true))],
+    ['10b. Hộp Ngân sách — chỉ tháng này', 'tắt công tắc → ngân sách riêng tháng 10 (vd tháng Tết) · thanh ở màn 9 ghi "ngân sách riêng" · các tháng khác vẫn dùng ngân sách chung', phoneT(budgetDialog(false))],
     ['11. Cảnh báo ngân sách', 'Lưu khoản chi làm tổng tháng vượt 80% lần đầu → toast có chấm warning · vượt 100% lần đầu: "Bạn đã vượt ngân sách tháng 10: 250.000 ₫."', phoneT(budgetToast)],
     ['12. Form — Lặp lại', 'dòng "Lặp lại" (viền xanh) chỉ khi tạo mới · chọn lặp → chú thích ngày tự ghi', phoneT(expForm())],
     ['12b. Chọn kiểu lặp', 'Hằng tuần theo thứ của ngày đã chọn · Hằng tháng theo ngày (29–31 mà tháng thiếu → ngày cuối tháng)', phoneT(repeatPick)],
-    ['13. Màn Khoản chi lặp lại', 'mở từ nút lặp ở màn 9 · bấm dòng → 13b · "Thêm khoản chi lặp lại" mở form 12 với Lặp lại = Hằng tháng', phoneT(rulesScreen)],
+    ['13. Màn Nhóm chi tiêu', 'nút Nhóm ở đầu Chi tiêu (có từ S4) · S6 thêm dòng đầu "Khoản chi lặp lại ›" (viền xanh) → màn 13a', phoneT(catsScreen)],
+    ['13a. Màn Khoản chi lặp lại', 'mở từ màn 13 · bấm dòng → 13b · "Thêm khoản chi lặp lại" mở form 12 với Lặp lại = Hằng tháng', phoneT(rulesScreen)],
     ['13b. Sửa khoản chi lặp lại', 'đổi áp dụng từ lần tới · "Lần tới" chọn được', phoneT(ruleEdit)],
-    ['13c. Xoá khoản chi lặp lại', 'còn hộp xác nhận (không Hoàn tác) · chỉ dừng lặp', phoneT(ruleDel)],
+    ['13c. Xoá khoản chi lặp lại', 'hộp chỉ có tiêu đề (không Hoàn tác) · chỉ dừng lặp, khoản chi đã ghi giữ nguyên', phoneT(ruleDel)],
+  ]],
+  ['Lịch Tháng rộng hơn', [
+    ['19. Ô cao hơn', 'tối đa 5 thanh + "+N" · lưới cao hơn màn → cuộn dọc · mở Lịch cuộn tới tuần có hôm nay', phoneT(calTall(false))],
+    ['19b. Đã cuộn xuống', 'đầu lịch thu gọn 1 dòng, thanh chế độ ẩn · hàng thứ dính ở đầu lưới · cuộn lên → hiện lại đầy đủ · vuốt ngang vẫn đổi tháng', phoneT(calTall(true))],
   ]],
   ['Giao diện', [
     ['14. Cài đặt', 'nhóm "Giao diện" đầu danh sách (viền xanh) → màn 15 · dòng phụ tóm tắt lựa chọn', phoneT(settingsS6(st))],
     ['15. Màn Giao diện', '<b>bấm ô màu hoặc font ở đây (hoặc nút ở đầu trang) → mọi khung không ghi bộ màu riêng đổi theo</b> · ô xem trước ở đầu · 8 bộ màu + Theo hệ thống · nền: Trơn, 6 chuyển màu, Ảnh của bạn · 4 font · cỡ chữ Nhỏ / Vừa / Lớn · đổi xong áp dụng ngay', phoneT(appearance(st), { cls: 'tall' })],
+    ['15a. Tự chọn màu chủ đạo', 'ô "Tự chọn" ở màn 15 → hộp chọn màu (như S4) + Sáng / Tối · app tự tính màu đậm, nhạt, nền, viền; màu quá nhạt tự đậm lên cho chữ dễ đọc', phoneT(customPick.replace('__APP__', appearance(state)))],
     ['15b. Chọn ảnh nền', 'chọn ảnh từ máy → ô độ mờ 0–80% (mặc định 40%)', phoneT(photoPicked)],
     ['16. Bộ Tối — Lịch', 'chữ trên thanh event giữ màu tối cố định (nền pastel) · toast nền xám đậm', phoneT(calMonth() + '<div class="toast">Đã lưu</div>', { theme: 'dark' })],
     ['16b. Bộ Tối — Chi tiêu', '', phoneT(darkExp, { theme: 'dark' })],
     ['17. Hồng đào + nền chuyển màu', 'nền chuyển màu sau lưới lịch · thanh tab vẫn nền surface', phoneT(calMonth(), { theme: 'peach', wall: GRADS[1] })],
     ['18. Xanh biển + ảnh + Quicksand', 'ảnh nền mờ 40% · thẻ note nền surface', phoneT(notesScreen, { theme: 'sky', font: 'quicksand', wall: photoBg(40) })],
-    ['18b. Oải hương + Itim', '', phoneT(searchScreen, { theme: 'lavender', font: 'itim' })],
+    ['18b. Oải hương + Itim', '', phoneT(expMonth(7800000), { theme: 'lavender', font: 'itim' })],
+    ['18c. Tự chọn #FF7A59 (Sáng)', 'các màu còn lại do app tính', phoneT(calMonth(), { vars: CUSTOM })],
   ]],
 ];
 

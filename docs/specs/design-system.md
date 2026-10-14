@@ -4,7 +4,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 
 - Phong cách: dễ thương, pastel, bo tròn.
 - Không chép sticker, icon, hình minh hoạ của app gốc.
-- Token dưới đây là bộ màu mặc định **Bạc hà**. Từ S6 có 8 bộ màu (cả chế độ tối), 4 font, 3 cỡ chữ — [S6 §9](sprint-6/index.md#9-giao-diện). Mọi màn chỉ dùng token, không viết mã màu.
+- Token dưới đây là bộ màu mặc định **Bạc hà**. Từ S6 có 8 bộ màu (cả chế độ tối), 4 font, 3 cỡ chữ — [S6 §8](sprint-6/index.md#8-giao-diện). Mọi màn chỉ dùng token, không viết mã màu.
 - Mockup áp dụng: [Sprint 1](sprint-1/design/mockups.html), [Sprint 2](sprint-2/design/mockups.html), [Sprint 3](sprint-3/design/mockups.html), [Sprint 4](sprint-4/design/mockups.html), [Sprint 5](sprint-5/design/mockups.html), [Sprint 6](sprint-6/design/mockups.html).
 
 ## Màu
@@ -87,7 +87,7 @@ Thuộc: [Spec tổng](index.md). Dùng chung cho mọi sprint.
 | --- | --- |
 | Thanh chọn chế độ | Segmented cao 40, nền `border`, bo 16 · 4 mục Tháng · Danh sách · Tuần · Ngày · mục chọn nền `primary` chữ trắng 700, mục khác chữ `text` |
 | Header lịch | `‹` · tiêu đề `title` ("Tháng 10, 2026") bấm được · `›` · bên phải nút "Hôm nay" (chip `primarySoft`, chữ `primaryDark`) |
-| Ô lịch tháng | Không viền ngoài, kẻ `border` giữa các ô · ngày âm `micro` `textMuted` hàng trên cùng, căn phải · số dương `body` hàng dưới, căn trái (mùng 1 / rằm: `primaryDark`) · tên lễ `caption` `error` 1 dòng · tối đa 3 thanh event + "+N" `caption` `textMuted` |
+| Ô lịch tháng | Không viền ngoài, kẻ `border` giữa các ô · ngày âm `micro` `textMuted` hàng trên cùng, căn phải · số dương `body` hàng dưới, căn trái (mùng 1 / rằm: `primaryDark`) · tên lễ `caption` `error` 1 dòng · tối đa 3 thanh event + "+N" `caption` `textMuted` (từ S6: **5 thanh**, ô cao hơn, lưới cuộn dọc — [S6 §9](sprint-6/index.md#9-lịch-tháng-rộng-hơn)) |
 | Trạng thái ô | Hôm nay: số trong vòng tròn 24 nền `primary` chữ trắng · đang chọn: nền ô `primarySoft` · ngày tháng khác: mờ 40% · CN + ngày lễ: số `error` |
 | Thanh event | Cao 16, bo 6, nền màu event, chữ `caption` `text` 1 dòng, padding ngang 4 |
 | Thẻ event | Nền `surface`, bo 16, vạch trái 4 màu event · tiêu đề `body` · giờ `caption` `textMuted` · icon trạng thái bên phải |
