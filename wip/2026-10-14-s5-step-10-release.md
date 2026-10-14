@@ -35,3 +35,4 @@ Thuộc: [S5 lộ trình code](2026-10-13-s5-code-plan.md) · spec [S5](../docs/
   - Lỗi S4 "1 note": EN → nhóm có 1 ghi chú hiện "1 note" · hộp xoá "Delete 1 category? / 1 note inside will also be deleted." Màu Google: đồng bộ đang tắt → theo test (bước 2).
   - Dọn: todo, nhóm + ghi chú thử (xoá hẳn khỏi thùng rác), 5 ngày kỳ kinh, 3 ảnh thử đã xoá · ngôn ngữ về Tiếng Việt · theo dõi chu kỳ vẫn bật như cũ.
 - 2026-10-14 — Việc 7: DoD tick 6/8 dòng (chưa tick "Cuối sprint"). Dòng Chu kỳ chưa tick: còn "nhắc tới đúng giờ trên máy thật" — bạn tự xem. Dòng Todo ghi chú chưa thử Google (đồng bộ đang tắt).
+- 2026-10-14 — Việc 8: commit `0fed3a4 chore(release): v5.0.0` + push · tag `v5.0.0` + push · GitHub Release https://github.com/danhbuidcn/daynest/releases/tag/v5.0.0 có `daynest-5.0.0-7.apk` (110 MB). Việc 9: cập nhật file này, lộ trình S5, `wip/index.md`.
