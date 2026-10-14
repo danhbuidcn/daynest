@@ -8,12 +8,12 @@ flowchart TD
   Online -->|Không| Block["Banner mất mạng<br/>khoá nút Lưu"]
   Online -->|Có| New{"Tạo mới?"}
 
-  New -->|Có| Gen["App sinh id = uuid"] --> Ins["insert events (id, …)"]
-  Ins -->|"Gửi lại / bấm 2 lần"| Dup["Trùng PK → không tạo bản 2"]
+  New -->|Có| Gen["id = uuid, sinh lúc mở form"] --> Ins["upsert (id, …) onConflict id"]
+  Ins -->|"Gửi lại / bấm 2 lần"| Dup["Cùng id → ghi lại đúng dòng đó<br/>không tạo bản 2"]
   Ins -->|OK| Done
 
   New -->|"Sửa"| Upd["update … where id = :id<br/>and updated_at = :đã_đọc"]
-  Upd -->|"1 dòng"| Done["Làm mới cache lịch<br/>(chưa code: đặt lại nhắc, đẩy Google)"]
+  Upd -->|"1 dòng"| Done["onSuccess: đẩy lên Google (nếu bật)<br/>đặt lại toàn bộ nhắc<br/>làm mới cache (invalidate)"]
   Upd -->|"0 dòng"| Conflict["ConflictError<br/>→ Xung đột"]
 
   Ins & Upd -->|"42501"| Forbidden["ForbiddenError<br/>→ hỏi lại session_active()"]

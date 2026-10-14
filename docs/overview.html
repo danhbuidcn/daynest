@@ -499,24 +499,25 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
       <text class="t" x="95" y="78">đổi cài đặt</text>
       <path class="e" d="M170,62 H208"/>
       <rect class="b" x="210" y="30" width="150" height="64" rx="10"/>
-      <text class="t" x="285" y="58">cancelAll()</text>
-      <text class="s" x="285" y="78">huỷ toàn bộ</text>
+      <text class="t" x="285" y="58">Tải dữ liệu</text>
+      <text class="s" x="285" y="78">event · todo · kỳ kinh</text>
       <path class="e" d="M360,62 H398"/>
       <rect class="b" x="400" y="30" width="150" height="64" rx="10"/>
       <text class="t" x="475" y="58">pickReminders</text>
-      <text class="s" x="475" y="78">mốc gần nhất, ≤ 64</text>
+      <text class="s" x="475" y="78">≤ 60, trong 30 ngày tới</text>
       <path class="e" d="M550,62 H588"/>
       <rect class="b" x="590" y="30" width="150" height="64" rx="10"/>
-      <text class="t" x="665" y="58">scheduleAll()</text>
-      <text class="s" x="665" y="78">đặt trên máy</text>
+      <text class="t" x="665" y="58">Huỷ hết → đặt lại</text>
+      <text class="s" x="665" y="78">cancelAll · scheduleAll</text>
       <path class="e ds" d="M665,94 V124"/>
       <rect class="b ds" x="400" y="126" width="340" height="44" rx="10"/>
       <text class="t" x="570" y="153">Bấm thông báo → mở đúng event</text>
     </svg>
   </figure>
   <ul>
-    <li>Nguồn: event + todo + chu kỳ sắp tới. Mỗi (lần xảy ra × mốc nhắc) là 1 thông báo.</li>
-    <li>Chạy lần lượt, không chồng nhau. Giới hạn 64 vì iOS chỉ giữ chừng đó thông báo chờ.</li>
+    <li>Nguồn: event + todo chưa xong + kỳ kinh dự đoán. Mỗi (lần xảy ra × mốc nhắc) là 1 thông báo.</li>
+    <li>Tải dữ liệu trước rồi mới huỷ: mất mạng thì nhắc cũ vẫn còn.</li>
+    <li>Chạy lần lượt, không chồng nhau. Tối đa 60 thông báo vì hệ điều hành giữ số thông báo chờ có hạn (iOS ≤ 64).</li>
   </ul>
 </section>
 
@@ -544,7 +545,7 @@ svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
     <li><b>Đổi DB:</b> chỉ qua <code>supabase/db new &lt;tên&gt;</code> → viết SQL + RLS → <code>supabase/db test</code> (cần Docker).</li>
     <li><b>Quy tắc code:</b> theme token <code>@/theme</code>, chữ qua <code>AppText</code>, mọi chuỗi qua i18n (cùng key ở <code>en.json</code> + <code>vi.json</code>). Mỗi việc 1 file trong <code>wip/</code>, duyệt xong mới làm.</li>
   </ol>
-  <p class="note"><b>Tài liệu kiến trúc đã cũ.</b> <a href="specs/architecture/index.md">specs/architecture/</a> ghi "theo code tới S2 bước 6": còn đánh dấu "(chưa code)" cho Google sync và nhắc nhở (code đã có), ghi "chưa dùng Edge Functions" (đã có <code>send-bug-report</code>), chưa có todo, chu kỳ, chi tiêu, báo lỗi.</p>
+  <p>Chi tiết từng phần (Mermaid): <a href="specs/architecture/index.md">specs/architecture/</a> — DB, đăng nhập, đọc lịch, ghi dữ liệu, xung đột, đồng bộ Google, nhắc nhở, báo lỗi, traffic.</p>
 </section>
 
 <footer>Bản chữ: <a href="overview.md">overview.md</a> · Mục lục tài liệu: <a href="index.md">docs/index.md</a></footer>

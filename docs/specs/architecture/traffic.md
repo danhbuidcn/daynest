@@ -13,14 +13,14 @@ flowchart LR
   end
 
   subgraph AppSide["Giảm request ở app"]
-    C1["Cache TanStack Query<br/>retry 1 lần"]
+    C1["Cache TanStack Query 2 phút<br/>+ AsyncStorage 7 ngày, retry 1 lần"]
     C2["Chỉ tải khoảng ngày đang xem"]
     C3["Lặp / âm lịch / lễ tính trên máy"]
     C4["touch_device ≤ 1 lần / 5 phút<br/>kéo Google ≤ 1 lần / 5 phút"]
   end
 
   subgraph DBSide["Giảm tải DB"]
-    I1["Index (user_id, span_start)"]
+    I1["Index (user_id, span_start): events, todos<br/>(user_id, spent_on): expenses"]
     I2["Index notes keyset<br/>(user_id, pinned, updated_at, id)"]
     I3["RLS dùng (select auth.uid())<br/>tính 1 lần / truy vấn"]
     I4["Không offset, không quét toàn bảng"]
@@ -33,7 +33,7 @@ flowchart LR
 | Cơ chế | Tác dụng |
 | --- | --- |
 | Không server riêng, không trạng thái chung giữa user | Không có điểm nghẽn ngoài Supabase; mỗi user chỉ chạm dòng của mình |
-| Event lặp lưu 1 dòng | DB ~10–50 KB/user → 100–500 MB cho 10.000 user (sát 500 MB, theo dõi) |
+| Event / todo lặp lưu 1 dòng | DB nhỏ theo user; số đo từng sprint + kết luận so với 500 MB: [Spec tổng §3](../index.md#mục-tiêu-tải) |
 | Truy vấn theo khoảng ngày + index | Đọc lịch tháng chỉ vài chục dòng/user |
 | Google `429` / `rateLimitExceeded` | Chờ tăng dần rồi thử lại (lúc đẩy hàng loạt) |
-| Kiểm tra tải mỗi sprint | DB local, seed 10.000 user, 100 user ảo × 5 phút → 0 lỗi, p95 < 1 s ([S2 db.md](../sprint-2/design/db.md#kiểm-tra-tải)) |
+| Kiểm tra tải mỗi sprint | DB local, seed 10.000 user, 100 user ảo × 5 phút → 0 lỗi, p95 < 1 s ([S2](../sprint-2/design/db.md#kiểm-tra-tải) · [S4](../sprint-4/design/db.md#kiểm-tra-tải) · [S5](../sprint-5/design/db.md#kiểm-tra-tải)) |

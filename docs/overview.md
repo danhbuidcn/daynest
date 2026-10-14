@@ -173,11 +173,10 @@ Code: [reminderSync.ts](../app/src/features/reminders/reminderSync.ts), [pickRem
 Không có server gửi push. Mọi thông báo là **thông báo đặt sẵn trên máy**:
 
 ```text
-Lưu event / mở app / đổi cài đặt → resyncReminders()   (chạy lần lượt)
-  cancelAll()
-  → đọc event + todo + chu kỳ sắp tới
-  → pickReminders: (lần xảy ra × mốc nhắc) gần nhất, có giới hạn (iOS ≤ 64)
-  → scheduleAll()
+Lưu event, todo / mở app / đổi cài đặt → resyncReminders()   (chạy lần lượt)
+  → tải event + todo + ngày có kinh sắp tới   (mất mạng → giữ nhắc cũ, dừng ở đây)
+  → pickReminders: (lần xảy ra × mốc nhắc) gần nhất, ≤ 60 trong 30 ngày tới
+  → cancelAll() → scheduleAll()
 Bấm thông báo → useNotificationTap → mở đúng event
 ```
 
@@ -203,10 +202,6 @@ Bảng chính ([supabase/migrations/](../supabase/migrations/)):
 3. **Đổi DB:** chỉ qua `supabase/db new <tên>` → viết SQL + RLS → `supabase/db test` (cần Docker).
 4. **Quy tắc code:** theme token `@/theme`, chữ qua `AppText`, mọi chuỗi qua i18n (cùng key ở `en.json` + `vi.json`). Mỗi việc 1 file trong `wip/`, duyệt xong mới làm.
 
-## Lưu ý: tài liệu kiến trúc đã cũ
+## Đọc thêm
 
-[specs/architecture/](specs/architecture/index.md) ghi "theo code tới S2 bước 6":
-
-- Còn đánh dấu **(chưa code)** cho Google sync và nhắc nhở — code đã có đủ.
-- Ghi "chưa dùng Edge Functions" — đã có `supabase/functions/send-bug-report`.
-- Chưa có todo, chu kỳ, chi tiêu, báo lỗi.
+Chi tiết từng phần (Mermaid): [specs/architecture/](specs/architecture/index.md) — DB, đăng nhập, đọc lịch, ghi dữ liệu, xung đột, đồng bộ Google, nhắc nhở, báo lỗi, traffic.

@@ -17,7 +17,7 @@ flowchart LR
 
 - A sửa/xoá dòng của B → 0 dòng bị ảnh hưởng (như không tồn tại).
 - A không gắn được note vào danh mục của B, không gắn ngoại lệ vào event của B (`with check`).
-- Test: `supabase/tests/rls_s1.sql`, `rls_s2.sql`.
+- Test: `supabase/tests/rls_s1.sql`, `rls_s2.sql`, `rls_s4.sql`, `rls_s4_colour.sql`, `rls_s5.sql` (chạy `supabase/db test`).
 
 ## Cùng tài khoản, 2 máy sửa cùng 1 event / note
 

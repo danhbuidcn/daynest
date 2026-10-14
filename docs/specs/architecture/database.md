@@ -2,7 +2,7 @@
 
 Thuộc: [Kiến trúc](index.md).
 
-Chi tiết cột: [S1 db.md](../sprint-1/design/db.md) · [S2 db.md](../sprint-2/design/db.md).
+Chi tiết cột: [S1 db.md](../sprint-1/design/db.md) · [S2 db.md](../sprint-2/design/db.md) · [S4 db.md](../sprint-4/design/db.md) · [S5 db.md](../sprint-5/design/db.md). Sơ đồ chỉ ghi cột chính.
 
 ```mermaid
 erDiagram
@@ -15,6 +15,12 @@ erDiagram
   AUTH_USERS ||--o{ NOTE_CATEGORIES : "≤ 30"
   NOTE_CATEGORIES |o--o{ NOTES : "set null khi xoá"
   AUTH_USERS ||--o{ NOTES : ""
+  AUTH_USERS ||--o{ TODOS : ""
+  TODOS ||--o{ TODO_EXCEPTIONS : "skip / override / status"
+  AUTH_USERS ||--o{ PERIOD_DAYS : "ngày có kinh"
+  AUTH_USERS ||--o{ EXPENSE_CATEGORIES : "3 nhóm có sẵn + tự tạo"
+  EXPENSE_CATEGORIES ||--o{ EXPENSES : "cascade khi xoá nhóm"
+  AUTH_USERS ||--o{ BUG_REPORTS : "≤ 5 / 24 giờ"
 
   PROFILES {
     uuid id PK
@@ -28,6 +34,10 @@ erDiagram
     smallint week_start
     text time_zone
     bool notifications_enabled
+    bool cycle_enabled
+    smallint cycle_length
+    smallint period_length
+    time period_reminder_time
   }
   USER_DEVICES {
     uuid user_id PK
@@ -76,18 +86,71 @@ erDiagram
     bool pinned
     timestamptz deleted_at "thùng rác"
   }
+  TODOS {
+    uuid id PK "app tự sinh"
+    text title
+    text repeat "giống events"
+    date span_start
+    date span_end
+    jsonb subtasks
+    bool done "todo không lặp"
+    timestamptz deleted_at
+  }
+  TODO_EXCEPTIONS {
+    uuid id PK
+    uuid todo_id FK
+    date occurrence_date "unique theo todo"
+    text kind "skip, override, status"
+    bool done "xong theo từng lần lặp"
+  }
+  PERIOD_DAYS {
+    uuid id PK
+    date day "unique theo user"
+  }
+  EXPENSE_CATEGORIES {
+    uuid id PK
+    text key "food, transport, bills = nhóm có sẵn"
+    text name "nhóm tự tạo"
+    text icon
+    text color
+  }
+  EXPENSES {
+    uuid id PK
+    uuid category_id FK
+    bigint amount
+    date spent_on
+    text note
+  }
+  BUG_REPORTS {
+    uuid id PK "app tự sinh"
+    text body
+    text_array images "đường dẫn Storage, ≤ 3"
+    timestamptz email_sent_at "null = chưa gửi"
+  }
+  APP_CONFIG {
+    bool id PK "1 dòng"
+    int min_version_code "bản cũ hơn → Cần cập nhật"
+  }
+  DEVELOPER_EMAILS {
+    text email PK "chỉ Edge Function đọc"
+  }
 ```
 
 Nguyên tắc lưu:
 
 | Nguyên tắc | Lý do |
 | --- | --- |
-| Mọi bảng có `user_id` + RLS `user_id = auth.uid()` và `session_active()` | Không lộ dữ liệu giữa user; máy bị đăng xuất dừng ngay |
+| Mọi bảng dữ liệu user có `user_id` + RLS `user_id = auth.uid()` và `session_active()` | Không lộ dữ liệu giữa user; máy bị đăng xuất dừng ngay |
 | `id` do app sinh (uuid) | Gửi lại không tạo bản trùng |
 | `updated_at` do trigger đặt | Dùng làm phiên bản cho khoá lạc quan |
 | Event lặp = 1 dòng quy tắc + ngoại lệ | DB không phình; app tự trải ra các lần |
 | `span_start` / `span_end` | Tải đúng event chạm khoảng ngày đang xem, có index |
 | Ghi chú xoá mềm (`deleted_at`) | Thùng rác khôi phục được |
+| Todo lặp: trạng thái xong lưu theo từng lần (`todo_exceptions.kind = status`) | Tick 1 lần không ảnh hưởng các lần khác; quy tắc lặp vẫn 1 dòng |
+| Khoản chi xoá hẳn, không `deleted_at`; tổng tháng tính ở DB (`expense_monthly_totals`) | Đơn giản; biểu đồ không phải tải từng khoản |
+| Nhóm chi có sẵn (`key` khác null) không sửa/xoá được — chặn bằng RLS | User mới luôn có 3 nhóm (trigger) |
+| Báo lỗi: chỉ insert, ≤ 5 / 24 giờ (trigger khoá theo user) | Chặn spam email; user không đọc lại báo cáo |
+| `app_config`, `developer_emails`: không theo user | `app_config` ai cũng đọc; `developer_emails` không policy → chỉ service role |
 | Trên máy chỉ có phiên + cache | Online-only; cache chỉ để xem |
 
 
