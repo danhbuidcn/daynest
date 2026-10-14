@@ -1,4 +1,4 @@
-# 2026-10-13 — Giảm cỡ giao diện Ghi chú, Chi tiêu, Lịch + tablet full màn hình — 🔄 code xong, xem trên máy ngày mai
+# 2026-10-13 — Giảm cỡ giao diện Ghi chú, Chi tiêu, Lịch + tablet full màn hình — 🔄 chờ bạn xem trên máy
 
 ## Input
 
@@ -15,3 +15,4 @@
 ## Kết quả
 - 2026-10-13 — Việc 1–2 xong (typecheck chỉ còn lỗi route tự sinh có từ trước). Chờ build cùng bước 7 để bạn xem.
 - 2026-10-13 — Bạn yêu cầu full màn hình + chỉnh cỡ chữ/component trên tablet; làm xong thì commit + push, dừng, mai làm tiếp. Chưa build lại bản có phần tablet nên chưa xem trên máy. Mai: build, xem, chỉnh nếu còn lệch (nút, ô nhập, thanh tab chưa scale riêng).
+- 2026-10-14 09:07 — Đã build lại có phần tablet. Máy ảo (điện thoại) xem Lịch, Ghi chú, Chi tiêu hiển thị bình thường. Chờ bạn tải `app/dist/daynest-4.0.0-6.apk` về điện thoại, tablet xem cỡ chữ và bố cục; còn lớn hay lệch thì báo để chỉnh.
