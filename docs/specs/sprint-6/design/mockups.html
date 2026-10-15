@@ -350,6 +350,7 @@
   .bars > div { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; }
   .bars i { display: block; width: 100%; max-width: 28px; background: color-mix(in srgb, var(--primary) 55%, var(--surface)); border-radius: 4px 4px 0 0; }
   .bars i.on { background: var(--primary-dark); }
+  .bars b.v { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 9px; line-height: 9px; margin-bottom: 3px; }
   .bars b { font-size: 10px; line-height: 12px; color: var(--text); font-weight: 800; margin-bottom: 2px; white-space: nowrap; }
   .xlab { display: flex; gap: 2px; padding: 4px 16px 12px; }
   .xlab span { flex: 1; text-align: center; font-size: 12px; color: var(--muted); min-width: 0; white-space: nowrap; }
@@ -806,11 +807,16 @@ const byCat = (rows) => {
 };
 const xrow = ([, k, a, note, auto]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${C[k][2]}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div>${note ? `<span>${note}</span>` : ''}</div><span class="am">${vnd(a)}</span></div>`;
 const short = (n) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}tr` : `${Math.round(n / 1000)}k`);
-const barChart = (title, vals, labs, onIdx, showLab = () => true) => { const max = Math.max(...vals, 1); const top = vals.indexOf(Math.max(...vals));
-  return `<div class="card"><div class="sec">${title}</div><div class="bars">${vals.map((v, i) => `<div>${i === top && v ? `<b>${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * 96, 3) : 0}px"></i></div>`).join('')}</div>
+// Mỗi cột ghi số tiền (S6 §13): ít cột → số nằm ngang; nhiều cột (Tháng, 31 ngày) → số xoay dọc cho vừa cột
+const barChart = (title, vals, labs, onIdx, showLab = () => true, vertical = false) => { const max = Math.max(...vals, 1); const maxH = vertical ? 80 : 92;
+  return `<div class="card"><div class="sec">${title}</div><div class="bars">${vals.map((v, i) => `<div>${v ? `<b class="${vertical ? 'v' : ''}">${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * maxH, 3) : 0}px"></i></div>`).join('')}</div>
     <div class="xlab">${labs.map((l, i) => `<span class="${i === onIdx ? 'on' : ''}">${showLab(i) ? l : ''}</span>`).join('')}</div></div>`; };
 const days31 = Array.from({ length: 31 }, (_, i) => i + 1);
-const dayChart = barChart('Theo ngày', days31.map((d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0)), days31.map(String), 12, (i) => [0, 4, 9, 14, 19, 24, 30].includes(i));
+const dayTotal = (d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0);
+const dayChart = barChart('Theo ngày', days31.map(dayTotal), days31.map(String), 12, (i) => [0, 4, 9, 14, 19, 24, 30].includes(i), true);
+const weekDays = [12, 13, 14, 15, 16, 17, 18];
+const weekChart = barChart('Theo ngày', weekDays.map(dayTotal), ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], 1);
+const monthsChart = barChart('6 tháng gần nhất', [6200000, 5400000, 7100000, 6800000, 5900000, total], ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], 5);
 // Ngân sách: < 80% primary · 80–100% warning · > 100% error
 const budgetCard = (budget, spent = total, own = false) => {
   if (!budget) return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div><div class="setbud hl2">${I.budget}Đặt ngân sách tháng</div></div>`;
@@ -819,10 +825,14 @@ const budgetCard = (budget, spent = total, own = false) => {
     <div class="bud"><div class="progress"><i style="width:${Math.min(pc, 100)}%;background:var(--${color})"></i></div>
     <div class="line"><span>${pc}% ngân sách ${own ? 'riêng ' : ''}${vnd(budget)}</span>${pc > 100 ? `<b class="over">Vượt ${vnd(spent - budget)}</b>` : `<b>Còn ${vnd(budget - spent)}</b>`}</div></div></div>`;
 };
-const expMonth = (budget, { hlTag = false, spent, own = false } = {}) => `<div class="content">${expHead(hlTag)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
-  <div class="xlist">${budgetCard(budget, spent, own)}${dayChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
+const expMonth = (budget, { hlTag = false, spent, own = false, scrolled = false } = {}) => `<div class="content">${expHead(hlTag)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
+  <div class="xlist">${scrolled ? '' : budgetCard(budget, spent, own) + dayChart}${monthsChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
 </div>${tabbar('exp')}`;
 const dayRows = X.filter((r) => r[0] === 13);
+const weekRows = X.filter((r) => weekDays.includes(r[0]));
+const expWeek = `<div class="content">${expHead()}${seg3('Tuần')}${periodHead('12 – 18/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(weekRows.reduce((t, r) => t + r[2], 0))}</div></div>${weekChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(weekRows)}</div></div>
+</div>${tabbar('exp')}`;
 // Chi tiêu theo nhóm (S6 §10): danh sách nhóm (Ngày thêm danh sách khoản chi) · bấm nhóm → pop-up khoản chi của nhóm
 const groupCard = (rows, hl) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(rows).replace('<div class="crow">', hl ? '<div class="crow hl2">' : '<div class="crow">')}</div>`;
 const expDay = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
@@ -1111,6 +1121,8 @@ const groupsS6 = (st) => [
   ]],
   ['Chi tiêu: theo nhóm, ngân sách, khoản chi lặp lại', [
     ['9. Tháng — có ngân sách', 'thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · đầu màn giữ như S4 (chỉ nút Nhóm, viền xanh → màn 13)', phoneT(expMonth(7800000, { hlTag: true }))],
+    ['9e. Tháng — cuộn xuống: 6 tháng', 'cuộn màn Tháng: sau biểu đồ <b>Theo ngày</b> có biểu đồ <b>6 tháng gần nhất</b> (tới tháng đang xem) · mỗi cột ghi số tiền', phoneT(expMonth(7800000, { scrolled: true }))],
+    ['9f. Tuần — số tiền từng ngày', 'mỗi cột ngày ghi số tiền ngay trên cột (ngày chưa tới / không chi: không ghi) · Tháng có 31 cột nên số <b>xoay dọc</b> trên cột (màn 9)', phoneT(expWeek)],
     ['9a. Chi tiêu — Ngày', 'Tổng chi + danh sách nhóm + <b>danh sách từng khoản chi bên dưới</b> (như S4) · bấm nhóm (viền xanh) → pop-up 9d · bấm khoản chi → form sửa · Tuần, Tháng: chỉ danh sách nhóm', phoneT(expDay)],
     ['9d. Pop-up nhóm', 'bấm nhóm Hoá đơn ở Tháng → khoản chi của nhóm trong tháng, nhóm theo ngày, mới nhất trước · icon lặp = tự ghi · bấm khoản → form sửa · + thêm khoản chi vào nhóm này', phoneT(groupPopup('bills', X.filter((r) => r[1] === 'bills'), 'Tháng 10, 2026', expMonth(7800000)))],
     ['9b. Vượt ngân sách', '> 100% → thanh đầy màu error · "Vượt …" chữ error · 80–100%: màu warning', phoneT(expMonth(5000000))],

@@ -208,7 +208,7 @@ Bạn yêu cầu 2026-10-14: màn Lịch đã nhiều thứ, cần thêm chỗ c
 
 Bạn yêu cầu 2026-10-14. Thêm pop-up khi bấm nhóm; chế độ Ngày giữ danh sách từng khoản chi như S4 (bạn chốt lại 2026-10-15).
 
-- Mọi chế độ (Ngày, Tuần, Tháng): Tổng chi (+ ngân sách ở Tháng) · biểu đồ cột (Tuần, Tháng — giữ như S4) · **danh sách nhóm** (icon · tên · số tiền · thanh % · %).
+- Mọi chế độ (Ngày, Tuần, Tháng): Tổng chi (+ ngân sách ở Tháng) · biểu đồ cột (Tuần: 7 ngày · Tháng: **theo ngày** + **6 tháng gần nhất**; **mỗi cột ghi số tiền** rút gọn "35k", "1,2tr" — Tháng có 31 cột nên số xoay dọc; bạn thêm 2026-10-15) · **danh sách nhóm** (icon · tên · số tiền · thanh % · %).
 - **Ngày:** dưới danh sách nhóm vẫn có **danh sách từng khoản chi** của ngày (icon nhóm · tên nhóm · ghi chú · số tiền · bấm → form sửa) như S4. **Tuần, Tháng:** chỉ danh sách nhóm.
 - **Bấm 1 nhóm** → pop-up có tiêu đề (✕ · icon + tên nhóm · `+`): kỳ đang xem ("Tháng 10, 2026") · tổng nhóm · danh sách khoản chi của nhóm trong kỳ, mới nhất trước, nhóm theo ngày (Tuần, Tháng có dòng ngày) · mỗi dòng **chỉ** ghi chú + số tiền (không lặp lại icon, tên nhóm đã ở tiêu đề; không ghi chú → "Không có ghi chú" màu `textMuted`) · khoản chi tự ghi có icon lặp sau ghi chú.
   - Bấm 1 khoản chi → form sửa (như S4) · lưu / xoá xong → về lại pop-up (xoá có Hoàn tác).
