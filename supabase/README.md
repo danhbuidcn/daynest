@@ -18,4 +18,5 @@ Lần đầu mỗi máy: `cp supabase/.env.example supabase/.env` → điền.
 | `supabase/db test` | Chạy lại migration + test RLS trên DB local (cần Docker) |
 | `supabase/db status` | So migration trên máy với project thật |
 | `supabase/db migrate` | Áp dụng migration lên project thật |
-| `supabase/db functions` | Đặt secret Gmail + deploy Edge Function `send-bug-report` lên project thật |
+| `supabase/db function <name>` | Deploy 1 Edge Function (không đụng secret), vd. `delete-account` |
+| `supabase/db functions` | Đặt secret Gmail + deploy Edge Function `send-bug-report`, `delete-account` lên project thật |

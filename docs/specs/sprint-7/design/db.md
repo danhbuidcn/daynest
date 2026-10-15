@@ -20,7 +20,7 @@ Play bắt buộc: app có tạo tài khoản phải cho xoá tài khoản + d�
 | 4 | Trả `{ ok: true }` | Lỗi bước 2 / 3 → 500, user thử lại (hàm chạy lại được: bước 2 bỏ qua thư mục trống, bước 3 lỗi "không tìm thấy" coi như xong). |
 
 - App sau khi nhận `ok`: đăng xuất, xoá cache + dữ liệu trên máy (kể cả ảnh nền, token Google trong SecureStore, thông báo đã hẹn), về màn đăng nhập.
-- Quyền Google: token lưu trên máy, không lưu ở server → app gọi thu hồi token Google (`revoke`) trước khi gọi hàm, lỗi mạng thì bỏ qua.
+- Quyền Google: token lưu trên máy, không lưu ở server → app gọi thu hồi quyền Google (`revokeAccess`) **sau khi** hàm trả `ok` (hàm lỗi thì tài khoản và quyền Google còn nguyên để thử lại), lỗi mạng thì bỏ qua.
 - RevenueCat: gói đang đăng ký **không tự huỷ** khi xoá tài khoản (gói nằm ở Google Play) → hộp xác nhận nói rõ "Hãy huỷ gói trong Google Play" nếu đang có Pro; mở được trang quản lý gói.
 - Trang web yêu cầu xoá: hướng dẫn xoá trong app (Cài đặt › Tài khoản › Xoá tài khoản) + địa chỉ email để gửi yêu cầu khi không còn dùng được app; xử lý trong 30 ngày.
 

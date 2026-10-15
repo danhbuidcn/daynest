@@ -32,6 +32,8 @@ case "${1:-}" in
            secrets=$(mktemp) && trap 'rm -f "$secrets"' EXIT
            printf 'GMAIL_USER=%s\nGMAIL_APP_PASSWORD=%s\n' "$GMAIL_USER" "$GMAIL_APP_PASSWORD" > "$secrets"
            sb secrets set --project-ref "$SUPABASE_PROJECT_REF" --env-file "$secrets" &&
-           sb functions deploy send-bug-report --project-ref "$SUPABASE_PROJECT_REF" --use-api ;;
-  *)       echo "Usage: supabase/db <new NAME|test|load|status|migrate|functions>"; exit 1 ;;
+           sb functions deploy send-bug-report --project-ref "$SUPABASE_PROJECT_REF" --use-api &&
+           sb functions deploy delete-account --project-ref "$SUPABASE_PROJECT_REF" --use-api ;;
+  function) remote && sb functions deploy "${2:?Usage: supabase/db function <name>}" --project-ref "$SUPABASE_PROJECT_REF" --use-api ;;
+  *)       echo "Usage: supabase/db <new NAME|test|load|status|migrate|functions|function NAME>"; exit 1 ;;
 esac
