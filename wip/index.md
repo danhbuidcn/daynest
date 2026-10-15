@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S6 bước 13: Icon + nhóm gợi ý cho người Việt (42 icon, 24 gợi ý chạm là thêm, hộp đủ 30) | ⏳ chờ bạn duyệt | [2026-10-15-s6-step-13-icons-suggested-categories.md](2026-10-15-s6-step-13-icons-suggested-categories.md) |
 | 2026-10-15 | S6 bước 12: Nút + theo tab (Chi tiêu → khoản chi, Ghi chú → note / todo mới) | ✅ xong (thử trên máy ảo; chưa thử mất mạng) | [2026-10-15-s6-step-12-plus-per-tab.md](2026-10-15-s6-step-12-plus-per-tab.md) |
 | 2026-10-15 | S6 bước 11: Chi tiêu theo nhóm (bấm nhóm → pop-up các khoản chi, sửa / thêm rồi về pop-up) | ✅ xong (thử trên máy ảo; chưa thử Ngày, Tuần, nhóm có khoản lặp) | [2026-10-15-s6-step-11-expenses-by-category.md](2026-10-15-s6-step-11-expenses-by-category.md) |
 | 2026-10-15 | S6 bước 10: Lịch Tháng rộng hơn (5 thanh, cuộn dọc, thu gọn đầu, cuộn tới hôm nay) | ✅ xong (thử trên máy ảo; độ mượt chờ máy thật) | [2026-10-15-s6-step-10-taller-month-calendar.md](2026-10-15-s6-step-10-taller-month-calendar.md) |
