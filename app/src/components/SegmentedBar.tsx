@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 
 // Mockup `.seg`: the view switch of the Lịch and Chi tiêu tabs.
@@ -13,6 +13,8 @@ export function SegmentedBar<T extends string>({
   value: T;
   onChange: (value: T) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={styles.bar} accessibilityRole="tablist">
       {options.map((o) => {
@@ -34,7 +36,7 @@ export function SegmentedBar<T extends string>({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   bar: {
     flexDirection: 'row',
     height: 36,
@@ -47,4 +49,4 @@ const styles = StyleSheet.create({
   },
   item: { flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 13 },
   on: { backgroundColor: colors.primary },
-});
+}));

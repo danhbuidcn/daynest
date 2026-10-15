@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
+import { TextInput, View, type TextInputProps } from 'react-native';
 
-import { colors, radius, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon } from './Icon';
 
@@ -12,6 +12,8 @@ export function TextField({
   locked,
   ...input
 }: TextInputProps & { label: string; hint?: string; error?: string | null; locked?: boolean }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const [focused, setFocused] = useState(false);
   const borderColor = error ? colors.error : focused ? colors.primary : colors.border;
   return (
@@ -45,7 +47,7 @@ export function TextField({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   label: { marginHorizontal: space.xs, marginBottom: 6 },
   box: {
     height: 48,
@@ -58,6 +60,6 @@ const styles = StyleSheet.create({
     gap: space.sm,
   },
   locked: { backgroundColor: colors.bg },
-  input: { flex: 1, ...typeScale.body, paddingVertical: 0 },
+  input: { flex: 1, ...type.body, paddingVertical: 0 },
   hint: { marginHorizontal: space.xs, marginTop: 6 },
-});
+}));

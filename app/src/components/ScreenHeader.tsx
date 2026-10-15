@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon } from './Icon';
 
@@ -25,6 +25,7 @@ export function ScreenHeader({
   onPressTitle?: () => void;
   titleHint?: string;
 }) {
+  const { colors } = useTheme();
   return (
     <View style={[styles.bar, compact && styles.compact]}>
       <View style={styles.side}>

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 
 // "Sheet từ đáy" — add/edit from a fixed list (reminder thresholds, repeat type), confirmed by
@@ -23,6 +23,8 @@ export function BottomSheet({
   onDone: () => void;
   children: ReactNode;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel} statusBarTranslucent>
       <View style={styles.scrim}>
@@ -47,7 +49,7 @@ export function BottomSheet({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   scrim: { flex: 1, justifyContent: 'flex-end' },
   backdrop: { ...StyleSheet.absoluteFill, backgroundColor: colors.scrim },
   sheet: { backgroundColor: colors.surface, borderTopLeftRadius: radius.dialog, borderTopRightRadius: radius.dialog, maxHeight: '80%' },
@@ -61,4 +63,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-});
+}));

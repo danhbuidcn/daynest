@@ -1,8 +1,8 @@
 import type { BottomTabBarProps } from 'expo-router/tabs';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors } from '@/theme';
+import { makeStyles, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
 
@@ -14,6 +14,8 @@ const ICONS: Record<string, IconName> = {
 };
 
 export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarProps & { onPlus: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const insets = useSafeAreaInsets();
   const items = state.routes.map((route, index) => {
     const focused = state.index === index;
@@ -53,7 +55,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   bar: {
     flexDirection: 'row',
     backgroundColor: colors.surface,
@@ -80,4 +82,4 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 6 },
   },
-});
+}));

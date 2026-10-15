@@ -1,17 +1,17 @@
 import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 import type { ReactNode } from 'react';
 
-import { colors, radius, space } from '@/theme';
+import { radius, space, useTheme, type Theme } from '@/theme';
 import { AppText } from './AppText';
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'dangerSoft';
 
-const look: Record<Variant, { bg: string; fg: string; border?: string }> = {
+const looks = (colors: Theme['colors']): Record<Variant, { bg: string; fg: string; border?: string }> => ({
   primary: { bg: colors.primary, fg: colors.white },
   secondary: { bg: colors.surface, fg: colors.text, border: colors.border },
   danger: { bg: colors.error, fg: colors.white },
   dangerSoft: { bg: colors.errorSoft, fg: colors.error },
-};
+});
 
 export function Button({
   label,
@@ -28,7 +28,8 @@ export function Button({
   disabled?: boolean;
   style?: ViewStyle;
 }) {
-  const v = look[variant];
+  const { colors } = useTheme();
+  const v = looks(colors)[variant];
   return (
     <Pressable
       accessibilityRole="button"

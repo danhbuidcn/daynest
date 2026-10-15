@@ -1,8 +1,8 @@
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 
 type ToastKind = 'info' | 'error';
@@ -16,6 +16,8 @@ const DURATION_MS = 2000;
 const ACTION_DURATION_MS = 4000;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const insets = useSafeAreaInsets();
   const [toast, setToast] = useState<{ message: string; kind: ToastKind; action?: ToastAction } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -58,18 +60,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
 export const useToast = () => useContext(ToastContext);
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   wrap: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   pill: {
     maxWidth: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.md,
-    backgroundColor: colors.text,
+    backgroundColor: colors.toast,
     borderRadius: radius.pill,
     paddingVertical: 10,
     paddingHorizontal: 18,
   },
   message: { flexShrink: 1 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.error },
-});
+}));

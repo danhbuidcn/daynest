@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, TextInput, View, type GestureResponderEvent, type LayoutChangeEvent } from 'react-native';
+import { TextInput, View, type GestureResponderEvent, type LayoutChangeEvent } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { hexToHsv, hsvToHex, parseHex, textOn, toHex, type AppColor, type Hsv } from '@/lib/colors';
-import { colors, radius, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Button } from './Button';
 import { DialogShell } from './Dialog';
@@ -25,6 +25,8 @@ export function ColorPickerDialog({
   onClose: () => void;
   onPick: (hex: `#${string}`) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const [hsv, setHsv] = useState<Hsv>(() => hexToHsv(toHex(initial)));
   const [text, setText] = useState(() => toHex(initial).slice(1));
@@ -129,7 +131,7 @@ export function ColorPickerDialog({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   title: { textAlign: 'center', marginBottom: space.md },
   box: { height: 150, borderRadius: 16, overflow: 'hidden' },
   thumb: { position: 'absolute', width: THUMB, height: THUMB, borderRadius: THUMB / 2, marginLeft: -THUMB / 2, marginTop: -THUMB / 2 },
@@ -151,8 +153,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
-  inputText: { flex: 1, ...typeScale.body, color: colors.text, padding: 0 },
+  inputText: { flex: 1, ...type.body, color: colors.text, padding: 0 },
   preview: { height: 32, paddingHorizontal: 10, borderRadius: radius.pill, justifyContent: 'center' },
   actions: { flexDirection: 'row', gap: 10, marginTop: space.lg },
   flex: { flex: 1 },
-});
+}));

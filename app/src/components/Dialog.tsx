@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { KeyboardAvoidingView, Modal, Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Button } from './Button';
 import { Icon, type IconName } from './Icon';
@@ -22,6 +22,7 @@ export function DialogShell({
   large?: boolean;
   boxStyle?: StyleProp<ViewStyle>;
 }) {
+  const styles = useStyles();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
       {/* Dialogs with a text field (category name) move up above the keyboard. */}
@@ -59,6 +60,8 @@ export function ConfirmDialog({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <DialogShell visible={visible} onClose={onCancel}>
       <View style={tone === 'warning' ? [styles.alertIcon, styles.alertIconWarning] : styles.dangerIcon}>
@@ -99,6 +102,8 @@ export function AlertDialog({
   buttonLabel: string;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <DialogShell visible={visible} onClose={onClose}>
       <View style={[styles.alertIcon, tone === 'warning' ? styles.alertIconWarning : styles.alertIconPrimary]}>
@@ -130,6 +135,8 @@ export function ChoiceDialog<T extends string>({
   onSelect: (value: T) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <DialogShell visible={visible} onClose={onClose} compact>
       <AppText variant="heading" style={[styles.center, { marginBottom: space.md }]}>
@@ -160,7 +167,7 @@ export function ChoiceDialog<T extends string>({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   scrim: { flex: 1, backgroundColor: colors.scrim, justifyContent: 'center', padding: space.xl },
   scrimLarge: { padding: space.md },
   box: { backgroundColor: colors.surface, borderRadius: radius.dialog, paddingTop: space.xl, paddingHorizontal: 20, paddingBottom: 20 },
@@ -186,4 +193,4 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   option: { height: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, borderRadius: radius.button },
   tag: { width: 28 },
-});
+}));

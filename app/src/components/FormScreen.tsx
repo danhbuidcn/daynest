@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { NestableScrollContainer } from 'react-native-draggable-flatlist';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, space } from '@/theme';
+import { makeStyles, space } from '@/theme';
 import { ScreenHeader } from './ScreenHeader';
 
 export function FormScreen({
@@ -26,6 +26,7 @@ export function FormScreen({
   titleHint?: string;
   children: ReactNode;
 }) {
+  const styles = useStyles();
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
       <ScreenHeader title={title} onBack={onBack} closeIcon={closeIcon} onPressTitle={onPressTitle} titleHint={titleHint} />
@@ -45,9 +46,9 @@ export function FormScreen({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   content: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.xl, gap: space.lg },
   footer: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.lg, backgroundColor: colors.bg },
-});
+}));

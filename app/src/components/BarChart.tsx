@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Card } from './Card';
 
@@ -24,6 +24,8 @@ type Props = {
 
 // design-system "Biểu đồ cột": one series, one colour.
 export function BarChart({ title, values, labels, highlight, formatTop, describe, onPress, onLongPress }: Props) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const max = Math.max(...values, 0);
   const top = max > 0 ? values.indexOf(max) : -1;
   return (
@@ -77,7 +79,7 @@ export function BarChart({ title, values, labels, highlight, formatTop, describe
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   title: { paddingTop: space.md, paddingHorizontal: space.lg, paddingBottom: space.xs },
   bars: {
     flexDirection: 'row',
@@ -98,4 +100,4 @@ const styles = StyleSheet.create({
   barOff: { backgroundColor: colors.primary, opacity: 0.55 },
   barOn: { backgroundColor: colors.primaryDark },
   axis: { flexDirection: 'row', gap: 2, paddingTop: space.xs, paddingBottom: space.md, paddingHorizontal: space.lg },
-});
+}));

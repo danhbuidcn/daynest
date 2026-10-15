@@ -1,7 +1,7 @@
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
 
@@ -22,6 +22,8 @@ export function ActionMenu({
   top?: number;
   right?: number;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose} statusBarTranslucent>
@@ -49,6 +51,8 @@ export function ActionMenu({
 }
 
 export function MoreButton({ onPress }: { onPress: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable accessibilityRole="button" accessibilityLabel="More" onPress={onPress} hitSlop={8} style={styles.more}>
       <Icon name="more" size={24} color={colors.text} />
@@ -56,7 +60,7 @@ export function MoreButton({ onPress }: { onPress: () => void }) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   scrim: { flex: 1 },
   menu: {
     position: 'absolute',
@@ -72,4 +76,4 @@ const styles = StyleSheet.create({
   },
   row: { height: 44, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: space.md, borderRadius: radius.icon + 2 },
   more: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
-});
+}));

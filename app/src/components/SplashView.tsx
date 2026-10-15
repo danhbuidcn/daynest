@@ -1,9 +1,10 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
-import { colors, space } from '@/theme';
+import { makeStyles, space } from '@/theme';
 import { Logo } from './Logo';
 
 export function SplashView() {
+  const styles = useStyles();
   return (
     <View style={styles.screen}>
       <Logo />
@@ -16,8 +17,8 @@ export function SplashView() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg, alignItems: 'center', justifyContent: 'center', gap: space.lg },
   dots: { flexDirection: 'row', gap: 6, marginTop: space.sm },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary },
-});
+}));

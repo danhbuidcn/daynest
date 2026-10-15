@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
 
@@ -26,6 +26,8 @@ export function SettingRow({
   // Right-side control (a Switch) instead of value + chevron.
   trailing?: ReactNode;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       disabled={!onPress}
@@ -53,9 +55,9 @@ export function SettingRow({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   row: { height: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   icon: { width: 34, height: 34, borderRadius: radius.icon, alignItems: 'center', justifyContent: 'center' },
   label: { flex: 1 },
-});
+}));

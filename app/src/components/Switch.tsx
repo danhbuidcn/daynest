@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { colors } from '@/theme';
+import { makeStyles, useTheme } from '@/theme';
 
 export function Switch({ value, onValueChange, disabled }: { value: boolean; onValueChange: (v: boolean) => void; disabled?: boolean }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="switch"
@@ -16,7 +18,7 @@ export function Switch({ value, onValueChange, disabled }: { value: boolean; onV
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   track: { width: 44, height: 26, borderRadius: 999, padding: 2, justifyContent: 'center' },
   disabled: { opacity: 0.5 },
   thumb: {
@@ -31,4 +33,4 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   thumbOn: { alignSelf: 'flex-end' },
-});
+}));
