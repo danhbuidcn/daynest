@@ -1,4 +1,4 @@
-# 2026-10-15 — S7 bước 2: Bản `.aab` đầu cho thử nghiệm kín — ⏳ chờ bạn duyệt
+# 2026-10-15 — S7 bước 2: Bản `.aab` đầu cho thử nghiệm kín — 🔄 build xong, chờ Play Console (việc của bạn)
 
 Thuộc: [lộ trình code S7](2026-10-15-s7-code-plan.md) bước 2 · [Spec S7](../docs/specs/sprint-7/index.md) · việc của bạn: [todo thiết kế](2026-10-15-s7-design-and-code-plan.md#việc-của-bạn-xếp-theo-thứ-tự-làm-ngay-từ-hôm-nay-để-14-ngày-thử-nghiệm-bắt-đầu-sớm).
 
@@ -22,10 +22,10 @@ Thuộc: [lộ trình code S7](2026-10-15-s7-code-plan.md) bước 2 · [Spec S7
 
 ## Plan
 
-- [ ] 1. **Đổi version** `7.0.0` / `versionCode 10` trong `app/app.config.ts` (không đổi chỗ khác).
-- [ ] 2. **Build:** `cd app && npm run release` (kiểm SHA-1 tự động) → `dist/daynest-7.0.0-10.apk` + `.aab` · `apksigner verify --print-certs` ra SHA-1 release.
+- [x] 1. **Đổi version** `7.0.0` / `versionCode 10` trong `app/app.config.ts` (không đổi chỗ khác).
+- [x] 2. **Build:** `cd app && npm run release` (kiểm SHA-1 tự động) → `dist/daynest-7.0.0-10.apk` + `.aab` · `apksigner verify --print-certs` ra SHA-1 release.
 - [ ] 3. **Thử APK:** cài đè lên máy ảo và máy thật (`adb install -r`) → mở được, đăng nhập được, màn Xoá tài khoản vào được (không bấm xoá bằng tài khoản chính), dữ liệu cũ còn.
-- [ ] 4. **Commit + push** `chore(release): v7.0.0 closed test build` — **không** tag, **không** GitHub Release.
+- [x] 4. **Commit + push** `chore(release): v7.0.0 closed test build` — **không** tag, **không** GitHub Release.
 - [ ] 5. **Bạn làm trên Play Console** (tôi hướng dẫn từng bước, chờ bạn báo): tạo app `com.danhbuidcn.daynest` · bật Play App Signing (mặc định) · kênh kín: Google Group 12–15 người · tải `.aab` · khai các mục Console bắt buộc (Data safety, độ tuổi 18+, quảng cáo = **không**, truy cập ứng dụng, chính sách quyền riêng tư = URL đã có) — bạn gửi tôi câu hỏi nào chưa rõ, tôi soạn đáp án (có dữ liệu sức khoẻ — chu kỳ).
 - [ ] 6. **Thêm chữ ký của Play vào Google:** Play Console › Thiết lập › Chữ ký ứng dụng → lấy **SHA-1 của khoá ký ứng dụng** → Google Cloud › Credentials › tạo OAuth client Android mới (gói `com.danhbuidcn.daynest`, SHA-1 đó) → thêm Client ID mới vào Supabase › Auth › Google › Client IDs (giống cách đã làm với client "release", xem [build.md](../docs/specs/sprint-1/design/build.md)). Bạn làm trên web; tôi soạn từng bước + kiểm lại.
 - [ ] 7. **Thử bản cài từ Play** bằng 1 tài khoản trong nhóm thử: cài được, **đăng nhập Google không lỗi `DEVELOPER_ERROR` (code 10)**. Lỗi → thường là SHA-1 ở bước 6 chưa đúng.
@@ -47,4 +47,9 @@ Thuộc: [lộ trình code S7](2026-10-15-s7-code-plan.md) bước 2 · [Spec S7
 
 ## Kết quả
 
-- Chưa bắt đầu.
+- 2026-10-15: bạn xác nhận "sprint nào thì đánh version đó" (đã lưu vào bộ nhớ). `app.config.ts` → `7.0.0` / `versionCode 10`.
+- `npm run release` xong: `app/dist/daynest-7.0.0-10.apk` (112 MB) + `.aab` (78 MB). `apksigner verify`: chữ ký V2, SHA-1 `47fa141e…a593` = keystore release (đúng).
+- Cài đè APK lên **máy thật** (`adb install -r`): thành công, `versionName 7.0.0 / versionCode 10`, mở app chạy, logcat không có lỗi (tôi không chụp màn hình vì có dữ liệu cá nhân của bạn → **bạn mở thử Cài đặt: có "Xoá tài khoản" và "Chính sách quyền riêng tư"**).
+- **Máy ảo** `emulator-5554`: không cài đè được (`INSTALL_FAILED_UPDATE_INCOMPATIBLE` — máy ảo đang cài bản 4.0.0 ký khác, không phải keystore release). Cài lại cần gỡ app (mất đăng nhập trên máy ảo); chưa làm, hỏi bạn khi cần.
+- Commit `chore(release): v7.0.0 closed test build` (chỉ `app.config.ts`; không tag, không GitHub Release).
+- **Chờ bạn:** tài khoản Play Console · Gmail phụ · các bước 5–7 (Play Console, SHA-1 của Play, thử cài từ Play).
