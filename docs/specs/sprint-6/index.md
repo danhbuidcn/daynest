@@ -24,7 +24,9 @@ Thuộc: [Spec tổng](../index.md) · S6. Chốt phạm vi: [wip](../../../wip/
 | 7 | Khoản chi lặp lại | Hằng tuần / hằng tháng · app tự ghi khoản chi tới hạn ([chi tiết](#7-khoản-chi-lặp-lại)) |
 | 8 | Giao diện | Chủ đề màu (cả chế độ tối, tự chọn màu chủ đạo) · nền (cả màu tự chọn) · font + cỡ chữ · đổi xong áp dụng ngay ([chi tiết](#8-giao-diện)) |
 | 9 | Lịch Tháng rộng hơn | Ô ngày cao hơn (tới 5 thanh event) · cuộn dọc · cuộn xuống thu gọn đầu lịch ([chi tiết](#9-lịch-tháng-rộng-hơn)) |
-| 10 | Chi tiêu theo nhóm | Mọi chế độ chỉ hiện danh sách nhóm · bấm nhóm → pop-up các khoản chi của nhóm ([chi tiết](#10-chi-tiêu-theo-nhóm)) |
+| 10 | Chi tiêu theo nhóm | Danh sách nhóm ở mọi chế độ (Ngày còn danh sách khoản chi bên dưới) · bấm nhóm → pop-up các khoản chi của nhóm ([chi tiết](#10-chi-tiêu-theo-nhóm)) |
+| 11 | Nút + theo tab | Ở tab Chi tiêu, Ghi chú: nút `+` mở thẳng form của tab ([chi tiết](#11-nút--theo-tab)) |
+| 12 | Icon + nhóm gợi ý cho người Việt | 42 icon sát chi tiêu thực tế · 24 nhóm gợi ý chạm là thêm ([chi tiết](#12-icon-và-nhóm-gợi-ý-cho-người-việt)) |
 
 **Không làm ở S6:** ghi khi mất mạng (hàng chờ), widget, sticker, sửa riêng từng token màu (chỉ tự chọn màu chủ đạo), lưu nhiều chủ đề tự tạo, font tải từ mạng, ngân sách theo nhóm / theo tuần, thông báo (toast, đẩy) khi sắp vượt / vượt ngân sách — thanh tiến độ đã đủ, khoản thu, khoản chi lặp hằng năm / có ngày kết thúc, tìm kiếm event / todo / khoản chi (bạn bỏ 2026-10-14: màn Lịch đã đủ nhiều thứ; note vẫn có tìm kiếm riêng), công tắc tắt rung.
 
@@ -56,10 +58,12 @@ Hiện tại: bấm Lưu → chờ server ghi → tải lại **mọi** khoảng
 - Mỗi lượt gọi Supabase (đọc, ghi) chờ tối đa **15 s** · gửi ảnh báo lỗi, Edge Function: **60 s** · quá → coi là lỗi "server chậm".
 - Gọi Google Calendar: giữ cách S2 (thử lại 1 lần) + cùng thời gian chờ 15 s.
 
-### Mất mạng
+### Mất mạng hoặc máy chủ sự cố
 
-- **Banner chung** ở đầu mọi màn khi mất mạng: "Không có kết nối mạng." · có mạng lại → banner ẩn.
-- Mất mạng → **khoá mọi thao tác ghi** ở mọi màn: Lưu, Xoá, tick todo, tick ngày có kinh, Gửi báo lỗi, nút `+` mở form vẫn được nhưng Lưu bị khoá · dùng chung 1 hook, bỏ các chỗ tự kiểm tra mạng riêng lẻ.
+- Cả hai trường hợp xử lý như nhau: **vẫn hiện dữ liệu đã lưu trên máy** (Lịch, Ghi chú, Todo, Chi tiêu, Cài đặt) · chỉ **không tạo, sửa, xoá được**.
+- **Banner chung** ở đầu mọi màn: "Không có kết nối mạng." (mất mạng) hoặc "Máy chủ đang gặp sự cố." (máy chủ lỗi / chậm quá 15 s) · hết sự cố → banner ẩn.
+- Khoá (nút mờ, bấm không có tác dụng) mọi thao tác ghi: Lưu, Xoá, tick todo, tick ngày có kinh, Gửi báo lỗi · nút `+` và nút "Thêm …" cũng khoá · dùng chung 1 hook, bỏ các chỗ tự kiểm tra mạng riêng lẻ.
+- Máy chủ sự cố: app thử lại ở nền (1 lần mỗi 30 s) · gọi được lại → banner ẩn, nút mở khoá, tự tải lại dữ liệu đang xem.
 - Có mạng lại → tự tải lại dữ liệu đang xem.
 
 ### Mở lại app
@@ -71,7 +75,7 @@ Hiện tại: bấm Lưu → chờ server ghi → tải lại **mọi** khoảng
 | Tình huống | Hiện |
 | --- | --- |
 | Có dữ liệu trên máy, tải mới lỗi | Giữ dữ liệu cũ · dòng nhỏ dưới tiêu đề "Chưa cập nhật được · Thử lại" |
-| Chưa có dữ liệu trên máy, tải lỗi | Thẻ lỗi giữa màn: icon · tiêu đề theo loại lỗi · nút "Thử lại" |
+| Chưa có dữ liệu trên máy (mở app lần đầu, đăng nhập máy mới), tải lỗi | Thẻ lỗi giữa màn: icon · tiêu đề theo loại lỗi · nút "Thử lại" |
 
 - Áp dụng cho tab Lịch (mọi chế độ), tab Ghi chú (Todo + Ghi chú), tab Chi tiêu · lỗi khác khi tải: "Chưa tải được. Hãy thử lại." Tab Lịch hiện chưa có trạng thái lỗi → lỗi trông như "không có event".
 
@@ -102,7 +106,7 @@ Giống Gmail: xoá xong có 4 s để Hoàn tác.
 - App bị chuyển ra nền trong 4 s đó → gửi lệnh xoá ngay (không để mất lệnh).
 - Gửi xoá lỗi → mục hiện lại + toast lỗi.
 - **Bỏ hộp xác nhận xoá** (Hoàn tác thay cho hộp) · event / todo lặp vẫn có hộp chọn "Chỉ lần này / Tất cả" · xoá nhóm chi tiêu, quy tắc lặp vẫn có hộp (không Hoàn tác).
-- Mất mạng → nút Xoá bị khoá ([§3](#mất-mạng)), nên không có lệnh xoá chờ mạng.
+- Mất mạng hoặc máy chủ sự cố → nút Xoá bị khoá ([§3](#mất-mạng-hoặc-máy-chủ-sự-cố)), nên không có lệnh xoá chờ mạng.
 
 ## 6. Ngân sách tháng
 
@@ -202,14 +206,43 @@ Bạn yêu cầu 2026-10-14: màn Lịch đã nhiều thứ, cần thêm chỗ c
 
 ## 10. Chi tiêu theo nhóm
 
-Bạn yêu cầu 2026-10-14. Thay cách hiện ở S4 (chỉ chế độ Ngày liệt kê từng khoản chi).
+Bạn yêu cầu 2026-10-14. Thêm pop-up khi bấm nhóm; chế độ Ngày giữ danh sách từng khoản chi như S4 (bạn chốt lại 2026-10-15).
 
-- Mọi chế độ (Ngày, Tuần, Tháng): Tổng chi (+ ngân sách ở Tháng) · biểu đồ cột (Tuần, Tháng — giữ như S4) · **danh sách nhóm** (icon · tên · số tiền · thanh % · %) · **không** còn danh sách từng khoản chi ở Ngày.
+- Mọi chế độ (Ngày, Tuần, Tháng): Tổng chi (+ ngân sách ở Tháng) · biểu đồ cột (Tuần, Tháng — giữ như S4) · **danh sách nhóm** (icon · tên · số tiền · thanh % · %).
+- **Ngày:** dưới danh sách nhóm vẫn có **danh sách từng khoản chi** của ngày (icon nhóm · tên nhóm · ghi chú · số tiền · bấm → form sửa) như S4. **Tuần, Tháng:** chỉ danh sách nhóm.
 - **Bấm 1 nhóm** → pop-up có tiêu đề (✕ · icon + tên nhóm · `+`): kỳ đang xem ("Tháng 10, 2026") · tổng nhóm · danh sách khoản chi của nhóm trong kỳ, mới nhất trước, nhóm theo ngày (Tuần, Tháng có dòng ngày) · mỗi dòng **chỉ** ghi chú + số tiền (không lặp lại icon, tên nhóm đã ở tiêu đề; không ghi chú → "Không có ghi chú" màu `textMuted`) · khoản chi tự ghi có icon lặp sau ghi chú.
   - Bấm 1 khoản chi → form sửa (như S4) · lưu / xoá xong → về lại pop-up (xoá có Hoàn tác).
   - `+` → form thêm khoản chi, nhóm = nhóm này, ngày = hôm nay hoặc ngày đang xem.
   - Nhiều khoản → cuộn trong pop-up.
 - Kỳ chưa có khoản chi: giữ màn trống của S4.
+
+## 11. Nút + theo tab
+
+Bạn yêu cầu 2026-10-15: đang ở tab nào thì tạo nhanh đúng thứ của tab đó, không phải qua pop-up 4 ô.
+
+| Tab | Bấm `+` |
+| --- | --- |
+| Lịch, Cài đặt | Pop-up 4 ô như S5 (Sự kiện · Todo · Ghi chú · Khoản chi) |
+| Chi tiêu | Mở thẳng form **Thêm khoản chi**: ngày = ngày đang xem (Ngày) hoặc hôm nay · nhóm = nhóm dùng gần nhất |
+| Ghi chú › Ghi chú | Mở thẳng màn soạn **note mới** (danh mục = danh mục đang lọc, như S3) |
+| Ghi chú › Todo | Mở thẳng form **Todo mới**: ngày = ngày đang chọn ở thanh tuần |
+
+- Form tạo vẫn có tiêu đề "Todo ▾" đổi loại như S5 (Sự kiện · Todo · Ghi chú · Khoản chi) — mở từ tab nào cũng được.
+- Mất mạng hoặc máy chủ sự cố: nút `+` khoá như mọi nút ghi ([§3](#mất-mạng-hoặc-máy-chủ-sự-cố)).
+- Cập nhật Spec S4 (§ Màn hình: "nút + ở thanh tab → pop-up") và S5 (pop-up `+`): chỉ còn ở Lịch, Cài đặt.
+
+## 12. Icon và nhóm gợi ý cho người Việt
+
+Bạn yêu cầu 2026-10-15: nhiều icon của nhóm chi tiêu không liên quan thực tế; cần nhóm sát chi tiêu của người Việt.
+
+- **Bộ icon 42** (thay 36 của S4, [mockup 21c](design/mockups.html): tên hiện dưới mỗi icon, cuộn trong pop-up Thêm nhóm): chung (thẻ tag) · cà phê, trà sữa, bia / nhậu, ăn uống, đi chợ · mua sắm, quần áo · nhà, điện, nước, gas, internet, điện thoại, sửa chữa · xe máy, xăng, xe buýt, taxi / Grab, gửi xe, du lịch · thuốc, khám bệnh, làm đẹp, thể thao · con nhỏ, thú cưng, học phí, sách · công việc, máy tính · trả góp (thẻ), tiền, bảo hiểm · quà tặng, lì xì, hiếu hỉ · xem phim, game, karaoke · rác, chung cư.
+- **Bỏ khỏi danh sách chọn:** ly rượu, xe đạp, trái tim, ô, vé, máy ảnh, bóng, cây · nhóm đã lưu bằng các icon này (và `drop` cũ) vẫn hiện đúng, chỉ không chọn được cho nhóm mới. Tên icon nước đổi `drop` → `water` (`drop` giữ cho chu kỳ kinh nguyệt).
+- **24 nhóm gợi ý** — khu "Gợi ý" ở màn Nhóm chi tiêu, dưới "Của bạn": Đi chợ · Trà sữa · Ăn nhậu · Tiền nhà · Điện · Nước · Internet · Điện thoại · Xăng xe · Gửi xe · Sửa xe · Học phí · Sức khoẻ · Thuốc · Làm đẹp · Quần áo · Hiếu hỉ · Lì xì · Quà tặng · Giải trí · Du lịch · Thú cưng · Bảo hiểm · Trả góp (mỗi gợi ý có icon + màu sẵn).
+  - Chạm 1 gợi ý → thêm ngay thành nhóm tự tạo (toast "Đã thêm nhóm Đi chợ") · đổi tên, icon, màu sau như nhóm thường.
+  - Đã có nhóm trùng tên (không phân biệt hoa thường) → gợi ý đó ẩn · đã đủ 30 nhóm → nút "Thêm nhóm" và gợi ý vẫn bấm được, bấm thì hiện hộp "Đã đủ 30 nhóm" ([mockup 21d](design/mockups.html)), không mở form, không thêm.
+  - Tên gợi ý theo ngôn ngữ app lúc thêm (EN: Groceries · Bubble tea · Drinks · Rent · Electricity · Water · Internet · Phone · Fuel · Parking · Vehicle repair · Tuition · Health · Medicine · Beauty · Clothes · Weddings & funerals · Lucky money · Gifts · Entertainment · Travel · Pets · Insurance · Installments).
+  - 3 nhóm có sẵn (Ăn uống, Di chuyển, Hoá đơn) giữ nguyên.
+- Gợi ý là hằng số trong app (không cần bảng DB). Lưu vào `expense_categories` như nhóm tự tạo.
 
 ## Màn hình
 
@@ -217,9 +250,11 @@ Bạn yêu cầu 2026-10-14. Thay cách hiện ở S4 (chỉ chế độ Ngày l
 Mọi màn: banner mất mạng ở đầu (khi mất mạng)
 Lịch Tháng: ô cao hơn (5 thanh), cuộn dọc, cuộn xuống → đầu thu gọn 1 dòng · thẻ lỗi / dòng "Chưa cập nhật được · Thử lại" · khung xương khi tải lần đầu
 Ghi chú (Todo + Ghi chú): khung xương · thẻ lỗi
-Chi tiêu (Ngày / Tuần / Tháng): Tổng chi · thanh ngân sách (Tháng) · biểu đồ (Tuần, Tháng) · danh sách nhóm → pop-up khoản chi của nhóm (✕ · nhóm · +)
+Chi tiêu (Ngày / Tuần / Tháng): Tổng chi · thanh ngân sách (Tháng) · biểu đồ (Tuần, Tháng) · danh sách nhóm (Ngày: thêm danh sách khoản chi) → pop-up khoản chi của nhóm (✕ · nhóm · +)
 Hộp Ngân sách tháng: ô số tiền (để trống = bỏ ngân sách) · công tắc "Dùng cho mọi tháng" · Huỷ / Lưu
 Màn Nhóm chi tiêu: dòng đầu "Khoản chi lặp lại ›"
+Nút + ở thanh tab: Lịch, Cài đặt → pop-up 4 ô · Chi tiêu → form Thêm khoản chi · Ghi chú (Ghi chú / Todo) → note mới / Todo mới
+Màn Nhóm chi tiêu: thêm khu "Gợi ý" (24 chip, chạm là thêm) · hộp Thêm nhóm: 42 icon kèm tên, cuộn trong pop-up · hộp "Đã đủ 30 nhóm"
 Form khoản chi (tạo mới): thêm dòng "Lặp lại"
 Màn Khoản chi lặp lại: danh sách quy tắc → form sửa quy tắc (Xoá)
 Toast: "Đã xoá · Hoàn tác" · lỗi theo loại
@@ -231,20 +266,22 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 ## Thiết kế
 
 - [DB](design/db.md): cột `monthly_budget` trong `user_settings`, bảng `expense_month_budgets`, bảng `expense_recurrences`, cột `recurrence_id` trong `expenses`, hàm ghi khoản chi tới hạn, cột giao diện trong `user_settings`, test tải.
-- [Mockup S6](design/mockups.html) — 35 màn: mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59, hoạ tiết (Bạc hà chấm bi · Vàng chanh kẻ ô + Baloo 2 · Tối sao + Patrick Hand) · nút ở đầu trang đổi bộ màu / font cho mọi màn.
+- [Mockup S6](design/mockups.html) — 47 màn (10 màn mới: nút + theo tab, nhóm gợi ý, 42 icon, đủ 30 nhóm · máy chủ sự cố): mất mạng (Lịch, form), lỗi tải, dữ liệu cũ, khung xương, Hoàn tác, Chi tiêu theo nhóm + pop-up nhóm, ngân sách (đủ / vượt / chưa đặt / hộp mọi tháng / chỉ tháng này), khoản chi lặp (form, chọn kiểu, màn Nhóm, danh sách, sửa, xoá), Lịch Tháng ô cao (+ đã cuộn), Cài đặt, màn Giao diện (+ tự chọn màu, ảnh nền), bộ Tối, Hồng đào + nền chuyển màu, Xanh biển + ảnh + Quicksand, Oải hương + Itim, tự chọn #FF7A59, hoạ tiết (Bạc hà chấm bi · Vàng chanh kẻ ô + Baloo 2 · Tối sao + Patrick Hand) · nút ở đầu trang đổi bộ màu / font cho mọi màn.
 
 ## Xong khi (DoD)
 
 - [ ] Lưu form không tải lại; Xoá, tick hiện ngay · số đo trước / sau (a), (b), (c) ghi trong wip, (b) và (c) nhanh hơn ≥ 30%.
 - [ ] Tải event, todo 1 lượt gọi · hàm đặt dòng đã lưu vào dữ liệu trên máy có test.
 - [ ] Bật chế độ máy bay: banner hiện ở mọi màn, mọi nút ghi bị khoá, vẫn xem dữ liệu đã lưu · tắt chế độ máy bay → banner ẩn, dữ liệu tự tải lại.
-- [ ] Giả lập server chậm / sai địa chỉ Supabase: sau ≤ 15 s hiện "Máy chủ đang gặp sự cố…", không treo · tab Lịch chưa có dữ liệu → thẻ lỗi + Thử lại.
+- [ ] Giả lập server chậm / sai địa chỉ Supabase: sau ≤ 15 s hiện banner "Máy chủ đang gặp sự cố.", không treo · vẫn xem được dữ liệu đã lưu trên máy, nút tạo / sửa / xoá bị khoá · hết sự cố → banner ẩn, nút mở khoá · máy chưa có dữ liệu → thẻ lỗi + Thử lại.
 - [ ] Rung nhẹ, khung xương thấy trên máy thật.
 - [ ] Hoàn tác: xoá event (cả event đồng bộ Google), todo, khoản chi → Hoàn tác → còn nguyên, Google không bị xoá · không Hoàn tác → xoá thật sau 4 s · ra nền trong 4 s → vẫn xoá.
 - [ ] Ngân sách: đặt / sửa / bỏ chung và riêng 1 tháng (tháng riêng ghi đè, tháng khác dùng chung) · thanh đúng màu theo % · 2 máy thấy cùng ngân sách.
 - [ ] Khoản chi lặp: tạo hằng tuần / hằng tháng (cả ngày 31) · tự ghi khi mở tab, ghi bù kỳ đã qua · 2 máy cùng mở không ghi trùng · sửa / xoá quy tắc không đổi khoản chi đã ghi · xoá khoản chi tự ghi không bị ghi lại.
 - [ ] Giao diện: đổi bộ màu (cả Tối, Theo hệ thống, Tự chọn với màu rất nhạt / rất đậm vẫn đọc được chữ), nền màu tự chọn, nền (chuyển màu, ảnh + độ mờ), font, cỡ chữ → áp dụng ngay mọi màn, không màn nào còn màu / font cũ · mở lại app đúng giao diện, không nháy · máy thứ 2 nhận cùng giao diện (trừ ảnh).
-- [ ] Chi tiêu: mọi chế độ chỉ danh sách nhóm · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
+- [ ] Nút `+`: tab Chi tiêu mở thẳng Thêm khoản chi · Ghi chú › Ghi chú mở note mới · Ghi chú › Todo mở Todo mới · Lịch, Cài đặt vẫn pop-up 4 ô.
+- [ ] Nhóm gợi ý: chạm → thêm đúng icon, màu · trùng tên thì ẩn · đủ 30 nhóm → hộp báo · bộ 42 icon hiện đủ, nhóm cũ dùng icon đã bỏ vẫn hiện đúng.
+- [ ] Chi tiêu: mọi chế độ có danh sách nhóm (Ngày thêm danh sách khoản chi bên dưới, Tuần / Tháng không) · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
 - [ ] Lịch Tháng: ô 5 thanh + "+N" · cuộn dọc mượt trên máy thật · cuộn xuống thu gọn đầu, cuộn lên hiện lại · vuốt ngang đổi tháng vẫn đúng · mở Lịch cuộn tới tuần hôm nay.
 - [ ] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
 - [ ] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
@@ -262,7 +299,10 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 7. **Màn Khoản chi lặp lại mở từ màn Nhóm chi tiêu** (bạn chốt 2026-10-14): không thêm icon ở đầu Chi tiêu.
 8. **Tự chọn màu chủ đạo + nền** (bạn chốt 2026-10-14): 1 màu chủ đạo bất kỳ + Sáng / Tối, app tự tính các màu còn lại · nền thêm "Màu khác" · không sửa riêng từng màu.
 9. **Lịch Tháng rộng hơn** (bạn chốt 2026-10-14): ô ngày cao hơn (5 thanh) + cuộn dọc + cuộn xuống thu gọn đầu lịch.
-10. **Chi tiêu theo nhóm** (bạn chốt 2026-10-14): mọi chế độ chỉ danh sách nhóm, bấm nhóm → pop-up khoản chi · giữ biểu đồ ở Tuần, Tháng.
+10. **Chi tiêu theo nhóm** (bạn chốt 2026-10-14): mọi chế độ có danh sách nhóm, bấm nhóm → pop-up khoản chi · giữ biểu đồ ở Tuần, Tháng. · 2026-10-15: chế độ Ngày giữ danh sách khoản chi bên dưới như S4.
 11. **Không báo khi sắp vượt ngân sách** (bạn chốt 2026-10-14): người dùng tự thấy trên thanh tiến độ.
 12. **Không có nút "Bỏ ngân sách"** (bạn chốt 2026-10-14): xoá trống số tiền rồi Lưu là bỏ.
 13. **Thêm nền + font** (bạn chốt 2026-10-14, giữ phần còn lại như cũ): 8 màu nền có sẵn, 8 chuyển màu, 6 hoạ tiết tự vẽ · thêm font Baloo 2, Patrick Hand (6 font) · không thêm sticker, hiệu ứng, chủ đề trọn gói.
+14. **Mất mạng / máy chủ sự cố: vẫn hiện dữ liệu trên máy, chỉ khoá nút ghi** (bạn chốt 2026-10-15).
+15. **Nút + mở thẳng form của tab** (Chi tiêu, Ghi chú › Ghi chú, Ghi chú › Todo) · Lịch, Cài đặt giữ pop-up 4 ô (bạn chốt 2026-10-15).
+16. **Bộ icon 42 + 24 nhóm gợi ý cho người Việt** (bạn chốt 2026-10-15) · 3 nhóm có sẵn giữ nguyên.

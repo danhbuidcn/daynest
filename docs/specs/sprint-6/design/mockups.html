@@ -823,10 +823,10 @@ const expMonth = (budget, { hlTag = false, spent, own = false } = {}) => `<div c
   <div class="xlist">${budgetCard(budget, spent, own)}${dayChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
 </div>${tabbar('exp')}`;
 const dayRows = X.filter((r) => r[0] === 13);
-// Chi tiêu theo nhóm (S6 §10): mọi chế độ chỉ danh sách nhóm · bấm nhóm → pop-up khoản chi của nhóm
+// Chi tiêu theo nhóm (S6 §10): danh sách nhóm (Ngày thêm danh sách khoản chi) · bấm nhóm → pop-up khoản chi của nhóm
 const groupCard = (rows, hl) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(rows).replace('<div class="crow">', hl ? '<div class="crow hl2">' : '<div class="crow">')}</div>`;
 const expDay = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
-  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(dayRows.reduce((t, r) => t + r[2], 0))}</div></div>${groupCard(dayRows, true)}</div>
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(dayRows.reduce((t, r) => t + r[2], 0))}</div></div>${groupCard(dayRows, true)}<div class="card">${dayRows.map(xrow).join('')}</div></div>
 </div>${tabbar('exp')}`;
 const groupPopup = (k, rows, period, under, toast = '') => {
   const sum = rows.reduce((t, r) => t + r[2], 0);
@@ -908,6 +908,131 @@ const catsScreen = `<div class="content">
   <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>
 </div>`;
 
+
+// ---- Icon + nhóm gợi ý cho người Việt (S6 §11) ----
+Object.assign(I, {
+  phone: I.phoneI,
+  water: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  boba: sv('<path d="M6.5 8h11l-1.2 11a1.5 1.5 0 0 1-1.5 1.3H9.2a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M5.5 8h13M13 8l1.5-4.5h2"/><path d="M9.5 16h.01M12 17h.01M14.5 16h.01"/>'),
+  beer: sv('<path d="M5.5 8h10v10a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z"/><path d="M15.5 10h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M5.5 8a2.5 2.5 0 0 1 2.5-3 3 3 0 0 1 5-.5 2.5 2.5 0 0 1 2.5 3.5M9 12v4M12 12v4"/>'),
+  flame: sv('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .2 1.5 1 2 1.8 2C10.5 8 11 5.5 12 3z"/>'),
+  motorbike: sv('<circle cx="6" cy="16.5" r="3"/><circle cx="18" cy="16.5" r="3"/><path d="M6 16.5l3-6h5l4 6M14 10.5l-1-3h-2.5M9 10.5H6.5"/>'),
+  parking: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M10 16.5V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
+  hospital: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>'),
+  bookOpen: sv('<path d="M5 4.5h9a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/>'),
+  shield: sv('<path d="M12 3.5l7 2.5v5.5c0 4.3-3 7.5-7 9-4-1.5-7-4.7-7-9V6z"/><path d="M9 12l2.2 2.2L15 10"/>'),
+  redpacket: sv('<rect x="6.5" y="3.5" width="11" height="17" rx="2.5"/><path d="M6.5 9.5c3 2.5 8 2.5 11 0"/><circle cx="12" cy="12.5" r="1.6"/>'),
+  flower: sv('<circle cx="12" cy="12" r="2.2"/><path d="M12 9.8c-2-2-2-5 0-6 2 1 2 4 0 6zM12 14.2c2 2 2 5 0 6-2-1-2-4 0-6zM9.8 12c-2 2-5 2-6 0 1-2 4-2 6 0zM14.2 12c2-2 5-2 6 0-1 2-4 2-6 0z"/>'),
+  building: sv('<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8h.01M12 8h.01M15 8h.01M9 12h.01M12 12h.01M15 12h.01M10 20.5v-3h4v3"/>'),
+});
+// 42 icon chọn được cho nhóm tự tạo (đổi từ 36): bỏ wine, bike, heart, umbrella, ticket, camera, ball, tree · icon đã lưu cũ vẫn hiện
+const ICON_SET = [['tag', 'Chung'], ['coffee', 'Cà phê'], ['boba', 'Trà sữa'], ['beer', 'Bia, nhậu'], ['food', 'Ăn uống'], ['cart', 'Đi chợ'],
+  ['bag', 'Mua sắm'], ['shirt', 'Quần áo'], ['home', 'Nhà'], ['bolt', 'Điện'], ['water', 'Nước'], ['flame', 'Gas'],
+  ['wifi', 'Internet'], ['phone', 'Điện thoại'], ['tool', 'Sửa chữa'], ['motorbike', 'Xe máy'], ['fuel', 'Xăng'], ['bus', 'Xe buýt'],
+  ['car', 'Taxi, Grab'], ['parking', 'Gửi xe'], ['plane', 'Du lịch'], ['pill', 'Thuốc'], ['hospital', 'Khám bệnh'], ['scissors', 'Làm đẹp'],
+  ['dumbbell', 'Thể thao'], ['baby', 'Con nhỏ'], ['paw', 'Thú cưng'], ['cap', 'Học phí'], ['bookOpen', 'Sách'], ['briefcase', 'Công việc'],
+  ['laptop', 'Máy tính'], ['card', 'Trả góp'], ['coins', 'Tiền'], ['shield', 'Bảo hiểm'], ['gift', 'Quà tặng'], ['redpacket', 'Lì xì'],
+  ['flower', 'Hiếu hỉ'], ['film', 'Xem phim'], ['game', 'Game'], ['music', 'Karaoke'], ['trash', 'Rác'], ['building', 'Chung cư']];
+// Nhóm gợi ý: chạm 1 lần là thêm (tên, icon, màu); nhóm đã có thì ẩn
+const SUG = [['Đi chợ', 'cart', 'mint'], ['Trà sữa', 'boba', 'pink'], ['Ăn nhậu', 'beer', 'lemon'], ['Tiền nhà', 'home', 'sky'], ['Điện', 'bolt', 'lemon'], ['Nước', 'water', 'sky'],
+  ['Internet', 'wifi', 'lavender'], ['Điện thoại', 'phone', 'mint'], ['Xăng xe', 'fuel', 'peach'], ['Gửi xe', 'parking', 'sky'], ['Sửa xe', 'tool', 'lemon'], ['Học phí', 'cap', 'lavender'],
+  ['Sức khoẻ', 'hospital', 'mint'], ['Thuốc', 'pill', 'pink'], ['Làm đẹp', 'scissors', 'pink'], ['Quần áo', 'shirt', 'lavender'], ['Hiếu hỉ', 'flower', 'lemon'], ['Lì xì', 'redpacket', 'peach'],
+  ['Quà tặng', 'gift', 'pink'], ['Giải trí', 'film', 'lavender'], ['Du lịch', 'plane', 'sky'], ['Thú cưng', 'paw', 'peach'], ['Bảo hiểm', 'shield', 'mint'], ['Trả góp', 'card', 'sky']];
+const vnCss = `<style>
+  .sug { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sug .chip { max-width: none; height: 36px; padding: 0 12px 0 5px; gap: 6px; }
+  .sug .mi { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; color: var(--text-fixed, #2F2D33); }
+  .sug .mi svg { width: 16px; height: 16px; }
+  .icg { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .icg span { height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icg span.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icg svg { width: 22px; height: 22px; }
+  .icl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 6px; max-height: 250px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .icl > div { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+  .icl span { width: 100%; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icl svg { width: 22px; height: 22px; }
+  .icl i { font-style: normal; font-size: 12px; line-height: 16px; color: var(--muted); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .icl .on span { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icl .on i { color: var(--primary-dark); font-weight: 800; }
+  .fab.pulse { box-shadow: 0 0 0 7px color-mix(in srgb, var(--primary) 30%, transparent), 0 6px 14px rgba(91,190,152,.45); }
+</style>`;
+const sugChip = ([n, ic, c]) => `<span class="chip"><span class="mi ev-${c}">${I[ic]}</span>${n}</span>`;
+const sugSection = (hidden = []) => `<div class="group-label">Gợi ý</div><div class="sug">${SUG.filter((x) => !hidden.includes(x[0])).slice(0, 14).map(sugChip).join('')}</div>`;
+C.market = ['mint', 'cart', 'Đi chợ'];
+const catsScreen2 = (added) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}${added ? catLine('market', true) : ''}</div>
+    ${sugSection(added ? ['Đi chợ'] : [])}
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>${added ? '<div class="toast">Đã thêm nhóm Đi chợ</div>' : ''}
+</div>`;
+const iconGridLabeled = (on) => `<div class="icl">${ICON_SET.map(([k, n]) => `<div class="${k === on ? 'on' : ''}"><span>${I[k]}</span><i>${n}</i></div>`).join('')}</div>`;
+const iconGrid = (on) => `<div class="icg">${ICON_SET.map(([k]) => `<span class="${k === on ? 'on' : ''}">${I[k]}</span>`).join('')}</div>`;
+const addCatDialog = `<div class="under">${catsScreen2(false)}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left;padding:18px 16px 16px">
+    <h3 style="text-align:center;margin-bottom:12px">Thêm nhóm</h3>
+    <div class="field"><label>Tên nhóm</label><div class="input focus">Trà sữa<span class="caret"></span></div></div>
+    <div class="field" style="margin-top:12px"><label>Icon</label>${iconGridLabeled('boba')}</div>
+    <div class="field" style="margin-top:12px"><label>Màu</label>${colorPick('sky')}</div>
+    <div class="actions" style="margin-top:16px"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+const FULL = ['coffee', 'kid', 'market', 'coffee', 'kid', 'market', 'coffee', 'kid', 'market'];
+const catsFull = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${FULL.map((k) => catLine(k, true)).join('')}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary hl2">${I.plusG}Thêm nhóm</button></div>
+</div>`;
+const limitDialog = `<div class="under">${catsFull}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon warn">${I.warn}</span><h3>Đã đủ 30 nhóm</h3><p>Hãy xoá bớt một nhóm để thêm mới.</p><button class="btn btn-primary">Đã hiểu</button></div></div>`;
+
+// ---- Nút + theo tab (S6 §12) ----
+const fabHl = (html) => html.replace('<div class="fab">', '<div class="fab pulse">');
+const numpad = `<div class="numpad">${['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map((k) => `<span class="${k === '⌫' ? 'k' : ''}">${k}</span>`).join('')}</div>`;
+const addExpForm = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thêm khoản chi</div><span></span></div>
+  <div class="form" style="padding-bottom:8px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">50.000<span class="caret"></span></span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('food', 24)}<span class="grow">Ăn uống</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="muted">Không</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow muted">Ghi chú (không bắt buộc)</span></div>
+    </div>
+  </div>
+  <div style="flex:none;padding:8px 16px;background:var(--bg)"><button class="btn btn-primary">Lưu</button></div>${numpad}
+</div>`;
+const noteEditor = `<div class="content">
+  <div class="ntop"><span class="back">${I.left}</span><span></span><span class="act" style="color:var(--primary-dark)">${I.check}</span></div>
+  <div class="nbody"><div class="nt" style="font-size:22px;line-height:28px;font-weight:800;color:var(--muted)"><span class="caret"></span>Tiêu đề</div><div class="muted" style="margin-top:10px">Ghi chú</div></div>
+  <div class="ntools"><span class="ti">${I.checklist}</span><span class="ti">${I.folder}</span><span class="ti">${I.pin}</span></div>
+</div>`;
+const todoTab = `<div class="content">${notesHead('Todo')}
+  <div class="xlist"><div class="card">${[['Mua quà sinh nhật Lan', false], ['Nộp tiền học bơi', false], ['Gọi bảo hiểm xe', true]].map(([t, d]) => `<div class="xrow">${tk(d)}<div class="mid"><div style="${d ? 'text-decoration:line-through;color:var(--muted)' : ''}">${t}</div></div></div>`).join('')}</div></div>
+</div>${tabbar('man')}`;
+const todoQuick = `<div class="content">
+  <div class="topbar"><span class="back">${I.close}</span><div class="kind-title">Todo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div><span></span></div>
+  <div class="form" style="padding-bottom:84px">
+    <div class="fcard"><div class="title-in"><span class="caret"></span><span class="muted">Tiêu đề</span></div><div class="detail-in">Chi tiết</div></div>
+    <div class="fcard">
+      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Danh sách việc</span></div>
+      <div class="addline" style="padding-left:24px">${I.plusG}Thêm việc</div>
+    </div>
+    <div class="fcard"><div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw on"></span></div>
+      <div class="frow indent"><span class="fi">${I.arrowR}</span><span class="grow">T3, 13/10/2026</span></div></div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const serverDown = `<div class="offline">${I.wifiOff}<span>Máy chủ đang gặp sự cố.</span></div>`;
+
 // ---- Cài đặt + màn Giao diện ----
 const settingsS6 = (state) => `<div class="content"><div class="screen-title">Cài đặt</div>
   <div class="settings" style="overflow:hidden">
@@ -975,6 +1100,7 @@ const groupsS6 = (st) => [
   ['Lỗi, mất mạng, đang tải', [
     ['1. Mất mạng', 'banner chung ở đầu <b>mọi màn</b> (dòng cảnh báo) · vẫn xem dữ liệu đã lưu · có mạng lại → banner ẩn, tự tải lại', phoneT(calMonth({ banner: offline }))],
     ['1b. Mất mạng — form', 'nút Lưu bị khoá (mờ) ở mọi form · Xoá, tick todo, tick ngày có kinh, Gửi báo lỗi cũng khoá · vẫn mở form và nhập được', phoneT(expForm({ offline: true }))],
+    ['1c. Máy chủ sự cố', 'cùng cách xử lý như mất mạng: <b>vẫn hiện dữ liệu đã lưu trên máy</b>, banner "Máy chủ đang gặp sự cố." · nút tạo / sửa / xoá bị khoá (mờ) · app thử lại ở nền, hết sự cố → banner ẩn, nút mở khoá', phoneT(calMonth({ banner: serverDown }))],
     ['2. Tải lỗi, chưa có dữ liệu', 'server lỗi / chậm quá 15 s → thẻ lỗi giữa màn + "Thử lại" · mất mạng: "Không có kết nối mạng." · lỗi khác: "Chưa tải được. Hãy thử lại."', phoneT(calError)],
     ['3. Tải lỗi, còn dữ liệu cũ', 'giữ dữ liệu cũ trên màn · dòng nhỏ dưới thanh chế độ "Chưa cập nhật được · Thử lại"', phoneT(calStale)],
     ['4. Khung xương — Lịch', 'chỉ khi chưa có dữ liệu trên máy · lưới, số ngày, ngày âm hiện ngay (tính trên máy) · chỉ thanh event là khối xám nhấp nháy', phoneT(calMonth({ grid: monthSkeleton() }))],
@@ -985,7 +1111,7 @@ const groupsS6 = (st) => [
   ]],
   ['Chi tiêu: theo nhóm, ngân sách, khoản chi lặp lại', [
     ['9. Tháng — có ngân sách', 'thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · đầu màn giữ như S4 (chỉ nút Nhóm, viền xanh → màn 13)', phoneT(expMonth(7800000, { hlTag: true }))],
-    ['9a. Chi tiêu chỉ theo nhóm', 'Ngày (cũng như Tuần, Tháng): Tổng chi + danh sách nhóm, không còn từng khoản chi · bấm nhóm (viền xanh) → pop-up 9d', phoneT(expDay)],
+    ['9a. Chi tiêu — Ngày', 'Tổng chi + danh sách nhóm + <b>danh sách từng khoản chi bên dưới</b> (như S4) · bấm nhóm (viền xanh) → pop-up 9d · bấm khoản chi → form sửa · Tuần, Tháng: chỉ danh sách nhóm', phoneT(expDay)],
     ['9d. Pop-up nhóm', 'bấm nhóm Hoá đơn ở Tháng → khoản chi của nhóm trong tháng, nhóm theo ngày, mới nhất trước · icon lặp = tự ghi · bấm khoản → form sửa · + thêm khoản chi vào nhóm này', phoneT(groupPopup('bills', X.filter((r) => r[1] === 'bills'), 'Tháng 10, 2026', expMonth(7800000)))],
     ['9b. Vượt ngân sách', '> 100% → thanh đầy màu error · "Vượt …" chữ error · 80–100%: màu warning', phoneT(expMonth(5000000))],
     ['9c. Chưa đặt', 'nút "Đặt ngân sách tháng" (viền xanh) → hộp 10 · Ngày, Tuần không hiện ngân sách', phoneT(expMonth(0))],
@@ -993,10 +1119,22 @@ const groupsS6 = (st) => [
     ['10b. Hộp Ngân sách — chỉ tháng này', 'tắt công tắc → ngân sách riêng tháng 10 (vd tháng Tết) · thanh ở màn 9 ghi "ngân sách riêng" · các tháng khác vẫn dùng ngân sách chung', phoneT(budgetDialog(false))],
     ['12. Form — Lặp lại', 'dòng "Lặp lại" (viền xanh) chỉ khi tạo mới', phoneT(expForm())],
     ['12b. Chọn kiểu lặp', 'Hằng tuần theo thứ của ngày đã chọn · Hằng tháng theo ngày (29–31 mà tháng thiếu → ngày cuối tháng)', phoneT(repeatPick)],
-    ['13. Màn Nhóm chi tiêu', 'nút Nhóm ở đầu Chi tiêu (có từ S4) · S6 thêm dòng đầu "Khoản chi lặp lại ›" (viền xanh) → màn 13a', phoneT(catsScreen)],
+    ['13. Màn Nhóm chi tiêu', 'nút Nhóm ở đầu Chi tiêu (có từ S4) · S6 thêm dòng đầu "Khoản chi lặp lại ›" (viền xanh) → màn 13a', phoneT(catsScreen2(false))],
     ['13a. Màn Khoản chi lặp lại', 'mở từ màn 13 · bấm dòng → 13b · "Thêm khoản chi lặp lại" mở form 12 với Lặp lại = Hằng tháng', phoneT(rulesScreen)],
     ['13b. Sửa khoản chi lặp lại', 'đổi áp dụng từ lần tới · "Lần tới" chọn được', phoneT(ruleEdit)],
     ['13c. Xoá khoản chi lặp lại', 'hộp chỉ có tiêu đề (không Hoàn tác) · chỉ dừng lặp, khoản chi đã ghi giữ nguyên', phoneT(ruleDel)],
+  ]],
+  ['Nút + theo tab, nhóm chi tiêu cho người Việt', [
+    ['20. Chi tiêu — nút +', 'bấm + ở tab Chi tiêu mở <b>thẳng</b> form Thêm khoản chi (20b), không qua pop-up 4 ô · ngày = ngày đang xem · Lịch và Cài đặt giữ pop-up 4 ô', phoneT(fabHl(expDay))],
+    ['20b. Thêm khoản chi', 'bàn phím số bật sẵn · nhóm = nhóm dùng gần nhất · Lưu ngay trên bàn phím', phoneT(addExpForm)],
+    ['20c. Ghi chú — nút +', 'tab Ghi chú, chế độ Ghi chú: + mở thẳng màn soạn note mới (20d)', phoneT(fabHl(notesScreen))],
+    ['20d. Ghi chú mới', 'con trỏ ở tiêu đề · lưu tự động như S3', phoneT(noteEditor)],
+    ['20e. Todo — nút +', 'tab Ghi chú, chế độ Todo: + mở thẳng form Todo mới (20f) · ngày = ngày đang chọn ở thanh tuần', phoneT(fabHl(todoTab))],
+    ['20f. Todo mới', 'tiêu đề "Todo ▾" vẫn đổi được loại như S5 (màn 2b)', phoneT(todoQuick)],
+    ['21. Nhóm chi tiêu — Gợi ý', 'khu "Gợi ý" dưới nhóm của bạn: chạm một nhóm là thêm ngay (icon + màu sẵn) · 24 gợi ý, nhóm đã có thì ẩn · 3 nhóm có sẵn giữ nguyên', phoneT(catsScreen2(false))],
+    ['21b. Vừa chạm "Đi chợ"', 'nhóm vào "Của bạn", chip biến mất, toast ngắn', phoneT(catsScreen2(true))],
+    ['21c. Thêm nhóm — icon mới', 'bộ 42 icon sát chi tiêu thực tế, <b>tên hiện dưới icon</b>, cuộn dọc trong pop-up · bỏ: ly rượu, xe đạp, trái tim, ô, vé, máy ảnh, bóng, cây · thêm: trà sữa, bia, gas, xe máy, gửi xe, khám bệnh, sách, bảo hiểm, lì xì, hiếu hỉ, rác, chung cư… · mặc định thẻ tag · nhóm đã lưu bằng icon cũ vẫn hiện bình thường', phoneT(addCatDialog)],
+    ['21d. Đủ 30 nhóm', 'đã có 30 nhóm của bạn → nút "Thêm nhóm" (viền xanh) vẫn bấm được, bấm thì hiện hộp báo này, không mở form · chạm 1 gợi ý khi đã đủ cũng hiện hộp này', phoneT(limitDialog)],
   ]],
   ['Lịch Tháng rộng hơn', [
     ['19. Ô cao hơn', 'tối đa 5 thanh + "+N" · lưới cao hơn màn → cuộn dọc · mở Lịch cuộn tới tuần có hôm nay', phoneT(calTall(false))],
@@ -1029,7 +1167,7 @@ function render() {
 function setTheme(k) { state.theme = k; render(); }
 function setFont(k) { state.font = k; render(); }
 
-document.head.insertAdjacentHTML('beforeend', s5css + themeCss);
+document.head.insertAdjacentHTML('beforeend', s5css + themeCss + vnCss);
 render();
 </script>
 </body>
