@@ -489,6 +489,15 @@
       "saved": "Đã lưu ngân sách",
       "saveFailed": "Không lưu được ngân sách. Vui lòng thử lại.",
       "invalid": "Nhập số tiền đến 100.000.000.000"
+    },
+    "recurring": {
+      "title": "Khoản chi lặp lại",
+      "empty": "Chưa có khoản chi lặp lại.",
+      "add": "Thêm khoản chi lặp lại",
+      "next": "{{frequency}} · lần tới {{date}}",
+      "editTitle": "Sửa khoản chi lặp lại",
+      "nextDate": "Lần tới",
+      "deleteTitle": "Xoá khoản chi lặp lại này?"
     }
   },
   "todos": {

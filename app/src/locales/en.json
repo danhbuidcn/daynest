@@ -489,6 +489,15 @@
       "saved": "Budget saved",
       "saveFailed": "Could not save the budget. Please try again.",
       "invalid": "Enter an amount up to 100,000,000,000"
+    },
+    "recurring": {
+      "title": "Recurring expenses",
+      "empty": "No recurring expenses yet.",
+      "add": "Add recurring expense",
+      "next": "{{frequency}} · next {{date}}",
+      "editTitle": "Edit recurring expense",
+      "nextDate": "Next",
+      "deleteTitle": "Delete this recurring expense?"
     }
   },
   "todos": {

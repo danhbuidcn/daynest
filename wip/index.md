@@ -4,7 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-15 | S6 bước 9: Khoản chi lặp lại (tạo, tự ghi, icon; màn quản lý) | ⏳ chờ bạn duyệt | [2026-10-15-s6-step-9-recurring-expenses.md](2026-10-15-s6-step-9-recurring-expenses.md) |
+| 2026-10-15 | S6 bước 9: Khoản chi lặp lại (tạo, tự ghi, icon; màn quản lý) | ✅ xong (thử trên máy ảo; chưa thử hằng tuần ghi bù, ngày tương lai, 2 máy) | [2026-10-15-s6-step-9-recurring-expenses.md](2026-10-15-s6-step-9-recurring-expenses.md) |
 | 2026-10-15 | S6 bước 8: Ngân sách tháng (chung + riêng 1 tháng, thanh tiến độ ở Chi tiêu › Tháng) | ✅ xong (thử trên máy ảo; chưa đối chiếu DB, chưa thử 2 máy) | [2026-10-15-s6-step-8-budget.md](2026-10-15-s6-step-8-budget.md) |
 | 2026-10-15 | S6 bước 7: Rung nhẹ, khung xương (tick, lưu, xoá, kéo; Lịch, Ghi chú, Todo, Chi tiêu) | ✅ xong (rung ghi nhận trên máy ảo; khung xương chụp bằng trạng thái ép) | [2026-10-15-s6-step-7-haptics-skeleton.md](2026-10-15-s6-step-7-haptics-skeleton.md) |
 | 2026-10-15 | S6 bước 6: Hoàn tác sau khi xoá (event, todo, khoản chi; ẩn ngay, gửi sau 4 s) | ✅ xong (thử trên máy ảo; chưa thử lỗi khi gửi xoá, Google) | [2026-10-15-s6-step-6-undo-delete.md](2026-10-15-s6-step-6-undo-delete.md) |

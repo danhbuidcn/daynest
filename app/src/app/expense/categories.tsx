@@ -44,6 +44,15 @@ export default function ExpenseCategoriesScreen() {
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
       <ScreenHeader title={t('expenses.categories')} onBack={() => router.back()} compact />
       <ScrollView contentContainerStyle={styles.content}>
+        <Card>
+          <Pressable accessibilityRole="button" onPress={() => router.push('/expense/recurrences')} style={styles.row}>
+            <View style={styles.plus}>
+              <Icon name="repeat" size={22} color={colors.primaryDark} />
+            </View>
+            <AppText style={styles.flex}>{t('expenses.recurring.title')}</AppText>
+            <Icon name="chevron" size={18} color={colors.textMuted} />
+          </Pressable>
+        </Card>
         <GroupLabel text={t('expenses.categoriesScreen.builtIn')} />
         <Card>
           {builtIn.map((c, i) => (

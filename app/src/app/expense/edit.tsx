@@ -41,7 +41,7 @@ type FormState = { amount: string; categoryId: string; spentOn: SolarDate; note:
 // S4 màn 7, 8 — create: `?date=YYYY-MM-DD` (default today) · edit: `?id=…&date=<spent_on>`.
 export default function ExpenseFormScreen() {
   const { settings } = useAuth();
-  const params = useLocalSearchParams<{ id?: string; date?: string }>();
+  const params = useLocalSearchParams<{ id?: string; date?: string; repeat?: string }>();
   const isEdit = !!params.id;
   const range = useMemo(() => {
     const d = params.date ? parseIsoDate(params.date) : NO_DATE;
@@ -71,10 +71,10 @@ export default function ExpenseFormScreen() {
   }, [isEdit, expense, categories, lastUsed, params.date, range, settings.timeZone]);
 
   if (!initial) return null;
-  return <ExpenseForm key={params.id ?? 'create'} initial={initial} expense={expense} />;
+  return <ExpenseForm key={params.id ?? 'create'} initial={initial} expense={expense} initialRepeat={params.repeat === 'monthly' ? 'monthly' : 'none'} />;
 }
 
-function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expense }) {
+function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; expense?: Expense; initialRepeat: Frequency | 'none' }) {
   const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
@@ -93,7 +93,7 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
   const [pickCategory, setPickCategory] = useState(false);
   const [pickDate, setPickDate] = useState(false);
   const [conflict, setConflict] = useState(false);
-  const [repeat, setRepeat] = useState<Frequency | 'none'>('none');
+  const [repeat, setRepeat] = useState<Frequency | 'none'>(initialRepeat);
   const [pickRepeat, setPickRepeat] = useState(false);
 
   const today = todayIn(settings.timeZone);
