@@ -1,7 +1,7 @@
 import { useRouter, type Href } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { AutoGrowField } from '@/components/AutoGrowField';
@@ -26,7 +26,7 @@ import { newNoteHref } from '@/features/notes/newNote';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { ChecklistItem } from '@/lib/notes';
 import { SUBTASK_MAX_ITEMS } from '@/lib/todos';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { TodoOccurrence, TodoRow } from './todo';
 import { switchKind } from './todoFormState';
 import { useTodoFormSave } from './useTodoFormSave';
@@ -49,6 +49,8 @@ export function EntryForm({
   baseTodo?: TodoRow;
   occurrence?: TodoOccurrence;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -209,7 +211,7 @@ export function EntryForm({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: { backgroundColor: colors.surface, borderRadius: radius.card, padding: space.lg, gap: space.sm },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
-});
+}));

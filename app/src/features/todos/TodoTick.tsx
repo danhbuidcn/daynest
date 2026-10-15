@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { Icon } from '@/components/Icon';
-import { colors } from '@/theme';
+import { makeStyles, useTheme } from '@/theme';
 
 // Round tick of a todo (mockup S5): not done = primary ring · done = filled primary + white ✓.
 // `square` is the subtask tick, same look as a note checklist item.
@@ -18,6 +18,8 @@ export function TodoTick({
   square?: boolean;
   label?: string;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -31,7 +33,7 @@ export function TodoTick({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   tick: { borderWidth: 2, borderColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: colors.primary },
-});
+}));

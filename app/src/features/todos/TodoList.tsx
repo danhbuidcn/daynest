@@ -1,7 +1,7 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -21,13 +21,15 @@ import { toHex } from '@/lib/colors';
 import { jdFromDate, type SolarDate } from '@/lib/lunar';
 import { subtaskProgress, toggleTodo } from '@/lib/todos';
 import { groupTodoList, OVERDUE_DAYS, UPCOMING_DAYS } from '@/lib/todos/list';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { TodoOccurrence } from './todo';
 import { TodoTick } from './TodoTick';
 import { useSetTodoStatus, useTodosInRange } from './useTodos';
 
 // Màn 7 / 7b — Ghi chú › Todo: week strip to pick a day · Quá hạn · chosen day · Sắp tới.
 export function TodoList() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -178,6 +180,8 @@ export function TodoList() {
 }
 
 function Group({ title, titleColor, aside, children }: { title: string; titleColor?: string; aside: string; children: ReactNode }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View>
       <View style={styles.groupHead}>
@@ -211,6 +215,8 @@ function TodoListRow({
   onPress: () => void;
   onTick: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const progress = todo.subtasks.length > 0 ? subtaskProgress(todo.subtasks, todo.status) : null;
   const done = todo.status.done;
   return (
@@ -249,6 +255,8 @@ function TodoListRow({
 }
 
 function EmptyTodos({ text, action, onAction }: { text: string; action: string; onAction: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={styles.empty}>
       <View style={styles.bubble}>
@@ -262,7 +270,7 @@ function EmptyTodos({ text, action, onAction }: { text: string; action: string; 
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   content: { paddingHorizontal: space.md, paddingBottom: 120, gap: space.md },
   loading: { marginVertical: space.xl },
@@ -305,4 +313,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   center: { textAlign: 'center' },
-});
+}));
