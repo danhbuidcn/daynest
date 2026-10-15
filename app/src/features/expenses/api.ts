@@ -119,3 +119,34 @@ export async function deleteExpenseCategory(id: string): Promise<void> {
   const { error } = await supabase.from('expense_categories').delete().eq('id', id);
   if (error) throw classify(error);
 }
+
+export type BudgetData = { general: number | null; months: Record<string, number | null> };
+
+export async function fetchBudget(): Promise<BudgetData> {
+  const [settings, months] = await Promise.all([
+    supabase.from('user_settings').select('monthly_budget').single(),
+    supabase.from('expense_month_budgets').select('month, amount'),
+  ]);
+  if (settings.error) throw classify(settings.error);
+  if (months.error) throw classify(months.error);
+  const rows: Record<string, number | null> = {};
+  for (const r of months.data ?? []) rows[r.month as string] = r.amount == null ? null : Number(r.amount);
+  const general = settings.data?.monthly_budget;
+  return { general: general == null ? null : Number(general), months: rows };
+}
+
+// Switch on: `amount` is the general budget and the month's own row goes away. Off: `amount` is this month's own.
+export async function saveBudget(input: { month: string; amount: number | null; everyMonth: boolean }): Promise<void> {
+  if (input.everyMonth) {
+    const { data: auth } = await supabase.auth.getSession();
+    const userId = auth.session?.user.id;
+    if (!userId) throw new Error('no session');
+    const saved = await supabase.from('user_settings').update({ monthly_budget: input.amount }).eq('user_id', userId);
+    if (saved.error) throw classify(saved.error);
+    const removed = await supabase.from('expense_month_budgets').delete().eq('month', input.month);
+    if (removed.error) throw classify(removed.error);
+    return;
+  }
+  const { error } = await supabase.from('expense_month_budgets').upsert({ month: input.month, amount: input.amount }, { onConflict: 'user_id,month' });
+  if (error) throw classify(error);
+}

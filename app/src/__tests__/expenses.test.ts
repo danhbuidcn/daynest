@@ -16,6 +16,7 @@ import {
   sumAmounts,
   totalsByCategory,
 } from '@/lib/expenses';
+import { budgetForMonth, budgetProgress, monthKey } from '@/lib/expenses/budget';
 import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
@@ -165,5 +166,24 @@ describe('expense category icons', () => {
   it('offers 36 distinct names the DB accepts', () => {
     expect(new Set(PICKABLE_ICONS).size).toBe(36);
     for (const name of PICKABLE_ICONS) expect(name).toMatch(/^[a-z]{2,20}$/);
+  });
+});
+
+describe('budget', () => {
+  const key = monthKey(2026, 10);
+  it('uses the general budget when the month has no row', () => {
+    expect(budgetForMonth(5_000_000, {}, key)).toEqual({ amount: 5_000_000, kind: 'general' });
+    expect(budgetForMonth(null, {}, key)).toBeNull();
+  });
+  it('lets the month row win, including "no budget"', () => {
+    expect(budgetForMonth(5_000_000, { [key]: 8_000_000 }, key)).toEqual({ amount: 8_000_000, kind: 'month' });
+    expect(budgetForMonth(5_000_000, { [key]: null }, key)).toBeNull();
+    expect(budgetForMonth(5_000_000, { '2026-11-01': 1 }, key)).toEqual({ amount: 5_000_000, kind: 'general' });
+  });
+  it('levels: under 80 ok, 80 to 100 warn, over 100 over', () => {
+    expect(budgetProgress(790, 1000)).toMatchObject({ percent: 79, level: 'ok', remaining: 210 });
+    expect(budgetProgress(800, 1000).level).toBe('warn');
+    expect(budgetProgress(1000, 1000).level).toBe('warn');
+    expect(budgetProgress(1001, 1000)).toMatchObject({ level: 'over', remaining: -1 });
   });
 });

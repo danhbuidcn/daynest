@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 
@@ -19,7 +20,7 @@ export function CategoryIcon({ category, size = 28 }: { category: ExpenseCategor
   );
 }
 
-export function TotalCard({ total }: { total: number }) {
+export function TotalCard({ total, children }: { total: number; children?: ReactNode }) {
   const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ export function TotalCard({ total }: { total: number }) {
       <AppText variant="title" numberOfLines={1} adjustsFontSizeToFit style={styles.totalText}>
         {formatVnd(total)}
       </AppText>
+      {children}
     </Card>
   );
 }

@@ -18,8 +18,11 @@ import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import type { Expense, ExpenseCategory } from '@/features/expenses/expense';
 import { DailyChart, MonthlyChart } from '@/features/expenses/ExpenseCharts';
 import { CategoryTotalsCard, ExpenseListCard, TotalCard } from '@/features/expenses/ExpenseSummary';
+import { BudgetBar } from '@/features/expenses/BudgetBar';
+import { BudgetDialog } from '@/features/expenses/BudgetDialog';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
+import { useBudget } from '@/features/expenses/useBudget';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
 import { loadError } from '@/features/network/loadError';
 import {
@@ -33,6 +36,7 @@ import {
   type PeriodMode,
 } from '@/lib/expenses';
 import { isoDate } from '@/lib/calendar/monthGrid';
+import { budgetForMonth, monthKey } from '@/lib/expenses/budget';
 import type { SolarDate } from '@/lib/lunar';
 import { makeStyles, radius, space, useTheme } from '@/theme';
 
@@ -47,6 +51,12 @@ export default function ExpensesScreen() {
   const nav = useExpensesNav(settings.timeZone, settings.weekStart);
   const { mode, cursor } = nav;
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [budgetOpen, setBudgetOpen] = useState(false);
+  const budgetQuery = useBudget();
+  const budget = useMemo(
+    () => (budgetQuery.data ? budgetForMonth(budgetQuery.data.general, budgetQuery.data.months, monthKey(cursor.year, cursor.month)) : null),
+    [budgetQuery.data, cursor.year, cursor.month],
+  );
 
   const expensesQuery = useExpensesInRange(nav.range);
   const categoriesQuery = useExpenseCategories();
@@ -109,7 +119,9 @@ export default function ExpensesScreen() {
   } else {
     body = (
       <ScrollView contentContainerStyle={styles.list}>
-        <TotalCard total={sumAmounts(expenses)} />
+        <TotalCard total={sumAmounts(expenses)}>
+          {mode === 'month' && budgetQuery.data ? <BudgetBar spent={sumAmounts(expenses)} budget={budget} onPress={() => setBudgetOpen(true)} /> : null}
+        </TotalCard>
         {mode !== 'day' ? <DailyChart mode={mode} range={nav.range} expenses={expenses} today={nav.today} onDay={openDay} /> : null}
         {mode === 'month' && months ? (
           <MonthlyChart cursor={cursor} totals={months} onMonth={(m) => nav.setCursor({ ...m, day: 1 })} />
@@ -163,6 +175,7 @@ export default function ExpensesScreen() {
           onCurrent={pickCurrent}
         />
       )}
+      <BudgetDialog visible={budgetOpen} year={cursor.year} month={cursor.month} current={budget} onClose={() => setBudgetOpen(false)} />
     </SafeAreaView>
   );
 }

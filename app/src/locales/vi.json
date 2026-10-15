@@ -470,6 +470,19 @@
       "mine": "Của bạn",
       "edit": "Sửa",
       "deleteTitle": "Xoá nhóm \"{{name}}\"?"
+    },
+    "budget": {
+      "set": "Đặt ngân sách tháng",
+      "title": "Ngân sách tháng {{month}}",
+      "amount": "Số tiền",
+      "everyMonth": "Dùng cho mọi tháng",
+      "used": "{{percent}}% ngân sách {{amount}}",
+      "usedMonth": "{{percent}}% ngân sách riêng {{amount}}",
+      "left": "Còn {{amount}}",
+      "over": "Vượt {{amount}}",
+      "saved": "Đã lưu ngân sách",
+      "saveFailed": "Không lưu được ngân sách. Vui lòng thử lại.",
+      "invalid": "Nhập số tiền đến 100.000.000.000"
     }
   },
   "todos": {

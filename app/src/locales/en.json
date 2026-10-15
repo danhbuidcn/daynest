@@ -470,6 +470,19 @@
       "mine": "Yours",
       "edit": "Edit",
       "deleteTitle": "Delete category \"{{name}}\"?"
+    },
+    "budget": {
+      "set": "Set monthly budget",
+      "title": "Budget for month {{month}}",
+      "amount": "Amount",
+      "everyMonth": "Use for every month",
+      "used": "{{percent}}% of budget {{amount}}",
+      "usedMonth": "{{percent}}% of this month's budget {{amount}}",
+      "left": "{{amount}} left",
+      "over": "Over by {{amount}}",
+      "saved": "Budget saved",
+      "saveFailed": "Could not save the budget. Please try again.",
+      "invalid": "Enter an amount up to 100,000,000,000"
     }
   },
   "todos": {
