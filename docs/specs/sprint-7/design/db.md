@@ -34,7 +34,7 @@ Play bắt buộc: app có tạo tài khoản phải cho xoá tài khoản + d�
 ## Quảng cáo
 
 - Không lưu gì ở DB. Lần đồng ý UMP lưu bởi SDK trên máy.
-- Trên máy (AsyncStorage): ngày cài app (đếm 3 ngày đầu), giờ lần cuối hiện toàn màn hình (giới hạn 5 phút), giờ hết hạn "tắt quảng cáo 24 giờ". Không đồng bộ giữa 2 máy; đổi giờ máy để lách chỉ ảnh hưởng chính người đó.
+- Trên máy (AsyncStorage): giờ hết hạn "tắt quảng cáo 24 giờ". Không đồng bộ giữa 2 máy.
 
 ## Test
 

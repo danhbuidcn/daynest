@@ -366,7 +366,7 @@
 <body>
 <header class="page">
   <h1>Daynest — Mockup Sprint 7: xoá tài khoản, Pro, quảng cáo</h1>
-  <p>Quảng cáo gồm banner, toàn màn hình, quảng cáo gốc, xem để tắt 24 giờ (nhóm C, E). Chỉ vẽ màn mới hoặc đổi ở S7 (<a href="../index.md">spec S7</a>). Màn khác giữ như S6. Banner chỉ là khung minh hoạ; nội dung quảng cáo do AdMob quyết định.</p>
+  <p>Quảng cáo gồm banner, quảng cáo gốc, xem để tắt 24 giờ (nhóm C, E). Chỉ vẽ màn mới hoặc đổi ở S7 (<a href="../index.md">spec S7</a>). Màn khác giữ như S6. Banner chỉ là khung minh hoạ; nội dung quảng cáo do AdMob quyết định.</p>
 </header>
 <div id="root"></div>
 <script>
@@ -567,10 +567,6 @@ const calScreen = () => `<div class="content"><div class="cal-head"><span class=
   <div class="month" style="grid-template-rows:repeat(5,1fr)">${Array.from({ length: 35 }, (_, i) => { const d = i - 2; if (d < 1 || d > 31) return '<div class="cell"></div>'; return `<div class="cell ${d === 15 ? 'today' : ''} ${i % 7 === 6 ? 'sun' : ''}"><div class="top"><span class="d">${d}</span></div>${d === 12 ? '<div class="bar ev-sky">Họp</div>' : d === 20 ? '<div class="bar ev-pink">Sinh nhật</div>' : ''}</div>`; }).join('')}</div>
 </div>`;
 const nativeAd = `<div class="card" style="padding:12px 16px;display:flex;gap:12px;align-items:center;position:relative"><span class="adtag" style="border-radius:8px 0 8px 0">Quảng cáo</span><div class="adimg" style="width:44px;height:44px;margin-top:8px"></div><div class="adtxt" style="margin-top:8px"><b style="font-size:15px">Tên quảng cáo mẫu</b><span>Nội dung do AdMob chọn</span></div><span class="adbtn">Mở</span></div>`;
-const interstitial = `<div class="phone-full" style="position:absolute;inset:0;background:var(--surface);z-index:7;display:flex;flex-direction:column">
-  <div style="height:28px"></div><div style="display:flex;justify-content:flex-end;padding:8px 12px"><span class="x" style="background:var(--border);border-radius:50%;width:36px;height:36px">${I.close}</span></div>
-  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"><div class="adimg" style="width:200px;height:200px;border-radius:24px;margin:0"></div><b style="font-size:17px">Tên quảng cáo mẫu</b><span class="muted">Nội dung do AdMob chọn</span></div>
-  <div style="padding:16px"><button class="btn btn-primary">Mở</button></div><span class="adtag">Quảng cáo</span></div>`;
 const noteScreen = (ad) => `<div class="content"><div class="screen-title">Ghi chú</div><div class="settings" style="gap:10px">${['Việc tuần này', 'Danh sách mua', 'Ý tưởng', 'Sách cần đọc', 'Quà sinh nhật'].map((t, i) => `<div class="card" style="padding:14px 16px"><div style="font-size:17px;font-weight:700">${t}</div><div class="cap muted" style="margin-top:4px">Nội dung ghi chú mẫu</div></div>${i === 3 && ad ? nativeAd : ''}`).join('')}</div></div>`;
 const expScreen = (ad) => `<div class="content"><div class="screen-title">Chi tiêu</div><div class="settings" style="gap:12px"><div class="card" style="padding:16px;text-align:center"><div class="cap muted">Tháng 10</div><div style="font-size:22px;font-weight:800">7.800.000đ</div></div>${[['Ăn uống', '2.400.000đ'], ['Đi lại', '900.000đ'], ['Hoá đơn', '1.500.000đ'], ['Giải trí', '600.000đ'], ['Quà tặng', '300.000đ']].map(([n, v], i) => `<div class="card">${sr(I.tag, n, `<b>${v}</b>`)}</div>${i === 3 && ad ? nativeAd : ''}`).join('')}</div></div>`;
 const withBanner = (screen, tab, loading) => phone(`<div class="under">${screen}${tabbar(tab)}${banner(loading)}</div>`);
@@ -613,12 +609,11 @@ const groups = [
     ['13. Cài đặt', 'KHÔNG quảng cáo nào · cả các màn con và màn Pro', phoneT(settings({ pro: false }), 'tall')],
     ['14. Đã mua Pro', 'không banner ở mọi tab', phoneT(`<div class="under">${calScreen()}${tabbar('cal')}</div>`)],
   ]],
-  ['E. Toàn màn hình, quảng cáo gốc, xem để tắt', [
-    ['17. Toàn màn hình', 'hiện ngay sau khi bấm Lưu xong (sự kiện, ghi chú, todo, khoản chi) · tối đa 1 lần / 5 phút · không hiện 3 ngày đầu · nút đóng ở góc phải', phoneWith(calScreen() + tabbar('cal'), interstitial)],
-    ['18. Quảng cáo gốc', 'thẻ xen sau mục thứ 4 của danh sách Ghi chú (và Chi tiêu, màn 9, 10) · cùng kiểu thẻ của app, có nhãn "Quảng cáo"', withBanner(noteScreen(true), 'man')],
-    ['19. Xem để tắt 24 giờ', 'nút ở màn Daynest Pro (màn 4) → xem 1 quảng cáo có thưởng', phoneT(proScreen())],
-    ['19b. Đã tắt 24 giờ', 'toast sau khi xem xong · mọi quảng cáo tắt, hết hạn thì hiện lại', phoneWith(calScreen() + tabbar('cal'), '<div class="toast" style="bottom:90px">Đã tắt quảng cáo 24 giờ</div>')],
-    ['19c. Chưa có quảng cáo để xem', 'khi AdMob chưa trả quảng cáo', phoneWith(proScreen(), dlg(I.warn, 'warn', 'Chưa có quảng cáo', 'Vui lòng thử lại sau.', '<button class="btn btn-primary">Đã hiểu</button>'))],
+  ['E. Quảng cáo gốc, xem để tắt', [
+    ['17. Quảng cáo gốc', 'thẻ xen sau mục thứ 4 của danh sách Ghi chú (và Chi tiêu, màn 9, 10) · cùng kiểu thẻ của app, có nhãn "Quảng cáo"', withBanner(noteScreen(true), 'man')],
+    ['18. Xem để tắt 24 giờ', 'nút ở màn Daynest Pro (màn 4) → xem 1 quảng cáo có thưởng', phoneT(proScreen())],
+    ['18b. Đã tắt 24 giờ', 'toast sau khi xem xong · mọi quảng cáo tắt, hết hạn thì hiện lại', phoneWith(calScreen() + tabbar('cal'), '<div class="toast" style="bottom:90px">Đã tắt quảng cáo 24 giờ</div>')],
+    ['18c. Chưa có quảng cáo để xem', 'khi AdMob chưa trả quảng cáo', phoneWith(proScreen(), dlg(I.warn, 'warn', 'Chưa có quảng cáo', 'Vui lòng thử lại sau.', '<button class="btn btn-primary">Đã hiểu</button>'))],
   ]],
   ['D. Đồng ý quảng cáo (EU / UK)', [
     ['15. Lần mở app đầu', 'hộp do Google dựng (UMP) · chỉ hiện ở EU / UK · chưa đồng ý thì chưa hiện banner', phoneWith(calScreen() + tabbar('cal'), ump)],
