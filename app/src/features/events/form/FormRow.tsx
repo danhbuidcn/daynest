@@ -3,7 +3,7 @@ import { Pressable, StyleSheet } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Icon, type IconName } from '@/components/Icon';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 
 // One line of the event form card: icon · label · optional trailing control / chevron.
 export function FormRow({
@@ -21,6 +21,7 @@ export function FormRow({
   chevron?: boolean;
   indent?: boolean;
 }) {
+  const { colors } = useTheme();
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}

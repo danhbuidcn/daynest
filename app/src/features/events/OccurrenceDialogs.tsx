@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
-import { colors, radius, space } from '@/theme';
+import { radius, space, useTheme } from '@/theme';
 
 // "Hỏi lần lặp" (màn 14) — sửa/xoá một event đang lặp: chỉ lần này hay cả chuỗi.
 export function OccurrenceActionDialog({
@@ -20,6 +20,7 @@ export function OccurrenceActionDialog({
   onAllOccurrences: () => void;
   onCancel: () => void;
 }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <DialogShell visible={visible} onClose={onCancel} compact>
@@ -43,6 +44,7 @@ export function OccurrenceActionDialog({
 
 // Khoá lạc quan thất bại (màn 15) — ai đó đã lưu event này trên máy khác trước.
 export function ConflictDialog({ visible, onReload, onOverwrite }: { visible: boolean; onReload: () => void; onOverwrite: () => void }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <DialogShell visible={visible} onClose={onReload} compact>

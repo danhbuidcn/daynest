@@ -5,7 +5,7 @@ import { Pressable, StyleSheet } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { useAuth } from '@/features/auth/AuthProvider';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { endsBeforeStart, withStartDate, type FormState } from '../eventFormState';
 import { clockLabel, dateLabel } from '../format';
 import { FormRow } from './FormRow';
@@ -14,6 +14,7 @@ type Picking = { which: 'start' | 'end'; mode: 'date' | 'time' } | null;
 
 // Start/end rows (màn 9) + the OS date/time picker (màn 12) + the "end before start" error.
 export function DateTimeRows({ form, onChange }: { form: FormState; onChange: (f: FormState) => void }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const { settings } = useAuth();
   const [picking, setPicking] = useState<Picking>(null);

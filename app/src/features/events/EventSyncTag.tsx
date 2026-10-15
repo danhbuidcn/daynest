@@ -1,13 +1,15 @@
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Icon, type IconName } from '@/components/Icon';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { EventRow } from './event';
 
 // Màn 13 tag (F4): where this event lives — Google, waiting to sync, view-only, or Daynest only.
 export function EventSyncTag({ event }: { event: EventRow }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const g = event.google;
   const [icon, label]: [IconName, string] = g?.readonly
@@ -27,7 +29,7 @@ export function EventSyncTag({ event }: { event: EventRow }) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   tag: {
     flexDirection: 'row',
     alignSelf: 'flex-start',
@@ -39,4 +41,4 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: 10,
   },
-});
+}));

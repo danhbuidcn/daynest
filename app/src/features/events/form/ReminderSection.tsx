@@ -7,7 +7,7 @@ import { Icon } from '@/components/Icon';
 import { Switch } from '@/components/Switch';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { BatteryTipDialog } from '@/features/reminders/BatteryTipDialog';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { withReminderOn, type FormState } from '../eventFormState';
 import { oneReminderLabel } from '../format';
 import { ReminderPicker } from '../ReminderPicker';
@@ -16,6 +16,7 @@ import { FormRow } from './FormRow';
 
 // "Cài đặt nhắc nhở" (F3 mô tả): switch · one row per threshold with ✕ · "+ Thêm nhắc nhở".
 export function ReminderSection({ form, onChange }: { form: FormState; onChange: (f: FormState) => void }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const { settings } = useAuth();
   const [pickerOpen, setPickerOpen] = useState(false);

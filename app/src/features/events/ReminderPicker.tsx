@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Icon } from '@/components/Icon';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { REMINDER_OPTIONS } from './reminderOptions';
 
 // "+ Thêm nhắc nhở" (màn 11) — chọn đúng 1 mốc chưa có trong event rồi Hoàn tất.
@@ -20,6 +20,7 @@ export function ReminderPicker({
   onCancel: () => void;
   onAdd: (minutes: number) => void;
 }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const options = REMINDER_OPTIONS.filter((m) => !already.includes(m));
   const [picked, setPicked] = useState<number | null>(options[0] ?? null);

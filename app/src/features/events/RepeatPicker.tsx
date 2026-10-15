@@ -1,14 +1,14 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { toLunar, type SolarDate } from '@/lib/lunar';
-import { colors, radius, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { RepeatKind } from './event';
 import { clampInterval } from './eventFormState';
 import { shortDate } from './format';
@@ -30,6 +30,8 @@ export function RepeatPicker({
   onCancel: () => void;
   onDone: (value: RepeatValue) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const [repeat, setRepeat] = useState(value.repeat);
   const [interval, setIntervalValue] = useState(String(value.interval));
@@ -172,7 +174,7 @@ function UntilPicker({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   center: { textAlign: 'center', marginBottom: space.md },
   list: { gap: 2 },
   option: { height: 48, flexDirection: 'row', alignItems: 'center', paddingHorizontal: space.sm, borderRadius: radius.button },
@@ -187,11 +189,11 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: colors.border,
     textAlign: 'center',
-    ...typeScale.body,
+    ...type.body,
     color: colors.text,
   },
   untilRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm, marginTop: space.md, marginHorizontal: space.sm, height: 40 },
   checkbox: { width: 22, height: 22, borderRadius: 6, borderWidth: 1.5, borderColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   checkboxOn: { backgroundColor: colors.primary },
   actions: { flexDirection: 'row', gap: 10, marginTop: space.lg },
-});
+}));
