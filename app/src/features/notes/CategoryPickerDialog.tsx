@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { AlertDialog, DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { CATEGORY_MAX } from '@/lib/notes';
 import { toHex } from '@/lib/colors';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { CategoryEditDialog } from './CategoryEditDialog';
 import { useCategories } from './useNotes';
 
@@ -26,6 +26,8 @@ export function CategoryPickerDialog({
   onSelect: (id: string | null) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const categories = useCategories().data ?? [];
   const [adding, setAdding] = useState(false);
@@ -83,11 +85,11 @@ export function CategoryPickerDialog({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   title: { textAlign: 'center', marginBottom: space.md },
   list: { maxHeight: 360 },
   option: { height: 52, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, borderRadius: radius.button },
   dot: { width: 14, height: 14, borderRadius: 7 },
   dotEmpty: { borderWidth: 1.5, borderColor: colors.border },
   flex: { flex: 1 },
-});
+}));

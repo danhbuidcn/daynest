@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { toHex } from '@/lib/colors';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { Category } from './note';
 
 // Chip lọc (màn 16): "Tất cả" + one chip per category. `null` = Tất cả.
@@ -16,6 +16,7 @@ export function CategoryChips({
   selected: string | null;
   onSelect: (id: string | null) => void;
 }) {
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row} style={styles.scroll}>
@@ -47,6 +48,8 @@ export function Chip({
   on?: boolean;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="button"
@@ -66,7 +69,7 @@ export function Chip({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   scroll: { flexGrow: 0 },
   row: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: space.sm },
   chip: {
@@ -85,4 +88,4 @@ const styles = StyleSheet.create({
   dot: { width: 8, height: 8, borderRadius: 4 },
   label: { flexShrink: 1, fontSize: 13, lineHeight: 18 },
   countOn: { opacity: 0.85 },
-});
+}));

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { SEARCH_MAX } from '@/lib/notes';
-import { colors, space, type as typeScale } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 export function SearchBox({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const [focused, setFocused] = useState(false);
   return (
     <View style={[styles.box, { borderColor: focused ? colors.primary : colors.border }]}>
@@ -30,7 +32,7 @@ export function SearchBox({ value, onChange, placeholder }: { value: string; onC
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   box: {
     height: 38,
     marginHorizontal: space.lg,
@@ -43,5 +45,5 @@ const styles = StyleSheet.create({
     gap: space.sm,
     paddingHorizontal: 14,
   },
-  input: { flex: 1, ...typeScale.body, fontSize: 14, color: colors.text, paddingVertical: 0 },
-});
+  input: { flex: 1, ...type.body, fontSize: 14, color: colors.text, paddingVertical: 0 },
+}));

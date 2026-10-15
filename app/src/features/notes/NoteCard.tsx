@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
@@ -8,7 +8,7 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { toHex, type AppColor } from '@/lib/colors';
 import { checklistProgress, noteHeadline } from '@/lib/notes';
-import { colors, radius, shadow, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { Note } from './note';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -28,6 +28,8 @@ export function NoteCard({
   onPress?: () => void;
   onMore?: (anchor: { x: number; y: number; width: number; height: number }) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const { settings } = useAuth();
   const moreRef = useRef<View>(null);
@@ -82,7 +84,7 @@ export function NoteCard({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, shadow }) => ({
   card: {
     backgroundColor: colors.surface,
     borderRadius: radius.card,
@@ -100,4 +102,4 @@ const styles = StyleSheet.create({
   titleText: { fontSize: 15, lineHeight: 20 },
   progress: { flexDirection: 'row', alignItems: 'center', gap: space.xs },
   foot: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-});
+}));

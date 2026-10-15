@@ -1,7 +1,7 @@
 import * as Crypto from "expo-crypto";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 import {
   NestableDraggableFlatList,
   type RenderItemParams,
@@ -14,7 +14,7 @@ import {
   CHECKLIST_MAX_ITEMS,
   type ChecklistItem,
 } from "@/lib/notes";
-import { colors, radius, space, type as typeScale } from "@/theme";
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 export function newChecklistItem(): ChecklistItem {
   return { id: Crypto.randomUUID(), text: "", done: false };
@@ -31,7 +31,7 @@ export function ChecklistBlock({
   addLabel,
   placeholder,
   showWhenEmpty = false,
-  rowBackground = colors.bg,
+  rowBackground,
 }: {
   items: ChecklistItem[];
   onChange: (items: ChecklistItem[], focusId?: string) => void;
@@ -44,6 +44,8 @@ export function ChecklistBlock({
   showWhenEmpty?: boolean;
   rowBackground?: string;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const inputs = useRef(new Map<string, TextInput>());
 
@@ -70,7 +72,7 @@ export function ChecklistBlock({
     isActive,
     getIndex,
   }: RenderItemParams<ChecklistItem>) => (
-    <View style={[styles.row, { backgroundColor: rowBackground }, isActive && styles.dragging]}>
+    <View style={[styles.row, { backgroundColor: rowBackground ?? colors.bg }, isActive && styles.dragging]}>
       <Pressable
         accessibilityLabel="Reorder"
         hitSlop={10}
@@ -144,7 +146,7 @@ export function ChecklistBlock({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   row: {
     minHeight: 44,
     flexDirection: "row",
@@ -168,11 +170,11 @@ const styles = StyleSheet.create({
   tickOn: { backgroundColor: colors.primary },
   input: {
     flex: 1,
-    ...typeScale.body,
+    ...type.body,
     color: colors.text,
     paddingVertical: space.sm,
     borderRadius: radius.icon,
   },
   done: { textDecorationLine: "line-through", color: colors.textMuted },
   add: { minHeight: 44, flexDirection: "row", alignItems: "center", gap: 10 },
-});
+}));

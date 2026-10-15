@@ -9,7 +9,7 @@ import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { groupNotesByMonth, type NoteGroup } from '@/lib/notes/groups';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { CategoryPickerDialog } from './CategoryPickerDialog';
 import type { Category, Note } from './note';
 import { NoteCard } from './NoteCard';
@@ -20,6 +20,7 @@ type MenuState = { note: Note; top: number; right: number };
 // Lưới 2 cột (màn 16): "Đã ghim" then one group per month (S3 B); inside a group cards alternate
 // left/right like the mockup. Each card's `⋯` opens Xoá · Di chuyển đến without entering the editor.
 export function NoteGrid({ notes, categories }: { notes: Note[]; categories: Category[] }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
