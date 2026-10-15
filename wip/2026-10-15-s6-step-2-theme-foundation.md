@@ -15,7 +15,7 @@ Thuộc: [S6 lộ trình code](2026-10-14-s6-code-plan.md) · spec [S6 §8](../d
 - [x] 4. Lưu: AsyncStorage đọc cùng lúc với font/ngôn ngữ trong `_layout.tsx` trước khi ẩn splash (không nháy màu) · ghi vào `user_settings` (cột bước 1) khi đổi, ghi hàng đợi khi mất mạng · tải về khi đăng nhập/mở app, máy chủ thắng khi khác.
 - [x] 5. Thanh trạng thái (`StatusBar` sáng/tối), `SplashView`, nền màn chờ theo bộ màu.
 - [x] 6. Đổi toàn bộ `src/` sang hook, **mỗi thư mục 1 commit**: `components/` → `app/` → `features/<từng feature>`. Bỏ export hằng `colors`/`fonts`/`type`/`shadow` cũ khi xong (typecheck bắt sót).
-- [ ] 7. Kiểm: `npm run typecheck && npm run lint && npm test` · chạy máy ảo, bộ Bạc hà so với mockup/ảnh trước khi đổi (không khác) · đổi tạm `theme` trong DB sang `dark` và `custom` xem các màn chính không vỡ.
+- [x] 7. Kiểm: `npm run typecheck && npm run lint && npm test` · chạy máy ảo, bộ Bạc hà so với mockup/ảnh trước khi đổi (không khác) · đổi tạm `theme` trong DB sang `dark` và `custom` xem các màn chính không vỡ.
 - [ ] 8. Ghi kết quả · tick lộ trình · commit từng bước + push.
 
 ## Cần bạn quyết
@@ -30,3 +30,6 @@ Thuộc: [S6 lộ trình code](2026-10-14-s6-code-plan.md) · spec [S6 §8](../d
 - Khác kế hoạch: `@/theme` chỉ còn token tĩnh (`@/theme/tokens`) + hook; Itim và Patrick Hand chỉ có 1 độ đậm; splash gốc có bản tối (`#17171B`).
 - **Chưa làm / chưa xem:** bước 7 (thử trên máy). Không có máy ảo cho Daynest (chỉ có AVD `pwvault-test`) và điện thoại thật đang `unauthorized` → chưa chạy app. Cần dựng lại bản native (thêm font, `expo-haptics`, splash tối).
 - Chưa có màn chọn giao diện (bước 3) nên đổi thử bằng cách sửa cột `theme` trong DB.
+- 2026-10-15 (máy ảo `pwvault-test`, đăng nhập tài khoản của bạn): build debug chạy được. Bộ Bạc hà giống bản cũ (Lịch, Chi tiêu). Ép tạm (không ghi DB, đã hoàn lại): `dark` → Lịch, Ghi chú, Chi tiêu, Cài đặt đều đọc được, màu event giữ nguyên · `custom #FF7A59` + font Itim + cỡ chữ 1,15 → áp dụng được.
+- **Lỗi thấy được, để bước 3 / bước 10:** cỡ chữ Lớn (1,15) làm ô Lịch Tháng cắt chữ (+N, tên thanh event) vì ô cố định chiều cao. Chưa thử Be Vietnam Pro, Quicksand, Baloo 2, Patrick Hand; chưa thử "Theo hệ thống" (cần đổi chế độ tối của máy ảo); chưa đồng bộ lên `user_settings` (chưa có màn chọn để đổi).
+- Còn lại: chạy `npm run release`-kiểu build thật và cài lên điện thoại thì mới xem splash tối.

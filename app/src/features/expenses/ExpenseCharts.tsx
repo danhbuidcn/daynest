@@ -8,11 +8,9 @@ import { compactVnd, dailyTotals, formatVnd, isMonthAxisDay, recentMonths } from
 import type { SolarDate } from '@/lib/lunar';
 import type { Expense } from './expense';
 
-// Ranges of the month chart: whole month, then 10-day blocks — fewer, wider bars that all show their amount.
+// Ranges of the month chart: whole month, then 1–10, 11–20 and 21–end (up to 11 days) — fewer, wider bars that all show their amount.
 function rangeBounds(dayCount: number): [number, number][] {
-  const out: [number, number][] = [[0, dayCount - 1]];
-  for (let from = 0; from < dayCount; from += 10) out.push([from, Math.min(from + 9, dayCount - 1)]);
-  return out;
+  return [[0, dayCount - 1], [0, 9], [10, 19], [20, dayCount - 1]];
 }
 
 // "Theo ngày" (Tuần, Tháng): one bar per day, today in `primaryDark`. Tap → shows that day under the
@@ -36,14 +34,14 @@ export function DailyChart({
   const allValues = useMemo(() => dailyTotals(expenses, range.from, range.to), [expenses, range]);
   const allDays = useMemo(() => allValues.map((_, i) => addDays(range.from, i)), [allValues, range.from]);
   const bounds = useMemo(() => (mode === 'month' ? rangeBounds(allDays.length) : null), [mode, allDays.length]);
-  const activeRange = bounds && rangeIndex < bounds.length ? rangeIndex : 0; // February has no 21–31
+  const activeRange = bounds ? rangeIndex : 0;
   const [start, end] = bounds?.[activeRange] ?? [0, allDays.length - 1];
   const values = allValues.slice(start, end + 1);
   const days = allDays.slice(start, end + 1);
 
   const pickedIndex = picked ? days.findIndex((d) => sameDay(d, picked)) : -1;
   const shown = pickedIndex >= 0 ? pickedIndex : days.findIndex((d) => sameDay(d, today));
-  const showAll = days.length <= 10;
+  const showAll = days.length <= 11;
   const labels = days.map((d) =>
     mode === 'week' ? t(`calendar.weekdays.${weekdayOf(d)}`) : showAll || isMonthAxisDay(d.day, allDays.length) ? String(d.day) : '',
   );

@@ -16,3 +16,4 @@
 ## Kết quả
 
 - 2026-10-15: bạn `ok` mockup → code: `BarChart` (chip khoảng, dòng đọc số, mọi cột ghi số khi ≤ 10 cột), `DailyChart`, `MonthlyChart`. Chạm cột = chọn + hiện dòng số tiền; **chạm lại cột đang chọn = mở ngày / tháng đó** (giữ chức năng cũ). Bỏ nhấn giữ + toast. Chưa xem trên máy (xem ghi chú bước 2).
+- Đã thử trên máy ảo: chip khoảng ngày, dòng số tiền, bấm cột 14 rồi bấm lại → mở Ngày 14/10 (tổng 795.010 ₫, khớp cột) đều đúng. Sửa 1 lỗi: tháng 31 ngày có chip "31–31" → đổi thành 3 khoảng 1–10 · 11–20 · 21–cuối (≤ 11 cột thì mọi cột ghi số). Chưa thử chế độ Tuần.
