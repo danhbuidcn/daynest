@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +18,7 @@ import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import type { Expense, ExpenseCategory } from '@/features/expenses/expense';
 import { DailyChart, MonthlyChart } from '@/features/expenses/ExpenseCharts';
 import { CategoryTotalsCard, ExpenseListCard, TotalCard } from '@/features/expenses/ExpenseSummary';
+import { CategoryExpensesDialog } from '@/features/expenses/CategoryExpensesDialog';
 import { BudgetBar } from '@/features/expenses/BudgetBar';
 import { BudgetDialog } from '@/features/expenses/BudgetDialog';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
@@ -25,6 +26,7 @@ import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetch
 import { useBudget } from '@/features/expenses/useBudget';
 import { useGenerateRecurring } from '@/features/expenses/useGenerateRecurring';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
+import { useOnline } from '@/features/network/useOnline';
 import { loadError } from '@/features/network/loadError';
 import {
   defaultSpentOn,
@@ -49,11 +51,22 @@ export default function ExpensesScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { settings } = useAuth();
+  const { canWrite } = useOnline();
   const nav = useExpensesNav(settings.timeZone, settings.weekStart);
   const { mode, cursor } = nav;
   useGenerateRecurring(settings.timeZone);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [budgetOpen, setBudgetOpen] = useState(false);
+  // The category pop-up closes while a form is open (a Modal would sit on top of it) and comes back
+  // when this screen is in front again.
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const reopenCategory = useRef<string | null>(null);
+  useFocusEffect(
+    useCallback(() => {
+      if (reopenCategory.current) setOpenCategory(reopenCategory.current);
+      reopenCategory.current = null;
+    }, []),
+  );
   const budgetQuery = useBudget();
   const budget = useMemo(
     () => (budgetQuery.data ? budgetForMonth(budgetQuery.data.general, budgetQuery.data.months, monthKey(cursor.year, cursor.month)) : null),
@@ -93,6 +106,15 @@ export default function ExpensesScreen() {
       params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)) },
     });
   const editExpense = (e: Expense) => router.push({ pathname: '/expense/edit', params: { id: e.id, date: e.spentOn } });
+  const addToCategory = () => {
+    if (!openCategory) return;
+    reopenCategory.current = openCategory;
+    router.push({
+      pathname: '/expense/edit',
+      params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)), category: openCategory },
+    });
+    setOpenCategory(null);
+  };
 
   const modeOptions = MODES.map((m) => ({ value: m, label: t(`expenses.modes.${m}`) }));
   const currentLabel = t(`expenses.current.${mode}`);
@@ -128,7 +150,7 @@ export default function ExpensesScreen() {
         {mode === 'month' && months ? (
           <MonthlyChart cursor={cursor} totals={months} onMonth={(m) => nav.setCursor({ ...m, day: 1 })} />
         ) : null}
-        <CategoryTotalsCard totals={totals} categories={categories} />
+        <CategoryTotalsCard totals={totals} categories={categories} onPress={setOpenCategory} />
         {mode === 'day' ? <ExpenseListCard expenses={expenses} categories={categories} onPress={editExpense} /> : null}
       </ScrollView>
     );
@@ -177,6 +199,20 @@ export default function ExpensesScreen() {
           onCurrent={pickCurrent}
         />
       )}
+      <CategoryExpensesDialog
+        category={openCategory ? categories.get(openCategory) : undefined}
+        expenses={expenses ?? []}
+        mode={mode}
+        periodLabel={nav.title}
+        canAdd={canWrite}
+        onClose={() => setOpenCategory(null)}
+        onAdd={addToCategory}
+        onPress={(e) => {
+          reopenCategory.current = e.categoryId;
+          setOpenCategory(null);
+          editExpense(e);
+        }}
+      />
       <BudgetDialog visible={budgetOpen} year={cursor.year} month={cursor.month} current={budget} onClose={() => setBudgetOpen(false)} />
     </SafeAreaView>
   );

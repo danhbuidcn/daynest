@@ -41,7 +41,7 @@ type FormState = { amount: string; categoryId: string; spentOn: SolarDate; note:
 // S4 màn 7, 8 — create: `?date=YYYY-MM-DD` (default today) · edit: `?id=…&date=<spent_on>`.
 export default function ExpenseFormScreen() {
   const { settings } = useAuth();
-  const params = useLocalSearchParams<{ id?: string; date?: string; repeat?: string }>();
+  const params = useLocalSearchParams<{ id?: string; date?: string; repeat?: string; category?: string }>();
   const isEdit = !!params.id;
   const range = useMemo(() => {
     const d = params.date ? parseIsoDate(params.date) : NO_DATE;
@@ -65,10 +65,10 @@ export default function ExpenseFormScreen() {
         : null;
     }
     if (!categories || lastUsed === undefined) return null;
-    const categoryId = defaultCategoryId(categories, lastUsed);
+    const categoryId = categories.some((c) => c.id === params.category) ? params.category! : defaultCategoryId(categories, lastUsed);
     if (!categoryId) return null;
     return { amount: '', categoryId, spentOn: params.date ? range.from : todayIn(settings.timeZone), note: '' };
-  }, [isEdit, expense, categories, lastUsed, params.date, range, settings.timeZone]);
+  }, [isEdit, expense, categories, lastUsed, params.date, params.category, range, settings.timeZone]);
 
   if (!initial) return null;
   return <ExpenseForm key={params.id ?? 'create'} initial={initial} expense={expense} initialRepeat={params.repeat === 'monthly' ? 'monthly' : 'none'} />;

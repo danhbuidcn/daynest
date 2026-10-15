@@ -498,7 +498,8 @@
       "editTitle": "Edit recurring expense",
       "nextDate": "Next",
       "deleteTitle": "Delete this recurring expense?"
-    }
+    },
+    "noNote": "No note"
   },
   "todos": {
     "form": {

@@ -37,7 +37,15 @@ export function TotalCard({ total, children }: { total: number; children?: React
   );
 }
 
-export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTotal[]; categories: Map<string, ExpenseCategory> }) {
+export function CategoryTotalsCard({
+  totals,
+  categories,
+  onPress,
+}: {
+  totals: CategoryTotal[];
+  categories: Map<string, ExpenseCategory>;
+  onPress: (categoryId: string) => void;
+}) {
   const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
@@ -49,7 +57,7 @@ export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTot
       {totals.map((c) => {
         const category = categories.get(c.categoryId);
         return (
-          <View key={c.categoryId} style={styles.catRow}>
+          <Pressable key={c.categoryId} accessibilityRole="button" onPress={() => onPress(c.categoryId)} style={styles.catRow}>
             <CategoryIcon category={category} />
             <View style={styles.grow}>
               <View style={styles.line}>
@@ -67,7 +75,7 @@ export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTot
                 </AppText>
               </View>
             </View>
-          </View>
+          </Pressable>
         );
       })}
     </Card>

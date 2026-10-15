@@ -498,7 +498,8 @@
       "editTitle": "Sửa khoản chi lặp lại",
       "nextDate": "Lần tới",
       "deleteTitle": "Xoá khoản chi lặp lại này?"
-    }
+    },
+    "noNote": "Không có ghi chú"
   },
   "todos": {
     "form": {

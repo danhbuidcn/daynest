@@ -17,6 +17,7 @@ import {
   totalsByCategory,
 } from '@/lib/expenses';
 import { budgetForMonth, budgetProgress, monthKey } from '@/lib/expenses/budget';
+import { groupByDay } from '@/lib/expenses/groupByDay';
 import { anchorOf, nextDueDate } from '@/lib/expenses/recurrence';
 import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
 
@@ -204,5 +205,19 @@ describe('recurrence', () => {
     expect(nextDueDate('monthly', 30, { year: 2024, month: 1, day: 30 })).toEqual({ year: 2024, month: 2, day: 29 });
     expect(nextDueDate('monthly', 30, { year: 2025, month: 1, day: 30 })).toEqual({ year: 2025, month: 2, day: 28 });
     expect(nextDueDate('monthly', 15, { year: 2025, month: 12, day: 15 })).toEqual({ year: 2026, month: 1, day: 15 });
+  });
+});
+
+describe('groupByDay', () => {
+  const e = (id: string, categoryId: string, spentOn: string, amount: number) => ({ id, categoryId, spentOn, amount });
+  const list = [e('1', 'a', '2026-10-14', 100), e('2', 'b', '2026-10-15', 5), e('3', 'a', '2026-10-15', 200), e('4', 'a', '2026-10-15', 50)];
+  it('keeps only the category, newest day first, with day totals', () => {
+    const groups = groupByDay(list, 'a');
+    expect(groups.map((g) => g.date)).toEqual(['2026-10-15', '2026-10-14']);
+    expect(groups[0].items.map((x) => x.id)).toEqual(['3', '4']);
+    expect(groups[0].total).toBe(250);
+  });
+  it('is empty for a category with no expenses', () => {
+    expect(groupByDay(list, 'z')).toEqual([]);
   });
 });
