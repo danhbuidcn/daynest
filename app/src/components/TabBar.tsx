@@ -2,6 +2,7 @@ import type { BottomTabBarProps } from 'expo-router/tabs';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useOnline } from '@/features/network/useOnline';
 import { makeStyles, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
@@ -17,6 +18,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
   const { colors } = useTheme();
   const styles = useStyles();
   const insets = useSafeAreaInsets();
+  const { canWrite } = useOnline();
   const items = state.routes.map((route, index) => {
     const focused = state.index === index;
     const { options } = descriptors[route.key];
@@ -42,7 +44,7 @@ export function TabBar({ state, descriptors, navigation, onPlus }: BottomTabBarP
 
   const plus = (
     <View key="plus" style={styles.tab}>
-      <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={onPlus} style={styles.fab}>
+      <Pressable accessibilityRole="button" accessibilityLabel="Add" disabled={!canWrite} onPress={onPlus} style={[styles.fab, !canWrite && styles.fabLocked]}>
         <Icon name="plus" size={28} color={colors.white} />
       </Pressable>
     </View>
@@ -66,6 +68,7 @@ const useStyles = makeStyles(({ colors }) => ({
     elevation: 8,
   },
   tab: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 2 },
+  fabLocked: { opacity: 0.4 },
   fab: {
     width: 56,
     height: 56,

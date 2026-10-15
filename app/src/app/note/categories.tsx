@@ -11,7 +11,8 @@ import { Card } from '@/components/Card';
 import { AlertDialog, ConfirmDialog } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { useToast } from '@/components/Toast';
+import { useErrorToast } from '@/features/network/useErrorToast';
+import { useOnline } from '@/features/network/useOnline';
 import { CategoryEditDialog } from '@/features/notes/CategoryEditDialog';
 import type { Category } from '@/features/notes/note';
 import { useCategories, useDeleteCategories } from '@/features/notes/useNotes';
@@ -25,7 +26,8 @@ export default function CategoriesScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
+  const { canWrite } = useOnline();
   const categories = useCategories().data ?? [];
   const remove = useDeleteCategories();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -94,6 +96,7 @@ export default function CategoriesScreen() {
             label={t('notes.categories.add')}
             icon={<Icon name="plus" size={20} color={colors.white} />}
             onPress={() => (categories.length >= CATEGORY_MAX ? setLimitOpen(true) : setEditing('new'))}
+            disabled={!canWrite}
           />
         )}
       </View>
@@ -123,7 +126,7 @@ export default function CategoriesScreen() {
         onCancel={() => setConfirmOpen(false)}
         onConfirm={() => {
           setConfirmOpen(false);
-          remove.mutate(selected, { onSuccess: stopSelecting, onError: () => toast(t('notes.actionFailed'), 'error') });
+          remove.mutate(selected, { onSuccess: stopSelecting, onError: failed('notes.actionFailed') });
         }}
       />
     </SafeAreaView>

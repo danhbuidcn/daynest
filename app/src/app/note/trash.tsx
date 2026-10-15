@@ -9,6 +9,7 @@ import { Button } from '@/components/Button';
 import { ConfirmDialog } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { NoteCard } from '@/features/notes/NoteCard';
 import { useCategories, useDeleteNoteForever, useEmptyTrash, useRestoreNote, useTrashList } from '@/features/notes/useNotes';
 import { makeStyles, space, useTheme } from '@/theme';
@@ -20,6 +21,7 @@ export default function TrashScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
+  const failed = useErrorToast();
   const list = useTrashList();
   const categories = useCategories().data ?? [];
   const restore = useRestoreNote();
@@ -27,7 +29,7 @@ export default function TrashScreen() {
   const empty = useEmptyTrash();
   const [askDelete, setAskDelete] = useState<string | null>(null);
   const [askAll, setAskAll] = useState(false);
-  const onError = () => toast(t('notes.actionFailed'), 'error');
+  const onError = failed('notes.actionFailed');
 
   const nearEnd = ({ nativeEvent: e }: { nativeEvent: { layoutMeasurement: { height: number }; contentOffset: { y: number }; contentSize: { height: number } } }) => {
     if (e.layoutMeasurement.height + e.contentOffset.y >= e.contentSize.height - 400 && list.hasNextPage && !list.isFetchingNextPage) {

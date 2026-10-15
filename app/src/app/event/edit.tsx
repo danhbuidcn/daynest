@@ -11,6 +11,7 @@ import { FormScreen } from '@/components/FormScreen';
 import { Switch } from '@/components/Switch';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { EntryForm } from '@/features/todos/EntryForm';
 import { newTodoFormState } from '@/features/todos/todoFormState';
 import type { EventRow } from '@/features/events/event';
@@ -31,6 +32,7 @@ import { repeatLabel } from '@/features/events/repeatLabel';
 import { RepeatPicker } from '@/features/events/RepeatPicker';
 import { useEventFormSave } from '@/features/events/useEventFormSave';
 import { useEventsInRange } from '@/features/events/useEvents';
+import { useOnline } from '@/features/network/useOnline';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { makeStyles, radius, space } from '@/theme';
@@ -68,6 +70,8 @@ function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; bas
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
+  const failed = useErrorToast();
+  const { canWrite } = useOnline();
   const { settings } = useAuth();
   const [form, setForm] = useState(initial);
   const [repeatOpen, setRepeatOpen] = useState(false);
@@ -82,7 +86,7 @@ function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; bas
       router.back();
     },
     onClose: () => router.back(),
-    onError: () => toast(t('events.form.saveFailed'), 'error'),
+    onError: failed('events.form.saveFailed'),
   });
 
   const dirty = JSON.stringify(form) !== JSON.stringify(initial);
@@ -94,7 +98,7 @@ function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; bas
       title={t('events.form.title')}
       onBack={close}
       closeIcon
-      footer={<Button label={t('events.form.save')} onPress={saver.save} disabled={!canSave} />}>
+      footer={<Button label={t('events.form.save')} onPress={saver.save} disabled={!canSave || !canWrite} />}>
       <View style={styles.card}>
         <AutoGrowField
           value={form.title}

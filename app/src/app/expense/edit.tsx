@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQueryClient } from '@tanstack/react-query';
 import * as Crypto from 'expo-crypto';
-import { useNetworkState } from 'expo-network';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +21,8 @@ import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { EXPENSES_KEY, useExpenseCategories, useExpenseWrites, useExpensesInRange } from '@/features/expenses/useExpenses';
+import { useErrorToast } from '@/features/network/useErrorToast';
+import { useOnline } from '@/features/network/useOnline';
 import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { formatAmountInput, groupThousands, NOTE_MAX, parseAmount, relativeDay } from '@/lib/expenses';
@@ -77,7 +78,8 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
   const toast = useToast();
   const queryClient = useQueryClient();
   const { settings, recheckSession } = useAuth();
-  const network = useNetworkState();
+  const { canWrite } = useOnline();
+  const failed = useErrorToast();
   const categories = useExpenseCategories().data ?? [];
   const { save, remove } = useExpenseWrites();
   const [newId] = useState(() => Crypto.randomUUID());
@@ -89,7 +91,7 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
   const [conflict, setConflict] = useState(false);
 
   const today = todayIn(settings.timeZone);
-  const offline = network.isConnected === false || network.isInternetReachable === false;
+  const offline = !canWrite;
   const amount = parseAmount(form.amount);
   const canSave = amount !== null && !busy && !offline;
   const category = categories.find((c) => c.id === form.categoryId);
@@ -111,7 +113,7 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
     } catch (e) {
       if (e instanceof ConflictError) setConflict(true);
       else if (e instanceof ForbiddenError) await recheckSession();
-      else toast(t('expenses.form.saveFailed'), 'error');
+      else failed('expenses.form.saveFailed')(e);
     } finally {
       setBusy(false);
     }
@@ -146,11 +148,6 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
       onBack={() => router.back()}
       footer={
         <View style={styles.footer}>
-          {offline ? (
-            <AppText variant="caption" color={colors.error} style={styles.center}>
-              {t('common.offline')}
-            </AppText>
-          ) : null}
           {expense ? (
             <Button
               label={t('expenses.form.delete')}

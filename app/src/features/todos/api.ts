@@ -1,4 +1,3 @@
-import { getNetworkStateAsync } from 'expo-network';
 
 import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
@@ -126,9 +125,6 @@ export async function upsertTodoException(
 // existing `override` keeps its kind and values, otherwise a `status` row is added. No
 // updated_at check: a tick never overwrites what another device edited.
 export async function setTodoStatus(todo: { id: string; repeat: string }, occurrenceDate: string, status: TodoStatus): Promise<void> {
-  // Offline the request hangs instead of failing, leaving the optimistic tick on screen unsaved.
-  const network = await getNetworkStateAsync().catch(() => null);
-  if (network && (network.isConnected === false || network.isInternetReachable === false)) throw new Error('offline');
   const values = { done: status.done, done_subtasks: status.doneSubtasks };
   if (todo.repeat === 'none') {
     const { error } = await supabase.from('todos').update(values).eq('id', todo.id);

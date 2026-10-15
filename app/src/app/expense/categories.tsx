@@ -16,6 +16,8 @@ import { ExpenseCategoryDialog } from '@/features/expenses/ExpenseCategoryDialog
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { useExpenseCategories, useExpenseCategoryWrites } from '@/features/expenses/useExpenses';
 import { makeStyles, space, useTheme } from '@/theme';
+import { useErrorToast } from '@/features/network/useErrorToast';
+import { useOnline } from '@/features/network/useOnline';
 
 // S4 màn 10 — built-in categories (locked) · yours (tap = edit, ⋯ = Sửa / Xoá) · "Thêm nhóm".
 export default function ExpenseCategoriesScreen() {
@@ -24,6 +26,8 @@ export default function ExpenseCategoriesScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
+  const failed = useErrorToast();
+  const { canWrite } = useOnline();
   const { width } = useWindowDimensions();
   const categories = useExpenseCategories().data ?? [];
   const { remove } = useExpenseCategoryWrites();
@@ -65,8 +69,9 @@ export default function ExpenseCategoriesScreen() {
           ))}
           <Pressable
             accessibilityRole="button"
+            disabled={!canWrite}
             onPress={() => (canAdd ? setEditing('new') : setLimitOpen(true))}
-            style={[styles.row, mine.length > 0 && styles.divider]}>
+            style={[styles.row, mine.length > 0 && styles.divider, !canWrite && styles.locked]}>
             <View style={styles.plus}>
               <Icon name="plus" size={20} color={colors.primaryDark} />
             </View>
@@ -113,7 +118,7 @@ export default function ExpenseCategoriesScreen() {
           setDeleting(null);
           remove.mutate(id, {
             onSuccess: () => toast(t('expenses.form.deleted')),
-            onError: () => toast(t('expenses.form.saveFailed'), 'error'),
+            onError: failed('expenses.form.saveFailed'),
           });
         }}
       />
@@ -149,6 +154,7 @@ function GroupLabel({ text }: { text: string }) {
 
 const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
+  locked: { opacity: 0.4 },
   content: { paddingHorizontal: space.lg, gap: space.md, paddingBottom: space.xl },
   group: { marginHorizontal: space.xs, marginTop: space.sm, letterSpacing: 0.6 },
   row: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg },

@@ -6,8 +6,8 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AlertDialog } from '@/components/Dialog';
+import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { ScreenBackground } from '@/components/ScreenBackground';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { dayDetails, monthDays, type DayDisplay, type DayInfo } from '@/features/calendar/dayInfo';
@@ -19,6 +19,7 @@ import { ListView } from '@/features/calendar/ListView';
 import { MonthView, WeekdayRow } from '@/features/calendar/MonthView';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import { useCalendarNav } from '@/features/calendar/useCalendarNav';
+import { loadError } from '@/features/network/loadError';
 import { ViewModeBar } from '@/features/calendar/ViewModeBar';
 import { WeekView } from '@/features/calendar/WeekView';
 import { useCycleCalendar } from '@/features/cycle/useCycleCalendar';
@@ -26,6 +27,7 @@ import type { EventOccurrence } from '@/features/events/occurrences';
 import { syncNow } from '@/features/google/sync';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { useEventsInRange, usePrefetchEvents } from '@/features/events/useEvents';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import type { TodoOccurrence } from '@/features/todos/todo';
 import { usePrefetchTodos, useSetTodoStatus, useTodosInRange } from '@/features/todos/useTodos';
 import { type BarItem } from '@/lib/calendar/eventBars';
@@ -41,7 +43,7 @@ export default function CalendarScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
   const { settings, newDeviceName, dismissNewDeviceName } = useAuth();
   const nav = useCalendarNav(settings.timeZone, settings.weekStart);
   const { today, mode, cursor, setCursor, go } = nav;
@@ -76,6 +78,9 @@ export default function CalendarScreen() {
   const occurrences = useMemo<EventOccurrence[]>(() => [...events.occurrences, ...todos.occurrences], [events.occurrences, todos.occurrences]);
   const eventsLoading = events.isLoading || todos.isLoading;
   const eventsFetching = events.isFetching || todos.isFetching;
+  // Nothing on the device for this period and the load failed (or waits for the network).
+  const loadFailure = loadError(events) ?? loadError(todos);
+  const retryLoad = () => void Promise.all([events.refetch(), todos.refetch()]);
   const setTodoStatus = useSetTodoStatus();
   // Day view loads whole weeks, so its neighbours are the weeks before and after.
   const adjacentRanges = useMemo(() => {
@@ -89,9 +94,9 @@ export default function CalendarScreen() {
     (o: TodoOccurrence) =>
       setTodoStatus.mutate(
         { todo: { id: o.eventId, repeat: o.repeat }, occurrenceDate: o.occurrenceDate, status: toggleTodo(o.subtasks, o.status) },
-        { onError: () => toast(t('todos.tickFailed'), 'error') },
+        { onError: failed('todos.tickFailed') },
       ),
-    [setTodoStatus, toast, t],
+    [setTodoStatus, failed],
   );
 
   const goToday = () => setSelected(nav.goToday());
@@ -180,6 +185,7 @@ export default function CalendarScreen() {
       <ScreenBackground />
       <CalendarHeader title={nav.title} onPrev={() => go(-1)} onNext={() => go(1)} onTitle={() => setPickerOpen(true)} onToday={goToday} />
       <ViewModeBar value={mode} onChange={nav.setMode} />
+      {!loadFailure && (events.isError || todos.isError) ? <StaleLine onRetry={retryLoad} /> : null}
       {mode === 'month' ? <WeekdayRow weekStart={settings.weekStart} /> : null}
       <GestureDetector gesture={swipe}>
         <View style={styles.swipeArea} collapsable={false}>
@@ -193,6 +199,11 @@ export default function CalendarScreen() {
             <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} cycleOf={cycle.dayOf} />
           )}
           {eventsLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
+          {loadFailure ? (
+            <View style={styles.failure}>
+              <LoadErrorCard error={loadFailure} onRetry={retryLoad} />
+            </View>
+          ) : null}
         </View>
       </GestureDetector>
       <MonthYearPicker
@@ -239,4 +250,5 @@ const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1 },
   swipeArea: { flex: 1 },
   loading: { position: 'absolute', top: space.sm, alignSelf: 'center' },
+  failure: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.bg },
 }));

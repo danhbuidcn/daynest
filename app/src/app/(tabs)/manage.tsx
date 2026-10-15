@@ -9,9 +9,11 @@ import { ActionMenu, MoreButton } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
+import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
+import { loadError } from '@/features/network/loadError';
 import { CategoryChips } from '@/features/notes/CategoryChips';
 import { newNoteHref, setActiveNoteFilter } from '@/features/notes/newNote';
 import { NoteGrid } from '@/features/notes/NoteGrid';
@@ -43,6 +45,7 @@ export default function ManageScreen() {
   // The chosen category was deleted (screen 18): fall back to "Tất cả".
   const filter = chosen && categoriesQuery.isSuccess && !categories.some((c) => c.id === chosen) ? null : chosen;
   const list = useNotesList(filter, query);
+  const listFailure = loadError(list);
   const count = useNotesCount(filter);
 
   useEffect(() => {
@@ -89,6 +92,7 @@ export default function ManageScreen() {
           </AppText>
           <SearchBox value={search} onChange={setSearch} placeholder={t('notes.search')} />
           <CategoryChips categories={categories} selected={filter} onSelect={setFilter} />
+          {list.isError && list.notes.length > 0 ? <StaleLine onRetry={() => void list.refetch()} /> : null}
           <ScrollView
             contentContainerStyle={styles.content}
             onScroll={nearEnd}
@@ -109,8 +113,10 @@ export default function ManageScreen() {
               </AppText>
             ) : null}
             {list.isLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
-            {list.isError && list.notes.length === 0 ? (
-              <Empty text={t('notes.loadFailed')} action={t('notes.retry')} onAction={() => void list.refetch()} />
+            {list.notes.length === 0 && listFailure ? (
+              <View style={styles.errorBox}>
+                <LoadErrorCard error={listFailure} onRetry={() => void list.refetch()} />
+              </View>
             ) : null}
             {list.isSuccess && list.notes.length === 0 ? (
               query ? <Empty text={t('notes.noResults')} /> : <Empty text={t('notes.empty')} action={t('notes.create')} onAction={() => router.push(newNoteHref())} />
@@ -154,6 +160,7 @@ const useStyles = makeStyles(({ colors }) => ({
   subcount: { textAlign: 'center', marginBottom: space.sm },
   count: { paddingHorizontal: 20, paddingBottom: space.sm },
   loading: { marginVertical: space.xl },
+  errorBox: { minHeight: 360 },
   empty: { alignItems: 'center', gap: space.md, paddingTop: 80, paddingHorizontal: space.xl },
   bubble: { width: 96, height: 96, borderRadius: 34, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },

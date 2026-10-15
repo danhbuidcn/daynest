@@ -10,7 +10,6 @@ import { Card } from '@/components/Card';
 import { ConfirmDialog } from '@/components/Dialog';
 import { Icon, type IconName } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { clockLabel, lunarLabel, occurrenceStartDate, reminderLabel, whenLabel } from '@/features/events/format';
 import { OccurrenceActionDialog } from '@/features/events/OccurrenceDialogs';
@@ -22,13 +21,14 @@ import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { toHex } from '@/lib/colors';
 import { makeStyles, radius, space, useTheme } from '@/theme';
+import { useErrorToast } from '@/features/network/useErrorToast';
 
 // Màn 13 — `/event/[id]?occurrenceDate=YYYY-MM-DD`: one lap of a (possibly repeating) event.
 export default function EventDetailScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
   const { settings } = useAuth();
   const params = useLocalSearchParams<{ id: string; occurrenceDate: string }>();
   const occDate = parseIsoDate(params.occurrenceDate);
@@ -37,7 +37,7 @@ export default function EventDetailScreen() {
   const occ = loaded.occurrences.find((o) => o.eventId === params.id && o.occurrenceDate === params.occurrenceDate);
   const googleSync = useGoogleSync();
   const [menuOpen, setMenuOpen] = useState(false);
-  const deleter = useEventDelete({ event, occurrence: occ, onDone: () => router.back(), onError: () => toast(t('events.detail.deleteFailed'), 'error') });
+  const deleter = useEventDelete({ event, occurrence: occ, onDone: () => router.back(), onError: failed('events.detail.deleteFailed') });
 
   // Cached data from a wider range may predate this event — wait for the exact range then.
   if (loaded.isLoading || (loaded.isPlaceholderData && (!event || !occ))) return null;

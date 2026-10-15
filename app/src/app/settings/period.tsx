@@ -8,10 +8,11 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { useToast } from '@/components/Toast';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { WeekdayRow } from '@/features/calendar/MonthView';
 import { usePeriodDays, useSavePeriodDays } from '@/features/cycle/usePeriodDays';
+import { useOnline } from '@/features/network/useOnline';
 import { addMonths, isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { autoTickDays, groupPeriods, periodLength } from '@/lib/cycle';
@@ -26,7 +27,8 @@ export default function PeriodScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
+  const { canWrite } = useOnline();
   const { settings } = useAuth();
   const today = useMemo(() => todayIn(settings.timeZone), [settings.timeZone]);
   const todayIso = isoDate(today);
@@ -58,7 +60,7 @@ export default function PeriodScreen() {
       { add: [...ticked].filter((d) => !before.has(d)), remove: data.filter((d) => !ticked.has(d)) },
       {
         onSuccess: () => router.back(),
-        onError: (e) => toast(e.message === 'offline' ? t('common.offline') : t('settings.saveFailed'), 'error'),
+        onError: failed('settings.saveFailed'),
       },
     );
   };
@@ -86,7 +88,7 @@ export default function PeriodScreen() {
         </ScrollView>
       )}
       <View style={styles.footer}>
-        <Button label={t('cycle.save')} onPress={onSave} disabled={!ticked || save.isPending} />
+        <Button label={t('cycle.save')} onPress={onSave} disabled={!ticked || save.isPending || !canWrite} />
       </View>
     </SafeAreaView>
   );

@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S6 bước 4: Lỗi API, server, mạng (thời gian chờ, banner, khoá nút, thẻ lỗi) | ✅ xong (thử trên máy ảo; chưa thử máy chủ sự cố) | [2026-10-15-s6-step-4-api-errors-network.md](2026-10-15-s6-step-4-api-errors-network.md) |
 | 2026-10-15 | Biểu đồ Chi tiêu: hiện số tiền từng cột (tuần: từng ngày; tháng: từng tuần + 6 tháng) | 🔄 đã code, chờ xem trên máy | [2026-10-15-expense-chart-amounts.md](2026-10-15-expense-chart-amounts.md) |
 | 2026-10-15 | S6 bước 3: Giao diện — màn chọn + nền (8 bộ màu, nền, font, cỡ chữ, ảnh) | ✅ xong (thử trên máy ảo) | [2026-10-15-s6-step-3-appearance-screen.md](2026-10-15-s6-step-3-appearance-screen.md) |
 | 2026-10-15 | S6 bước 2: Giao diện — nền móng (ThemeProvider, 8 bộ màu, font, đổi toàn bộ src) | 🔄 đã code, chờ xem trên máy | [2026-10-15-s6-step-2-theme-foundation.md](2026-10-15-s6-step-2-theme-foundation.md) |

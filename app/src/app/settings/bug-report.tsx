@@ -1,5 +1,4 @@
 import * as Crypto from 'expo-crypto';
-import { useNetworkState } from 'expo-network';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +11,8 @@ import { FormScreen } from '@/components/FormScreen';
 import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { pickImages, RateLimitedError, sendBugReport, type PickedImage } from '@/features/bugReport/api';
+import { useErrorToast } from '@/features/network/useErrorToast';
+import { useOnline } from '@/features/network/useOnline';
 import { BODY_MAX, isBodyValid, MAX_IMAGES } from '@/lib/bugReport';
 import { makeStyles, radius, space, useTheme } from '@/theme';
 
@@ -21,7 +22,8 @@ export default function BugReportScreen() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const toast = useToast();
-  const network = useNetworkState();
+  const { canWrite } = useOnline();
+  const failed = useErrorToast();
   // One id per screen: a retry after a half-done send reuses it instead of making a second report.
   const [id] = useState(() => Crypto.randomUUID());
   const [body, setBody] = useState('');
@@ -30,8 +32,7 @@ export default function BugReportScreen() {
   const [busy, setBusy] = useState(false);
   const [limited, setLimited] = useState(false);
 
-  const offline = network.isConnected === false || network.isInternetReachable === false;
-  const canSend = isBodyValid(body) && !busy && !offline;
+  const canSend = isBodyValid(body) && !busy && canWrite;
 
   const addImages = async () => {
     try {
@@ -50,7 +51,7 @@ export default function BugReportScreen() {
       router.back();
     } catch (e) {
       if (e instanceof RateLimitedError) setLimited(true);
-      else toast(t('bugReport.sendFailed'), 'error');
+      else failed('bugReport.sendFailed')(e);
     } finally {
       setBusy(false);
     }
@@ -62,11 +63,6 @@ export default function BugReportScreen() {
       onBack={() => router.back()}
       footer={
         <View style={styles.footer}>
-          {offline ? (
-            <AppText variant="caption" color={colors.error} style={styles.center}>
-              {t('common.offline')}
-            </AppText>
-          ) : null}
           <Button label={t('bugReport.send')} onPress={() => void send()} disabled={!canSend} />
         </View>
       }

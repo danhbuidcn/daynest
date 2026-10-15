@@ -10,11 +10,11 @@ import { Card } from '@/components/Card';
 import { ConfirmDialog } from '@/components/Dialog';
 import { Icon, type IconName } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { clockLabel, lunarLabel, occurrenceStartDate, reminderLabel, whenLabel } from '@/features/events/format';
 import { OccurrenceActionDialog } from '@/features/events/OccurrenceDialogs';
 import { repeatLabel } from '@/features/events/repeatLabel';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { TodoTick } from '@/features/todos/TodoTick';
 import { useTodoDelete } from '@/features/todos/useTodoDelete';
 import { useSetTodoStatus, useTodosInRange } from '@/features/todos/useTodos';
@@ -28,7 +28,7 @@ export default function TodoDetailScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
   const { settings } = useAuth();
   const params = useLocalSearchParams<{ id: string; occurrenceDate: string }>();
   const occDate = parseIsoDate(params.occurrenceDate);
@@ -37,7 +37,7 @@ export default function TodoDetailScreen() {
   const occ = loaded.occurrences.find((o) => o.eventId === params.id && o.occurrenceDate === params.occurrenceDate);
   const setStatus = useSetTodoStatus();
   const [menuOpen, setMenuOpen] = useState(false);
-  const deleter = useTodoDelete({ todo, occurrence: occ, onDone: () => router.back(), onError: () => toast(t('events.detail.deleteFailed'), 'error') });
+  const deleter = useTodoDelete({ todo, occurrence: occ, onDone: () => router.back(), onError: failed('events.detail.deleteFailed') });
 
   if (loaded.isLoading || (loaded.isPlaceholderData && (!todo || !occ))) return null;
   if (!todo || !occ) {
@@ -49,7 +49,7 @@ export default function TodoDetailScreen() {
   }
 
   const tick = (status: TodoStatus) =>
-    setStatus.mutate({ todo, occurrenceDate: occ.occurrenceDate, status }, { onError: () => toast(t('todos.tickFailed'), 'error') });
+    setStatus.mutate({ todo, occurrenceDate: occ.occurrenceDate, status }, { onError: failed('todos.tickFailed') });
   const repeat = repeatLabel(t, occ.repeat, todo.repeatInterval, occDate, true);
   const reminders = reminderLabel(t, occ.reminderMinutes);
   const progress = subtaskProgress(occ.subtasks, occ.status);

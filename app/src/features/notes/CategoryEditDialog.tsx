@@ -8,6 +8,9 @@ import { Button } from '@/components/Button';
 import { ColorRow } from '@/components/ColorRow';
 import { DialogShell } from '@/components/Dialog';
 import { TextField } from '@/components/TextField';
+import { useOnline } from '@/features/network/useOnline';
+import { isDeviceOnline } from '@/lib/connection';
+import { classifyError, errorMessageKey } from '@/lib/errors/classifyError';
 import type { AppColor } from '@/lib/colors';
 import { CATEGORY_NAME_MAX } from '@/lib/notes';
 import { space } from '@/theme';
@@ -33,13 +36,14 @@ export function CategoryEditDialog({
   const [color, setColor] = useState<AppColor>(category?.color ?? 'mint');
   const [error, setError] = useState<string | null>(null);
 
+  const { canWrite } = useOnline();
   const submit = async () => {
     try {
       await save.mutateAsync({ id, isNew: !category, name, color });
       onSaved?.();
       onClose();
     } catch (e) {
-      setError(e instanceof DuplicateNameError ? t('notes.categories.duplicate') : t('notes.actionFailed'));
+      setError(t(e instanceof DuplicateNameError ? 'notes.categories.duplicate' : errorMessageKey(classifyError(e, isDeviceOnline()), 'notes.actionFailed')));
     }
   };
 
@@ -64,7 +68,7 @@ export function CategoryEditDialog({
       </View>
       <View style={styles.actions}>
         <Button label={t('common.cancel')} variant="secondary" onPress={onClose} style={styles.flex} />
-        <Button label={t('notes.save')} onPress={submit} disabled={!name.trim() || save.isPending} style={styles.flex} />
+        <Button label={t('notes.save')} onPress={submit} disabled={!name.trim() || save.isPending || !canWrite} style={styles.flex} />
       </View>
     </DialogShell>
   );

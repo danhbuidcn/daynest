@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from '@/components/Toast';
 import type { AppColor } from '@/lib/colors';
 import { useForbiddenGuard } from '@/features/events/useEvents';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import * as api from './api';
 
 export const NOTES_KEY = 'notes';
@@ -75,6 +76,7 @@ export const useDeleteCategories = () => useNotesMutation((ids: string[]) => api
 export function useTrashNote() {
   const { t } = useTranslation();
   const toast = useToast();
+  const failed = useErrorToast();
   const trash = useNotesMutation((id: string) => api.setNotesTrashed([id], true));
   const restore = useRestoreNote();
   return async (id: string): Promise<boolean> => {
@@ -82,8 +84,8 @@ export function useTrashNote() {
       await trash.mutateAsync(id);
       toast(t('notes.trashed'), 'info', { label: t('notes.undo'), onPress: () => restore.mutate(id) });
       return true;
-    } catch {
-      toast(t('notes.actionFailed'), 'error');
+    } catch (e) {
+      failed('notes.actionFailed')(e);
       return false;
     }
   };

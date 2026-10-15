@@ -7,11 +7,12 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Icon } from '@/components/Icon';
-import { useToast } from '@/components/Toast';
+import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { dayDetails, type DayDisplay } from '@/features/calendar/dayInfo';
 import { occurrenceKey, todoListSpan } from '@/features/calendar/dayOccurrences';
+import { loadError } from '@/features/network/loadError';
 import { DayStrip } from '@/features/calendar/DayStrip';
 import { clockLabel } from '@/features/events/format';
 import { isoDate } from '@/lib/calendar/monthGrid';
@@ -22,6 +23,7 @@ import { jdFromDate, type SolarDate } from '@/lib/lunar';
 import { subtaskProgress, toggleTodo } from '@/lib/todos';
 import { groupTodoList, OVERDUE_DAYS, UPCOMING_DAYS } from '@/lib/todos/list';
 import { makeStyles, radius, space, useTheme } from '@/theme';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import type { TodoOccurrence } from './todo';
 import { TodoTick } from './TodoTick';
 import { useSetTodoStatus, useTodosInRange } from './useTodos';
@@ -32,7 +34,7 @@ export function TodoList() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
   const { settings } = useAuth();
   const { timeZone } = settings;
   const [today, setToday] = useState(() => todayIn(timeZone));
@@ -66,6 +68,7 @@ export function TodoList() {
     [week],
   );
   const todos = useTodosInRange(range, timeZone);
+  const todosFailure = loadError(todos);
   const x = jdFromDate(selected);
   const groups = useMemo(() => groupTodoList(todos.occurrences, (o) => todoListSpan(o, timeZone), x), [todos.occurrences, timeZone, x]);
   const setTodoStatus = useSetTodoStatus();
@@ -77,7 +80,7 @@ export function TodoList() {
         occurrenceDate: o.occurrenceDate,
         status: toggleTodo(o.subtasks, o.status),
       },
-      { onError: () => toast(t('todos.tickFailed'), 'error') },
+      { onError: failed('todos.tickFailed') },
     );
   const onPress = (o: TodoOccurrence) =>
     router.push({
@@ -141,7 +144,12 @@ export function TodoList() {
           />
         }>
         {todos.isLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
-        {todos.isError && todos.occurrences.length === 0 ? <EmptyTodos text={t('todos.list.loadFailed')} action={t('notes.retry')} onAction={() => void todos.refetch()} /> : null}
+        {todos.isError && todos.occurrences.length > 0 ? <StaleLine onRetry={() => void todos.refetch()} /> : null}
+        {todos.occurrences.length === 0 && todosFailure ? (
+          <View style={styles.errorBox}>
+            <LoadErrorCard error={todosFailure} onRetry={() => void todos.refetch()} />
+          </View>
+        ) : null}
         {todos.isSuccess && empty ? (
           <EmptyTodos
             text={t('todos.list.empty')}
@@ -274,6 +282,7 @@ const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   content: { paddingHorizontal: space.md, paddingBottom: 120, gap: space.md },
   loading: { marginVertical: space.xl },
+  errorBox: { minHeight: 360 },
   groupHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',

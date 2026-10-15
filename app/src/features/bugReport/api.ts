@@ -2,8 +2,8 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
-import { getNetworkStateAsync } from 'expo-network';
 
+import { assertCanWrite } from '@/lib/connection';
 import { fitWithin, imagePath } from '@/lib/bugReport';
 import { supabase } from '@/lib/supabase';
 
@@ -32,15 +32,10 @@ export async function pickImages(limit: number): Promise<PickedImage[]> {
   );
 }
 
-async function ensureOnline() {
-  const network = await getNetworkStateAsync().catch(() => null);
-  if (network && (network.isConnected === false || network.isInternetReachable === false)) throw new Error('offline');
-}
-
 // Report first, then images, then the email. The id comes from the app, so a retry after a
 // half-done send skips what already exists instead of making a second report.
 export async function sendBugReport(id: string, body: string, images: PickedImage[], locale: string): Promise<void> {
-  await ensureOnline();
+  assertCanWrite();
   const { data } = await supabase.auth.getSession();
   const userId = data.session?.user.id;
   if (!userId) throw new Error('signed_out');

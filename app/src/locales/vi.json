@@ -348,8 +348,6 @@
     "empty": "Chưa có ghi chú",
     "create": "Tạo ghi chú",
     "noResults": "Không tìm thấy ghi chú",
-    "loadFailed": "Không tải được ghi chú",
-    "retry": "Thử lại",
     "trashed": "Đã chuyển vào thùng rác",
     "undo": "Hoàn tác",
     "actionFailed": "Không thành công. Vui lòng thử lại.",
@@ -438,8 +436,6 @@
     "categories": "Nhóm chi tiêu",
     "empty": "Chưa có khoản chi",
     "add": "Thêm khoản chi",
-    "loadFailed": "Không tải được khoản chi",
-    "retry": "Thử lại",
     "defaultCategories": {
       "food": "Ăn uống",
       "transport": "Di chuyển",
@@ -498,8 +494,7 @@
       "upcomingSpan_other": "{{count}} ngày",
       "doneCount": "{{done}}/{{total}} xong",
       "empty": "Chưa có việc cần làm",
-      "add": "Thêm todo",
-      "loadFailed": "Không tải được todo"
+      "add": "Thêm todo"
     }
   },
   "cycle": {
@@ -592,5 +587,13 @@
     "previewNote": "Họp nhóm 9:00",
     "previewSave": "Lưu",
     "pickColor": "Màu khác"
+  },
+  "errors": {
+    "offline": "Không có kết nối mạng.",
+    "server": "Máy chủ đang gặp sự cố. Hãy thử lại sau ít phút.",
+    "bannerServer": "Máy chủ đang gặp sự cố.",
+    "loadFailed": "Chưa tải được. Hãy thử lại.",
+    "retry": "Thử lại",
+    "stale": "Chưa cập nhật được"
   }
 }

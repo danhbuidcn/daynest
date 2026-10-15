@@ -8,12 +8,15 @@ import { LogBox, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { BANNER_ROW, OfflineBanner } from '@/components/OfflineBanner';
 import { SplashView } from '@/components/SplashView';
 import { ToastProvider } from '@/components/Toast';
 import { UpdateRequiredScreen } from '@/features/appVersion/UpdateRequiredScreen';
 import { useUpdateRequired } from '@/features/appVersion/useUpdateRequired';
 import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
 import { persistOptions, queryClient } from '@/features/cache/queryClient';
+import { useConnectionMonitor } from '@/features/network/useConnectionMonitor';
+import { useOnline } from '@/features/network/useOnline';
 import { useGoogleSyncLifecycle } from '@/features/google/useGoogleSync';
 import { useReminderSync } from '@/features/reminders/useReminderSync';
 import { loadSavedLanguage } from '@/i18n';
@@ -81,13 +84,18 @@ function RootStack({ ready }: { ready: boolean }) {
   useReminderSync();
   useGoogleSyncLifecycle();
   useAppearanceSync();
+  useConnectionMonitor();
+  const { issue } = useOnline();
   if (updateRequired) return <UpdateRequiredScreen {...updateRequired} />;
   if (!ready || loading) return <SplashView />;
 
   const signedIn = !!profile;
   return (
     <View style={styles.frame}>
-      <AppStack signedIn={signedIn} />
+      <OfflineBanner />
+      <View style={[styles.stack, issue ? { paddingTop: BANNER_ROW } : null]}>
+        <AppStack signedIn={signedIn} />
+      </View>
     </View>
   );
 }
@@ -122,4 +130,4 @@ function AppStack({ signedIn }: { signedIn: boolean }) {
 }
 
 const styles = StyleSheet.create({ root: { flex: 1 } });
-const useStyles = makeStyles(({ colors }) => ({ frame: { flex: 1, backgroundColor: colors.bg } }));
+const useStyles = makeStyles(({ colors }) => ({ frame: { flex: 1, backgroundColor: colors.bg }, stack: { flex: 1 } }));

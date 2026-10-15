@@ -6,10 +6,10 @@ import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { ActionMenu } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { groupNotesByMonth, type NoteGroup } from '@/lib/notes/groups';
 import { space, useTheme } from '@/theme';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { CategoryPickerDialog } from './CategoryPickerDialog';
 import type { Category, Note } from './note';
 import { NoteCard } from './NoteCard';
@@ -23,7 +23,7 @@ export function NoteGrid({ notes, categories }: { notes: Note[]; categories: Cat
   const { colors } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const toast = useToast();
+  const failed = useErrorToast();
   const { width } = useWindowDimensions();
   const { settings } = useAuth();
   const trash = useTrashNote();
@@ -78,7 +78,7 @@ export function NoteGrid({ notes, categories }: { notes: Note[]; categories: Cat
         actions={
           menu
             ? [
-                { icon: 'folder', label: t('notes.moveTo'), onPress: () => setMoving(menu.note) },
+                { icon: 'folder', label: t('notes.moveTo'), write: true, onPress: () => setMoving(menu.note) },
                 { icon: 'trash', label: t('notes.delete'), danger: true, onPress: () => void trash(menu.note.id) },
               ]
             : []
@@ -93,7 +93,7 @@ export function NoteGrid({ notes, categories }: { notes: Note[]; categories: Cat
           const note = moving!;
           setMoving(null);
           if (categoryId !== note.categoryId) {
-            move.mutate({ id: note.id, categoryId }, { onError: () => toast(t('notes.actionFailed'), 'error') });
+            move.mutate({ id: note.id, categoryId }, { onError: failed('notes.actionFailed') });
           }
         }}
       />

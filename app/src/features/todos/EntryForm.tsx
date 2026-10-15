@@ -21,8 +21,10 @@ import { ConflictDialog, OccurrenceActionDialog } from '@/features/events/Occurr
 import { repeatLabel } from '@/features/events/repeatLabel';
 import { RepeatPicker } from '@/features/events/RepeatPicker';
 import { useEventFormSave } from '@/features/events/useEventFormSave';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { ChecklistBlock } from '@/features/notes/editor/ChecklistBlock';
 import { newNoteHref } from '@/features/notes/newNote';
+import { useOnline } from '@/features/network/useOnline';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { ChecklistItem } from '@/lib/notes';
 import { SUBTASK_MAX_ITEMS } from '@/lib/todos';
@@ -54,6 +56,8 @@ export function EntryForm({
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
+  const failed = useErrorToast();
+  const { canWrite } = useOnline();
   const { settings } = useAuth();
   const [kind, setKind] = useState(initialKind);
   const [form, setForm] = useState(initial.form);
@@ -70,7 +74,7 @@ export function EntryForm({
       router.back();
     },
     onClose: () => router.back(),
-    onError: () => toast(t('events.form.saveFailed'), 'error'),
+    onError: failed('events.form.saveFailed'),
   };
   const todoSaver = useTodoFormSave({ form, items, done: initial.done, baseTodo, occurrence, ...callbacks });
   const eventSaver = useEventFormSave({ form, ...callbacks });
@@ -101,7 +105,7 @@ export function EntryForm({
       nestable
       onPressTitle={defaults ? () => setKindOpen(true) : undefined}
       titleHint={t('todos.form.changeKind')}
-      footer={<Button label={t('events.form.save')} onPress={saver.save} disabled={!canSave} />}>
+      footer={<Button label={t('events.form.save')} onPress={saver.save} disabled={!canSave || !canWrite} />}>
       <View style={styles.card}>
         <AutoGrowField
           value={form.title}

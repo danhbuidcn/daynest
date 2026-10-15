@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
+import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
@@ -19,6 +20,7 @@ import { CategoryTotalsCard, ExpenseListCard, TotalCard } from '@/features/expen
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
+import { loadError } from '@/features/network/loadError';
 import {
   defaultSpentOn,
   monthlyTotals,
@@ -87,12 +89,11 @@ export default function ExpensesScreen() {
   };
 
   let body;
-  if (!expenses) {
-    body = expensesQuery.isError ? (
-      <Empty text={t('expenses.loadFailed')} action={t('expenses.retry')} onAction={() => void expensesQuery.refetch()} />
-    ) : (
-      <ActivityIndicator color={colors.primary} style={styles.loading} />
-    );
+  const failure = loadError(expensesQuery);
+  if (failure) {
+    body = <LoadErrorCard error={failure} onRetry={() => void expensesQuery.refetch()} />;
+  } else if (!expenses) {
+    body = <ActivityIndicator color={colors.primary} style={styles.loading} />;
   } else if (expenses.length === 0) {
     body = <Empty text={t('expenses.empty')} action={t('expenses.add')} onAction={addExpense} plus />;
   } else {
@@ -123,6 +124,7 @@ export default function ExpensesScreen() {
       />
       <SegmentedBar options={modeOptions} value={mode} onChange={nav.setMode} />
       <CalendarHeader title={nav.title} onPrev={() => nav.go(-1)} onNext={() => nav.go(1)} onTitle={() => setPickerOpen(true)} />
+      {!failure && expensesQuery.isError ? <StaleLine onRetry={() => void expensesQuery.refetch()} /> : null}
       <View style={styles.body}>{body}</View>
       {mode === 'month' ? (
         <MonthYearPicker

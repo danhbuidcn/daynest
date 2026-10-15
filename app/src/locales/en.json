@@ -348,8 +348,6 @@
     "empty": "No notes yet",
     "create": "Create a note",
     "noResults": "No notes found",
-    "loadFailed": "Could not load notes",
-    "retry": "Try again",
     "trashed": "Moved to trash",
     "undo": "Undo",
     "actionFailed": "Something went wrong. Please try again.",
@@ -438,8 +436,6 @@
     "categories": "Expense categories",
     "empty": "No expenses yet",
     "add": "Add expense",
-    "loadFailed": "Could not load expenses",
-    "retry": "Try again",
     "defaultCategories": {
       "food": "Food",
       "transport": "Transport",
@@ -498,8 +494,7 @@
       "upcomingSpan_other": "{{count}} days",
       "doneCount": "{{done}}/{{total}} done",
       "empty": "Nothing to do yet",
-      "add": "Add todo",
-      "loadFailed": "Couldn't load todos"
+      "add": "Add todo"
     }
   },
   "cycle": {
@@ -592,5 +587,13 @@
     "previewNote": "Team meeting 9:00",
     "previewSave": "Save",
     "pickColor": "Other color"
+  },
+  "errors": {
+    "offline": "No internet connection.",
+    "server": "The server is having problems. Please try again in a few minutes.",
+    "bannerServer": "The server is having problems.",
+    "loadFailed": "Could not load. Please try again.",
+    "retry": "Try again",
+    "stale": "Not updated"
   }
 }

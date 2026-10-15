@@ -9,6 +9,9 @@ import { ColorRow } from '@/components/ColorRow';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { TextField } from '@/components/TextField';
+import { useOnline } from '@/features/network/useOnline';
+import { isDeviceOnline } from '@/lib/connection';
+import { classifyError, errorMessageKey } from '@/lib/errors/classifyError';
 import { textOn, toHex, type AppColor } from '@/lib/colors';
 import { makeStyles, space, useTheme } from '@/theme';
 import { DuplicateNameError } from './api';
@@ -40,13 +43,14 @@ export function ExpenseCategoryDialog({
   const [color, setColor] = useState<AppColor>(category?.color ?? 'mint');
   const [error, setError] = useState<string | null>(null);
 
+  const { canWrite } = useOnline();
   const submit = async () => {
     try {
       await save.mutateAsync({ id, isNew: !category, input: { name, icon, color } });
       onSaved?.(id);
       onClose();
     } catch (e) {
-      setError(t(e instanceof DuplicateNameError ? 'expenses.categoryDialog.duplicate' : 'expenses.form.saveFailed'));
+      setError(t(e instanceof DuplicateNameError ? 'expenses.categoryDialog.duplicate' : errorMessageKey(classifyError(e, isDeviceOnline()), 'expenses.form.saveFailed')));
     }
   };
 
@@ -95,7 +99,7 @@ export function ExpenseCategoryDialog({
       </View>
       <View style={styles.actions}>
         <Button label={t('common.cancel')} variant="secondary" onPress={onClose} style={styles.flex} />
-        <Button label={t('expenses.form.save')} onPress={submit} disabled={!name.trim() || save.isPending} style={styles.flex} />
+        <Button label={t('expenses.form.save')} onPress={submit} disabled={!name.trim() || save.isPending || !canWrite} style={styles.flex} />
       </View>
     </DialogShell>
   );

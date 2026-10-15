@@ -11,9 +11,9 @@ import { Card } from '@/components/Card';
 import { ChoiceDialog, ConfirmDialog } from '@/components/Dialog';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SettingRow } from '@/components/SettingRow';
-import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { GoogleSettings } from '@/features/google/GoogleSettings';
+import { useErrorToast } from '@/features/network/useErrorToast';
 import { CalendarSettings } from '@/features/settings/CalendarSettings';
 import { CycleSettings } from '@/features/settings/CycleSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
@@ -27,7 +27,7 @@ export default function SettingsScreen() {
   const { profile, signOut, saveLanguage, listDevices } = useAuth();
   const router = useRouter();
   const { appearance } = useAppearance();
-  const toast = useToast();
+  const failed = useErrorToast();
   const [langOpen, setLangOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [deviceCount, setDeviceCount] = useState<number | null>(null);
@@ -113,7 +113,7 @@ export default function SettingsScreen() {
         onSelect={(lang) => {
           setLangOpen(false);
           // Text switches immediately (saved on device); if the DB save fails, show a toast; the next change retries.
-          saveLanguage(lang).catch(() => toast(t('common.offline'), 'error'));
+          saveLanguage(lang).catch(failed('settings.saveFailed'));
         }}
         onClose={() => setLangOpen(false)}
       />
