@@ -432,6 +432,7 @@
     "total": "Total spent",
     "byCategory": "By category",
     "byDay": "By day",
+    "rangeAll": "Whole month",
     "recentMonths": "Last 6 months",
     "categories": "Expense categories",
     "empty": "No expenses yet",

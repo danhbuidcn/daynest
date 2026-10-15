@@ -12,18 +12,23 @@ type Props = {
   values: number[];
   // Axis text per bar; '' leaves that slot blank.
   labels: string[];
-  // The bar drawn in `primaryDark` (viewed period / today), -1 for none.
+  // The bar drawn in `primaryDark` (selected, else today / viewed period), -1 for none.
   highlight: number;
-  // Short number over the tallest bar ("2,5tr").
+  // Short number over a bar ("2,5tr").
   formatTop: (value: number) => string;
-  // Full text for one bar: screen readers and long press.
+  // Every bar shows its number (few bars); otherwise only the tallest and the highlighted one.
+  showAll: boolean;
+  // Full text of the highlighted bar, under the title.
+  readout?: string;
+  // Range buttons under the title ("Cả tháng", "1–10", …).
+  chips?: { label: string; active: boolean; onPress: () => void }[];
+  // Full text for one bar: screen readers.
   describe: (index: number) => string;
   onPress: (index: number) => void;
-  onLongPress: (index: number) => void;
 };
 
 // design-system "Biểu đồ cột": one series, one colour.
-export function BarChart({ title, values, labels, highlight, formatTop, describe, onPress, onLongPress }: Props) {
+export function BarChart({ title, values, labels, highlight, formatTop, showAll, readout, chips, describe, onPress }: Props) {
   const { colors } = useTheme();
   const styles = useStyles();
   const max = Math.max(...values, 0);
@@ -33,6 +38,22 @@ export function BarChart({ title, values, labels, highlight, formatTop, describe
       <AppText variant="heading" style={styles.title}>
         {title}
       </AppText>
+      {chips ? (
+        <View style={styles.chips}>
+          {chips.map((c) => (
+            <Pressable key={c.label} accessibilityRole="button" accessibilityState={{ selected: c.active }} onPress={c.onPress} style={[styles.chip, c.active && styles.chipOn]}>
+              <AppText variant="caption" weight="bold" color={c.active ? colors.white : colors.primaryDark}>
+                {c.label}
+              </AppText>
+            </Pressable>
+          ))}
+        </View>
+      ) : null}
+      {readout ? (
+        <AppText variant="caption" color={colors.textMuted} style={styles.readout}>
+          {readout}
+        </AppText>
+      ) : null}
       <View style={styles.bars}>
         {values.map((v, i) => (
           <Pressable
@@ -40,10 +61,9 @@ export function BarChart({ title, values, labels, highlight, formatTop, describe
             accessibilityRole="button"
             accessibilityLabel={describe(i)}
             onPress={() => onPress(i)}
-            onLongPress={() => onLongPress(i)}
             style={styles.slot}
           >
-            {i === top ? (
+            {v > 0 && (showAll || i === top || i === highlight) ? (
               <AppText variant="micro" weight="extrabold" numberOfLines={1} style={[styles.overflowText, styles.topValue]}>
                 {formatTop(v)}
               </AppText>
@@ -95,6 +115,10 @@ const useStyles = makeStyles(({ colors }) => ({
   // A month-day slot is ~9 px wide: text gets a fixed width and spills over its neighbours instead of being cut.
   overflowText: { width: 48, textAlign: 'center' },
   topValue: { marginBottom: 2 },
+  chips: { flexDirection: 'row', gap: 6, paddingHorizontal: space.lg, paddingBottom: space.sm },
+  chip: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: 999, backgroundColor: colors.primarySoft },
+  chipOn: { backgroundColor: colors.primary },
+  readout: { paddingHorizontal: space.lg, paddingBottom: space.sm },
   bar: { width: '100%', maxWidth: 28, borderTopLeftRadius: 4, borderTopRightRadius: 4 },
   // "primary nhạt 55%" on the white card.
   barOff: { backgroundColor: colors.primary, opacity: 0.55 },
