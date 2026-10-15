@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const ROW = 40;
 const DAYS = [1, 2, 3, 4, 5, 6, 7];
@@ -40,6 +40,8 @@ function ReminderPicker({
   onSave: (days: number, time: string) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const [hour, minute] = time.split(':').map(Number);
   const [d, setD] = useState(days);
@@ -88,6 +90,8 @@ function Column({
   onChange: (v: number) => void;
   flex: number;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const list = useRef<ScrollView>(null);
   const index = Math.max(0, values.indexOf(value));
   return (
@@ -110,7 +114,7 @@ function Column({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   title: { marginBottom: space.md },
   heads: { flexDirection: 'row', marginBottom: space.xs },
   headDays: { flex: 1.4 },
@@ -122,4 +126,4 @@ const styles = StyleSheet.create({
   optionOn: { backgroundColor: colors.primarySoft },
   actions: { flexDirection: 'row', gap: 10, marginTop: space.md },
   flex: { flex: 1 },
-});
+}));

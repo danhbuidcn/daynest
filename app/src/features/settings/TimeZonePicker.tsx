@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { FlatList, Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { searchTimeZones, timeZoneLabel } from '@/lib/timezones';
-import { colors, radius, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 // F6 "Múi giờ": search box + fixed list, one row "Tên (GMT±h)", ✓ on the chosen one.
 export function TimeZonePicker({
@@ -20,6 +20,8 @@ export function TimeZonePicker({
   onSelect: (timeZone: string) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'vi' ? 'vi' : 'en';
   const [query, setQuery] = useState('');
@@ -82,7 +84,7 @@ export function TimeZonePicker({
 
 const ROW = 52;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   box: { height: '85%', paddingHorizontal: space.md, paddingBottom: space.md },
   title: { textAlign: 'center', marginBottom: space.md },
   search: {
@@ -96,9 +98,9 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: colors.border,
   },
-  input: { flex: 1, ...typeScale.body, color: colors.text, paddingVertical: 0 },
+  input: { flex: 1, ...type.body, color: colors.text, paddingVertical: 0 },
   option: { height: ROW, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, borderRadius: radius.button },
   on: { backgroundColor: colors.primarySoft },
   flex: { flex: 1 },
   empty: { textAlign: 'center', marginTop: space.xl },
-});
+}));

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
@@ -8,11 +8,13 @@ import { SettingRow } from '@/components/SettingRow';
 import { Switch } from '@/components/Switch';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { useNotificationPermission } from '@/features/reminders/useNotificationPermission';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { useSettingSaver } from './useSettingSaver';
 
 // F3 "Công tắc Cho phép thông báo": on → ask for OS permission; denied → warning + system settings link.
 export function NotificationSettings() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const { settings } = useAuth();
   const save = useSettingSaver();
@@ -49,7 +51,7 @@ export function NotificationSettings() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   warn: {
     flexDirection: 'row',
     gap: space.sm,
@@ -60,4 +62,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.warningSoft,
   },
   flex: { flex: 1, gap: 2 },
-});
+}));

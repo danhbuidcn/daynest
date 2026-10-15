@@ -4,7 +4,7 @@ import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { AppText } from '@/components/AppText';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
-import { colors, radius, space } from '@/theme';
+import { radius, space, useTheme } from '@/theme';
 
 const ROW = 48;
 
@@ -26,6 +26,7 @@ export function NumberPickerDialog({
   onSelect: (value: number) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
   const list = useRef<ScrollView>(null);
   const index = Math.max(0, values.indexOf(selected));
   return (
