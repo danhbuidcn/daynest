@@ -181,6 +181,19 @@ const ICONS = {
   ticket: () => stroke('<path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7zM14 5.5v13" stroke-dasharray="0"/>'),
   ball: () => stroke('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6c3 2.5 3 9.5 0 12M18 6c-3 2.5-3 9.5 0 12"/>'),
   tree: () => stroke('<path d="M12 3.5l6 8h-3.5l4 5.5h-13l4-5.5H6zM12 17v3.5"/>'),
+  // S6 icons for Vietnamese spending habits (mockup 21c).
+  water: () => stroke('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  boba: () => stroke('<path d="M6.5 8h11l-1.2 11a1.5 1.5 0 0 1-1.5 1.3H9.2a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M5.5 8h13M13 8l1.5-4.5h2"/><path d="M9.5 16h.01M12 17h.01M14.5 16h.01"/>'),
+  beer: () => stroke('<path d="M5.5 8h10v10a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z"/><path d="M15.5 10h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M5.5 8a2.5 2.5 0 0 1 2.5-3 3 3 0 0 1 5-.5 2.5 2.5 0 0 1 2.5 3.5M9 12v4M12 12v4"/>'),
+  flame: () => stroke('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .2 1.5 1 2 1.8 2C10.5 8 11 5.5 12 3z"/>'),
+  motorbike: () => stroke('<circle cx="6" cy="16.5" r="3"/><circle cx="18" cy="16.5" r="3"/><path d="M6 16.5l3-6h5l4 6M14 10.5l-1-3h-2.5M9 10.5H6.5"/>'),
+  parking: () => stroke('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M10 16.5V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
+  hospital: () => stroke('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>'),
+  bookopen: () => stroke('<path d="M5 4.5h9a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/>'),
+  shield: () => stroke('<path d="M12 3.5l7 2.5v5.5c0 4.3-3 7.5-7 9-4-1.5-7-4.7-7-9V6z"/><path d="M9 12l2.2 2.2L15 10"/>'),
+  redpacket: () => stroke('<rect x="6.5" y="3.5" width="11" height="17" rx="2.5"/><path d="M6.5 9.5c3 2.5 8 2.5 11 0"/><circle cx="12" cy="12.5" r="1.6"/>'),
+  flower: () => stroke('<circle cx="12" cy="12" r="2.2"/><path d="M12 9.8c-2-2-2-5 0-6 2 1 2 4 0 6zM12 14.2c2 2 2 5 0 6-2-1-2-4 0-6zM9.8 12c-2 2-5 2-6 0 1-2 4-2 6 0zM14.2 12c2-2 5-2 6 0-1 2-4 2-6 0z"/>'),
+  building: () => stroke('<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8h.01M12 8h.01M15 8h.01M9 12h.01M12 12h.01M15 12h.01M10 20.5v-3h4v3"/>'),
 } satisfies Record<string, (filled: boolean) => string>;
 
 export type IconName = keyof typeof ICONS;

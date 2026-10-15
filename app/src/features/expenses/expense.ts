@@ -23,15 +23,17 @@ export type ExpenseCategory = {
   color: AppColor;
 };
 
-// The 36 icons a user category can pick (mockup screen 11, same order); stored by name.
+// The 42 icons a user category can pick (mockup 21c, same order); stored by name.
 export const PICKABLE_ICONS = [
-  'tag', 'coffee', 'wine', 'cart', 'bag', 'shirt', 'home', 'bolt', 'drop', 'wifi', 'phone', 'tool',
-  'bus', 'bike', 'fuel', 'plane', 'heart', 'pill', 'dumbbell', 'scissors', 'baby', 'paw', 'cap', 'briefcase',
-  'laptop', 'card', 'coins', 'umbrella', 'gift', 'film', 'music', 'game', 'ticket', 'camera', 'ball', 'tree',
+  'tag', 'coffee', 'boba', 'beer', 'food', 'cart', 'bag', 'shirt', 'home', 'bolt', 'water', 'flame',
+  'wifi', 'phone', 'tool', 'motorbike', 'fuel', 'bus', 'car', 'parking', 'plane', 'pill', 'hospital', 'scissors',
+  'dumbbell', 'baby', 'paw', 'cap', 'bookopen', 'briefcase', 'laptop', 'card', 'coins', 'shield', 'gift', 'redpacket',
+  'flower', 'film', 'game', 'music', 'trash', 'building',
 ] as const satisfies readonly IconName[];
 
-// Built-in categories use food / car / bill; a name the app doesn't know yet shows `tag` (db.md).
-const CATEGORY_ICONS: readonly IconName[] = ['food', 'car', 'bill', ...PICKABLE_ICONS];
+// Icons dropped from the picker in S6 (and the built-in food / car / bill) still render on saved categories.
+const LEGACY_ICONS: readonly IconName[] = ['wine', 'bike', 'heart', 'umbrella', 'ticket', 'camera', 'ball', 'tree', 'drop', 'bill'];
+const CATEGORY_ICONS: readonly IconName[] = [...PICKABLE_ICONS, ...LEGACY_ICONS];
 
 export function categoryIcon(c: ExpenseCategory | undefined): IconName {
   const icon = c?.icon as IconName | undefined;

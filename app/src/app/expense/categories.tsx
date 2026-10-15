@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import * as Crypto from 'expo-crypto';
 import { Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -11,7 +12,9 @@ import { AlertDialog, ConfirmDialog } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useToast } from '@/components/Toast';
+import { toHex, textOn } from '@/lib/colors';
 import { categoryName, USER_CATEGORY_MAX, type ExpenseCategory } from '@/features/expenses/expense';
+import { SUGGESTED_CATEGORIES, visibleSuggestions } from '@/features/expenses/suggestedCategories';
 import { ExpenseCategoryDialog } from '@/features/expenses/ExpenseCategoryDialog';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { useExpenseCategories, useExpenseCategoryWrites } from '@/features/expenses/useExpenses';
@@ -30,7 +33,7 @@ export default function ExpenseCategoriesScreen() {
   const { canWrite } = useOnline();
   const { width } = useWindowDimensions();
   const categories = useExpenseCategories().data ?? [];
-  const { remove } = useExpenseCategoryWrites();
+  const { remove, save } = useExpenseCategoryWrites();
   const [editing, setEditing] = useState<ExpenseCategory | 'new' | null>(null);
   const [menu, setMenu] = useState<{ category: ExpenseCategory; top: number; right: number } | null>(null);
   const [deleting, setDeleting] = useState<ExpenseCategory | null>(null);
@@ -39,6 +42,17 @@ export default function ExpenseCategoriesScreen() {
   const builtIn = categories.filter((c) => c.key);
   const mine = categories.filter((c) => !c.key);
   const canAdd = mine.length < USER_CATEGORY_MAX;
+  const suggestions = visibleSuggestions(
+    SUGGESTED_CATEGORIES.map((s) => ({ ...s, name: t(`expenses.suggested.${s.key}`) })),
+    categories.map((c) => categoryName(t, c)),
+  );
+  const addSuggestion = (s: (typeof suggestions)[number]) => {
+    if (!canAdd) return setLimitOpen(true);
+    save.mutate(
+      { id: Crypto.randomUUID(), isNew: true, input: { name: s.name, icon: s.icon, color: s.color } },
+      { onSuccess: () => toast(t('expenses.categoriesScreen.added', { name: s.name })), onError: failed('expenses.form.saveFailed') },
+    );
+  };
 
   return (
     <SafeAreaView edges={['top', 'bottom']} style={styles.screen}>
@@ -89,6 +103,28 @@ export default function ExpenseCategoriesScreen() {
             </AppText>
           </Pressable>
         </Card>
+        {suggestions.length > 0 ? (
+          <>
+            <GroupLabel text={t('expenses.categoriesScreen.suggested')} />
+            <View style={styles.chips}>
+              {suggestions.map((s) => (
+                <Pressable
+                  key={s.key}
+                  accessibilityRole="button"
+                  disabled={!canWrite || save.isPending}
+                  onPress={() => addSuggestion(s)}
+                  style={[styles.chip, (!canWrite || save.isPending) && styles.locked]}>
+                  <View style={[styles.chipIcon, { backgroundColor: toHex(s.color) }]}>
+                    <Icon name={s.icon} size={16} color={textOn(toHex(s.color))} />
+                  </View>
+                  <AppText variant="caption" weight="bold">
+                    {s.name}
+                  </AppText>
+                </Pressable>
+              ))}
+            </View>
+          </>
+        ) : null}
       </ScrollView>
 
       <AlertDialog
@@ -168,6 +204,9 @@ const useStyles = makeStyles(({ colors }) => ({
   group: { marginHorizontal: space.xs, marginTop: space.sm, letterSpacing: 0.6 },
   row: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  chip: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 36, paddingLeft: 5, paddingRight: 12, borderRadius: 18, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+  chipIcon: { width: 26, height: 26, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   plus: { width: 34, alignItems: 'center' },
   flex: { flex: 1 },
 }));

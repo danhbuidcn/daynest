@@ -19,11 +19,11 @@ import { CATEGORY_NAME_MAX, PICKABLE_ICONS, type ExpenseCategory } from './expen
 import { useExpenseCategoryWrites } from './useExpenses';
 
 const CELL = 40;
-const GAP = 8;
-const COLUMNS = 6;
+const GAP = 10;
+const COLUMNS = 4;
 const ICON_ROWS = Array.from({ length: PICKABLE_ICONS.length / COLUMNS }, (_, r) => PICKABLE_ICONS.slice(r * COLUMNS, (r + 1) * COLUMNS));
 
-// S4 màn 11 — Thêm / Sửa nhóm: tên · 36 icon · màu. Rendered only while open, so state starts fresh.
+// S4 màn 11 — Thêm / Sửa nhóm: tên · 42 icon · màu. Rendered only while open, so state starts fresh.
 export function ExpenseCategoryDialog({
   category,
   onClose,
@@ -81,12 +81,17 @@ export function ExpenseCategoryDialog({
                 <Pressable
                   key={k}
                   accessibilityRole="radio"
-                  accessibilityLabel={k}
+                  accessibilityLabel={t(`expenses.iconNames.${k}`, { defaultValue: k })}
                   accessibilityState={{ selected: on }}
                   onPress={() => setIcon(k)}
-                  style={[styles.cell, { backgroundColor: on ? bg : colors.bg }]}>
-                  {on ? <View style={styles.ring} /> : null}
-                  <Icon name={k} size={22} color={on ? textOn(bg) : colors.text} />
+                  style={styles.item}>
+                  <View style={[styles.cell, { backgroundColor: on ? bg : colors.bg }]}>
+                    {on ? <View style={styles.ring} /> : null}
+                    <Icon name={k} size={22} color={on ? textOn(bg) : colors.text} />
+                  </View>
+                  <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+                    {t(`expenses.iconNames.${k}`)}
+                  </AppText>
                 </Pressable>
               );
             })}
@@ -118,11 +123,12 @@ function Label({ text }: { text: string }) {
 const useStyles = makeStyles(({ colors }) => ({
   title: { textAlign: 'center', marginBottom: space.lg },
   label: { marginHorizontal: space.xs, marginTop: 14, marginBottom: 6 },
-  // Three rows visible, the rest scroll inside the box; columns share the width (a 360 dp phone is too narrow for 6 × 40).
-  grid: { maxHeight: 3 * CELL + 2 * GAP + 8 },
+  // Icon + name per item, 4 columns; the box scrolls (a 360 dp phone is too narrow for more).
+  grid: { maxHeight: 4 * (CELL + 24) },
   gridContent: { gap: GAP, padding: 4 },
   gridRow: { flexDirection: 'row', gap: GAP },
-  cell: { flex: 1, height: CELL, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  item: { flex: 1, alignItems: 'center', gap: 4 },
+  cell: { alignSelf: 'stretch', height: CELL, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   // "viền 2 text cách 2": a ring 2 px outside the cell.
   ring: { position: 'absolute', top: -4, left: -4, right: -4, bottom: -4, borderRadius: 16, borderWidth: 2, borderColor: colors.text },
   colors: { alignItems: 'center', paddingBottom: space.md },

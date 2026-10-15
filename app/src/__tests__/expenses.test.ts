@@ -19,6 +19,7 @@ import {
 import { budgetForMonth, budgetProgress, monthKey } from '@/lib/expenses/budget';
 import { groupByDay } from '@/lib/expenses/groupByDay';
 import { anchorOf, nextDueDate } from '@/lib/expenses/recurrence';
+import { SUGGESTED_CATEGORIES, visibleSuggestions } from '@/features/expenses/suggestedCategories';
 import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
@@ -165,9 +166,20 @@ describe('expense default category', () => {
 });
 
 describe('expense category icons', () => {
-  it('offers 36 distinct names the DB accepts', () => {
-    expect(new Set(PICKABLE_ICONS).size).toBe(36);
+  it('offers 42 distinct names the DB accepts', () => {
+    expect(new Set(PICKABLE_ICONS).size).toBe(42);
     for (const name of PICKABLE_ICONS) expect(name).toMatch(/^[a-z]{2,20}$/);
+  });
+});
+
+describe('suggested categories', () => {
+  it('has 24 distinct suggestions with a pickable icon', () => {
+    expect(new Set(SUGGESTED_CATEGORIES.map((s) => s.key)).size).toBe(24);
+    for (const s of SUGGESTED_CATEGORIES) expect(PICKABLE_ICONS).toContain(s.icon);
+  });
+  it('hides a name the user already has, ignoring case', () => {
+    const list = [{ name: 'Đi chợ' }, { name: 'Trà sữa' }];
+    expect(visibleSuggestions(list, ['đi CHỢ ', null])).toEqual([{ name: 'Trà sữa' }]);
   });
 });
 
