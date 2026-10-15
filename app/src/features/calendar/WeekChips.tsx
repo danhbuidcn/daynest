@@ -1,16 +1,18 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import type { WeekStart } from '@/lib/calendar/monthGrid';
 import { addDays, startOfWeek } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, radius, shadow, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const AROUND = 2;
 
 // Màn 2 thanh chọn tuần: two weeks either side of the shown one, spread evenly across the width.
 export function WeekChips({ cursor, weekStart, onSelect }: { cursor: SolarDate; weekStart: WeekStart; onSelect: (deltaWeeks: number) => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const start = startOfWeek(cursor, weekStart);
 
@@ -41,10 +43,10 @@ export function WeekChips({ cursor, weekStart, onSelect }: { cursor: SolarDate; 
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, shadow }) => ({
   bar: { flexDirection: 'row', gap: space.xs, paddingHorizontal: space.md, paddingBottom: space.sm, paddingTop: 2 },
   chip: { flex: 1, height: 46, borderRadius: radius.button, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', ...shadow },
   range: { fontSize: 14, lineHeight: 20 },
   on: { backgroundColor: colors.primary },
   pressed: { opacity: 0.7 },
-});
+}));

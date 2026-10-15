@@ -9,10 +9,11 @@ import { SyncIcon } from '@/features/events/SyncIcon';
 import { TodoTick } from '@/features/todos/TodoTick';
 import { toHex } from '@/lib/colors';
 import { subtaskProgress } from '@/lib/todos';
-import { colors, radius, space } from '@/theme';
+import { radius, space, useTheme } from '@/theme';
 import { isTodo } from './dayOccurrences';
 
 export function HolidayRow({ title }: { title: string }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <View style={styles.row}>
@@ -42,6 +43,7 @@ export function EventListRow({
   onPress: () => void;
   onTick?: () => void;
 }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const time = timeRangeLabel(t, occurrence, use24h, timeZone);
   const todo = isTodo(occurrence) ? occurrence : null;

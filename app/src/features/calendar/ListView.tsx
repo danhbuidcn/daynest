@@ -12,7 +12,7 @@ import type { WeekStart } from '@/lib/calendar/monthGrid';
 import { timeOfDayIn } from '@/lib/calendar/timeZone';
 import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayStrip } from './DayStrip';
@@ -49,6 +49,7 @@ export function ListView({
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
   const day = days.find((d) => d.day === cursor.day && d.month === cursor.month) ?? dayDetails(cursor, today, display);

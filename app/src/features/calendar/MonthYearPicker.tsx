@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { MAX_YEAR, MIN_YEAR } from '@/lib/lunar';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 export function MonthYearPicker({
   visible,
@@ -25,6 +25,8 @@ export function MonthYearPicker({
   // "Tháng này" under the grid (Chi tiêu, S4 mockup 1b).
   current?: { label: string; onPress: () => void };
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const [shownYear, setShownYear] = useState(year);
   const [wasVisible, setWasVisible] = useState(visible);
@@ -76,11 +78,11 @@ export function MonthYearPicker({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: space.lg },
   nav: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   option: { width: '31%', flexGrow: 1, height: 48, alignItems: 'center', justifyContent: 'center', borderRadius: radius.button },
   on: { backgroundColor: colors.primarySoft },
   current: { marginTop: space.lg },
-});
+}));

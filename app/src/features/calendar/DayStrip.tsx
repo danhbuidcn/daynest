@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { sameDay, weekdayOf } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { DayDetails } from './dayInfo';
 
 // Màn 4 thanh ngày: the 7 days of the shown week; today has its own number colour.
@@ -17,6 +17,8 @@ export function DayStrip({
   selected: SolarDate;
   onSelect: (d: SolarDate) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <View style={styles.strip}>
@@ -49,9 +51,9 @@ export function DayStrip({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   strip: { flexDirection: 'row', gap: space.xs, paddingHorizontal: space.md, paddingBottom: 10 },
   day: { flex: 1, height: 58, borderRadius: radius.button, alignItems: 'center', justifyContent: 'center' },
   on: { backgroundColor: colors.primary },
   pressed: { backgroundColor: colors.primarySoft },
-});
+}));

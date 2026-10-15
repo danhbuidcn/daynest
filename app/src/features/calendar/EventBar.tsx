@@ -5,11 +5,12 @@ import { Icon } from '@/components/Icon';
 import { TodoTick } from '@/features/todos/TodoTick';
 import type { BarItem } from '@/lib/calendar/eventBars';
 import { textOn, toHex } from '@/lib/colors';
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 
 // Month cells use the small bar; the day view's "Cả ngày" row uses `large` (tappable for events).
 // A todo bar starts with a round tick: only shown on the small bar, tappable (`onTick`) on the large one.
 export function EventBar({ item, large = false, onPress, onTick }: { item: BarItem; large?: boolean; onPress?: () => void; onTick?: () => void }) {
+  const { colors } = useTheme();
   const background = item.kind === 'holiday' ? colors.error : toHex(item.color ?? 'mint');
   const textColor = item.kind === 'holiday' ? colors.white : textOn(item.color ?? 'mint');
   const done = !!item.todo?.done;

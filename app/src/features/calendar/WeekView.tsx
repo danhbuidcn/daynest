@@ -1,6 +1,6 @@
 import { useMemo, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
+import { Pressable, ScrollView, View, type RefreshControlProps } from 'react-native';
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 
 import { AppText } from '@/components/AppText';
@@ -11,7 +11,7 @@ import type { TodoOccurrence } from '@/features/todos/todo';
 import { weekdayOf, type WeekStart } from '@/lib/calendar/monthGrid';
 import { weekDates } from '@/lib/calendar/week';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { EventCard, HolidayCard } from './EventCard';
@@ -53,6 +53,8 @@ export function WeekView({
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const days = useMemo(() => weekDates(cursor, weekStart).map((d) => dayDetails(d, today, display)), [cursor, weekStart, today, display]);
 
@@ -116,7 +118,7 @@ export function WeekView({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   rows: { paddingHorizontal: space.lg, paddingBottom: space.lg },
   row: { flexDirection: 'row', alignItems: 'center', gap: space.sm, minHeight: 66, paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: colors.border },
@@ -125,4 +127,4 @@ const styles = StyleSheet.create({
   number: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   none: { flex: 1 },
   cards: { gap: 6, alignItems: 'center', paddingVertical: 4, paddingRight: space.xs },
-});
+}));

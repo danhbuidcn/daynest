@@ -11,7 +11,7 @@ import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
 import type { HolidayId } from '@/lib/holidays';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { space, useTheme } from '@/theme';
 import { isTodo } from './dayOccurrences';
 import { EventListRow, HolidayRow } from './EventListRow';
 
@@ -46,6 +46,7 @@ export function DayEventsDialog({
   cycle?: CycleDay | null;
   onOpenCycle?: () => void;
 }) {
+  const { colors } = useTheme();
   const { t } = useTranslation();
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
+import { Pressable, ScrollView, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { clockLabel } from '@/features/events/format';
@@ -10,7 +10,7 @@ import type { TodoOccurrence } from '@/features/todos/todo';
 import { layoutDay } from '@/lib/calendar/dayLayout';
 import { timeOfDayIn } from '@/lib/calendar/timeZone';
 import { toHex } from '@/lib/colors';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { isTodo, type OccurrenceSpan } from './dayOccurrences';
 
 const HOUR_HEIGHT = 56;
@@ -47,6 +47,8 @@ export function DayTimeline({
   onPressHour: (hour: number) => void;
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const scroll = useRef<ScrollView>(null);
   const [nowMinutes, setNowMinutes] = useState(() => minutesNow(timeZone));
@@ -145,7 +147,7 @@ function minutesNow(timeZone: string): number {
   return now.hour * 60 + now.minute;
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   content: { paddingTop: TOP_PAD, paddingBottom: space.lg, marginHorizontal: space.lg },
   hour: { height: HOUR_HEIGHT, borderTopWidth: 1, borderTopColor: colors.border },
@@ -161,4 +163,4 @@ const styles = StyleSheet.create({
   strike: { textDecorationLine: 'line-through' },
   now: { position: 'absolute', left: LABEL_WIDTH, right: 0, height: 2, backgroundColor: colors.error },
   nowDot: { position: 'absolute', left: -4, top: -4, width: 10, height: 10, borderRadius: 5, backgroundColor: colors.error },
-});
+}));

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { CycleDrop } from '@/components/CycleDrop';
@@ -8,11 +8,13 @@ import { Icon } from '@/components/Icon';
 import { dayBars, type BarItem } from '@/lib/calendar/eventBars';
 import { sameDay, weekdayOrder, type WeekStart } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import type { DayInfo } from './dayInfo';
 import { EventBar } from './EventBar';
 
 export function WeekdayRow({ weekStart }: { weekStart: WeekStart }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <View style={styles.weekdays}>
@@ -47,6 +49,7 @@ export function MonthView({
   barsForDay: (day: DayInfo) => BarItem[];
   cycleKind: (day: DayInfo) => 'period' | 'predicted' | null;
 }) {
+  const styles = useStyles();
   const rows = Array.from({ length: 6 }, (_, r) => days.slice(r * 7, r * 7 + 7));
   return (
     <View style={styles.month}>
@@ -87,6 +90,8 @@ const DayCell = memo(function DayCell({
   items: BarItem[];
   cycle: 'period' | 'predicted' | null;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const red = day.weekday === 0 || day.holidays.length > 0;
   const { shown, extra } = dayBars(items);
   const showAddBadge = selected && items.length === 0;
@@ -140,7 +145,7 @@ const DayCell = memo(function DayCell({
   );
 });
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   weekdays: { flexDirection: 'row', paddingHorizontal: space.sm },
   weekday: { flex: 1, textAlign: 'center', paddingVertical: space.xs },
   month: { flex: 1, paddingHorizontal: space.sm, paddingBottom: space.xs },
@@ -166,4 +171,4 @@ const styles = StyleSheet.create({
   // Centred on the whole cell, not under the date row.
   addLayer: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center' },
   addBadge: { width: 22, height: 22, borderRadius: 11, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
-});
+}));

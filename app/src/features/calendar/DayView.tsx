@@ -1,6 +1,6 @@
 import { useMemo, type ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View, type RefreshControlProps } from 'react-native';
+import { Pressable, ScrollView, View, type RefreshControlProps } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { CycleLine } from '@/features/cycle/CycleLine';
@@ -9,7 +9,7 @@ import { lunarLabel } from '@/features/events/format';
 import type { EventOccurrence } from '@/features/events/occurrences';
 import type { TodoOccurrence } from '@/features/todos/todo';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { calendarOrder, isTodo, occurrenceKey, occurrencesOnDay, timedSpansOnDay } from './dayOccurrences';
 import { dayDetails, type DayDisplay } from './dayInfo';
 import { DayTimeline, LABEL_WIDTH } from './DayTimeline';
@@ -45,6 +45,8 @@ export function DayView({
   // Pull down → Google sync (F4); only while syncing is on.
   refreshControl?: ReactElement<RefreshControlProps>;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const day = useMemo(() => dayDetails(cursor, today, display), [cursor, today, display]);
   const onDay = useMemo(() => occurrencesOnDay(occurrences, cursor, timeZone).sort(calendarOrder), [occurrences, cursor, timeZone]);
@@ -103,7 +105,7 @@ export function DayView({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   lunar: { paddingHorizontal: space.lg, paddingBottom: 6 },
   allDay: {
@@ -119,4 +121,4 @@ const styles = StyleSheet.create({
   allDayLabel: { width: LABEL_WIDTH },
   allDayList: { flex: 1, maxHeight: 96 },
   allDayItems: { gap: space.xs },
-});
+}));

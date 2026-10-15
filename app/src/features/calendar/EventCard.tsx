@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
@@ -9,7 +9,7 @@ import { SyncIcon } from '@/features/events/SyncIcon';
 import { TodoTick } from '@/features/todos/TodoTick';
 import { toHex } from '@/lib/colors';
 import { subtaskProgress } from '@/lib/todos';
-import { colors, radius, shadow, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { isTodo } from './dayOccurrences';
 
 // Week rows and the list view (màn 2, 4): colour stripe · title · time (or note) · repeat/reminder icons.
@@ -34,6 +34,8 @@ export function EventCard({
   onTick?: () => void;
   style?: StyleProp<ViewStyle>;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const todo = isTodo(occurrence) ? occurrence : null;
   const progress = todo && todo.subtasks.length > 0 ? subtaskProgress(todo.subtasks, todo.status) : null;
@@ -80,6 +82,8 @@ export function HolidayCard({
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <Pressable
@@ -99,7 +103,7 @@ export function HolidayCard({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, shadow }) => ({
   card: { flexDirection: 'row', alignItems: 'stretch', minHeight: 48, borderRadius: radius.button, backgroundColor: colors.surface, overflow: 'hidden', ...shadow },
   pressed: { opacity: 0.7 },
   holiday: { backgroundColor: colors.error },
@@ -110,4 +114,4 @@ const styles = StyleSheet.create({
   // No fixed card width (week rows): size to the text instead of filling the card.
   bodyAuto: { flex: 0 },
   icons: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingRight: 10 },
-});
+}));

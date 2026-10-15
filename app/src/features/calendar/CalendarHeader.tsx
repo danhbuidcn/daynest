@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Icon } from '@/components/Icon';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 export function CalendarHeader({
   title,
@@ -19,6 +19,8 @@ export function CalendarHeader({
   // Chi tiêu has no chip here: its "today" button sits in the period picker (S4 mockup 1b).
   onToday?: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <View style={styles.bar}>
@@ -44,10 +46,10 @@ export function CalendarHeader({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   bar: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingTop: 6, paddingRight: space.md, paddingBottom: 6, paddingLeft: space.sm },
   nav: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   titleWrap: { flex: 1 },
   title: { textAlign: 'center' },
   today: { height: 32, paddingHorizontal: space.md, borderRadius: radius.pill, backgroundColor: colors.primarySoft, justifyContent: 'center' },
-});
+}));
