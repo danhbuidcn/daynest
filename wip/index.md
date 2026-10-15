@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S6 bước 11: Chi tiêu theo nhóm (bấm nhóm → pop-up các khoản chi, sửa / thêm rồi về pop-up) | ⏳ chờ bạn duyệt | [2026-10-15-s6-step-11-expenses-by-category.md](2026-10-15-s6-step-11-expenses-by-category.md) |
 | 2026-10-15 | S6 bước 10: Lịch Tháng rộng hơn (5 thanh, cuộn dọc, thu gọn đầu, cuộn tới hôm nay) | ✅ xong (thử trên máy ảo; độ mượt chờ máy thật) | [2026-10-15-s6-step-10-taller-month-calendar.md](2026-10-15-s6-step-10-taller-month-calendar.md) |
 | 2026-10-15 | S6 bước 9: Khoản chi lặp lại (tạo, tự ghi, icon; màn quản lý) | ✅ xong (thử trên máy ảo; chưa thử hằng tuần ghi bù, ngày tương lai, 2 máy) | [2026-10-15-s6-step-9-recurring-expenses.md](2026-10-15-s6-step-9-recurring-expenses.md) |
 | 2026-10-15 | S6 bước 8: Ngân sách tháng (chung + riêng 1 tháng, thanh tiến độ ở Chi tiêu › Tháng) | ✅ xong (thử trên máy ảo; chưa đối chiếu DB, chưa thử 2 máy) | [2026-10-15-s6-step-8-budget.md](2026-10-15-s6-step-8-budget.md) |
