@@ -499,7 +499,7 @@ const hl = (h) => (h ? 'hl2' : '');
 // Cài đặt
 const settings = ({ pro = false, eu = false, hi = '' } = {}) => `<div class="content"><div class="screen-title">Cài đặt</div>
   <div class="settings" style="overflow:hidden">
-    <div class="card account"><span class="avatar">D</span><div class="who"><div class="name">Danh Bùi</div><div class="mail">danhbuidcn@gmail.com</div></div></div>
+    <div class="card account"><span class="avatar">M</span><div class="who"><div class="name">Minh Anh</div><div class="mail">minh.anh@example.com</div></div></div>
     <div class="group-label">Tài khoản</div>
     <div class="card ${hl(hi === 'pro')}">${sr(I.crown, `Daynest Pro${sub(pro ? 'Đang dùng · gói năm' : 'Tắt quảng cáo')}`, chev)}</div>
     <div class="group-label">Giao diện</div>
@@ -522,7 +522,7 @@ const delScreen = (pro) => `<div class="content">
   <div class="settings" style="gap:14px">
     <div class="card" style="padding:20px 16px;text-align:center"><div class="dicon err" style="width:56px;height:56px;border-radius:20px;background:var(--error-soft);color:var(--error);display:grid;place-items:center;margin:0 auto 12px"><span style="width:28px;height:28px;display:block">${I.userx}</span></div>
       <div style="font-size:17px;font-weight:700">Xoá tài khoản vĩnh viễn?</div>
-      <div class="muted" style="font-size:15px;line-height:22px;margin-top:6px">danhbuidcn@gmail.com</div></div>
+      <div class="muted" style="font-size:15px;line-height:22px;margin-top:6px">minh.anh@example.com</div></div>
     <div class="group-label">Dữ liệu sẽ bị xoá</div>
     <div class="card" style="padding:4px 16px">${delList.map((t) => `<div class="frow"><span class="fi" style="color:var(--error)">${I.trash2}</span><span class="grow">${t}</span></div>`).join('')}</div>
     ${pro ? `<div class="warnrow" style="margin:0"><span>${I.warn}</span><div>Gói Pro vẫn tính phí. Hãy huỷ gói trong Google Play.<a>Mở Google Play</a></div></div>` : ''}
