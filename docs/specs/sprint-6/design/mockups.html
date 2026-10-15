@@ -353,8 +353,6 @@
   .rchips { display: flex; gap: 6px; padding: 0 16px 8px; }
   .rchips span { padding: 4px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; line-height: 16px; font-weight: 700; white-space: nowrap; }
   .rchips span.on { background: var(--primary); color: #fff; }
-  .readout { padding: 0 16px 8px; font-size: 13px; line-height: 18px; color: var(--muted); }
-  .readout b { color: var(--text); font-weight: 800; }
   .bars b { font-size: 10px; line-height: 12px; color: var(--text); font-weight: 800; margin-bottom: 2px; white-space: nowrap; }
   .xlab { display: flex; gap: 2px; padding: 4px 16px 12px; }
   .xlab span { flex: 1; text-align: center; font-size: 12px; color: var(--muted); min-width: 0; white-space: nowrap; }
@@ -811,22 +809,21 @@ const byCat = (rows) => {
 };
 const xrow = ([, k, a, note, auto]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${C[k][2]}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div>${note ? `<span>${note}</span>` : ''}</div><span class="am">${vnd(a)}</span></div>`;
 const short = (n) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}tr` : `${Math.round(n / 1000)}k`);
-// Biểu đồ cột (S6 §13): bấm cột → dòng đọc số tiền của cột đó · ít cột (≤ 10) → mọi cột ghi số tiền · nhiều cột (cả tháng) → chỉ ghi cột cao nhất, chọn khoảng ngày để xem rõ hơn
-const barChart = (title, vals, labs, onIdx, { showLab = () => true, all = true, readout = '', chips = '' } = {}) => { const max = Math.max(...vals, 1); const top = vals.indexOf(Math.max(...vals));
-  return `<div class="card"><div class="sec">${title}</div>${chips}${readout ? `<div class="readout">${readout}</div>` : ''}<div class="bars">${vals.map((v, i) => `<div>${v && (all || i === top) ? `<b>${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * 92, 3) : 0}px"></i></div>`).join('')}</div>
+// Biểu đồ cột (S6 §13): bấm cột → cột đậm lên và ghi số tiền của cột đó · ít cột (≤ 10) → mọi cột ghi số tiền · nhiều cột (cả tháng) → chỉ ghi cột cao nhất, chọn khoảng ngày để xem rõ hơn
+const barChart = (title, vals, labs, onIdx, { showLab = () => true, all = true, chips = '' } = {}) => { const max = Math.max(...vals, 1); const top = vals.indexOf(Math.max(...vals));
+  return `<div class="card"><div class="sec">${title}</div>${chips}<div class="bars">${vals.map((v, i) => `<div>${v && (all || i === top || i === onIdx) ? `<b>${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * 92, 3) : 0}px"></i></div>`).join('')}</div>
     <div class="xlab">${labs.map((l, i) => `<span class="${i === onIdx ? 'on' : ''}">${showLab(i) ? l : ''}</span>`).join('')}</div></div>`; };
 const days31 = Array.from({ length: 31 }, (_, i) => i + 1);
 const dayTotal = (d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0);
-const dayRead = (d) => `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10 · <b>${vnd(dayTotal(d))}</b>`;
 const RANGES = [['Cả tháng', 1, 31], ['1–10', 1, 10], ['11–20', 11, 20], ['21–31', 21, 31]];
 // range: chỉ số trong RANGES · sel: ngày đang chọn
 const dayChart = (range = 0, sel = 13) => { const [, from, to] = RANGES[range]; const ds = days31.filter((d) => d >= from && d <= to);
   return barChart('Theo ngày', ds.map(dayTotal), ds.map(String), ds.indexOf(sel), {
-    all: range > 0, showLab: range > 0 ? () => true : (i) => [0, 4, 9, 14, 19, 24, 30].includes(i), readout: dayRead(sel),
+    all: range > 0, showLab: range > 0 ? () => true : (i) => [0, 4, 9, 14, 19, 24, 30].includes(i),
     chips: `<div class="rchips">${RANGES.map(([t], i) => `<span class="${i === range ? 'on' : ''}">${t}</span>`).join('')}</div>` }); };
 const weekDays = [12, 13, 14, 15, 16, 17, 18];
-const weekChart = barChart('Theo ngày', weekDays.map(dayTotal), ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], 1, { readout: dayRead(13) });
-const monthsChart = barChart('6 tháng gần nhất', [6200000, 5400000, 7100000, 6800000, 5900000, total], ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], 5, { readout: `Tháng 10/2026 · <b>${vnd(total)}</b>` });
+const weekChart = barChart('Theo ngày', weekDays.map(dayTotal), ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], 1);
+const monthsChart = barChart('6 tháng gần nhất', [6200000, 5400000, 7100000, 6800000, 5900000, total], ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], 5);
 // Ngân sách: < 80% primary · 80–100% warning · > 100% error
 const budgetCard = (budget, spent = total, own = false) => {
   if (!budget) return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div><div class="setbud hl2">${I.budget}Đặt ngân sách tháng</div></div>`;
@@ -1130,10 +1127,10 @@ const groupsS6 = (st) => [
     ['5. Đã xoá', 'không còn hộp "Xoá …?" · bấm Xoá trong form sửa → về pop-up nhóm, mục biến mất ngay + toast 4 s "Đã xoá · Hoàn tác" · hết 4 s mới xoá thật', phoneT(expDayUndo)],
   ]],
   ['Chi tiêu: theo nhóm, ngân sách, khoản chi lặp lại', [
-    ['9. Tháng — có ngân sách', 'biểu đồ Theo ngày <b>như cũ</b>: chỉ ghi số cột cao nhất · bấm cột bất kỳ → dòng "T3, 13/10 · 110.000 ₫" · chip chọn khoảng ngày (9g) · thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · đầu màn giữ như S4 (chỉ nút Nhóm, viền xanh → màn 13)', phoneT(expMonth(7800000, { hlTag: true }))],
-    ['9g. Tháng — chọn khoảng ngày', 'chip <b>Cả tháng · 1–10 · 11–20 · 21–31</b> trên biểu đồ: chọn khoảng → ít cột hơn, cột rộng ra, <b>mọi cột ghi số tiền</b> · bấm cột → dòng "T3, 13/10 · 110.000 ₫" (cột đậm)', phoneT(expMonth(7800000, { range: 2 }))],
-    ['9e. Tháng — cuộn xuống: 6 tháng', 'cuộn màn Tháng: sau biểu đồ <b>Theo ngày</b> có biểu đồ <b>6 tháng gần nhất</b> (tới tháng đang xem) · mỗi cột ghi số tiền · bấm cột → dòng số tiền của tháng đó', phoneT(expMonth(7800000, { scrolled: true }))],
-    ['9f. Tuần — số tiền từng ngày', '7 cột nên mỗi cột ghi số tiền trên cột (ngày không chi: không ghi) · bấm cột → dòng số tiền của ngày đó', phoneT(expWeek)],
+    ['9. Tháng — có ngân sách', 'biểu đồ Theo ngày <b>như cũ</b>: chỉ ghi số cột cao nhất · bấm cột bất kỳ → cột đậm + ghi số tiền của ngày đó (như cột 13) · chip chọn khoảng ngày (9g) · thanh dưới Tổng chi: 71% → màu primary · "Còn …" · bấm thanh → hộp 10 · đầu màn giữ như S4 (chỉ nút Nhóm, viền xanh → màn 13)', phoneT(expMonth(7800000, { hlTag: true }))],
+    ['9g. Tháng — chọn khoảng ngày', 'chip <b>Cả tháng · 1–10 · 11–20 · 21–31</b> trên biểu đồ: chọn khoảng → ít cột hơn, cột rộng ra, <b>mọi cột ghi số tiền</b> · bấm cột → cột đậm + ghi số tiền', phoneT(expMonth(7800000, { range: 2 }))],
+    ['9e. Tháng — cuộn xuống: 6 tháng', 'cuộn màn Tháng: sau biểu đồ <b>Theo ngày</b> có biểu đồ <b>6 tháng gần nhất</b> (tới tháng đang xem) · mỗi cột ghi số tiền · bấm cột → cột đậm', phoneT(expMonth(7800000, { scrolled: true }))],
+    ['9f. Tuần — số tiền từng ngày', '7 cột nên mỗi cột ghi số tiền trên cột (ngày không chi: không ghi) · bấm cột → cột đậm', phoneT(expWeek)],
     ['9a. Chi tiêu — Ngày', 'Tổng chi + danh sách nhóm + <b>danh sách từng khoản chi bên dưới</b> (như S4) · bấm nhóm (viền xanh) → pop-up 9d · bấm khoản chi → form sửa · Tuần, Tháng: chỉ danh sách nhóm', phoneT(expDay)],
     ['9d. Pop-up nhóm', 'bấm nhóm Hoá đơn ở Tháng → khoản chi của nhóm trong tháng, nhóm theo ngày, mới nhất trước · icon lặp = tự ghi · bấm khoản → form sửa · + thêm khoản chi vào nhóm này', phoneT(groupPopup('bills', X.filter((r) => r[1] === 'bills'), 'Tháng 10, 2026', expMonth(7800000)))],
     ['9b. Vượt ngân sách', '> 100% → thanh đầy màu error · "Vượt …" chữ error · 80–100%: màu warning', phoneT(expMonth(5000000))],
