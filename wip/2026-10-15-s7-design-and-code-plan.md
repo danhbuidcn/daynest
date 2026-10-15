@@ -16,7 +16,7 @@ Thuộc: [Spec S7](../docs/specs/sprint-7/index.md) · [Spec tổng §6](../docs
 
 - [x] 1. `docs/specs/sprint-7/design/db.md`: xoá tài khoản trong app (hàm / Edge Function xoá user + dữ liệu, ảnh báo lỗi trong Storage, huỷ liên kết Google) · lưu trạng thái Pro (RevenueCat là nguồn đúng; app chỉ cache, có cần cột DB không?) · test RLS / tải nếu có bảng mới.
 - [ ] 2. Mockup S7 (`sprint-7/design/mockups.html`): màn Xoá tài khoản (Cài đặt) · màn "Daynest Pro" (3 gói, Khôi phục giao dịch) · banner ở cuối các tab chính (không ở màn soạn, Cài đặt) · hộp đồng ý UMP · mất mạng / Pro đã mua · dùng skill `ui-ux-pro-max` · bạn duyệt.
-- [ ] 3. Trang web công khai: chính sách quyền riêng tư (VI + EN) + trang yêu cầu xoá tài khoản — chọn nơi đặt (đề xuất: GitHub Pages của repo, không tốn tiền, đổi nội dung bằng commit).
+- [x] 3. Trang web công khai: chính sách quyền riêng tư (VI + EN) + trang yêu cầu xoá tài khoản — chọn nơi đặt (đề xuất: GitHub Pages của repo, không tốn tiền, đổi nội dung bằng commit).
 - [ ] 4. Lộ trình code S7 (file `wip/…-s7-code-plan.md`, ~8–10 bước): xoá tài khoản · quảng cáo (gom 1 chỗ, UMP) · Pro (RevenueCat, màn Pro, ẩn banner) · khai Data safety, `AD_ID` · bản thử nghiệm kín · bản công khai · test tải / RLS · release.
 - [x] 5. Danh sách việc **bạn** làm ngoài app (Play, AdMob, RevenueCat, người thử), xếp theo ngày để 14 ngày thử nghiệm bắt đầu sớm nhất.
 
@@ -48,4 +48,5 @@ Bắt đầu đồng hồ 14 ngày = mốc quan trọng nhất. Làm 1–4 trư�
 ## Kết quả
 
 - 2026-10-15: viết [db.md S7](../docs/specs/sprint-7/design/db.md) (không bảng mới; Edge Function `delete-account`; Pro qua RevenueCat) + danh sách việc của bạn ở trên.
-- Còn lại: mockup S7 (plan 2) · trang web công khai (plan 3, chờ bạn ok tạo repo `daynest-site`) · lộ trình code S7 (plan 4).
+- 2026-10-15: trang web công khai xong — repo `danhbuidcn/daynest-site` (công khai, nguồn ở `~/Documents/projects/daynest-site`), GitHub Pages: [trang chủ](https://danhbuidcn.github.io/daynest-site/) · [chính sách EN](https://danhbuidcn.github.io/daynest-site/privacy/en.html) · [chính sách VI](https://danhbuidcn.github.io/daynest-site/privacy/vi.html) · [xoá tài khoản](https://danhbuidcn.github.io/daynest-site/delete-account/) · email liên hệ danhbuidcn@gmail.com (bạn chọn) · cả 3 URL trả 200. Khi thêm quảng cáo / Pro thật vào app, rà lại chính sách; nút "Xoá tài khoản" phải có trong app trước khi nộp Play.
+- Còn lại: mockup S7 (plan 2) · trang web công khai lộ trình code S7 (plan 4).
