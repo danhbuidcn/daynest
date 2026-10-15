@@ -1204,7 +1204,7 @@ const noteScreen = (ad) => {
   const col = (list) => `<div class="ncols"><div>${list.filter((_, n) => n % 2 === 0).map(ncard).join('')}</div><div>${list.filter((_, n) => n % 2).map(ncard).join('')}</div></div>`;
   return `<div class="content">${notesTop}<div class="nlist">${col(NOTES.slice(0, 4))}<div style="margin:2px 0 10px">${nativeAd}</div>${col(NOTES.slice(4))}</div></div>${tabbar('man')}`;
 };
-const expScreen = (ad) => { const h = expMonth(7800000); return ad ? h.replace('<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm', nativeAd.replace('<div class="card"', '<div class="card" style="margin-bottom:12px;') + '<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm') : h; };
+const expScreen = (ad) => { const h = expMonth(7800000, { scrolled: !!ad }); return ad ? h.replace('<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm', `<div style="margin-bottom:12px">${nativeAd}</div><div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm`) : h; };
 const calMonthAd = () => { const g = monthCal().replace('<div class="month">', '<div class="mscr"><div class="month" style="flex:none;height:600px">') + `<div style="padding:6px 8px 8px;background:var(--bg)">${nativeAd}</div></div>`; return calMonth({ grid: g }); };
 const withBanner = (screen, tab, loading, cls = '') => phone(`<div class="under">${screen}${banner(loading)}</div>`, cls);
 const agendaAd = agendaScreen.replace('\n  </div>\n</div><nav', `<div class="ag" style="grid-template-columns:1fr">${nativeAd}</div>\n  </div>\n</div><nav`);
@@ -1242,7 +1242,7 @@ const groups = [
   ['C. Banner quảng cáo (chưa mua Pro)', [
     ['8. Lịch › Tháng', 'đã cuộn tới cuối: thẻ quảng cáo gốc nằm sau hàng tuần cuối, không che ô ngày · banner cố định dưới cùng', withBanner(calMonthAd(), 'cal')],
     ['9. Ghi chú', 'có thẻ quảng cáo gốc sau ghi chú thứ 4', withBanner(noteScreen(true), 'man')],
-    ['10. Chi tiêu', 'có thẻ quảng cáo gốc trước thẻ "Theo nhóm"', withBanner(expScreen(true), 'exp')],
+    ['10. Chi tiêu', 'đã cuộn xuống: thẻ quảng cáo gốc nằm trước thẻ "Theo nhóm"', withBanner(expScreen(true), 'exp')],
     ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
     ['11b. Lịch › Danh sách', 'thẻ quảng cáo gốc sau mục thứ 4 + banner', withBanner(agendaAd, 'cal')],
     ['11c. Todo', 'thẻ quảng cáo gốc dưới danh sách + banner', withBanner(todoAd, 'man')],
