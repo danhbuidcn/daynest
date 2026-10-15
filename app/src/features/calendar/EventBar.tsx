@@ -28,6 +28,7 @@ export function EventBar({ item, large = false, onPress, onTick }: { item: BarIt
       ) : null}
       <AppText
         variant={large ? 'body' : 'caption'}
+        fixedSize={!large}
         color={textColor}
         numberOfLines={1}
         ellipsizeMode="clip"

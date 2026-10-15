@@ -108,6 +108,7 @@ const DayCell = memo(function DayCell({
           </View>
         ) : null}
         <AppText
+          fixedSize
           variant="micro"
           weight={day.lunarKey ? 'extrabold' : undefined}
           color={day.lunarKey ? colors.primaryDark : colors.textMuted}
@@ -117,6 +118,7 @@ const DayCell = memo(function DayCell({
         </AppText>
         <View style={[styles.num, day.isToday && styles.today]}>
           <AppText
+            fixedSize
             weight={day.isToday ? 'extrabold' : undefined}
             color={day.isToday ? colors.white : red ? colors.error : colors.text}>
             {day.day}
@@ -135,7 +137,7 @@ const DayCell = memo(function DayCell({
             <EventBar key={item.id} item={item} />
           ))}
           {extra > 0 ? (
-            <AppText variant="caption" color={colors.textMuted}>
+            <AppText fixedSize variant="caption" color={colors.textMuted}>
               +{extra}
             </AppText>
           ) : null}
