@@ -13,7 +13,7 @@ import { useOnline } from '@/features/network/useOnline';
 import { success } from '@/lib/haptics';
 import { formatAmountInput, groupThousands, parseAmount } from '@/lib/expenses';
 import { monthKey } from '@/lib/expenses/budget';
-import { makeStyles, space, useTheme } from '@/theme';
+import { makeStyles, space } from '@/theme';
 import { useSaveBudget } from './useBudget';
 
 // Mounted only while open, so the fields start from the current budget each time.
@@ -36,7 +36,6 @@ function BudgetForm({
   current,
   onClose,
 }: Props) {
-  const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
   const toast = useToast();

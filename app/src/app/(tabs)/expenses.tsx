@@ -24,6 +24,7 @@ import { BudgetDialog } from '@/features/expenses/BudgetDialog';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
 import { useBudget } from '@/features/expenses/useBudget';
+import { usePlusAction } from '@/features/tabs/plusAction';
 import { useGenerateRecurring } from '@/features/expenses/useGenerateRecurring';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
 import { useOnline } from '@/features/network/useOnline';
@@ -105,6 +106,7 @@ export default function ExpensesScreen() {
       pathname: '/expense/edit',
       params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)) },
     });
+  usePlusAction(addExpense);
   const editExpense = (e: Expense) => router.push({ pathname: '/expense/edit', params: { id: e.id, date: e.spentOn } });
   const addToCategory = () => {
     if (!openCategory) return;

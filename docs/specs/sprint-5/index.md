@@ -40,7 +40,7 @@ Todo = event có thêm **việc trong danh sách** và **trạng thái xong**, l
 
 ### Chuyển loại khi tạo
 
-- Form tạo: tiêu đề đầu màn là nút **"Todo ▾"** / **"Sự kiện ▾"** → mở lại pop-up 4 ô của nút `+` (Sự kiện · Todo · Ghi chú · Khoản chi), ô loại đang dùng được đánh dấu. Mở từ `+` › Todo → Todo · mọi chỗ khác (`+` › Sự kiện, pop-up ngày, Tuần, Ngày) → Sự kiện.
+- Form tạo: tiêu đề đầu màn là nút **"Todo ▾"** / **"Sự kiện ▾"** → mở pop-up 4 ô (như nút `+` ở Lịch) (Sự kiện · Todo · Ghi chú · Khoản chi), ô loại đang dùng được đánh dấu. Mở từ `+` › Todo → Todo · mọi chỗ khác (`+` › Sự kiện, pop-up ngày, Tuần, Ngày) → Sự kiện.
 - Chọn **Sự kiện ↔ Todo**: đổi form tại chỗ, giữ nội dung đã nhập: tiêu đề, chi tiết, cả ngày / giờ, nhắc, lặp, màu. Ô **chưa sửa** (cả ngày / giờ, nhắc) lấy mặc định của loại mới (Todo: cả ngày, nhắc tắt · Sự kiện: giờ tới, nhắc 15 phút); ô đã sửa thì giữ.
 - Danh sách việc chỉ có ở Todo: sang Sự kiện thì ẩn, quay lại Todo còn nguyên · Lưu là Sự kiện → bỏ việc trong danh sách.
 - Chọn **Ghi chú / Khoản chi**: mở form đó thay form đang mở, không mang nội dung sang · đã nhập gì → hỏi "Bỏ thay đổi?" trước. Chọn lại loại đang dùng → chỉ đóng pop-up.
@@ -132,7 +132,7 @@ Mặc định **tắt**. Tắt → không hiện gì trên Lịch, không nhắc
 ## Màn hình
 
 ```text
-Nút + (thanh tab) → pop-up: Sự kiện · Todo · Ghi chú · Khoản chi
+Nút + (thanh tab) → pop-up: Sự kiện · Todo · Ghi chú · Khoản chi (từ S6 chỉ ở Lịch, Cài đặt; Chi tiêu, Ghi chú mở thẳng form — [S6 §11](../sprint-6/index.md#11-nút--theo-tab))
 Form tạo: ✕ · "Todo ▾" / "Sự kiện ▾" (bấm → pop-up 4 ô như nút +) · Lưu · tiêu đề · chi tiết · Danh sách việc (chỉ Todo, + Thêm việc) · cả ngày / giờ · nhắc · lặp · màu
 Chi tiết Todo: ô tick + tiêu đề · việc trong danh sách (tick) · thời gian · lặp · nhắc · chi tiết · ⋯ Sửa / Xoá
 Lịch (Tháng / Tuần / Ngày / Danh sách): todo có ô tròn · giọt kỳ kinh (đặc / viền)

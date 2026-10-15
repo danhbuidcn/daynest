@@ -61,7 +61,7 @@ Tab Chi tiêu
 ├─ Theo nhóm: icon · tên · thanh % · số tiền · %
 ├─ Danh sách (chỉ Ngày): khoản chi: icon nhóm · tên nhóm · ghi chú · số tiền · bấm → sửa
 ├─ nút nhóm (icon thẻ tag) góc trên phải → màn "Nhóm chi tiêu"
-└─ nút + ở thanh tab → pop-up sẵn có (Sự kiện, Ghi chú) thêm "Khoản chi" ở dòng dưới → form Thêm khoản chi
+└─ nút + ở thanh tab → pop-up sẵn có (Sự kiện, Ghi chú) thêm "Khoản chi" ở dòng dưới → form Thêm khoản chi (từ S6: ở tab Chi tiêu nút + mở thẳng form này; pop-up chỉ còn ở Lịch, Cài đặt — [S6 §11](../sprint-6/index.md#11-nút--theo-tab))
 Form khoản chi: số tiền (chữ to, đầu màn) · dòng nhóm (icon + tên ›, bấm → hộp chọn nhóm + "Thêm nhóm") · ngày · ghi chú · Lưu  (sửa: thêm "Xoá")
 Màn Nhóm chi tiêu: nhóm có sẵn (khoá) · nhóm của bạn (bấm để sửa, ⋯ → Xoá) · "+ Thêm nhóm"
 ```

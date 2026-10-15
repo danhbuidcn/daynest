@@ -16,6 +16,7 @@ import { occurrenceKey, todoListSpan } from '@/features/calendar/dayOccurrences'
 import { loadError } from '@/features/network/loadError';
 import { DayStrip } from '@/features/calendar/DayStrip';
 import { clockLabel } from '@/features/events/format';
+import { usePlusAction } from '@/features/tabs/plusAction';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
 import { addDays, weekDates } from '@/lib/calendar/week';
@@ -88,6 +89,8 @@ export function TodoList() {
       pathname: '/todo/[id]',
       params: { id: o.eventId, occurrenceDate: o.occurrenceDate },
     });
+
+  usePlusAction(() => router.push({ pathname: '/todo/edit', params: { date: isoDate(selected) } }));
 
   const todayJd = jdFromDate(today);
   const dayName = (d: SolarDate) => {

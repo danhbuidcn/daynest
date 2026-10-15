@@ -20,6 +20,7 @@ import { newNoteHref, setActiveNoteFilter } from '@/features/notes/newNote';
 import { NoteGrid } from '@/features/notes/NoteGrid';
 import { SearchBox } from '@/features/notes/SearchBox';
 import { useCategories, useNotesCount, useNotesList } from '@/features/notes/useNotes';
+import { usePlusAction } from '@/features/tabs/plusAction';
 import { TodoList } from '@/features/todos/TodoList';
 import { makeStyles, space, useTheme } from '@/theme';
 
@@ -68,6 +69,8 @@ export default function ManageScreen() {
     setViewState(next);
     AsyncStorage.setItem(VIEW_KEY, next).catch(() => {});
   };
+  // Todo view: TodoList registers its own (it knows the chosen day).
+  usePlusAction(view === 'notes' ? () => router.push(newNoteHref()) : null);
   const viewOptions = [
     { value: 'todo', label: t('todos.form.title') },
     { value: 'notes', label: t('tabs.manage') },

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { TabBar } from '@/components/TabBar';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { QuickAddDialog } from '@/features/calendar/QuickAddDialog';
+import { runPlusAction } from '@/features/tabs/plusAction';
 import { newNoteHref } from '@/features/notes/newNote';
 import { useNotificationTap } from '@/features/reminders/useNotificationTap';
 import { isoDate } from '@/lib/calendar/monthGrid';
@@ -24,7 +25,9 @@ export default function TabsLayout() {
     <>
       <Tabs
         screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.bg } }}
-        tabBar={(props) => <TabBar {...props} onPlus={() => setQuickAddOpen(true)} />}>
+        tabBar={(props) => <TabBar {...props} onPlus={() => {
+          if (!runPlusAction()) setQuickAddOpen(true);
+        }} />}>
         <Tabs.Screen name="calendar" options={{ title: t('tabs.calendar') }} />
         <Tabs.Screen name="manage" options={{ title: t('tabs.manage') }} />
         <Tabs.Screen name="expenses" options={{ title: t('tabs.expenses') }} />
