@@ -13,6 +13,7 @@ import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
+import { SkeletonCards } from '@/components/Skeleton';
 import { loadError } from '@/features/network/loadError';
 import { CategoryChips } from '@/features/notes/CategoryChips';
 import { newNoteHref, setActiveNoteFilter } from '@/features/notes/newNote';
@@ -112,7 +113,7 @@ export default function ManageScreen() {
                 {t('notes.results', { count: list.notes.length })}
               </AppText>
             ) : null}
-            {list.isLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
+            {list.isLoading ? <SkeletonCards /> : null}
             {list.notes.length === 0 && listFailure ? (
               <View style={styles.errorBox}>
                 <LoadErrorCard error={listFailure} onRetry={() => void list.refetch()} />

@@ -25,6 +25,7 @@ import { useErrorToast } from '@/features/network/useErrorToast';
 import { useOnline } from '@/features/network/useOnline';
 import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
+import { success } from '@/lib/haptics';
 import { formatAmountInput, groupThousands, NOTE_MAX, parseAmount, relativeDay } from '@/lib/expenses';
 import type { SolarDate } from '@/lib/lunar';
 import { makeStyles, radius, space, useTheme } from '@/theme';
@@ -108,6 +109,7 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
     setBusy(true);
     try {
       await write();
+      success();
       toast(t(done));
       router.back();
     } catch (e) {

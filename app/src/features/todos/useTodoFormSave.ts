@@ -7,6 +7,7 @@ import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { changesSeriesAnchor, type FormState } from '@/features/events/eventFormState';
 import { resyncReminders } from '@/features/reminders/reminderSync';
 import { isoDate } from '@/lib/calendar/monthGrid';
+import { success } from '@/lib/haptics';
 import { requestPermission } from '@/lib/notifications/scheduler';
 import type { ChecklistItem } from '@/lib/notes';
 import { NOT_DONE } from '@/lib/todos';
@@ -53,6 +54,7 @@ export function useTodoFormSave({
     setSaving(true);
     try {
       await write();
+      success();
       onSaved();
       if (form.reminderOn && form.reminderMinutes.length > 0 && settings.notificationsEnabled) {
         void requestPermission()

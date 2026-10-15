@@ -9,6 +9,7 @@ import {
 
 import { AppText } from "@/components/AppText";
 import { Icon } from "@/components/Icon";
+import { lift, tapLight } from "@/lib/haptics";
 import {
   CHECKLIST_ITEM_MAX,
   CHECKLIST_MAX_ITEMS,
@@ -76,7 +77,10 @@ export function ChecklistBlock({
       <Pressable
         accessibilityLabel="Reorder"
         hitSlop={10}
-        onPressIn={drag}
+        onPressIn={() => {
+          lift();
+          drag();
+        }}
         disabled={isActive}
       >
         <Icon name="grip" size={18} color={colors.textMuted} />
@@ -85,7 +89,10 @@ export function ChecklistBlock({
         accessibilityRole="checkbox"
         accessibilityState={{ checked: item.done }}
         hitSlop={10}
-        onPress={() => update(item.id, { done: !item.done })}
+        onPress={() => {
+          tapLight();
+          update(item.id, { done: !item.done });
+        }}
         style={[styles.tick, item.done && styles.tickOn]}
       >
         {item.done ? (

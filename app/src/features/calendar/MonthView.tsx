@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/Skeleton';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
@@ -39,6 +40,7 @@ export function MonthView({
   onPressAdd,
   barsForDay,
   cycleKind,
+  loading = false,
 }: {
   days: DayInfo[];
   selected: SolarDate | null;
@@ -48,6 +50,8 @@ export function MonthView({
   onPressAdd: (day: DayInfo) => void;
   barsForDay: (day: DayInfo) => BarItem[];
   cycleKind: (day: DayInfo) => 'period' | 'predicted' | null;
+  // Nothing on the device for this month yet: grey bars stand in for the events.
+  loading?: boolean;
 }) {
   const styles = useStyles();
   const rows = Array.from({ length: 6 }, (_, r) => days.slice(r * 7, r * 7 + 7));
@@ -66,6 +70,7 @@ export function MonthView({
                 onPressAdd={onPressAdd}
                 items={barsForDay(d)}
                 cycle={cycleKind(d)}
+                loading={loading}
               />
             );
           })}
@@ -82,6 +87,7 @@ const DayCell = memo(function DayCell({
   onPressAdd,
   items,
   cycle,
+  loading,
 }: {
   day: DayInfo;
   selected: boolean;
@@ -89,6 +95,7 @@ const DayCell = memo(function DayCell({
   onPressAdd: (day: DayInfo) => void;
   items: BarItem[];
   cycle: 'period' | 'predicted' | null;
+  loading: boolean;
 }) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -125,7 +132,14 @@ const DayCell = memo(function DayCell({
           </AppText>
         </View>
       </View>
-      {showAddBadge ? (
+      {loading ? (
+        day.inMonth ? (
+          <View style={styles.bars}>
+            <Skeleton height={14} />
+            <Skeleton height={14} width="70%" />
+          </View>
+        ) : null
+      ) : showAddBadge ? (
         <View style={styles.addLayer} pointerEvents="box-none">
           <Pressable accessibilityRole="button" accessibilityLabel="Add" onPress={() => onPressAdd(day)} hitSlop={12} style={styles.addBadge}>
             <Icon name="plus" size={14} color={colors.white} />

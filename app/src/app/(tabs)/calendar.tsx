@@ -1,3 +1,4 @@
+import { SkeletonRows } from '@/components/Skeleton';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -190,7 +191,7 @@ export default function CalendarScreen() {
       <GestureDetector gesture={swipe}>
         <View style={styles.swipeArea} collapsable={false}>
           {mode === 'month' ? (
-            <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} cycleKind={(d) => cycle.dayOf(d)?.kind ?? null} />
+            <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} cycleKind={(d) => cycle.dayOf(d)?.kind ?? null} loading={eventsLoading} />
           ) : mode === 'week' ? (
             <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} cycleOf={cycle.dayOf} />
           ) : mode === 'day' ? (
@@ -198,7 +199,13 @@ export default function CalendarScreen() {
           ) : (
             <ListView {...viewProps} weekStart={settings.weekStart} onSelectDay={setCursor} cycleOf={cycle.dayOf} />
           )}
-          {eventsLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
+          {eventsLoading && mode === 'list' ? (
+            <View style={styles.skeletonList} pointerEvents="none">
+              <SkeletonRows rows={4} />
+            </View>
+          ) : eventsLoading && mode !== 'month' ? (
+            <ActivityIndicator color={colors.primary} style={styles.loading} />
+          ) : null}
           {loadFailure ? (
             <View style={styles.failure}>
               <LoadErrorCard error={loadFailure} onRetry={retryLoad} />
@@ -250,5 +257,6 @@ const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1 },
   swipeArea: { flex: 1 },
   loading: { position: 'absolute', top: space.sm, alignSelf: 'center' },
+  skeletonList: { position: 'absolute', left: space.lg, right: space.lg, bottom: 0, top: 72 },
   failure: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.bg },
 }));

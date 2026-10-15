@@ -1,6 +1,7 @@
 import { Pressable } from 'react-native';
 
 import { Icon } from '@/components/Icon';
+import { tapLight } from '@/lib/haptics';
 import { makeStyles, useTheme } from '@/theme';
 
 // Round tick of a todo (mockup S5): not done = primary ring · done = filled primary + white ✓.
@@ -26,7 +27,10 @@ export function TodoTick({
       accessibilityState={{ checked: done }}
       accessibilityLabel={label}
       hitSlop={10}
-      onPress={onPress}
+      onPress={() => {
+        tapLight();
+        onPress();
+      }}
       style={[styles.tick, { width: size, height: size, borderRadius: square ? 6 : size / 2 }, done && styles.on]}>
       {done ? <Icon name="check" size={Math.round(size * 0.64)} color={colors.white} /> : null}
     </Pressable>

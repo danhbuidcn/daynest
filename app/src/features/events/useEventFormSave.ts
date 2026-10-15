@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
 import { resyncReminders } from '@/features/reminders/reminderSync';
+import { success } from '@/lib/haptics';
 import { requestPermission } from '@/lib/notifications/scheduler';
 import * as api from './api';
 import type { EventRow } from './event';
@@ -44,6 +45,7 @@ export function useEventFormSave({
     setSaving(true);
     try {
       await write();
+      success();
       onSaved();
       // F3: the first event saved with reminders is when the OS permission gets asked for.
       if (form.reminderOn && form.reminderMinutes.length > 0 && settings.notificationsEnabled) {

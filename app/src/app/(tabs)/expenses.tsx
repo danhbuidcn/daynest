@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -11,6 +11,7 @@ import { LoadErrorCard, StaleLine } from '@/components/LoadError';
 import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
+import { Skeleton } from '@/components/Skeleton';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
@@ -93,7 +94,16 @@ export default function ExpensesScreen() {
   if (failure) {
     body = <LoadErrorCard error={failure} onRetry={() => void expensesQuery.refetch()} />;
   } else if (!expenses) {
-    body = <ActivityIndicator color={colors.primary} style={styles.loading} />;
+    body = (
+      <View style={styles.skeleton}>
+        <Skeleton height={64} style={styles.skeletonTotal} />
+        <View style={styles.skeletonBars}>
+          {[40, 90, 60, 120, 80, 50, 100].map((h, i) => (
+            <Skeleton key={i} height={h} width={28} />
+          ))}
+        </View>
+      </View>
+    );
   } else if (expenses.length === 0) {
     body = <Empty text={t('expenses.empty')} action={t('expenses.add')} onAction={addExpense} plus />;
   } else {
@@ -178,7 +188,9 @@ const useStyles = makeStyles(({ colors }) => ({
   tagButton: { width: 36, height: 36, borderRadius: radius.icon + 2, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1 },
   list: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: 120 },
-  loading: { marginVertical: space.xl },
+  skeleton: { gap: space.xl, paddingVertical: space.lg, paddingHorizontal: space.lg },
+  skeletonTotal: { borderRadius: radius.card },
+  skeletonBars: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md, paddingHorizontal: 40, paddingBottom: 40 },
   bubble: { width: 72, height: 72, borderRadius: 24, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },

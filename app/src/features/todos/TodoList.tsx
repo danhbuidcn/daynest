@@ -1,13 +1,14 @@
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, View } from 'react-native';
+import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { Icon } from '@/components/Icon';
 import { LoadErrorCard, StaleLine } from '@/components/LoadError';
+import { SkeletonRows } from '@/components/Skeleton';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
 import { dayDetails, type DayDisplay } from '@/features/calendar/dayInfo';
@@ -143,7 +144,7 @@ export function TodoList() {
             }}
           />
         }>
-        {todos.isLoading ? <ActivityIndicator color={colors.primary} style={styles.loading} /> : null}
+        {todos.isLoading ? <SkeletonRows rows={5} /> : null}
         {todos.isError && todos.occurrences.length > 0 ? <StaleLine onRetry={() => void todos.refetch()} /> : null}
         {todos.occurrences.length === 0 && todosFailure ? (
           <View style={styles.errorBox}>
@@ -281,7 +282,6 @@ function EmptyTodos({ text, action, onAction }: { text: string; action: string; 
 const useStyles = makeStyles(({ colors }) => ({
   flex: { flex: 1 },
   content: { paddingHorizontal: space.md, paddingBottom: 120, gap: space.md },
-  loading: { marginVertical: space.xl },
   errorBox: { minHeight: 360 },
   groupHead: {
     flexDirection: 'row',

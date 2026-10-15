@@ -16,6 +16,7 @@ import { useOnline } from '@/features/network/useOnline';
 import { addMonths, isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { autoTickDays, groupPeriods, periodLength } from '@/lib/cycle';
+import { tapLight } from '@/lib/haptics';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
 import { makeStyles, space, useTheme } from '@/theme';
 
@@ -47,6 +48,7 @@ export default function PeriodScreen() {
 
   const onTap = (iso: string) => {
     if (!ticked || iso > todayIso) return;
+    tapLight();
     const next = new Set(ticked);
     if (next.has(iso)) next.delete(iso);
     else for (const day of autoTickDays(iso, ticked, todayIso, length)) next.add(day);
