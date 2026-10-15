@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S7 bước 1: Xoá tài khoản (Edge Function `delete-account`, màn trong app, chính sách quyền riêng tư) | ⏳ chờ bạn duyệt | [2026-10-15-s7-step-1-delete-account.md](2026-10-15-s7-step-1-delete-account.md) |
 | 2026-10-15 | S7: lộ trình code (xoá tài khoản, bản kín, quảng cáo, Pro, lên Play, release v7.0.0) | ⏳ chờ bạn duyệt | [2026-10-15-s7-code-plan.md](2026-10-15-s7-code-plan.md) |
 | 2026-10-15 | S7: thiết kế (DB, mockup) + lộ trình code (xoá tài khoản, quảng cáo, Pro, lên Play) | ✅ xong (DB, trang web, mockup, lộ trình code; tiếp: duyệt lộ trình) | [2026-10-15-s7-design-and-code-plan.md](2026-10-15-s7-design-and-code-plan.md) |
 | 2026-10-15 | S6 bước 15: Cuối sprint — release v6.0.0 (tick DoD, build APK, cài máy thật, tag, GitHub Release) | ✅ xong (v6.0.0, bạn thử trên máy thật rồi ok) | [2026-10-15-s6-step-15-release.md](2026-10-15-s6-step-15-release.md) |
