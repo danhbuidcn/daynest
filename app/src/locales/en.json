@@ -62,13 +62,36 @@
     "saveFailed": "Could not save. Please try again.",
     "cycle": "Menstrual cycle",
     "bugReport": "Report a problem",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "deleteAccount": "Delete account",
+    "privacyPolicy": "Privacy policy"
   },
   "logoutDialog": {
     "title": "Sign out?",
     "text": "You'll need to sign in with Google again to use Daynest.",
     "cancel": "Cancel",
     "confirm": "Sign out"
+  },
+  "deleteAccount": {
+    "title": "Delete account",
+    "heading": "Delete your account permanently?",
+    "listTitle": "Data to be deleted",
+    "items": {
+      "events": "Events, notes and to-dos",
+      "money": "Expenses and budgets",
+      "cycle": "Cycle data and bug report images",
+      "devices": "Signed-in devices"
+    },
+    "button": "Delete account",
+    "confirmTitle": "Delete account?",
+    "confirmText": "All your data will be deleted permanently.",
+    "cancel": "Cancel",
+    "confirm": "Delete",
+    "busy": "Deleting your account",
+    "failedTitle": "Could not delete",
+    "failedText": "Please try again.",
+    "close": "Close",
+    "retry": "Try again"
   },
   "devices": {
     "current": "This device",

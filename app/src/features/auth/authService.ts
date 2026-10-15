@@ -74,6 +74,7 @@ export interface AuthService {
   getSession(): Promise<Profile | null>;
   signIn(): Promise<{ profile: Profile; kicked: KickedDevice | null }>;
   signOut(): Promise<void>;
+  deleteAccount(): Promise<void>;
   getSettings(): Promise<UserSettings>;
   saveLanguage(lang: Language): Promise<void>;
   saveSettings(patch: SettingsPatch): Promise<void>;
@@ -167,6 +168,20 @@ export const supabaseAuthService: AuthService = {
     }
     await supabase.auth.signOut();
     await GoogleSignin.signOut().catch(() => {});
+  },
+
+  // Server first: a failure leaves the account and the Google grant untouched, so the user can retry.
+  async deleteAccount() {
+    try {
+      await ensureOnline();
+      const { error } = await supabase.functions.invoke('delete-account');
+      if (error) throw error;
+    } catch (e) {
+      throw classify(e);
+    }
+    // The user row is gone, so only clear the local session (no server call) and drop the Google grant.
+    await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+    await GoogleSignin.revokeAccess().catch(() => {});
   },
 
   // Fails open on a network/transient error: only a confirmed `false` signs the device out.

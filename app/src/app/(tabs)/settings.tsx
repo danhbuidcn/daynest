@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, View } from 'react-native';
+import { Linking, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -18,6 +18,7 @@ import { CalendarSettings } from '@/features/settings/CalendarSettings';
 import { CycleSettings } from '@/features/settings/CycleSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
+import { privacyPolicyUrl } from '@/lib/legal';
 import { makeStyles, space, useAppearance, useTheme } from '@/theme';
 
 export default function SettingsScreen() {
@@ -97,11 +98,13 @@ export default function SettingsScreen() {
         <Card>
           <SettingRow first icon="globe" label={t('settings.language')} value={currentLabel} onPress={() => setLangOpen(true)} />
           <SettingRow icon="bug" label={t('settings.bugReport')} onPress={() => router.push('/settings/bug-report')} />
+          <SettingRow icon="shield" label={t('settings.privacyPolicy')} onPress={() => void Linking.openURL(privacyPolicyUrl(current))} />
           <SettingRow icon="info" label={t('settings.version')} value={Constants.expoConfig?.version ?? ''} />
         </Card>
 
         <Card>
           <SettingRow first danger icon="logout" label={t('settings.logout')} onPress={() => setLogoutOpen(true)} />
+          <SettingRow danger icon="userx" label={t('settings.deleteAccount')} onPress={() => router.push('/settings/delete-account')} />
         </Card>
       </ScrollView>
 

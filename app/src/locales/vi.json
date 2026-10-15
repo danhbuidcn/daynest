@@ -62,13 +62,36 @@
     "saveFailed": "Chưa lưu được. Vui lòng thử lại.",
     "cycle": "Chu kỳ kinh nguyệt",
     "bugReport": "Báo lỗi",
-    "appearance": "Giao diện"
+    "appearance": "Giao diện",
+    "deleteAccount": "Xoá tài khoản",
+    "privacyPolicy": "Chính sách quyền riêng tư"
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
     "text": "Bạn sẽ cần đăng nhập Google lại để dùng Daynest.",
     "cancel": "Huỷ",
     "confirm": "Đăng xuất"
+  },
+  "deleteAccount": {
+    "title": "Xoá tài khoản",
+    "heading": "Xoá tài khoản vĩnh viễn?",
+    "listTitle": "Dữ liệu sẽ bị xoá",
+    "items": {
+      "events": "Lịch, ghi chú, việc cần làm",
+      "money": "Chi tiêu, ngân sách",
+      "cycle": "Chu kỳ, ảnh báo lỗi",
+      "devices": "Thiết bị đã đăng nhập"
+    },
+    "button": "Xoá tài khoản",
+    "confirmTitle": "Xoá tài khoản?",
+    "confirmText": "Toàn bộ dữ liệu sẽ bị xoá vĩnh viễn.",
+    "cancel": "Huỷ",
+    "confirm": "Xoá",
+    "busy": "Đang xoá tài khoản",
+    "failedTitle": "Chưa xoá được",
+    "failedText": "Vui lòng thử lại sau.",
+    "close": "Đóng",
+    "retry": "Thử lại"
   },
   "devices": {
     "current": "Thiết bị đang dùng",

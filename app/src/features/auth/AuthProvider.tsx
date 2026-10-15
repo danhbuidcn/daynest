@@ -4,6 +4,7 @@ import { AppState } from 'react-native';
 import { clearPhoto } from '@/features/appearance/photoStore';
 import { clearQueryCache } from '@/features/cache/queryClient';
 import { setLanguage, type Language } from '@/i18n';
+import { cancelAll } from '@/lib/notifications/scheduler';
 import {
   DEFAULT_SETTINGS,
   supabaseAuthService,
@@ -26,6 +27,8 @@ type AuthState = {
   settings: UserSettings;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
+  // Deletes the account and all its data on the server, then clears this device (throws AuthError on failure).
+  deleteAccount: () => Promise<void>;
   saveLanguage: (lang: Language) => Promise<void>;
   // F6 — applies right away; a failed save puts the old values back and rethrows (caller toasts).
   saveSettings: (patch: SettingsPatch) => Promise<void>;
@@ -138,6 +141,14 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
     setSettings(DEFAULT_SETTINGS);
   }, [service]);
 
+  const deleteAccount = useCallback(async () => {
+    await service.deleteAccount();
+    await cancelAll().catch(() => {});
+    await clearLocalData();
+    setProfile(null);
+    setSettings(DEFAULT_SETTINGS);
+  }, [service]);
+
   const saveLanguage = useCallback(
     async (lang: Language) => {
       await setLanguage(lang);
@@ -187,6 +198,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
       settings,
       signIn,
       signOut,
+      deleteAccount,
       saveLanguage,
       saveSettings,
       kickedOut,
@@ -202,6 +214,7 @@ export function AuthProvider({ children, service = supabaseAuthService }: { chil
       settings,
       signIn,
       signOut,
+      deleteAccount,
       saveLanguage,
       saveSettings,
       kickedOut,
