@@ -5,6 +5,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
 | 2026-10-15 | Biểu đồ Chi tiêu: hiện số tiền từng cột (tuần: từng ngày; tháng: từng tuần + 6 tháng) | 🔄 đã code, chờ xem trên máy | [2026-10-15-expense-chart-amounts.md](2026-10-15-expense-chart-amounts.md) |
+| 2026-10-15 | S6 bước 3: Giao diện — màn chọn + nền (8 bộ màu, nền, font, cỡ chữ, ảnh) | ✅ xong (thử trên máy ảo) | [2026-10-15-s6-step-3-appearance-screen.md](2026-10-15-s6-step-3-appearance-screen.md) |
 | 2026-10-15 | S6 bước 2: Giao diện — nền móng (ThemeProvider, 8 bộ màu, font, đổi toàn bộ src) | 🔄 đã code, chờ xem trên máy | [2026-10-15-s6-step-2-theme-foundation.md](2026-10-15-s6-step-2-theme-foundation.md) |
 | 2026-10-15 | S6: nút + theo tab, icon + nhóm gợi ý cho người Việt, mất mạng vẫn xem cache | ✅ xong (bạn ok mockup + spec, chưa viết code) | [2026-10-15-s6-expense-quick-add-icons.md](2026-10-15-s6-expense-quick-add-icons.md) |
 | 2026-10-14 | Tài liệu kiến trúc + tổng quan theo spec chốt mới nhất (tới S6) | ✅ xong | [2026-10-14-architecture-docs-latest-spec.md](2026-10-14-architecture-docs-latest-spec.md) |
