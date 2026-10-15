@@ -17,7 +17,7 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 | Người thử | 1 Google Group, mời 12–15 người (Gmail + máy Android) · khi OAuth chưa được duyệt, email người thử phải có trong **Test users** của OAuth consent screen (tối đa 100) |
 | Quảng cáo | AdMob · 3 loại, khi phát triển chỉ dùng quảng cáo thử · hiện ở **mọi màn xem** · **không** hiện ở màn soạn / sửa / nhập liệu (kể cả Báo lỗi), màn Pro, Xoá tài khoản |
 | — Banner | Dưới thanh tab ở mọi màn xem: Lịch (mọi chế độ), Ghi chú, Todo, Chi tiêu, Cài đặt và các màn con chỉ xem (Giao diện, Ngôn ngữ…) |
-| — Quảng cáo gốc | 1 thẻ xen vào mọi màn dạng danh sách: Ghi chú, Todo, Lịch › Danh sách (sau mục thứ 4), Chi tiêu (trước thẻ "Theo nhóm") · lưới Lịch Tháng / Tuần / Ngày: 1 thẻ ở **cuối vùng cuộn**, sau hàng tuần / ngày / giờ cuối, không ở đầu, không che ô · cùng kiểu thẻ của app, nhãn "Quảng cáo" · không ở Cài đặt |
+| — Quảng cáo gốc | 1 thẻ xen vào mọi màn dạng danh sách: Ghi chú, Todo, Lịch › Danh sách (sau mục thứ 4), Chi tiêu (Tháng: trước thẻ "Theo nhóm"; Ngày / Tuần: sau khoản chi thứ 4) · lưới Lịch Tháng / Tuần / Ngày: 1 thẻ ở **cuối vùng cuộn**, sau hàng tuần / ngày / giờ cuối, không ở đầu, không che ô · cùng kiểu thẻ của app, nhãn "Quảng cáo" · không ở Cài đặt |
 | — Xem để tắt quảng cáo | Người dùng chủ động xem 1 quảng cáo có thưởng → **tắt mọi quảng cáo 24 giờ** · nút ở màn Daynest Pro · lưu trên máy |
 | Pro | Chỉ để tắt quảng cáo · mọi user dùng đủ tính năng · **không có dùng thử** |
 | Giá | Tháng **29.000đ** · Năm **299.000đ** · Trọn đời **599.000đ** · giá gốc VND, nước khác Play tự đổi · Google giữ 15% |

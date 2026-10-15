@@ -1,4 +1,4 @@
-# 2026-10-15 — S7: thiết kế (DB, mockup) + lộ trình code — 🔄 đang làm (bạn chọn: song song · GitHub Pages · chưa có tài khoản)
+# 2026-10-15 — S7: thiết kế (DB, mockup) + lộ trình code — ✅ xong (bạn chọn: song song · GitHub Pages · chưa có tài khoản)
 
 Thuộc: [Spec S7](../docs/specs/sprint-7/index.md) · [Spec tổng §6](../docs/specs/index.md) · bước trước: [S6 bước 15 (release v6.0.0)](2026-10-15-s6-step-15-release.md).
 
@@ -17,7 +17,7 @@ Thuộc: [Spec S7](../docs/specs/sprint-7/index.md) · [Spec tổng §6](../docs
 - [x] 1. `docs/specs/sprint-7/design/db.md`: xoá tài khoản trong app (hàm / Edge Function xoá user + dữ liệu, ảnh báo lỗi trong Storage, huỷ liên kết Google) · lưu trạng thái Pro (RevenueCat là nguồn đúng; app chỉ cache, có cần cột DB không?) · test RLS / tải nếu có bảng mới.
 - [x] 2. Mockup S7 (`sprint-7/design/mockups.html`): màn Xoá tài khoản (Cài đặt) · màn "Daynest Pro" (3 gói, Khôi phục giao dịch) · banner ở cuối các tab chính (không ở màn soạn, Cài đặt) · hộp đồng ý UMP · mất mạng / Pro đã mua · dùng skill `ui-ux-pro-max` · bạn duyệt.
 - [x] 3. Trang web công khai: chính sách quyền riêng tư (VI + EN) + trang yêu cầu xoá tài khoản — chọn nơi đặt (đề xuất: GitHub Pages của repo, không tốn tiền, đổi nội dung bằng commit).
-- [ ] 4. Lộ trình code S7 (file `wip/…-s7-code-plan.md`, ~8–10 bước): xoá tài khoản · quảng cáo (gom 1 chỗ, UMP) · Pro (RevenueCat, màn Pro, ẩn banner) · khai Data safety, `AD_ID` · bản thử nghiệm kín · bản công khai · test tải / RLS · release.
+- [x] 4. Lộ trình code S7 (file `wip/…-s7-code-plan.md`, ~8–10 bước): xoá tài khoản · quảng cáo (gom 1 chỗ, UMP) · Pro (RevenueCat, màn Pro, ẩn banner) · khai Data safety, `AD_ID` · bản thử nghiệm kín · bản công khai · test tải / RLS · release.
 - [x] 5. Danh sách việc **bạn** làm ngoài app (Play, AdMob, RevenueCat, người thử), xếp theo ngày để 14 ngày thử nghiệm bắt đầu sớm nhất.
 
 ## Cần bạn quyết (đã trả lời 2026-10-15)
@@ -54,3 +54,4 @@ Bắt đầu đồng hồ 14 ngày = mốc quan trọng nhất. Làm 1–4 trư�
 - 2026-10-15: bạn nói phần dễ làm người dùng bỏ app thì không làm → **bỏ quảng cáo toàn màn hình**. S7 còn: banner · quảng cáo gốc trong danh sách · xem để tắt 24 giờ (người dùng tự bấm). Đã sửa Spec S7, db.md, Spec tổng, mockup (nhóm E còn màn 17–18c).
 - 2026-10-15: bạn muốn quảng cáo ở mọi màn → chốt (bạn chọn "mọi màn xem"): **banner** ở mọi màn xem (Lịch, Ghi chú, Todo, Chi tiêu, Cài đặt + màn con chỉ xem) · **thẻ gốc** ở màn dạng danh sách (Ghi chú, Todo, Lịch › Danh sách, Chi tiêu), không ở lưới Lịch Ngày/Tuần/Tháng · **không** ở màn soạn/sửa/nhập liệu, Báo lỗi, màn Pro, Xoá tài khoản. Mockup dùng lại màn thật của S6 (đã sửa màn 8–10, thêm 11b, 11c, banner ở Cài đặt).
 - Còn lại: bạn duyệt mockup → lộ trình code S7 (plan 4).
+- 2026-10-15: bạn duyệt mockup, đồng ý thẻ gốc ở Chi tiêu Ngày / Tuần → viết [lộ trình code S7](2026-10-15-s7-code-plan.md) (11 bước).
