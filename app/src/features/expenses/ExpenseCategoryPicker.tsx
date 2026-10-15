@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { AlertDialog, DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { categoryName, USER_CATEGORY_MAX } from './expense';
 import { ExpenseCategoryDialog } from './ExpenseCategoryDialog';
 import { CategoryIcon } from './ExpenseSummary';
@@ -23,6 +23,8 @@ export function ExpenseCategoryPicker({
   onSelect: (id: string) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const categories = useExpenseCategories().data ?? [];
   const [adding, setAdding] = useState(false);
@@ -83,10 +85,10 @@ export function ExpenseCategoryPicker({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   title: { textAlign: 'center', marginBottom: space.md },
   list: { maxHeight: 360 },
   option: { height: 52, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, borderRadius: radius.button },
   optionOn: { backgroundColor: colors.primarySoft },
   flex: { flex: 1 },
-});
+}));

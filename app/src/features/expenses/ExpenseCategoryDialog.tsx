@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -10,7 +10,7 @@ import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { TextField } from '@/components/TextField';
 import { textOn, toHex, type AppColor } from '@/lib/colors';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 import { DuplicateNameError } from './api';
 import { CATEGORY_NAME_MAX, PICKABLE_ICONS, type ExpenseCategory } from './expense';
 import { useExpenseCategoryWrites } from './useExpenses';
@@ -30,6 +30,8 @@ export function ExpenseCategoryDialog({
   onClose: () => void;
   onSaved?: (id: string) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const { save } = useExpenseCategoryWrites();
   const [id] = useState(() => category?.id ?? Crypto.randomUUID());
@@ -100,6 +102,8 @@ export function ExpenseCategoryDialog({
 }
 
 function Label({ text }: { text: string }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <AppText variant="caption" weight="extrabold" color={colors.textMuted} style={styles.label}>
       {text}
@@ -107,7 +111,7 @@ function Label({ text }: { text: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   title: { textAlign: 'center', marginBottom: space.lg },
   label: { marginHorizontal: space.xs, marginTop: 14, marginBottom: 6 },
   // Three rows visible, the rest scroll inside the box; columns share the width (a 360 dp phone is too narrow for 6 × 40).
@@ -120,4 +124,4 @@ const styles = StyleSheet.create({
   colors: { alignItems: 'center', paddingBottom: space.md },
   actions: { flexDirection: 'row', gap: 10 },
   flex: { flex: 1 },
-});
+}));

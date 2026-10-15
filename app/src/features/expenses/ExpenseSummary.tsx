@@ -1,15 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
 import { Icon } from '@/components/Icon';
 import { textOn, toHex } from '@/lib/colors';
 import { formatVnd, type CategoryTotal } from '@/lib/expenses';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import { categoryIcon, categoryName, type Expense, type ExpenseCategory } from './expense';
 
 export function CategoryIcon({ category, size = 28 }: { category: ExpenseCategory | undefined; size?: number }) {
+  const styles = useStyles();
   const bg = toHex(category?.color ?? 'mint');
   return (
     <View style={[styles.icon, { width: size, height: size, backgroundColor: bg }]}>
@@ -19,6 +20,8 @@ export function CategoryIcon({ category, size = 28 }: { category: ExpenseCategor
 }
 
 export function TotalCard({ total }: { total: number }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <Card style={styles.total}>
@@ -33,6 +36,8 @@ export function TotalCard({ total }: { total: number }) {
 }
 
 export function CategoryTotalsCard({ totals, categories }: { totals: CategoryTotal[]; categories: Map<string, ExpenseCategory> }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <Card style={styles.byCategory}>
@@ -76,6 +81,8 @@ export function ExpenseListCard({
   categories: Map<string, ExpenseCategory>;
   onPress: (e: Expense) => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <Card>
@@ -100,7 +107,7 @@ export function ExpenseListCard({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   icon: { borderRadius: radius.icon, alignItems: 'center', justifyContent: 'center' },
   total: { paddingVertical: 10, paddingHorizontal: space.lg, alignItems: 'center' },
   totalText: { fontSize: 20, lineHeight: 26 },
@@ -116,4 +123,4 @@ const styles = StyleSheet.create({
   percent: { minWidth: 36, textAlign: 'right' },
   expRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, minHeight: 48, paddingVertical: space.sm, paddingHorizontal: space.lg },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
-});
+}));

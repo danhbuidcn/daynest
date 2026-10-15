@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -9,7 +9,7 @@ import { Icon } from '@/components/Icon';
 import { addMonths, monthGrid, sameDay, weekdayOrder, type WeekStart } from '@/lib/calendar/monthGrid';
 import { startOfWeek } from '@/lib/calendar/week';
 import { MAX_YEAR, MIN_YEAR, type SolarDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 // S4 mockup 2b / 3b: a small month to pick a day, or the whole week holding the tapped day.
 export function MiniCalendarPicker({
@@ -31,6 +31,8 @@ export function MiniCalendarPicker({
   onCurrent: () => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const [shown, setShown] = useState({ year: selected.year, month: selected.month });
   const [wasVisible, setWasVisible] = useState(visible);
@@ -108,7 +110,7 @@ export function MiniCalendarPicker({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   head: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: space.md },
   nav: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   row: { flexDirection: 'row', borderRadius: 12 },
@@ -119,4 +121,4 @@ const styles = StyleSheet.create({
   dot: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   dotOn: { backgroundColor: colors.primary },
   current: { marginTop: space.md },
-});
+}));
