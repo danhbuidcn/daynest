@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S6 bước 15: Cuối sprint — release v6.0.0 (tick DoD, build APK, cài máy thật, tag, GitHub Release) | ⏳ chờ bạn duyệt | [2026-10-15-s6-step-15-release.md](2026-10-15-s6-step-15-release.md) |
 | 2026-10-15 | S6 bước 14: Test tải S6 (seed + truy vấn mới, `supabase/db load`, cập nhật Spec tổng §3) | ✅ xong (PASS: 0 lỗi, p95 268 ms) | [2026-10-15-s6-step-14-load-test.md](2026-10-15-s6-step-14-load-test.md) |
 | 2026-10-15 | S6 bước 13: Icon + nhóm gợi ý cho người Việt (42 icon, 24 gợi ý chạm là thêm, hộp đủ 30) | ✅ xong (thử trên máy ảo; chưa thử EN, đủ 30 nhóm, mất mạng) | [2026-10-15-s6-step-13-icons-suggested-categories.md](2026-10-15-s6-step-13-icons-suggested-categories.md) |
 | 2026-10-15 | S6 bước 12: Nút + theo tab (Chi tiêu → khoản chi, Ghi chú → note / todo mới) | ✅ xong (thử trên máy ảo; chưa thử mất mạng) | [2026-10-15-s6-step-12-plus-per-tab.md](2026-10-15-s6-step-12-plus-per-tab.md) |
