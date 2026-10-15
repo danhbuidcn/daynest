@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionMenu, MoreButton } from '@/components/ActionMenu';
@@ -17,7 +17,7 @@ import { NoteGrid } from '@/features/notes/NoteGrid';
 import { SearchBox } from '@/features/notes/SearchBox';
 import { useCategories, useNotesCount, useNotesList } from '@/features/notes/useNotes';
 import { TodoList } from '@/features/todos/TodoList';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 const SEARCH_DELAY_MS = 300;
 const VIEW_KEY = 'manage.view';
@@ -26,6 +26,8 @@ type ManageView = 'todo' | 'notes';
 
 // Màn 16 — Ghi chú; S5 adds the Todo | Ghi chú switch (Ghi chú by default, remembered per device).
 export default function ManageScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const [view, setViewState] = useState<ManageView>('notes');
@@ -129,6 +131,8 @@ export default function ManageScreen() {
 }
 
 function Empty({ text, action, onAction }: { text: string; action?: string; onAction?: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={styles.empty}>
       <View style={styles.bubble}>
@@ -142,7 +146,7 @@ function Empty({ text, action, onAction }: { text: string; action?: string; onAc
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: 120 },
   subcount: { textAlign: 'center', marginBottom: space.sm },
@@ -151,4 +155,4 @@ const styles = StyleSheet.create({
   empty: { alignItems: 'center', gap: space.md, paddingTop: 80, paddingHorizontal: space.xl },
   bubble: { width: 96, height: 96, borderRadius: 34, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },
-});
+}));

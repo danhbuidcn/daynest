@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionMenu, MoreButton } from '@/components/ActionMenu';
@@ -17,10 +17,12 @@ import type { Category } from '@/features/notes/note';
 import { useCategories, useDeleteCategories } from '@/features/notes/useNotes';
 import { CATEGORY_MAX } from '@/lib/notes';
 import { toHex } from '@/lib/colors';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 // Màn 18 — Danh mục · 18b chọn để xoá · 18c xác nhận · 19 thêm/sửa.
 export default function CategoriesScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -128,7 +130,7 @@ export default function CategoriesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: space.lg, gap: space.lg, paddingBottom: space.xl },
   row: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg },
@@ -138,4 +140,4 @@ const styles = StyleSheet.create({
   tickOn: { backgroundColor: colors.primary },
   flex: { flex: 1 },
   footer: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.lg },
-});
+}));

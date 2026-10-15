@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -18,9 +18,11 @@ import { CalendarSettings } from '@/features/settings/CalendarSettings';
 import { CycleSettings } from '@/features/settings/CycleSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 export default function SettingsScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t, i18n } = useTranslation();
   const { profile, signOut, saveLanguage, listDevices } = useAuth();
   const router = useRouter();
@@ -120,6 +122,8 @@ export default function SettingsScreen() {
 }
 
 function GroupLabel({ text }: { text: string }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <AppText variant="caption" weight="extrabold" color={colors.textMuted} style={styles.group}>
       {text.toUpperCase()}
@@ -127,10 +131,10 @@ function GroupLabel({ text }: { text: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: space.lg, paddingBottom: space.xxl, gap: space.lg },
   account: { padding: space.lg, flexDirection: 'row', alignItems: 'center', gap: 14 },
   who: { flex: 1, minWidth: 0 },
   group: { marginHorizontal: space.xs, marginBottom: -space.sm, letterSpacing: 0.6 },
-});
+}));

@@ -5,7 +5,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
-  StyleSheet,
   TextInput,
   View,
 } from "react-native";
@@ -39,11 +38,12 @@ import {
   NOTE_BODY_MAX,
   NOTE_TITLE_MAX,
 } from "@/lib/notes";
-import { colors, radius, space, type as typeScale } from "@/theme";
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 // Màn 17 — `/note/<id>` opens a note · `/note/<new id>?isNew=1&categoryId=…` starts one.
 // Laid out like Samsung Notes (S3 C): title in the top bar, body fills the screen, tools above the keyboard.
 export default function NoteEditorScreen() {
+  const styles = useStyles();
   const params = useLocalSearchParams<{
     id: string;
     isNew?: string;
@@ -79,6 +79,8 @@ function NoteEditor({
   note: Note | null;
   initialCategoryId: string | null;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const toast = useToast();
   const navigation = useNavigation();
@@ -291,7 +293,7 @@ function NoteEditor({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   bar: {
@@ -309,11 +311,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: { ...typeScale.title, flex: 1, color: colors.text, padding: 0 },
+  title: { ...type.title, flex: 1, color: colors.text, padding: 0 },
   content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 14, gap: 6 },
   rest: { flexGrow: 1, minHeight: space.xxl },
   body: {
-    ...typeScale.body,
+    ...type.body,
     color: colors.text,
     textAlignVertical: "top",
     padding: 0,
@@ -337,4 +339,4 @@ const styles = StyleSheet.create({
     borderRadius: radius.icon + 2,
     backgroundColor: colors.primarySoft,
   },
-});
+}));

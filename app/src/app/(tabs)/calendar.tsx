@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -31,11 +31,13 @@ import { type BarItem } from '@/lib/calendar/eventBars';
 import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
 import { toggleTodo } from '@/lib/todos';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 const SWIPE_DISTANCE = 50;
 
 export default function CalendarScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -231,8 +233,8 @@ export default function CalendarScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   swipeArea: { flex: 1 },
   loading: { position: 'absolute', top: space.sm, alignSelf: 'center' },
-});
+}));

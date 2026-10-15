@@ -5,7 +5,7 @@ import { useNetworkState } from 'expo-network';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -26,7 +26,7 @@ import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { formatAmountInput, groupThousands, NOTE_MAX, parseAmount, relativeDay } from '@/lib/expenses';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, radius, shadow, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const LAST_CATEGORY_KEY = 'expenses.lastCategory';
 const NO_DATE = { year: 1900, month: 1, day: 1 };
@@ -70,6 +70,8 @@ export default function ExpenseFormScreen() {
 }
 
 function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expense }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -255,6 +257,8 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
 }
 
 function Row({ icon, onPress, children }: { icon: IconName; onPress?: () => void; children: ReactNode }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable accessibilityRole={onPress ? 'button' : undefined} disabled={!onPress} onPress={onPress} style={[styles.row, styles.divider]}>
       <Icon name={icon} size={22} color={colors.primaryDark} />
@@ -263,12 +267,12 @@ function Row({ icon, onPress, children }: { icon: IconName; onPress?: () => void
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, shadow, type }) => ({
   footer: { gap: 10 },
   center: { textAlign: 'center' },
   amountBox: { alignItems: 'center', paddingTop: space.sm, gap: 6 },
   amountInput: {
-    ...typeScale.title,
+    ...type.title,
     color: colors.text,
     textAlign: 'center',
     minWidth: 120,
@@ -281,5 +285,5 @@ const styles = StyleSheet.create({
   row: { minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: space.md },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   grow: { flex: 1, minWidth: 0 },
-  noteInput: { ...typeScale.body, color: colors.text, paddingVertical: space.sm },
-});
+  noteInput: { ...type.body, color: colors.text, paddingVertical: space.sm },
+}));

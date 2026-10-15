@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -30,11 +30,13 @@ import {
 } from '@/lib/expenses';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const MODES: readonly PeriodMode[] = ['day', 'week', 'month'];
 
 export default function ExpensesScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const { settings } = useAuth();
@@ -152,6 +154,8 @@ export default function ExpensesScreen() {
 }
 
 function Empty({ text, action, onAction, plus }: { text: string; action: string; onAction: () => void; plus?: boolean }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={styles.empty}>
       <View style={styles.bubble}>
@@ -165,7 +169,7 @@ function Empty({ text, action, onAction, plus }: { text: string; action: string;
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   tagButton: { width: 36, height: 36, borderRadius: radius.icon + 2, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1 },
@@ -174,4 +178,4 @@ const styles = StyleSheet.create({
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md, paddingHorizontal: 40, paddingBottom: 40 },
   bubble: { width: 72, height: 72, borderRadius: 24, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },
-});
+}));

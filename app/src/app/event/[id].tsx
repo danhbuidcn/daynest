@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionMenu, MoreButton } from '@/components/ActionMenu';
@@ -21,10 +21,11 @@ import { useEventsInRange } from '@/features/events/useEvents';
 import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { toHex } from '@/lib/colors';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 // Màn 13 — `/event/[id]?occurrenceDate=YYYY-MM-DD`: one lap of a (possibly repeating) event.
 export default function EventDetailScreen() {
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -115,6 +116,8 @@ function DetailRow({
   multiline?: boolean;
   first?: boolean;
 }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={[styles.detailRow, !first && styles.divider]}>
       <View style={styles.rowIcon}>
@@ -132,7 +135,7 @@ function DetailRow({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: space.lg, paddingTop: space.xs, paddingBottom: space.lg, gap: space.md },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.xs, paddingVertical: space.sm },
@@ -141,4 +144,4 @@ const styles = StyleSheet.create({
   detailRow: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, paddingVertical: space.sm },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   rowIcon: { width: 34, height: 34, borderRadius: radius.icon, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-});
+}));

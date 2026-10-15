@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ActionMenu } from '@/components/ActionMenu';
@@ -15,10 +15,12 @@ import { categoryName, USER_CATEGORY_MAX, type ExpenseCategory } from '@/feature
 import { ExpenseCategoryDialog } from '@/features/expenses/ExpenseCategoryDialog';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { useExpenseCategories, useExpenseCategoryWrites } from '@/features/expenses/useExpenses';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 // S4 màn 10 — built-in categories (locked) · yours (tap = edit, ⋯ = Sửa / Xoá) · "Thêm nhóm".
 export default function ExpenseCategoriesScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -121,6 +123,7 @@ export default function ExpenseCategoriesScreen() {
 
 // `⋯` that opens the menu right under itself.
 function MoreAt({ onPress, width }: { onPress: (top: number, right: number) => void; width: number }) {
+  const { colors } = useTheme();
   const ref = useRef<View>(null);
   return (
     <Pressable
@@ -135,6 +138,8 @@ function MoreAt({ onPress, width }: { onPress: (top: number, right: number) => v
 }
 
 function GroupLabel({ text }: { text: string }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <AppText variant="caption" weight="extrabold" color={colors.textMuted} style={styles.group}>
       {text.toUpperCase()}
@@ -142,7 +147,7 @@ function GroupLabel({ text }: { text: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: space.lg, gap: space.md, paddingBottom: space.xl },
   group: { marginHorizontal: space.xs, marginTop: space.sm, letterSpacing: 0.6 },
@@ -150,4 +155,4 @@ const styles = StyleSheet.create({
   divider: { borderTopWidth: 1, borderTopColor: colors.border },
   plus: { width: 34, alignItems: 'center' },
   flex: { flex: 1 },
-});
+}));

@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -11,10 +11,12 @@ import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { NoteCard } from '@/features/notes/NoteCard';
 import { useCategories, useDeleteNoteForever, useEmptyTrash, useRestoreNote, useTrashList } from '@/features/notes/useNotes';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 // Màn 20 — Thùng rác · 20b xác nhận xoá tất cả.
 export default function TrashScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -116,7 +118,7 @@ export default function TrashScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: space.md, paddingVertical: space.sm },
   side: { width: 88 },
@@ -130,4 +132,4 @@ const styles = StyleSheet.create({
   loading: { marginVertical: space.xl },
   empty: { alignItems: 'center', gap: space.md, paddingTop: 80 },
   bubble: { width: 96, height: 96, borderRadius: 34, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
-});
+}));

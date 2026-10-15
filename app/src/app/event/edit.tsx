@@ -1,7 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AutoGrowField } from '@/components/AutoGrowField';
 import { Button } from '@/components/Button';
@@ -33,7 +33,7 @@ import { useEventFormSave } from '@/features/events/useEventFormSave';
 import { useEventsInRange } from '@/features/events/useEvents';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space } from '@/theme';
 
 const NO_DATE = { year: 1900, month: 1, day: 1 };
 
@@ -64,6 +64,7 @@ export default function EventFormScreen() {
 }
 
 function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; baseEvent?: EventRow; occurrence?: EventOccurrence }) {
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -159,7 +160,7 @@ function EventForm({ initial, baseEvent, occurrence }: { initial: FormState; bas
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   card: { backgroundColor: colors.surface, borderRadius: radius.card, padding: space.lg, gap: space.sm },
   divider: { height: 1, backgroundColor: colors.border, marginVertical: space.xs },
-});
+}));

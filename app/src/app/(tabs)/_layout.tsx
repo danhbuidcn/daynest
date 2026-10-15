@@ -10,9 +10,10 @@ import { newNoteHref } from '@/features/notes/newNote';
 import { useNotificationTap } from '@/features/reminders/useNotificationTap';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 
 export default function TabsLayout() {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const { settings } = useAuth();

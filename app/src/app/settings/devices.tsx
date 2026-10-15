@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -13,7 +13,7 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import type { DeviceRow } from '@/features/auth/authService';
 import { getDeviceId } from '@/features/auth/device';
 import { toRelativeMoment } from '@/lib/relativeDate';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 function formatAbsoluteDate(iso: string) {
   const d = new Date(iso);
@@ -28,6 +28,8 @@ function formatLastSeen(iso: string, t: TFunction) {
 }
 
 export default function DevicesScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const { listDevices } = useAuth();
@@ -77,7 +79,7 @@ export default function DevicesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   content: { paddingHorizontal: space.lg, paddingBottom: space.xxl, gap: space.lg },
   row: { minHeight: 68, flexDirection: 'row', alignItems: 'center', gap: space.md, paddingHorizontal: space.lg, paddingVertical: space.sm },
@@ -87,4 +89,4 @@ const styles = StyleSheet.create({
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
   flexShrink: { flexShrink: 1 },
   tag: { backgroundColor: colors.primarySoft, borderRadius: 999, paddingHorizontal: space.sm, paddingVertical: 2 },
-});
+}));

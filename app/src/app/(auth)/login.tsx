@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -10,9 +10,11 @@ import { Logo } from '@/components/Logo';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { AuthError } from '@/features/auth/authService';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 export default function LoginScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const { signIn, kickedOut, dismissKickedOut } = useAuth();
   const toast = useToast();
@@ -56,9 +58,9 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   gIcon: { width: 20, height: 20, borderRadius: 10, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
   screen: { flex: 1, backgroundColor: colors.bg, paddingHorizontal: space.xl, paddingBottom: 40 },
   hero: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 },
   tagline: { textAlign: 'center' },
-});
+}));

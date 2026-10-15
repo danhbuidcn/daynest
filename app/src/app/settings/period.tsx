@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/AppText';
@@ -16,12 +16,14 @@ import { addMonths, isoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { autoTickDays, groupPeriods, periodLength } from '@/lib/cycle';
 import { jdFromDate, jdToDate } from '@/lib/lunar';
-import { colors, space } from '@/theme';
+import { makeStyles, space, useTheme } from '@/theme';
 
 const MONTHS_SHOWN = 12;
 
 // Màn 9 / 9b — Kỳ kinh: months scroll down to this one; tap a day to tick or untick it.
 export default function PeriodScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -105,6 +107,7 @@ function MonthBlock({
   ticked: Set<string>;
   onTap: (iso: string) => void;
 }) {
+  const styles = useStyles();
   const { t } = useTranslation();
   const first = jdFromDate({ year, month, day: 1 });
   const lead = (weekdayOf({ year, month, day: 1 }) - weekStart + 7) % 7;
@@ -128,6 +131,8 @@ function MonthBlock({
 }
 
 function DayCell({ day, iso, todayIso, on, onTap }: { day: number; iso: string; todayIso: string; on: boolean; onTap: (iso: string) => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const future = iso > todayIso;
   const isToday = iso === todayIso;
   return (
@@ -149,7 +154,7 @@ function DayCell({ day, iso, todayIso, on, onTap }: { day: number; iso: string; 
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   screen: { flex: 1, backgroundColor: colors.bg },
   flex: { flex: 1 },
   weekdays: { paddingHorizontal: space.md, borderBottomWidth: 1, borderBottomColor: colors.border },
@@ -162,4 +167,4 @@ const styles = StyleSheet.create({
   circleBorder: { borderWidth: 2, borderColor: colors.border },
   circleOn: { backgroundColor: colors.error, borderColor: colors.error },
   footer: { paddingHorizontal: space.lg, paddingTop: space.sm, paddingBottom: space.lg },
-});
+}));

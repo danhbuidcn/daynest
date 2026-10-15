@@ -3,7 +3,7 @@ import { useNetworkState } from 'expo-network';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Image, Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
@@ -13,9 +13,11 @@ import { Icon } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { pickImages, RateLimitedError, sendBugReport, type PickedImage } from '@/features/bugReport/api';
 import { BODY_MAX, isBodyValid, MAX_IMAGES } from '@/lib/bugReport';
-import { colors, radius, space, type as typeScale } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 
 export default function BugReportScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const toast = useToast();
@@ -129,7 +131,7 @@ export default function BugReportScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors, type }) => ({
   footer: { gap: space.sm },
   center: { textAlign: 'center' },
   label: { marginHorizontal: space.xs, marginBottom: 6 },
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     paddingVertical: space.md,
     color: colors.text,
-    ...typeScale.body,
+    ...type.body,
   },
   thumbs: { flexDirection: 'row', gap: space.md },
   thumb: { width: 88, height: 88, borderRadius: radius.button, overflow: 'hidden', backgroundColor: colors.primarySoft },
@@ -166,4 +168,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: space.xs,
   },
-});
+}));
