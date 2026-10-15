@@ -1,17 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import { Linking, Platform, StyleSheet, View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
-import { colors } from '@/theme';
+import { makeStyles, useTheme } from '@/theme';
 
 // The battery-optimization list needs no extra permission, unlike the per-app request intent.
 const BATTERY_SETTINGS = 'android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS';
 
 // Màn 11b — from the `!` next to "Cài đặt nhắc nhở".
 export function BatteryTipDialog({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
 
   const exclude = () => {
@@ -39,7 +41,7 @@ export function BatteryTipDialog({ visible, onClose }: { visible: boolean; onClo
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   icon: {
     width: 56,
     height: 56,
@@ -54,4 +56,4 @@ const styles = StyleSheet.create({
   text: { marginTop: 6, marginBottom: 20 },
   actions: { flexDirection: 'row', gap: 10 },
   flex: { flex: 1 },
-});
+}));
