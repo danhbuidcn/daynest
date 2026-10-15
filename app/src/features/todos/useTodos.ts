@@ -7,6 +7,7 @@ import { resyncReminders } from '@/features/reminders/reminderSync';
 import { narrowestCovering } from '@/lib/calendar/coveringRange';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
+import { editCached } from '@/features/cache/editCached';
 import { putException, putRow, removeRow } from '@/lib/cache/applySaved';
 import type { DateRange } from '@/lib/recurrence';
 import type { TodoStatus } from '@/lib/todos';
@@ -88,6 +89,39 @@ export function useTodoCacheEdits() {
     status: (todoId: string, occurrenceDate: string, status: TodoStatus) =>
       applyToCache(queryClient, (data) => withStatus(data, todoId, occurrenceDate, status)),
   };
+}
+
+// As hideEvent / hideEventOccurrence (useEvents.ts).
+export function hideTodo(queryClient: QueryClient, id: string): () => void {
+  return editCached<TodosData>(queryClient, TODOS_KEY, (data) => ({
+    todos: removeRow(data.todos, id),
+    exceptions: data.exceptions.filter((x) => x.todoId !== id),
+  }));
+}
+
+export function hideTodoOccurrence(queryClient: QueryClient, todoId: string, occurrenceDate: string): () => void {
+  const skip: TodoExceptionRow = {
+    id: `pending-${todoId}-${occurrenceDate}`,
+    todoId,
+    occurrenceDate,
+    kind: 'skip',
+    title: null,
+    note: null,
+    color: null,
+    allDay: null,
+    startsAt: null,
+    endsAt: null,
+    startDate: null,
+    endDate: null,
+    reminderMinutes: null,
+    subtasks: null,
+    done: null,
+    doneSubtasks: [],
+  };
+  return editCached<TodosData>(queryClient, TODOS_KEY, (data) => ({
+    ...data,
+    exceptions: putException(data.exceptions, skip, (x) => x.todoId === todoId && x.occurrenceDate === occurrenceDate),
+  }));
 }
 
 export type SaveTodoVars = { id: string; updatedAt?: string; input: TodoInput; clearExceptions?: boolean };

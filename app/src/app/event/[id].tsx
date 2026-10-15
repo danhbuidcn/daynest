@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionMenu, MoreButton } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
-import { ConfirmDialog } from '@/components/Dialog';
 import { Icon, type IconName } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -17,7 +16,6 @@ import { EventSyncTag } from '@/features/events/EventSyncTag';
 import { repeatLabel } from '@/features/events/repeatLabel';
 import { useEventDelete } from '@/features/events/useEventDelete';
 import { useEventsInRange } from '@/features/events/useEvents';
-import { useGoogleSync } from '@/features/google/useGoogleSync';
 import { parseIsoDate } from '@/lib/calendar/monthGrid';
 import { toHex } from '@/lib/colors';
 import { makeStyles, radius, space, useTheme } from '@/theme';
@@ -35,7 +33,6 @@ export default function EventDetailScreen() {
   const loaded = useEventsInRange({ from: occDate, to: occDate }, settings.timeZone);
   const event = loaded.data?.events.find((e) => e.id === params.id);
   const occ = loaded.occurrences.find((o) => o.eventId === params.id && o.occurrenceDate === params.occurrenceDate);
-  const googleSync = useGoogleSync();
   const [menuOpen, setMenuOpen] = useState(false);
   const deleter = useEventDelete({ event, occurrence: occ, onDone: () => router.back(), onError: failed('events.detail.deleteFailed') });
 
@@ -89,16 +86,6 @@ export default function EventDetailScreen() {
         ]}
       />
       <OccurrenceActionDialog {...deleter.scope} />
-      <ConfirmDialog
-        visible={deleter.confirm.visible}
-        icon="trash"
-        title={t('events.detail.deleteTitle')}
-        text={t(googleSync.enabled && event.google?.linked ? 'events.detail.deleteTextGoogle' : 'events.detail.deleteText')}
-        cancelLabel={t('common.cancel')}
-        confirmLabel={t('events.detail.delete')}
-        onCancel={deleter.confirm.onCancel}
-        onConfirm={deleter.confirm.onConfirm}
-      />
     </SafeAreaView>
   );
 }

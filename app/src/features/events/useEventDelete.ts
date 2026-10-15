@@ -1,13 +1,16 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
+import { useUndoableDelete } from '@/features/cache/useUndoableDelete';
 import * as api from './api';
 import type { EventRow } from './event';
 import type { EventOccurrence } from './occurrences';
-import { useDeleteEvent, useSetOccurrenceException } from './useEvents';
+import { hideEvent, hideEventOccurrence, useDeleteEvent, useSetOccurrenceException } from './useEvents';
 
-// Delete flow (F2): one-off → confirm → delete · repeating → "Chỉ lần này / Tất cả" → confirm →
-// skip exception or delete the whole series (its exceptions cascade).
+// Delete flow (F2, spec S6 §5): one-off → gone at once with "Hoàn tác" · repeating → "Chỉ lần này /
+// Tất cả" → the same. The write (skip exception, or the whole series with its exceptions) is sent
+// when the undo window ends.
 export function useEventDelete({
   event,
   occurrence,
@@ -17,45 +20,36 @@ export function useEventDelete({
   event?: EventRow;
   occurrence?: EventOccurrence;
   onDone: () => void;
-  onError: () => void;
+  onError: (e?: unknown) => void;
 }) {
+  const queryClient = useQueryClient();
   const { recheckSession } = useAuth();
+  const undoable = useUndoableDelete();
   const deleteMutation = useDeleteEvent();
   const exceptionMutation = useSetOccurrenceException();
   const [scopeOpen, setScopeOpen] = useState(false);
-  const [confirmScope, setConfirmScope] = useState<'this' | 'all' | null>(null);
 
-  const perform = async (scope: 'this' | 'all') => {
-    setConfirmScope(null);
+  const perform = (scope: 'this' | 'all') => {
+    setScopeOpen(false);
     if (!event || !occurrence) return;
-    try {
-      if (scope === 'all') await deleteMutation.mutateAsync(event.id);
-      else await exceptionMutation.mutateAsync({ eventId: event.id, occurrenceDate: occurrence.occurrenceDate, kind: 'skip' });
-      onDone();
-    } catch (e) {
-      if (e instanceof api.ForbiddenError) await recheckSession();
-      else onError();
-    }
+    undoable({
+      hide: () => (scope === 'all' ? hideEvent(queryClient, event.id) : hideEventOccurrence(queryClient, event.id, occurrence.occurrenceDate)),
+      commit: () =>
+        scope === 'all'
+          ? deleteMutation.mutateAsync(event.id)
+          : exceptionMutation.mutateAsync({ eventId: event.id, occurrenceDate: occurrence.occurrenceDate, kind: 'skip' }),
+      onError: (e) => (e instanceof api.ForbiddenError ? void recheckSession() : onError(e)),
+    });
+    onDone();
   };
 
   return {
-    start: () => (event?.repeat === 'none' ? setConfirmScope('all') : setScopeOpen(true)),
+    start: () => (event?.repeat === 'none' ? perform('all') : setScopeOpen(true)),
     scope: {
       visible: scopeOpen,
-      onThisOccurrence: () => {
-        setScopeOpen(false);
-        setConfirmScope('this');
-      },
-      onAllOccurrences: () => {
-        setScopeOpen(false);
-        setConfirmScope('all');
-      },
+      onThisOccurrence: () => perform('this'),
+      onAllOccurrences: () => perform('all'),
       onCancel: () => setScopeOpen(false),
-    },
-    confirm: {
-      visible: confirmScope !== null,
-      onConfirm: () => confirmScope && void perform(confirmScope),
-      onCancel: () => setConfirmScope(null),
     },
   };
 }

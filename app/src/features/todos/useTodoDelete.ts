@@ -1,11 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useAuth } from '@/features/auth/AuthProvider';
+import { useUndoableDelete } from '@/features/cache/useUndoableDelete';
 import { ForbiddenError } from '@/features/events/api';
 import type { TodoOccurrence, TodoRow } from './todo';
-import { useDeleteTodo, useSetTodoException } from './useTodos';
+import { hideTodo, hideTodoOccurrence, useDeleteTodo, useSetTodoException } from './useTodos';
 
-// Same flow as deleting an event (F2): one-off → confirm · repeating → "Chỉ lần này / Tất cả" → confirm.
+// Same flow as deleting an event (useEventDelete.ts).
 export function useTodoDelete({
   todo,
   occurrence,
@@ -15,45 +17,36 @@ export function useTodoDelete({
   todo?: TodoRow;
   occurrence?: TodoOccurrence;
   onDone: () => void;
-  onError: () => void;
+  onError: (e?: unknown) => void;
 }) {
+  const queryClient = useQueryClient();
   const { recheckSession } = useAuth();
+  const undoable = useUndoableDelete();
   const deleteMutation = useDeleteTodo();
   const exceptionMutation = useSetTodoException();
   const [scopeOpen, setScopeOpen] = useState(false);
-  const [confirmScope, setConfirmScope] = useState<'this' | 'all' | null>(null);
 
-  const perform = async (scope: 'this' | 'all') => {
-    setConfirmScope(null);
+  const perform = (scope: 'this' | 'all') => {
+    setScopeOpen(false);
     if (!todo || !occurrence) return;
-    try {
-      if (scope === 'all') await deleteMutation.mutateAsync(todo.id);
-      else await exceptionMutation.mutateAsync({ todoId: todo.id, occurrenceDate: occurrence.occurrenceDate, kind: 'skip' });
-      onDone();
-    } catch (e) {
-      if (e instanceof ForbiddenError) await recheckSession();
-      else onError();
-    }
+    undoable({
+      hide: () => (scope === 'all' ? hideTodo(queryClient, todo.id) : hideTodoOccurrence(queryClient, todo.id, occurrence.occurrenceDate)),
+      commit: () =>
+        scope === 'all'
+          ? deleteMutation.mutateAsync(todo.id)
+          : exceptionMutation.mutateAsync({ todoId: todo.id, occurrenceDate: occurrence.occurrenceDate, kind: 'skip' }),
+      onError: (e) => (e instanceof ForbiddenError ? void recheckSession() : onError(e)),
+    });
+    onDone();
   };
 
   return {
-    start: () => (todo?.repeat === 'none' ? setConfirmScope('all') : setScopeOpen(true)),
+    start: () => (todo?.repeat === 'none' ? perform('all') : setScopeOpen(true)),
     scope: {
       visible: scopeOpen,
-      onThisOccurrence: () => {
-        setScopeOpen(false);
-        setConfirmScope('this');
-      },
-      onAllOccurrences: () => {
-        setScopeOpen(false);
-        setConfirmScope('all');
-      },
+      onThisOccurrence: () => perform('this'),
+      onAllOccurrences: () => perform('all'),
       onCancel: () => setScopeOpen(false),
-    },
-    confirm: {
-      visible: confirmScope !== null,
-      onConfirm: () => confirmScope && void perform(confirmScope),
-      onCancel: () => setConfirmScope(null),
     },
   };
 }

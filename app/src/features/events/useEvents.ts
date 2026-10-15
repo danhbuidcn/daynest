@@ -7,6 +7,7 @@ import { resyncReminders } from '@/features/reminders/reminderSync';
 import { narrowestCovering } from '@/lib/calendar/coveringRange';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
+import { editCached } from '@/features/cache/editCached';
 import { putException, putRow, removeRow } from '@/lib/cache/applySaved';
 import type { DateRange } from '@/lib/recurrence';
 import * as api from './api';
@@ -114,6 +115,37 @@ function useCacheEdits() {
           : data.exceptions,
       })),
   };
+}
+
+// Undoable delete (spec S6 §5): the event, or one lap of it, leaves the screen at once. The write
+// comes later; the returned function puts the cache back if the delete is undone or fails.
+export function hideEvent(queryClient: QueryClient, id: string): () => void {
+  return editCached<EventsData>(queryClient, EVENTS_KEY, (data) => ({
+    events: removeRow(data.events, id),
+    exceptions: data.exceptions.filter((x) => x.eventId !== id),
+  }));
+}
+
+export function hideEventOccurrence(queryClient: QueryClient, eventId: string, occurrenceDate: string): () => void {
+  const skip: ExceptionRow = {
+    id: `pending-${eventId}-${occurrenceDate}`,
+    eventId,
+    occurrenceDate,
+    kind: 'skip',
+    title: null,
+    note: null,
+    color: null,
+    allDay: null,
+    startsAt: null,
+    endsAt: null,
+    startDate: null,
+    endDate: null,
+    reminderMinutes: null,
+  };
+  return editCached<EventsData>(queryClient, EVENTS_KEY, (data) => ({
+    ...data,
+    exceptions: putException(data.exceptions, skip, (x) => x.eventId === eventId && x.occurrenceDate === occurrenceDate),
+  }));
 }
 
 export type SaveEventVars = { id: string; updatedAt?: string; input: EventInput; clearExceptions?: boolean };

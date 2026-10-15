@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActionMenu, MoreButton } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
-import { ConfirmDialog } from '@/components/Dialog';
 import { Icon, type IconName } from '@/components/Icon';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -109,16 +108,6 @@ export default function TodoDetailScreen() {
         ]}
       />
       <OccurrenceActionDialog title={t('todos.occurrenceTitle')} {...deleter.scope} />
-      <ConfirmDialog
-        visible={deleter.confirm.visible}
-        icon="trash"
-        title={t('todos.deleteTitle')}
-        text={t('events.detail.deleteText')}
-        cancelLabel={t('common.cancel')}
-        confirmLabel={t('events.detail.delete')}
-        onCancel={deleter.confirm.onCancel}
-        onConfirm={deleter.confirm.onConfirm}
-      />
     </SafeAreaView>
   );
 }

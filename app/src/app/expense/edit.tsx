@@ -8,11 +8,11 @@ import { Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
-import { ConfirmDialog } from '@/components/Dialog';
 import { FormScreen } from '@/components/FormScreen';
 import { Icon, type IconName } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { useUndoableDelete } from '@/features/cache/useUndoableDelete';
 import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { ConflictDialog } from '@/features/events/OccurrenceDialogs';
 import * as api from '@/features/expenses/api';
@@ -20,7 +20,7 @@ import { categoryName, defaultCategoryId, type Expense } from '@/features/expens
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
-import { EXPENSES_KEY, useExpenseCategories, useExpenseWrites, useExpensesInRange } from '@/features/expenses/useExpenses';
+import { EXPENSES_KEY, hideExpense, useExpenseCategories, useExpenseWrites, useExpensesInRange } from '@/features/expenses/useExpenses';
 import { useErrorToast } from '@/features/network/useErrorToast';
 import { useOnline } from '@/features/network/useOnline';
 import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
@@ -82,12 +82,12 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
   const failed = useErrorToast();
   const categories = useExpenseCategories().data ?? [];
   const { save, remove } = useExpenseWrites();
+  const undoable = useUndoableDelete();
   const [newId] = useState(() => Crypto.randomUUID());
   const [form, setForm] = useState(initial);
   const [busy, setBusy] = useState(false);
   const [pickCategory, setPickCategory] = useState(false);
   const [pickDate, setPickDate] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [conflict, setConflict] = useState(false);
 
   const today = todayIn(settings.timeZone);
@@ -125,6 +125,17 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
       AsyncStorage.setItem(LAST_CATEGORY_KEY, form.categoryId).catch(() => {});
     }, 'expenses.form.saved');
 
+  // Gone at once with "Hoàn tác"; the write goes out when the undo window ends (spec S6 §5).
+  const onDelete = () => {
+    if (!expense) return;
+    undoable({
+      hide: () => hideExpense(queryClient, expense.id),
+      commit: () => remove.mutateAsync(expense.id),
+      onError: (e) => (e instanceof ForbiddenError ? void recheckSession() : failed('expenses.form.deleteFailed')(e)),
+    });
+    router.back();
+  };
+
   const overwrite = () => {
     setConflict(false);
     void run(async () => {
@@ -153,7 +164,7 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
               label={t('expenses.form.delete')}
               variant="dangerSoft"
               icon={<Icon name="trash" size={20} color={colors.error} />}
-              onPress={() => setConfirmDelete(true)}
+              onPress={onDelete}
               disabled={busy || offline}
             />
           ) : null}
@@ -226,19 +237,6 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
           setPickDate(false);
         }}
         onClose={() => setPickDate(false)}
-      />
-      <ConfirmDialog
-        visible={confirmDelete}
-        icon="trash"
-        title={t('expenses.form.deleteTitle')}
-        text={t('expenses.form.deleteText')}
-        cancelLabel={t('common.cancel')}
-        confirmLabel={t('expenses.form.delete')}
-        onCancel={() => setConfirmDelete(false)}
-        onConfirm={() => {
-          setConfirmDelete(false);
-          void run(() => remove.mutateAsync(expense!.id), 'expenses.form.deleted');
-        }}
       />
       <ConflictDialog
         visible={conflict}

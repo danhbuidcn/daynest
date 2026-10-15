@@ -6,7 +6,9 @@
     "cancel": "Cancel",
     "done": "Done",
     "am": "AM",
-    "pm": "PM"
+    "pm": "PM",
+    "deleted": "Deleted",
+    "undo": "Undo"
   },
   "colorPicker": {
     "other": "Other color",
@@ -304,13 +306,10 @@
       "delete": "Delete",
       "onlyDaynest": "Daynest only",
       "allDayReminder": "All day: reminds at {{time}}",
-      "deleteTitle": "Delete event?",
-      "deleteText": "This cannot be undone.",
       "deleteFailed": "Could not delete. Please try again.",
       "google": "Google Calendar",
       "pending": "Waiting to sync",
-      "editOnGoogle": "Edit in Google Calendar",
-      "deleteTextGoogle": "It will also be deleted from Google Calendar. This cannot be undone."
+      "editOnGoogle": "Edit in Google Calendar"
     },
     "quickAdd": {
       "event": "Event",
@@ -454,8 +453,7 @@
       "saved": "Saved",
       "saveFailed": "Could not save. Please try again.",
       "delete": "Delete",
-      "deleteTitle": "Delete this expense?",
-      "deleteText": "A deleted expense cannot be restored.",
+      "deleteFailed": "Could not delete. Please try again.",
       "deleted": "Deleted"
     },
     "categoryDialog": {
@@ -483,7 +481,6 @@
     "addSubtask": "Add item",
     "subtaskPlaceholder": "New item",
     "occurrenceTitle": "Repeating todo",
-    "deleteTitle": "Delete todo?",
     "tickFailed": "Could not save. Please try again.",
     "list": {
       "yesterday": "Yesterday",

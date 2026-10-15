@@ -1,9 +1,11 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 import { isoDate } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
+import { editCached } from '@/features/cache/editCached';
 import * as api from './api';
+import type { Expense } from './expense';
 
 export const EXPENSES_KEY = 'expenses';
 export const EXPENSE_CATEGORIES_KEY = 'expenseCategories';
@@ -39,6 +41,14 @@ export function usePrefetchExpenses(ranges: Range[], monthlyRanges: Range[], ena
     for (const range of ranges) void queryClient.prefetchQuery(expensesQueryOptions(range));
     for (const range of monthlyRanges) void queryClient.prefetchQuery(monthlyTotalsQueryOptions(range));
   }, [queryClient, ranges, monthlyRanges, enabled]);
+}
+
+// Undoable delete (spec S6 §5): the expense leaves every loaded period at once (the 6-month totals
+// reload after the write); the returned function puts the lists back.
+export function hideExpense(queryClient: QueryClient, id: string): () => void {
+  return editCached<unknown>(queryClient, EXPENSES_KEY, (data, key) =>
+    key[1] !== 'monthly' && Array.isArray(data) ? (data as Expense[]).filter((e) => e.id !== id) : data,
+  );
 }
 
 export function useExpenseCategories() {

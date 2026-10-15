@@ -4,7 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
-| 2026-10-15 | S6 bước 6: Hoàn tác sau khi xoá (event, todo, khoản chi; ẩn ngay, gửi sau 4 s) | ⏳ chờ bạn duyệt | [2026-10-15-s6-step-6-undo-delete.md](2026-10-15-s6-step-6-undo-delete.md) |
+| 2026-10-15 | S6 bước 6: Hoàn tác sau khi xoá (event, todo, khoản chi; ẩn ngay, gửi sau 4 s) | ✅ xong (thử trên máy ảo; chưa thử lỗi khi gửi xoá, Google) | [2026-10-15-s6-step-6-undo-delete.md](2026-10-15-s6-step-6-undo-delete.md) |
 | 2026-10-15 | S6 bước 5: Lưu nhanh, tải nhanh (đo trước/sau, tải 1 lượt, đặt dòng đã lưu vào cache) | ✅ xong (đo trên máy ảo: lưu 1,9 s → 0,5 s; chưa thử hết trường hợp) | [2026-10-15-s6-step-5-fast-save-load.md](2026-10-15-s6-step-5-fast-save-load.md) |
 | 2026-10-15 | S6 bước 4: Lỗi API, server, mạng (thời gian chờ, banner, khoá nút, thẻ lỗi) | ✅ xong (thử trên máy ảo; chưa thử máy chủ sự cố) | [2026-10-15-s6-step-4-api-errors-network.md](2026-10-15-s6-step-4-api-errors-network.md) |
 | 2026-10-15 | Biểu đồ Chi tiêu: hiện số tiền từng cột (tuần: từng ngày; tháng: từng tuần + 6 tháng) | 🔄 đã code, chờ xem trên máy | [2026-10-15-expense-chart-amounts.md](2026-10-15-expense-chart-amounts.md) |

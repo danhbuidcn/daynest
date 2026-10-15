@@ -6,7 +6,9 @@
     "cancel": "Huỷ",
     "done": "Xong",
     "am": "SA",
-    "pm": "CH"
+    "pm": "CH",
+    "deleted": "Đã xoá",
+    "undo": "Hoàn tác"
   },
   "colorPicker": {
     "other": "Màu khác",
@@ -304,13 +306,10 @@
       "delete": "Xoá",
       "onlyDaynest": "Chỉ trên Daynest",
       "allDayReminder": "Cả ngày: nhắc lúc {{time}}",
-      "deleteTitle": "Xoá sự kiện?",
-      "deleteText": "Không thể hoàn tác.",
       "deleteFailed": "Xoá không thành công. Vui lòng thử lại.",
       "google": "Google Calendar",
       "pending": "Chờ đồng bộ",
-      "editOnGoogle": "Sửa trên Google Calendar",
-      "deleteTextGoogle": "Cũng xoá trên Google Calendar. Không thể hoàn tác."
+      "editOnGoogle": "Sửa trên Google Calendar"
     },
     "quickAdd": {
       "event": "Sự kiện",
@@ -454,8 +453,7 @@
       "saved": "Đã lưu",
       "saveFailed": "Lưu không thành công. Vui lòng thử lại.",
       "delete": "Xoá",
-      "deleteTitle": "Xoá khoản chi này?",
-      "deleteText": "Khoản chi bị xoá sẽ không khôi phục được.",
+      "deleteFailed": "Xoá không thành công. Vui lòng thử lại.",
       "deleted": "Đã xoá"
     },
     "categoryDialog": {
@@ -483,7 +481,6 @@
     "addSubtask": "Thêm việc",
     "subtaskPlaceholder": "Việc mới",
     "occurrenceTitle": "Todo đang lặp lại",
-    "deleteTitle": "Xoá todo?",
     "tickFailed": "Lưu không thành công. Vui lòng thử lại.",
     "list": {
       "yesterday": "Hôm qua",
