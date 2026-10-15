@@ -500,7 +500,7 @@ const hl = (h) => (h ? 'hl2' : '');
 // Cài đặt
 const settings = ({ pro = false, eu = false, hi = '' } = {}) => `<div class="content"><div class="screen-title">Cài đặt</div>
   <div class="settings" style="overflow:hidden">
-    <div class="card account"><span class="avatar">M</span><div class="who"><div class="name">Minh Anh</div><div class="mail">minh.anh@example.com</div></div></div>
+    <div class="card account"><span class="avatar ${pro ? 'pro' : ''}">M</span><div class="who"><div class="name">Minh Anh${pro ? '<span class="probadge">' + I.crown + 'Pro</span>' : ''}</div><div class="mail">minh.anh@example.com</div></div></div>
     <div class="group-label">Tài khoản</div>
     <div class="card ${hl(hi === 'pro')}">${sr(I.crown, `Daynest Pro${sub(pro ? 'Đang dùng · gói năm' : 'Tắt quảng cáo')}`, chev)}</div>
     <div class="group-label">Giao diện</div>
@@ -607,6 +607,7 @@ const groups = [
     ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
     ['12. Màn soạn', 'KHÔNG quảng cáo nào (thêm / sửa event, note, khoản chi, todo)', phoneT(formScreen())],
     ['13. Cài đặt', 'KHÔNG quảng cáo nào · cả các màn con và màn Pro', phoneT(settings({ pro: false }), 'tall')],
+    ['13b. Cài đặt (đã mua Pro)', 'thẻ tài khoản có huy hiệu Pro cạnh tên + viền quanh avatar · dòng Daynest Pro ghi "Đang dùng · gói năm"', phoneT(settings({ pro: true, hi: 'pro' }), 'tall')],
     ['14. Đã mua Pro', 'không banner ở mọi tab', phoneT(`<div class="under">${calScreen()}${tabbar('cal')}</div>`)],
   ]],
   ['E. Quảng cáo gốc, xem để tắt', [
@@ -623,6 +624,9 @@ const groups = [
 document.getElementById('root').innerHTML = groups.map(([g, list]) => `<h2 class="group">${g}</h2><div class="grid">${list.map(([t, s, html]) => `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('')}</div>`).join('');
 document.head.insertAdjacentHTML('beforeend', `<style>
   .hl2 { box-shadow: 0 0 0 2px var(--primary); border-radius: 12px; }
+  .probadge { display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; margin-left:8px; border-radius:999px; background:var(--primary-soft); color:var(--primary-dark); font-size:12px; font-weight:800; vertical-align:2px; }
+  .probadge svg { width:14px; height:14px; }
+  .avatar.pro { box-shadow:0 0 0 3px var(--surface), 0 0 0 5px var(--primary); }
   .plans { display:flex; flex-direction:column; gap:10px; }
   .plan { display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:20px; background:var(--surface); box-shadow:var(--shadow); border:2px solid transparent; }
   .plan.on { border-color:var(--primary); background:var(--primary-soft); }
