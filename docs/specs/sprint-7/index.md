@@ -15,9 +15,9 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 | Thứ tự | Đăng ký Play + gửi các mục cần Google duyệt trước · trong lúc chờ duyệt làm quảng cáo + Pro |
 | Tài khoản Play | Tài khoản cá nhân ($25, trả 1 lần) · bắt buộc thử nghiệm kín **≥ 12 người × 14 ngày liên tục** mới được xin bản công khai |
 | Người thử | 1 Google Group, mời 12–15 người (Gmail + máy Android) · khi OAuth chưa được duyệt, email người thử phải có trong **Test users** của OAuth consent screen (tối đa 100) |
-| Quảng cáo | AdMob · 3 loại, khi phát triển chỉ dùng quảng cáo thử · **không** hiện ở màn soạn, Cài đặt, màn Pro |
-| — Banner | Cuối các tab chính (Lịch, Ghi chú, Chi tiêu), dưới thanh tab |
-| — Quảng cáo gốc | 1 thẻ xen vào danh sách Ghi chú và Chi tiêu (sau mục thứ 4), cùng kiểu thẻ của app, nhãn "Quảng cáo" |
+| Quảng cáo | AdMob · 3 loại, khi phát triển chỉ dùng quảng cáo thử · hiện ở **mọi màn xem** · **không** hiện ở màn soạn / sửa / nhập liệu (kể cả Báo lỗi), màn Pro, Xoá tài khoản |
+| — Banner | Dưới thanh tab ở mọi màn xem: Lịch (mọi chế độ), Ghi chú, Todo, Chi tiêu, Cài đặt và các màn con chỉ xem (Giao diện, Ngôn ngữ…) |
+| — Quảng cáo gốc | 1 thẻ xen vào mọi màn dạng danh sách: Ghi chú, Todo, Lịch › Danh sách (sau mục thứ 4), Chi tiêu (trước thẻ "Theo nhóm") · cùng kiểu thẻ của app, nhãn "Quảng cáo" · không ở lưới Lịch Ngày / Tuần / Tháng, Cài đặt |
 | — Xem để tắt quảng cáo | Người dùng chủ động xem 1 quảng cáo có thưởng → **tắt mọi quảng cáo 24 giờ** · nút ở màn Daynest Pro · lưu trên máy |
 | Pro | Chỉ để tắt quảng cáo · mọi user dùng đủ tính năng · **không có dùng thử** |
 | Giá | Tháng **29.000đ** · Năm **299.000đ** · Trọn đời **599.000đ** · giá gốc VND, nước khác Play tự đổi · Google giữ 15% |
@@ -32,7 +32,7 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 | --- | --- | --- |
 | 1 | Chuẩn bị Play | Các mục ở [Spec tổng §6](../index.md#6-trước-khi-lên-google-play): xoá tài khoản ngay trong app · trang chính sách quyền riêng tư (VI + EN) + trang yêu cầu xoá tài khoản (URL công khai) · logo thật · kiểm lại gói Free Supabase · Data safety gồm dữ liệu sức khoẻ (chu kỳ kinh nguyệt, S5) |
 | 2 | Đăng ký Play | Tạo tài khoản cá nhân → tạo app `com.danhbuidcn.daynest` → kênh thử nghiệm kín + Google Group 12–15 người → gửi Google xác minh OAuth (`calendar.events`) |
-| 3 | Quảng cáo | AdMob: banner · quảng cáo gốc trong danh sách · xem để tắt 24 giờ · UMP cho EU/UK · gom 1 chỗ (1 module) để thêm loại khác dễ |
+| 3 | Quảng cáo | AdMob: banner ở mọi màn xem · quảng cáo gốc trong danh sách · xem để tắt 24 giờ · UMP cho EU/UK · gom 1 chỗ (1 module) để thêm loại khác dễ |
 | 4 | Pro | RevenueCat + 3 gói trên Play Console · màn "Daynest Pro" trong Cài đặt (3 gói + khôi phục giao dịch + nút xem quảng cáo để tắt 24 giờ) · có Pro thì ẩn mọi quảng cáo |
 | 5 | Lên bản công khai | Khai "Có quảng cáo", Data safety (thêm advertising ID), quyền `AD_ID` · chính sách quyền riêng tư thêm phần quảng cáo + mua trong app · đủ 14 ngày → Apply for production |
 
@@ -58,7 +58,7 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 - [ ] Xoá tài khoản trong app chạy đúng · chính sách quyền riêng tư + trang xoá tài khoản có URL công khai.
 - [ ] App đã qua thử nghiệm kín 14 ngày với ≥ 12 người và được duyệt bản công khai.
 - [ ] Google đã xác minh OAuth: tài khoản ngoài danh sách Test users đăng nhập + đồng bộ Google được.
-- [ ] Banner hiện ở các tab chính · thẻ quảng cáo gốc trong Ghi chú, Chi tiêu · không quảng cáo nào ở màn soạn, Cài đặt, màn Pro · user EU/UK thấy hộp hỏi đồng ý.
+- [ ] Banner hiện ở mọi màn xem · thẻ quảng cáo gốc trong Ghi chú, Todo, Lịch › Danh sách, Chi tiêu · không quảng cáo nào ở màn soạn, Báo lỗi, màn Pro, Xoá tài khoản · user EU/UK thấy hộp hỏi đồng ý.
 - [ ] Xem quảng cáo có thưởng → mọi quảng cáo tắt 24 giờ, hết hạn thì hiện lại.
 - [ ] Mua 1 gói (môi trường thử của Play) → mọi quảng cáo tắt trên cả 2 máy · cài lại app → khôi phục giao dịch được.
 - [ ] Play Console đã khai: có quảng cáo, Data safety, `AD_ID`, độ tuổi 18+.

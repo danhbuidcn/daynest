@@ -1205,7 +1205,9 @@ const noteScreen = (ad) => {
   return `<div class="content">${notesTop}<div class="nlist">${col(NOTES.slice(0, 4))}<div style="margin:2px 0 10px">${nativeAd}</div>${col(NOTES.slice(4))}</div></div>${tabbar('man')}`;
 };
 const expScreen = (ad) => { const h = expMonth(7800000); return ad ? h.replace('<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm', nativeAd.replace('<div class="card"', '<div class="card" style="margin-bottom:12px;') + '<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm') : h; };
-const withBanner = (screen, tab, loading) => phone(`<div class="under">${screen}${banner(loading)}</div>`);
+const withBanner = (screen, tab, loading, cls = '') => phone(`<div class="under">${screen}${banner(loading)}</div>`, cls);
+const agendaAd = agendaScreen.replace('\n  </div>\n</div><nav', `<div class="ag" style="grid-template-columns:1fr">${nativeAd}</div>\n  </div>\n</div><nav`);
+const todoAd = todoTab.replace('</div></div>\n</div><nav', `</div>${nativeAd}</div>\n</div><nav`);
 const formScreen = () => `<div class="content"><div class="topbar"><span class="back">${I.close}</span><div class="screen-title">Thêm sự kiện</div><span></span></div>
   <div class="form"><div class="fcard"><div class="title-in">Họp nhóm</div><div class="detail-in">Chi tiết</div></div><div class="fcard"><div class="frow"><span class="fi">${I.clock}</span><span class="grow">9:00 – 10:00</span></div><div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Thứ Năm, 15/10</span></div></div></div>
   <div class="form-footer"><button class="btn btn-primary">Lưu</button></div></div>`;
@@ -1238,23 +1240,25 @@ const groups = [
   ]],
   ['C. Banner quảng cáo (chưa mua Pro)', [
     ['8. Lịch', 'banner cố định dưới cùng, dưới thanh tab', withBanner(calScreen(), 'cal')],
-    ['9. Ghi chú', 'có thẻ quảng cáo gốc (E1)', withBanner(noteScreen(true), 'man')],
-    ['10. Chi tiêu', 'có thẻ quảng cáo gốc (E2)', withBanner(expScreen(true), 'exp')],
+    ['9. Ghi chú', 'có thẻ quảng cáo gốc sau ghi chú thứ 4', withBanner(noteScreen(true), 'man')],
+    ['10. Chi tiêu', 'có thẻ quảng cáo gốc trước thẻ "Theo nhóm"', withBanner(expScreen(true), 'exp')],
     ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
+    ['11b. Lịch › Danh sách', 'thẻ quảng cáo gốc sau mục thứ 4 + banner', withBanner(agendaAd, 'cal')],
+    ['11c. Todo', 'thẻ quảng cáo gốc dưới danh sách + banner', withBanner(todoAd, 'man')],
     ['12. Màn soạn', 'KHÔNG quảng cáo nào (thêm / sửa event, note, khoản chi, todo)', ph(formScreen())],
-    ['13. Cài đặt', 'KHÔNG quảng cáo nào · cả các màn con và màn Pro', ph(settings({ pro: false }), 'tall')],
-    ['13b. Cài đặt (đã mua Pro)', 'thẻ tài khoản có huy hiệu Pro cạnh tên + viền quanh avatar · dòng Daynest Pro ghi "Đang dùng · gói năm"', ph(settings({ pro: true, hi: 'pro' }), 'tall')],
+    ['13. Cài đặt', 'có banner (không có thẻ gốc) · cả các màn con chỉ xem (Giao diện, Ngôn ngữ…) · KHÔNG ở Báo lỗi, màn Pro, Xoá tài khoản', withBanner(settings({ pro: false }), 'set', false, 'tall')],
+    ['13b. Cài đặt (đã mua Pro)', 'không quảng cáo nào · thẻ tài khoản có huy hiệu Pro cạnh tên + viền quanh avatar · dòng Daynest Pro ghi "Đang dùng · gói năm"', ph(settings({ pro: true, hi: 'pro' }), 'tall')],
     ['14. Đã mua Pro', 'không banner ở mọi tab', ph(`<div class="under">${calScreen()}</div>`)],
   ]],
   ['E. Quảng cáo gốc, xem để tắt', [
-    ['17. Quảng cáo gốc', 'thẻ xen sau mục thứ 4 của danh sách Ghi chú (và Chi tiêu, màn 9, 10) · cùng kiểu thẻ của app, có nhãn "Quảng cáo"', withBanner(noteScreen(true), 'man')],
+    ['17. Quảng cáo gốc', 'thẻ xen sau mục thứ 4 của danh sách (Ghi chú, Todo, Lịch › Danh sách, Chi tiêu) · cùng kiểu thẻ của app, có nhãn "Quảng cáo"', withBanner(noteScreen(true), 'man')],
     ['18. Xem để tắt 24 giờ', 'nút ở màn Daynest Pro (màn 4) → xem 1 quảng cáo có thưởng', ph(proScreen())],
     ['18b. Đã tắt 24 giờ', 'toast sau khi xem xong · mọi quảng cáo tắt, hết hạn thì hiện lại', phoneWith(calScreen(), '<div class="toast" style="bottom:90px">Đã tắt quảng cáo 24 giờ</div>')],
     ['18c. Chưa có quảng cáo để xem', 'khi AdMob chưa trả quảng cáo', phoneWith(proScreen(), dlg(I.warn, 'warn', 'Chưa có quảng cáo', 'Vui lòng thử lại sau.', '<button class="btn btn-primary">Đã hiểu</button>'))],
   ]],
   ['D. Đồng ý quảng cáo (EU / UK)', [
     ['15. Lần mở app đầu', 'hộp do Google dựng (UMP) · chỉ hiện ở EU / UK · chưa đồng ý thì chưa hiện banner', phoneWith(calScreen(), ump)],
-    ['16. Cài đặt', 'dòng "Tuỳ chọn quảng cáo" chỉ có ở EU / UK · mở lại hộp để đổi lựa chọn', ph(settings({ eu: true, hi: 'ump' }), 'tall')],
+    ['16. Cài đặt', 'dòng "Tuỳ chọn quảng cáo" chỉ có ở EU / UK · mở lại hộp để đổi lựa chọn', withBanner(settings({ eu: true, hi: 'ump' }), 'set', false, 'tall')],
   ]],
 ];
 document.getElementById('root').innerHTML = groups.map(([g, list]) => `<h2 class="group">${g}</h2><div class="grid">${list.map(([t, s, html]) => `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('')}</div>`).join('');
