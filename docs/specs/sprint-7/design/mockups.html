@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daynest — Mockup Sprint 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@600;700;800&family=Quicksand:wght@600;700&family=Itim&family=Baloo+2:wght@600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  /* Token — đồng bộ với docs/specs/design-system.md */
+  :root {
+    --primary: #5BBE98; --primary-dark: #3E9E7A; --primary-soft: #E3F5EC;
+    --bg: #FAF8F5; --surface: #FFFFFF; --border: #EFEAE3;
+    --text: #2F2D33; --muted: #8C8794;
+    --error: #E9787B; --error-soft: #FCE8E8; --warning: #F2B45C; --warning-soft: #FDF1DE;
+    --mint: #7FD1B0; --sky: #8CC8EE; --lavender: #B9A6EC;
+    --pink: #F4A6C0; --peach: #F7BE8A; --lemon: #F2D67A;
+    --shadow: 0 4px 12px rgba(47,45,51,.06);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Nunito, system-ui, sans-serif; font-weight: 600; color: var(--text); background: #ECE8E2; padding: 32px 16px 64px; }
+  header.page { max-width: 1200px; margin: 0 auto 12px; }
+  header.page h1 { font-size: 26px; font-weight: 800; }
+  header.page p { color: var(--muted); margin-top: 6px; }
+  h2.group { max-width: 1600px; margin: 36px auto 16px; font-size: 22px; font-weight: 800; padding-left: 8px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 36px 28px; justify-content: center; max-width: 1600px; margin: 0 auto; align-items: flex-start; }
+  figure { display: flex; flex-direction: column; gap: 10px; }
+  figcaption { font-weight: 800; font-size: 15px; max-width: 360px; }
+  figcaption span { color: var(--muted); font-weight: 600; font-size: 13px; margin-left: 6px; }
+
+  /* Khung điện thoại 360×780 */
+  .phone { width: 360px; height: 780px; background: var(--bg); border-radius: 36px; border: 8px solid #2F2D33; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.12); }
+  .phone.tall { height: 1180px; }
+  .status { height: 28px; flex: none; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; font-weight: 700; }
+  .content { flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .screen-title { font-size: 22px; line-height: 28px; font-weight: 800; text-align: center; padding: 14px 16px 12px; }
+  .muted { color: var(--muted); }
+  .cap { font-size: 12px; line-height: 16px; }
+  .b { font-weight: 800; }
+
+  /* Thanh tab (S1) */
+  .tabbar { flex: none; height: 64px; background: var(--surface); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; box-shadow: 0 -4px 12px rgba(47,45,51,.05); position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; color: var(--muted); }
+  .tab.on { color: var(--primary); font-weight: 800; }
+  .tab svg { width: 24px; height: 24px; }
+  .fab { justify-self: center; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; margin-top: -30px; box-shadow: 0 6px 14px rgba(91,190,152,.45); border: 4px solid var(--bg); }
+  .fab svg { width: 28px; height: 28px; }
+
+  /* Thành phần S1 */
+  .btn { height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; width: 100%; border: 0; font-family: inherit; color: var(--text); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: var(--surface); border: 1.5px solid var(--border); }
+  .btn-danger { background: var(--error-soft); color: var(--error); }
+  .btn-danger-solid { background: var(--error); color: #fff; }
+  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); }
+  .toast { position: absolute; left: 50%; transform: translateX(-50%); bottom: 80px; background: var(--text); color: #fff; font-size: 15px; padding: 10px 18px; border-radius: 999px; white-space: nowrap; display: flex; align-items: center; gap: 12px; z-index: 6; }
+  .toast .act { color: var(--mint); font-weight: 800; }
+  .topbar { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; padding: 8px 12px; flex: none; }
+  .topbar .back, .topbar .act { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--text); }
+  .topbar svg { width: 24px; height: 24px; }
+  .topbar .screen-title { padding: 6px 0; }
+  .group-label { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .6px; margin: 0 4px -8px; }
+  .row { min-height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .row .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--primary-soft); color: var(--primary-dark); }
+  .row.danger { color: var(--error); }
+  .row.danger .ico { background: var(--error-soft); color: var(--error); }
+  .row .ico svg { width: 20px; height: 20px; }
+  .row .label { flex: 1; }
+  .row .val { color: var(--muted); font-size: 15px; }
+  .row.sub { font-size: 12px; line-height: 16px; min-height: 0; padding: 0 16px 12px 62px; border-top: 0 !important; margin-top: -8px; }
+  .scrim { position: absolute; inset: 0; background: rgba(47,45,51,.4); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 5; }
+  .dialog { background: var(--surface); border-radius: 24px; padding: 24px 20px 20px; width: 100%; text-align: center; }
+  .dialog .dicon { width: 56px; height: 56px; border-radius: 20px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; margin: 0 auto 14px; }
+  .dialog .dicon.err { background: var(--error-soft); color: var(--error); }
+  .dialog .dicon.warn { background: var(--warning-soft); color: var(--warning); }
+  .dialog .dicon svg { width: 28px; height: 28px; }
+  .dialog h3 { font-size: 17px; font-weight: 700; }
+  .dialog p { color: var(--muted); font-size: 15px; line-height: 22px; margin: 6px 0 20px; }
+  .dialog .actions { display: flex; gap: 10px; }
+  .dialog .stack { display: flex; flex-direction: column; gap: 10px; }
+  .under { position: absolute; inset: 28px 0 0; display: flex; flex-direction: column; }
+  .opt { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-radius: 16px; font-size: 15px; text-align: left; }
+  .opt .label { flex: 1; }
+  .opt.on { background: var(--primary-soft); font-weight: 800; }
+  .input { height: 48px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 0 16px; font-size: 15px; }
+  .input.focus { border-color: var(--primary); }
+  .field label { display: block; font-size: 12px; font-weight: 800; color: var(--muted); margin: 0 4px 6px; text-align: left; }
+  .form-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 16px 16px; background: var(--bg); }
+
+  /* S2 — Lịch */
+  .cal-head { display: grid; grid-template-columns: 32px 1fr 32px auto; align-items: center; gap: 4px; padding: 10px 12px 6px 8px; flex: none; }
+  .cal-head .nav { width: 32px; height: 32px; display: grid; place-items: center; color: var(--text); }
+  .cal-head .nav svg { width: 22px; height: 22px; }
+  .cal-head .t { font-size: 22px; line-height: 28px; font-weight: 800; text-align: center; }
+  .chip-today { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; display: flex; align-items: center; }
+  .seg { margin: 4px 16px 8px; height: 40px; border-radius: 16px; background: var(--border); display: grid; grid-template-columns: repeat(4, 1fr); padding: 3px; flex: none; }
+  .seg span { display: grid; place-items: center; font-size: 15px; border-radius: 13px; }
+  .seg span.on { background: var(--primary); color: #fff; font-weight: 700; }
+  .wk { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px; flex: none; }
+  .wk span { text-align: center; font-size: 12px; font-weight: 800; color: var(--muted); padding: 4px 0; }
+  .wk span.sun { color: var(--error); }
+  .month { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(6, 1fr); padding: 0 8px 4px; }
+  .cell { position: relative; border-top: 1px solid var(--border); padding: 3px 2px 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
+  .cell:nth-child(7n+1) { border-left: 0; }
+  .cell .top { display: flex; flex-direction: column-reverse; padding: 0 1px; }
+  .cell .d { align-self: flex-start; font-size: 15px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
+  .cell .l { align-self: flex-end; height: 12px; font-size: 10px; line-height: 12px; color: var(--muted); }
+  .cell .l.key { color: var(--primary-dark); font-weight: 800; }
+  .cell.sun .d, .cell.hol .d { color: var(--error); }
+  .cell.today .d { background: var(--primary); color: #fff; font-weight: 800; }
+  .cell.sel { background: var(--primary-soft); border-radius: 10px; }
+  .cell .addb { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 16px; line-height: 1; }
+  .scrim.big { padding: 12px; }
+  .dialog.big { max-height: 85%; }
+  .cell.out { opacity: .4; }
+  .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .more { font-size: 12px; line-height: 14px; color: var(--muted); padding-left: 2px; }
+  .ev-mint { background: var(--mint); } .ev-sky { background: var(--sky); } .ev-lavender { background: var(--lavender); }
+  .ev-pink { background: var(--pink); } .ev-peach { background: var(--peach); } .ev-lemon { background: var(--lemon); }
+  .ev-hol { background: var(--error); color: #fff; }
+
+  .ecard { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: stretch; overflow: hidden; }
+  .ecard .stripe { width: 4px; flex: none; }
+  .ecard .body { flex: 1; padding: 8px 10px; min-width: 0; }
+  .ecard .ttl { font-size: 15px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .ecard .tm { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .ecard .st { display: flex; gap: 4px; align-items: center; padding-right: 10px; color: var(--muted); }
+  .st svg { width: 14px; height: 14px; }
+
+  .weekbar { display: flex; gap: 8px; padding: 0 16px 8px; overflow: hidden; flex: none; }
+  .wchip { flex: none; width: 76px; height: 52px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .wchip b { font-size: 15px; font-weight: 800; } .wchip i { font-style: normal; font-size: 12px; color: var(--muted); }
+  .wchip.on { background: var(--primary); color: #fff; } .wchip.on i { color: #fff; }
+  .wrows { flex: 1; overflow: hidden; padding: 0 16px; }
+  .wrow { display: grid; grid-template-columns: 52px 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); min-height: 66px; }
+  .wrow .dd { display: flex; flex-direction: column; justify-content: center; }
+  .wrow .dd b { font-size: 17px; font-weight: 800; } .wrow .dd span { font-size: 12px; color: var(--muted); }
+  .wrow.today .dd { color: var(--primary-dark); }
+  .wrow .evs { display: flex; gap: 6px; align-items: center; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .wrow .evs::-webkit-scrollbar { display: none; }
+  .wrow .evs .ecard { flex: none; }
+  .wrow .none { font-size: 12px; color: var(--muted); align-self: center; }
+
+  .dayhead { padding: 0 16px 6px; display: flex; justify-content: space-between; align-items: baseline; flex: none; }
+  .allday { margin: 0 16px; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); flex: none; }
+  .hours { flex: 1; position: relative; margin: 0 16px; overflow: hidden; padding-top: 8px; }
+  .hr { height: 56px; display: grid; grid-template-columns: 44px 1fr; border-top: 1px solid var(--border); }
+  .hr span { font-size: 12px; color: var(--muted); margin-top: -8px; background: var(--bg); width: 36px; }
+  .block { position: absolute; left: 50px; border-radius: 12px; padding: 6px 8px; overflow: hidden; border-left: 4px solid; }
+  .block .ttl { font-size: 15px; line-height: 18px; } .block .tm { font-size: 12px; color: var(--muted); }
+  .nowline { position: absolute; left: 44px; right: 0; height: 2px; background: var(--error); }
+  .nowline::before { content: ''; position: absolute; left: -4px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--error); }
+
+  .daystrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 12px 10px; flex: none; }
+  .ds { position: relative; height: 60px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .ds i { font-style: normal; font-size: 12px; color: var(--muted); } .ds b { font-size: 17px; font-weight: 800; } .ds em { font-style: normal; font-size: 12px; color: var(--muted); }
+  .ds.on { background: var(--primary); color: #fff; } .ds.on i, .ds.on em { color: #fff; }
+  .agenda { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+  .ag { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: stretch; }
+  .ag .times { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; justify-content: center; text-align: right; }
+  .ag .times b { color: var(--text); font-size: 15px; font-weight: 700; }
+
+  /* Sheet từ đáy */
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 24px 24px 0 0; z-index: 6; padding-bottom: 16px; }
+  .sheet .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--border); margin: 8px auto 4px; }
+  .sheet .shead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 8px 16px 12px; }
+  .sheet .shead .h { font-size: 17px; font-weight: 700; text-align: center; }
+  .sheet .shead .l { color: var(--muted); font-size: 15px; } .sheet .shead .r { color: var(--primary-dark); font-weight: 800; text-align: right; font-size: 15px; }
+  .round-plus { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; justify-self: end; }
+  .round-plus svg { width: 22px; height: 22px; }
+  .x { width: 40px; height: 40px; display: grid; place-items: center; color: var(--text); }
+  .x svg { width: 24px; height: 24px; }
+  .sheet .list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pick { height: 52px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 15px; }
+  .pick .ck { position: absolute; right: 20px; top: 14px; }
+  .pick + .pick { border-top: 1px solid var(--border); }
+
+  .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 8px; }
+  .qbtn { height: 112px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; }
+  .qbtn .qi { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; background: var(--surface); }
+  .qbtn .qi svg { width: 28px; height: 28px; }
+
+  /* Form */
+  .form { padding: 0 16px 90px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .fcard { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 4px 16px; }
+  .frow { min-height: 52px; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .frow + .frow { border-top: 1px solid var(--border); }
+  .frow .fi { color: var(--primary-dark); display: grid; place-items: center; width: 24px; }
+  .frow .fi svg { width: 22px; height: 22px; }
+  .frow .grow { flex: 1; }
+  .frow.indent { padding-left: 36px; min-height: 44px; border-top: 0 !important; }
+  .frow.indent .fi { color: var(--primary); }
+  .frow .hint { color: var(--muted); font-size: 12px; }
+  .title-in { font-size: 17px; font-weight: 700; padding: 12px 0 4px; }
+  .detail-in { font-size: 15px; color: var(--muted); padding: 4px 0 12px; }
+  .sw { width: 44px; height: 26px; border-radius: 999px; background: var(--border); position: relative; flex: none; }
+  .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(47,45,51,.25); }
+  .sw.on { background: var(--primary); } .sw.on::after { left: 20px; }
+  .info { width: 22px; height: 22px; color: var(--muted); }
+  .colors { display: flex; gap: 14px; padding: 4px 0 12px 36px; }
+  .cdot { width: 28px; height: 28px; border-radius: 50%; }
+  .cdot.on { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--text); }
+
+  .numbox { width: 44px; height: 40px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; font-weight: 800; font-size: 17px; }
+  .checkbox { width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--border); flex: none; }
+  .note-hint { background: var(--primary-soft); color: var(--primary-dark); border-radius: 16px; padding: 10px 12px; font-size: 15px; text-align: left; display: flex; gap: 8px; align-items: center; }
+  .note-hint svg { width: 18px; height: 18px; flex: none; }
+
+  /* Chi tiết */
+  .detail { padding: 4px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .dtitle { display: flex; gap: 12px; align-items: center; padding: 8px 4px; }
+  .dtitle .sq { width: 20px; height: 20px; border-radius: 7px; flex: none; }
+  .dtitle h2 { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--border); color: var(--muted); font-size: 12px; font-weight: 800; }
+  .tag svg { width: 12px; height: 12px; }
+  .menu { position: absolute; right: 16px; top: 76px; width: 160px; background: var(--surface); border-radius: 16px; box-shadow: 0 8px 24px rgba(47,45,51,.16); padding: 6px; z-index: 6; }
+  .menu div { height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 12px; font-size: 15px; }
+  .menu div svg { width: 20px; height: 20px; }
+  .menu .del { color: var(--error); }
+
+  /* Notes */
+  .search { margin: 0 16px 10px; height: 44px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 0 14px; color: var(--muted); font-size: 15px; flex: none; }
+  .search svg { width: 18px; height: 18px; }
+  .chips { display: flex; gap: 8px; padding: 0 16px 12px; overflow: hidden; flex: none; }
+  .chip { flex: none; height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--surface); display: flex; align-items: center; gap: 6px; font-size: 15px; }
+  .chip .cd { width: 8px; height: 8px; border-radius: 50%; }
+  .chip.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .ngrid { padding: 0 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: start; overflow: hidden; flex: 1; }
+  .ncard { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 12px 12px 10px 14px; border-left: 4px solid var(--border); position: relative; display: flex; flex-direction: column; gap: 6px; }
+  .ncard h4 { font-size: 17px; line-height: 22px; font-weight: 700; padding-right: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ncard p { font-size: 15px; line-height: 20px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .ncard .pin { position: absolute; right: 10px; top: 12px; color: var(--primary-dark); }
+  .ncard .pin svg { width: 16px; height: 16px; }
+  .ncard .prog { font-size: 12px; color: var(--primary-dark); font-weight: 800; display: flex; align-items: center; gap: 4px; }
+  .ncard .prog svg { width: 14px; height: 14px; }
+  .ncard .foot { display: flex; align-items: center; justify-content: space-between; }
+  .ncard .more { color: var(--muted); }
+  .ncard .more svg { width: 18px; height: 18px; }
+
+  .editor { padding: 0 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
+  .editor .et { font-size: 22px; line-height: 28px; font-weight: 800; padding: 6px 0; }
+  .editor .eb { font-size: 15px; line-height: 22px; }
+  .cl { min-height: 44px; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .tick { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--primary); flex: none; display: grid; place-items: center; }
+  .tick.on { background: var(--primary); }
+  .cl .tick { border-radius: 6px; }
+  .tick svg { width: 14px; height: 14px; }
+  .cl.done span { text-decoration: line-through; color: var(--muted); }
+  .cl .grow { flex: 1; }
+  .cl .grip { color: var(--muted); margin-right: -6px; } .cl .grip svg { width: 18px; height: 18px; }
+  .cl .rm { color: var(--muted); } .cl .rm svg { width: 18px; height: 18px; }
+  .addline { color: var(--primary-dark); font-weight: 700; font-size: 15px; display: flex; gap: 10px; align-items: center; min-height: 44px; }
+  .addline svg { width: 22px; height: 22px; }
+  .toolbar { flex: none; height: 56px; border-top: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+  .tool { height: 36px; padding: 0 12px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); display: flex; gap: 6px; align-items: center; font-size: 15px; font-weight: 700; }
+  .tool svg { width: 18px; height: 18px; }
+  .catchip { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--border); display: inline-flex; gap: 6px; align-items: center; font-size: 15px; justify-self: center; }
+  .catchip .cd { width: 8px; height: 8px; border-radius: 50%; }
+
+  .trash { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+  .trow { display: flex; gap: 8px; }
+  .trow .btn { height: 40px; font-size: 15px; }
+
+  .warnrow { margin: 8px 16px 12px; background: var(--warning-soft); border-radius: 16px; padding: 10px 12px; font-size: 15px; line-height: 20px; display: flex; gap: 10px; align-items: flex-start; }
+  .warnrow svg { width: 20px; height: 20px; color: var(--warning); flex: none; margin-top: 1px; }
+  .warnrow a { color: var(--primary-dark); font-weight: 800; display: block; margin-top: 2px; }
+  .settings { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+  .account { padding: 16px; display: flex; align-items: center; gap: 14px; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 22px; flex: none; }
+  .account .who { flex: 1; } .account .name { font-size: 17px; font-weight: 700; } .account .mail { color: var(--muted); font-size: 12px; }
+  .progress { height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 4px 0 8px; }
+  .progress i { display: block; height: 100%; width: 40%; background: var(--primary); border-radius: 999px; }
+  /* Chữ dài */
+  .ncard p, .editor .eb, .cl span { overflow-wrap: anywhere; }
+  .chip { max-width: 140px; } .chip .cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .counter { font-size: 12px; color: var(--muted); text-align: right; margin: 4px 4px 0; }
+  .counter.max { color: var(--error); }
+  .ta { min-height: 48px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--primary); padding: 12px 16px; font-size: 15px; line-height: 22px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .logo { width: 88px; height: 88px; border-radius: 26px; background: var(--primary); display: grid; place-items: center; box-shadow: 0 10px 22px rgba(91,190,152,.35); }
+  .logo svg { width: 52px; height: 52px; }
+  .wordmark { font-size: 30px; font-weight: 800; }
+  .login { flex: 1; display: flex; flex-direction: column; padding: 0 24px 40px; }
+  .login .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
+  .g-icon { width: 20px; height: 20px; background: #fff; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--primary-dark); font-size: 12px; }
+  .tagme { height: 22px; padding: 0 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; margin-left: 6px; }
+  /* S3 — Ghi chú: số note, nhóm theo tháng */
+  .subcount { text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); margin: -8px 0 10px; flex: none; }
+  .chip .num { color: var(--muted); font-size: 12px; }
+  .chip.on .num { color: #fff; opacity: .85; }
+  .nlist { flex: 1; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .nhead { font-size: 15px; line-height: 22px; font-weight: 800; padding: 2px 4px 0; display: flex; align-items: center; gap: 6px; }
+  .nhead svg { width: 14px; height: 14px; color: var(--primary-dark); }
+  .ncols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+  .ncols > div { display: flex; flex-direction: column; gap: 12px; }
+  /* S3 — bàn phím hệ điều hành (chỉ minh hoạ) */
+  .kbd { flex: none; height: 250px; background: #E4E1DC; display: grid; grid-template-rows: repeat(4, 1fr); gap: 8px; padding: 10px 6px 14px; }
+  .kbd div { display: flex; gap: 5px; justify-content: center; }
+  .kbd span { flex: 1; max-width: 30px; background: #fff; border-radius: 6px; font-size: 15px; display: grid; place-items: center; }
+  .kbd span.w { max-width: 170px; flex: 6; font-size: 12px; color: var(--muted); }
+  .caret { display: inline-block; width: 2px; height: 20px; background: var(--primary); vertical-align: middle; margin-left: 1px; }
+  /* S3 — editor kiểu Samsung Notes */
+  .ntop { flex: none; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 4px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .ntop .back, .ntop .act { width: 40px; height: 40px; display: grid; place-items: center; }
+  .ntop svg { width: 24px; height: 24px; }
+  .ntop .nt { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .nbody { flex: 1; padding: 14px 20px; font-size: 15px; line-height: 22px; }
+  .ntools { flex: none; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-top: 1px solid var(--border); background: var(--surface); }
+  .ntools .ti { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--text); }
+  .ntools .ti svg { width: 22px; height: 22px; }
+  /* S3 — khối ≤ 1 giờ: chữ căn giữa theo chiều dọc → trên dưới đều nhau */
+  .block.mid { display: flex; flex-direction: column; justify-content: center; }
+  /* S3 — khối event ngắn ở chế độ Ngày (< 30 dp): chữ caption, đệm 2 dp */
+  .block.short { padding: 2px 8px; } .block.short .ttl { font-size: 12px; line-height: 16px; }
+  /* S4 — Chi tiêu */
+  .seg.three { grid-template-columns: repeat(3, 1fr); }
+  .xlist { flex: 1; overflow: hidden; padding: 0 16px 12px; display: flex; flex-direction: column; gap: 12px; }
+  .total { padding: 14px 16px; text-align: center; }
+  .total .lbl { font-size: 12px; line-height: 16px; color: var(--muted); }
+  .total .amt { font-size: 22px; line-height: 28px; font-weight: 800; white-space: nowrap; }
+  .sec { font-size: 17px; line-height: 24px; font-weight: 700; padding: 12px 16px 4px; }
+  .crow { display: grid; grid-template-columns: 34px 1fr auto; gap: 4px 12px; align-items: center; padding: 8px 16px; }
+  .crow .nm { font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crow .am { font-size: 15px; font-weight: 700; text-align: right; white-space: nowrap; }
+  .crow .pbar { grid-column: 2; height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; }
+  .crow .pbar i { display: block; height: 100%; border-radius: 999px; }
+  .crow .pc { font-size: 12px; color: var(--muted); text-align: right; }
+  .cico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; color: var(--text); grid-row: span 2; }
+  .cico svg { width: 20px; height: 20px; }
+  .dhead { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 16px 4px; }
+  .dhead b { font-size: 15px; font-weight: 800; } .dhead span { font-size: 12px; color: var(--muted); }
+  .xrow { display: flex; align-items: center; gap: 12px; padding: 8px 16px; min-height: 56px; }
+  .xrow + .xrow { border-top: 1px solid var(--border); }
+  .xrow .cico { grid-row: auto; }
+  .xrow .mid { flex: 1; min-width: 0; }
+  .xrow .mid div { font-size: 15px; } .xrow .mid span { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .xrow .am { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 0 40px 40px; text-align: center; }
+  .empty .ei { width: 72px; height: 72px; border-radius: 24px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; }
+  .empty .ei svg { width: 36px; height: 36px; }
+  .amtin { padding: 8px 16px 16px; text-align: center; }
+  .amtin .v { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .amtin .v.big { font-size: 22px; }
+  .amtin .u { border-bottom: 2px solid var(--primary); display: inline-block; padding: 0 8px 6px; }
+  .numpad { flex: none; height: 232px; background: #E4E1DC; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; }
+  .numpad span { background: #fff; border-radius: 8px; display: grid; place-items: center; font-size: 17px; }
+  .numpad span.k { background: transparent; color: var(--muted); font-size: 15px; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; padding: 0 16px; border-bottom: 1px solid var(--border); }
+  .bars > div { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; }
+  .bars i { display: block; width: 100%; max-width: 28px; background: color-mix(in srgb, var(--primary) 55%, var(--surface)); border-radius: 4px 4px 0 0; }
+  .bars i.on { background: var(--primary-dark); }
+  .rchips { display: flex; gap: 6px; padding: 0 16px 8px; }
+  .rchips span { padding: 4px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; line-height: 16px; font-weight: 700; white-space: nowrap; }
+  .rchips span.on { background: var(--primary); color: #fff; }
+  .readout { padding: 0 16px 8px; font-size: 13px; line-height: 18px; color: var(--muted); }
+  .readout b { color: var(--text); font-weight: 800; }
+  .bars b { font-size: 10px; line-height: 12px; color: var(--text); font-weight: 800; margin-bottom: 2px; white-space: nowrap; }
+  .xlab { display: flex; gap: 2px; padding: 4px 16px 12px; }
+  .xlab span { flex: 1; text-align: center; font-size: 12px; color: var(--muted); min-width: 0; white-space: nowrap; }
+  .xlab span.on { color: var(--primary-dark); font-weight: 800; }
+  .lock { color: var(--muted); } .lock svg { width: 18px; height: 18px; }
+  @media (max-width: 400px) { .phone { transform: scale(.9); transform-origin: top left; margin-bottom: -78px; } }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>Daynest — Mockup Sprint 7: xoá tài khoản, Pro, quảng cáo</h1>
+  <p>Chỉ vẽ màn mới hoặc đổi ở S7 (<a href="../index.md">spec S7</a>). Màn khác giữ như S6. Banner chỉ là khung minh hoạ; nội dung quảng cáo do AdMob quyết định.</p>
+</header>
+<div id="root"></div>
+<script>
+// Icon nét tròn. App dùng đúng các path này: app/src/components/Icon.tsx.
+// Icon nét tròn. App dùng đúng các path này: app/src/components/Icon.tsx.
+const sv = (d, w = 1.9) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I = {
+  logo: '<svg viewBox="0 0 52 52" fill="none"><rect x="12" y="7" width="31" height="39" rx="7" fill="#fff"/><path d="M20 18h16M20 25h16M20 32h10" stroke="#5BBE98" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="38" r="3.5" fill="#F4A6C0"/><g stroke="#3E9E7A" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M9 13h6M9 22h6M9 31h6M9 40h6"/></g></svg>',
+  cal: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M8 3v4M16 3v4" fill="none"/><path d="M3.5 10h17" stroke="${f ? '#fff' : 'currentColor'}"/></svg>`,
+  book: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 21H19v-3" fill="none"/></svg>`,
+  chart: (f) => sv('<path d="M5 20V12M12 20V5M19 20v-5"/>', f ? 2.6 : 1.8),
+  gear: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M12 2.8l2 1.6 2.5-.4 1 2.4 2.4 1-.4 2.5 1.6 2-1.6 2 .4 2.5-2.4 1-1 2.4-2.5-.4-2 1.6-2-1.6-2.5.4-1-2.4-2.4-1 .4-2.5L2.8 12l1.6-2-.4-2.5 2.4-1 1-2.4 2.5.4z" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="${f ? '#fff' : 'none'}"/></svg>`,
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  plusG: sv('<path d="M12 5v14M5 12h14"/>', 2.2),
+  left: sv('<path d="M15 5l-7 7 7 7"/>', 2.2),
+  right: sv('<path d="M9 5l7 7-7 7"/>', 2.2),
+  close: sv('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+  grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
+  more: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+  repeat: sv('<path d="M17 3l3 3-3 3"/><path d="M4 12V9a3 3 0 0 1 3-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 12v3a3 3 0 0 1-3 3H4"/>'),
+  bell: sv('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>'),
+  google: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M19 12.2h-7M19 12.2A7 7 0 1 1 16.8 7"/></svg>',
+  pending: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  phoneI: sv('<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M11 18h2"/>'),
+  clock: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  allday: sv('<circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 1.5M10 2.5h4"/>'),
+  arrowR: sv('<path d="M4 12h15M14 7l5 5-5 5"/>'),
+  arrowL: sv('<path d="M20 12H5M10 7l-5 5 5 5"/>'),
+  palette: sv('<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.4 0 1.8-1 1.4-2-.5-1.2.2-2.5 1.6-2.5H17a3.5 3.5 0 0 0 3.5-3.5c0-5-3.8-9-8.5-9z"/><circle cx="8" cy="11" r="1"/><circle cx="11" cy="7.5" r="1"/><circle cx="15.5" cy="8.5" r="1"/>'),
+  info: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5M12 16h.01"/>'),
+  warn: sv('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'),
+  battery: sv('<rect x="3" y="7" width="16" height="10" rx="3"/><path d="M21 10.5v3M7 10.5v3M10.5 10.5v3"/>'),
+  pen: sv('<path d="M14.5 5.5l4 4M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 0l.5.5a2.1 2.1 0 0 1 0 3L8.5 19z"/>', 2),
+  trash: sv('<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>'),
+  restore: sv('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>'),
+  search: sv('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>', 2),
+  pin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3l6 6-3 1-3.5 3.5L15 18l-2 2-4-4-5 5-1-1 5-5-4-4 2-2 4.5.5L14 6z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5BBE98" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  checkW: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  checklist: sv('<path d="M4 6.5l1.5 1.5L8.5 5M4 12.5l1.5 1.5 3-3M4 18.5l1.5 1.5 3-3M12 7h8M12 13h8M12 19h8"/>'),
+  folder: sv('<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h4l2 2h6a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5z"/>'),
+  note: sv('<path d="M6 3.5h9l4 4V20a.5.5 0 0 1-.5.5h-12A.5.5 0 0 1 6 20z"/><path d="M14.5 3.5V8H19M9 12h7M9 16h5"/>'),
+  sync: sv('<path d="M20 11a8 8 0 0 0-14.5-4M4 13a8 8 0 0 0 14.5 4"/><path d="M5 3v4h4M19 21v-4h-4"/>'),
+  week: sv('<rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M12 14h2M16 14h.5"/>'),
+  time24: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12h4"/>'),
+  moon: sv('<path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/>'),
+  flag: sv('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
+  info2: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>'),
+  mail: sv('<rect x="3.5" y="5.5" width="17" height="13" rx="3.5"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/>'),
+  globe: sv('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>'),
+  logout: sv('<path d="M14 4h3a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-3"/><path d="M10 8l-4 4 4 4M6 12h10"/>'),
+  chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" style="color:var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+  devices: sv('<rect x="3" y="5" width="12" height="9" rx="2"/><rect x="15" y="9" width="6" height="11" rx="2"/><path d="M6 18h6"/>'),
+};
+
+const status = '<div class="status"><span>9:41</span><span>● ▲ ▮</span></div>';
+// S4 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  wallet: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8V7a2.5 2.5 0 0 1 2.5-2.5H16V8" fill="none"/><rect x="3.5" y="8" width="17" height="12" rx="3.5"/><circle cx="16" cy="14" r="1.3" fill="${f ? '#fff' : 'currentColor'}" stroke="none"/></svg>`,
+  food: sv('<path d="M4 11.5h16a8 8 0 0 1-16 0z"/><path d="M9.5 8c0-1.2 1-1.6 1-2.8M13.5 8c0-1.2 1-1.6 1-2.8"/>'),
+  car: sv('<path d="M6 11.5l1.6-4A2 2 0 0 1 9.5 6h5a2 2 0 0 1 1.9 1.5l1.6 4"/><rect x="3.5" y="11.5" width="17" height="6" rx="2.5"/><path d="M7 17.5v2M17 17.5v2M7.5 14.5h1M15.5 14.5h1"/>'),
+  bill: sv('<path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 20.5z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>'),
+  tag: sv('<path d="M3.5 12.3V5a1.5 1.5 0 0 1 1.5-1.5h7.3l8.2 8.2-8.8 8.8z"/><circle cx="8.5" cy="8.5" r="1.4"/>'),
+  // 12 icon cho nhóm tự tạo
+  coffee: sv('<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3.5c0 1.2-1 1.6-1 2.8M12.5 3.5c0 1.2-1 1.6-1 2.8"/>'),
+  bag: sv('<path d="M5 8h14l-1 12H6z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/>'),
+  heart: sv('<path d="M12 20s-7.5-4.5-7.5-10A4.2 4.2 0 0 1 12 7.5 4.2 4.2 0 0 1 19.5 10c0 5.5-7.5 10-7.5 10z"/>'),
+  cap: sv('<path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4c1.5 1.5 3.5 2 5.5 2s4-.5 5.5-2v-4M21.5 9.5v5"/>'),
+  home: sv('<path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>'),
+  gift: sv('<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3.5 9h17M12 9v11M12 9c-1-3-5-4-5-1.5S12 9 12 9zm0 0c1-3 5-4 5-1.5S12 9 12 9z"/>'),
+  paw: sv('<circle cx="7" cy="10.5" r="1.8"/><circle cx="10.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18" cy="10.5" r="1.8"/><path d="M8 17a4 4 0 0 1 8 0c0 2-2 2.5-4 2.5S8 19 8 17z"/>'),
+  plane: sv('<path d="M21 4L3 11l7 2.5L12.5 21z"/><path d="M10 13.5L21 4"/>'),
+  film: sv('<rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M8 5v14M16 5v14M3.5 12h17"/>'),
+  shirt: sv('<path d="M8 4L3.5 7l2 4L8 10v10h8V10l2.5 1 2-4L16 4c-.5 1.5-2 2.5-4 2.5S8.5 5.5 8 4z"/>'),
+  music: sv('<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>'),
+  game: sv('<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M7.5 11.5v3M6 13h3M15.5 12h.01M17.5 14h.01"/>'),
+  dumbbell: sv('<path d="M6.5 7.5v9M17.5 7.5v9M3.5 10v4M20.5 10v4M6.5 12h11"/>'),
+  pill: sv('<rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/>'),
+  baby: sv('<circle cx="12" cy="12.5" r="7.5"/><path d="M9.5 12h.01M14.5 12h.01M10 15.5c1.2.8 2.8.8 4 0M12 5c-1 0-1.5-1-1-1.8"/>'),
+  bus: sv('<rect x="5" y="3.5" width="14" height="14" rx="3"/><path d="M5 11h14M8 17.5v2.5M16 17.5v2.5M8.5 14.5h.01M15.5 14.5h.01"/>'),
+  bike: sv('<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h5l3 7M10 9l3 7h-7M14 6h2.5"/>'),
+  fuel: sv('<path d="M5 20V5.5A1.5 1.5 0 0 1 6.5 4h6A1.5 1.5 0 0 1 14 5.5V20M3.5 20h12M5 10h9"/><path d="M14 8.5l3 2v6.5a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/>'),
+  bolt: sv('<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>'),
+  drop: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  wifi: sv('<path d="M3 9.5a13 13 0 0 1 18 0M6 12.8a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19.5h.01"/>'),
+  tool: sv('<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z"/>'),
+  scissors: sv('<circle cx="6.5" cy="7" r="2.5"/><circle cx="6.5" cy="17" r="2.5"/><path d="M8.5 8.5L20 18M8.5 15.5L20 6"/>'),
+  wine: sv('<path d="M8 3.5h8l-.5 5a3.5 3.5 0 0 1-7 0zM12 12v8M8.5 20.5h7"/>'),
+  cart: sv('<path d="M3.5 4.5h2l2 11h10l2-7.5H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/>'),
+  card: sv('<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18M7 14.5h3"/>'),
+  coins: sv('<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/>'),
+  umbrella: sv('<path d="M3 12a9 9 0 0 1 18 0zM12 12v6.5a2 2 0 0 1-4 0"/>'),
+  ticket: sv('<path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7zM14 5.5v13" stroke-dasharray="0"/>'),
+  camera: sv('<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.5"/>'),
+  laptop: sv('<rect x="5" y="5" width="14" height="10" rx="2"/><path d="M2.5 18.5h19"/>'),
+  briefcase: sv('<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V5.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3.5 12.5h17"/>'),
+  ball: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6c3 2.5 3 9.5 0 12M18 6c-3 2.5-3 9.5 0 12"/>'),
+  tree: sv('<path d="M12 3.5l6 8h-3.5l4 5.5h-13l4-5.5H6zM12 17v3.5"/>'),
+  lock: sv('<rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>'),
+});
+
+const tabbar = (on) => `<nav class="tabbar">
+  <div class="tab ${on === 'cal' ? 'on' : ''}">${I.cal(on === 'cal')}Lịch</div>
+  <div class="tab ${on === 'man' ? 'on' : ''}">${I.book(on === 'man')}Ghi chú</div>
+  <div class="fab">${I.plus}</div>
+  <div class="tab ${on === 'exp' ? 'on' : ''}">${I.wallet(on === 'exp')}Chi tiêu</div>
+  <div class="tab ${on === 'set' ? 'on' : ''}">${I.gear(on === 'set')}Cài đặt</div>
+</nav>`;
+const phone = (inner, cls = '') => `<div class="phone ${cls}">${status}${inner}</div>`;
+const colorPick = (on, custom) => `<div class="colors" style="padding:4px 0 0;justify-content:center;gap:10px">${['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'].map((c) => `<span class="cdot ev-${c} ${c === on ? 'on' : ''}"></span>`).join('')}<span class="cdot ${on === 'custom' ? 'on' : ''}" style="background:${custom || 'conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)'};display:grid;place-items:center">${custom ? '' : '<span style="width:14px;height:14px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;line-height:1">+</span>'}</span></div>`;
+
+// S5 — icon mới (app thêm cùng path vào Icon.tsx)
+
+// ---- S7 ----
+Object.assign(I, {
+    bug: sv('<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9.5 8a2.5 2.5 0 0 1 5 0M12 12v8M7 13H3.5M20.5 13H17M7.5 17.5l-3 2M16.5 17.5l3 2M7.5 9.5l-3-2M16.5 9.5l3-2"/>'),
+  crown: sv('<path d="M4 8l4.5 4L12 6l3.5 6L20 8l-1.5 10h-13z"/><path d="M6 20.5h12"/>'),
+  userx: sv('<circle cx="10" cy="8.5" r="3.5"/><path d="M3.5 19.5a6.5 6.5 0 0 1 11-4.5M16.5 16.5l4 4M20.5 16.5l-4 4"/>'),
+  shieldS: sv('<path d="M12 3.5l7 2.5v5.5c0 4.3-3 7.5-7 9-4-1.5-7-4.7-7-9V6z"/><path d="M9 12l2.2 2.2L15 10"/>'),
+  store: sv('<path d="M5 9l1.5-4.5h11L19 9"/><path d="M5 9a2.3 2.3 0 0 0 4.7 0 2.3 2.3 0 0 0 4.6 0A2.3 2.3 0 0 0 19 9v10.5H5z"/>'),
+  wifiOff: sv('<path d="M3.5 9.5a12 12 0 0 1 4-2.3M20.5 9.5a12 12 0 0 0-8.5-3M6.5 13a8 8 0 0 1 2.5-1.6M17.5 13a8 8 0 0 0-3-1.8M9.5 16.3a4 4 0 0 1 5 0M12 19.5h.01M4 4l16 16"/>'),
+  trash2: sv('<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/>'),
+});
+
+const sr = (icon, label, right = '', cls = '') => `<div class="row ${cls}"><span class="ico">${icon}</span><span class="label">${label}</span>${right}</div>`;
+const sub = (t) => `<div class="cap muted">${t}</div>`;
+const chev = I.chev;
+const hl = (h) => (h ? 'hl2' : '');
+
+// Cài đặt
+const settings = ({ pro = false, eu = false, hi = '' } = {}) => `<div class="content"><div class="screen-title">Cài đặt</div>
+  <div class="settings" style="overflow:hidden">
+    <div class="card account"><span class="avatar">D</span><div class="who"><div class="name">Danh Bùi</div><div class="mail">danhbuidcn@gmail.com</div></div></div>
+    <div class="group-label">Tài khoản</div>
+    <div class="card ${hl(hi === 'pro')}">${sr(I.crown, `Daynest Pro${sub(pro ? 'Đang dùng · gói năm' : 'Tắt quảng cáo')}`, chev)}</div>
+    <div class="card">${sr(I.logout, 'Đăng xuất', '', 'danger')}<div class="${hl(hi === 'del')}" style="border-radius:12px">${sr(I.userx, 'Xoá tài khoản', chev, 'danger')}</div></div>
+    <div class="group-label">Giao diện</div>
+    <div class="card">${sr(I.palette, `Giao diện${sub('Xanh bạc hà · Nền trơn')}`, chev)}</div>
+    <div class="group-label">Lịch</div>
+    <div class="card">${sr(I.week, 'Tuần bắt đầu từ', '<span class="val">Thứ Hai</span>' + chev)}${sr(I.moon, 'Hiển thị ngày âm lịch', '<span class="sw on"></span>')}${sr(I.flag, 'Hiển thị ngày lễ', '<span class="sw on"></span>')}</div>
+    <div class="group-label">Ứng dụng</div>
+    <div class="card">${sr(I.globe, 'Ngôn ngữ', '<span class="val">Tiếng Việt</span>' + chev)}${sr(I.bug, 'Báo lỗi', chev)}
+      <div class="${hl(hi === 'priv')}" style="border-radius:12px">${sr(I.shieldS, 'Chính sách quyền riêng tư', chev)}</div>
+      ${eu ? `<div class="${hl(hi === 'ump')}" style="border-radius:12px">${sr(I.lock, 'Tuỳ chọn quảng cáo', chev)}</div>` : ''}
+      ${sr(I.info2, 'Phiên bản', '<span class="val">7.0.0</span>')}</div>
+  </div>
+</div>${tabbar('set')}`;
+
+// Xoá tài khoản
+const delList = ['Lịch, ghi chú, việc cần làm', 'Chi tiêu, ngân sách', 'Chu kỳ, ảnh báo lỗi', 'Thiết bị đã đăng nhập'];
+const delScreen = (pro) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Xoá tài khoản</div><span></span></div>
+  <div class="settings" style="gap:14px">
+    <div class="card" style="padding:20px 16px;text-align:center"><div class="dicon err" style="width:56px;height:56px;border-radius:20px;background:var(--error-soft);color:var(--error);display:grid;place-items:center;margin:0 auto 12px"><span style="width:28px;height:28px;display:block">${I.userx}</span></div>
+      <div style="font-size:17px;font-weight:700">Xoá tài khoản vĩnh viễn?</div>
+      <div class="muted" style="font-size:15px;line-height:22px;margin-top:6px">danhbuidcn@gmail.com</div></div>
+    <div class="group-label">Dữ liệu sẽ bị xoá</div>
+    <div class="card" style="padding:4px 16px">${delList.map((t) => `<div class="frow"><span class="fi" style="color:var(--error)">${I.trash2}</span><span class="grow">${t}</span></div>`).join('')}</div>
+    ${pro ? `<div class="warnrow" style="margin:0"><span>${I.warn}</span><div>Gói Pro vẫn tính phí. Hãy huỷ gói trong Google Play.<a>Mở Google Play</a></div></div>` : ''}
+  </div>
+  <div class="form-footer"><button class="btn btn-danger-solid">Xoá tài khoản</button></div>
+</div>`;
+const dlg = (icon, cls, title, text, actions) => `<div class="scrim"><div class="dialog"><div class="dicon ${cls}">${icon}</div><h3>${title}</h3>${text ? `<p>${text}</p>` : '<div style="height:14px"></div>'}${actions}</div></div>`;
+const two = (a, b, danger = true) => `<div class="actions"><button class="btn btn-secondary">${a}</button><button class="btn ${danger ? 'btn-danger-solid' : 'btn-primary'}">${b}</button></div>`;
+const phoneWith = (screen, overlay = '', cls = '') => `<div class="phone ${cls}">${status}<div class="under">${screen}</div>${overlay}</div>`;
+
+// Màn Daynest Pro
+const plan = (name, price, per, on, tag = '') => `<div class="plan ${on ? 'on' : ''}">
+  <span class="radio">${on ? '<i></i>' : ''}</span><div class="pn"><b>${name}</b>${tag ? `<em>${tag}</em>` : ''}</div><div class="pp"><b>${price}</b><span>${per}</span></div></div>`;
+const proScreen = ({ sel = 'y', busy = false, offline = false } = {}) => `<div class="content">${offline ? offBanner : ''}
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Daynest Pro</div><span></span></div>
+  <div class="settings" style="gap:14px">
+    <div class="card hero"><span class="crown">${I.crown}</span><div style="font-size:17px;font-weight:700">Không quảng cáo</div><div class="muted" style="font-size:15px">Dùng chung trên mọi thiết bị</div></div>
+    <div class="plans">${plan('Hằng tháng', '29.000đ', '/ tháng', sel === 'm')}${plan('Hằng năm', '299.000đ', '/ năm', sel === 'y', 'Tiết kiệm 14%')}${plan('Trọn đời', '599.000đ', 'mua một lần', sel === 'l')}</div>
+  </div>
+  <div class="form-footer" style="display:flex;flex-direction:column;gap:6px">
+    <button class="btn btn-primary" ${offline ? 'style="opacity:.45"' : ''}>${busy ? '<span class="spin"></span>Đang xử lý' : 'Tiếp tục'}</button>
+    <button class="btn" style="height:40px;background:none;color:var(--primary-dark);font-weight:800">Khôi phục giao dịch</button>
+  </div>
+</div>`;
+const offBanner = `<div class="offbar">${I.wifiOff}<span>Không có mạng</span></div>`;
+const proActive = (kind) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Daynest Pro</div><span></span></div>
+  <div class="settings" style="gap:14px">
+    <div class="card hero on"><span class="crown">${I.crown}</span><div style="font-size:17px;font-weight:700">Bạn đang dùng Pro</div><div class="muted" style="font-size:15px">${kind === 'l' ? 'Gói trọn đời' : kind === 'y' ? 'Gói năm · gia hạn 15/10/2027' : 'Gói tháng · gia hạn 15/11/2026'}</div></div>
+    ${kind === 'l' ? '' : `<div class="card">${sr(I.store, 'Quản lý gói trong Google Play', chev)}</div>`}
+    <div class="card">${sr(I.restore, 'Khôi phục giao dịch', chev)}</div>
+  </div>
+</div>`;
+
+// Banner
+const banner = (loading) => `<div class="adbar">${loading ? '' : `<span class="adtag">Quảng cáo</span><div class="adimg"></div><div class="adtxt"><b>Tên quảng cáo mẫu</b><span>Nội dung do AdMob chọn</span></div><span class="adbtn">Mở</span>`}</div>`;
+const calScreen = () => `<div class="content"><div class="cal-head"><span class="nav">${I.left}</span><div class="t">Tháng 10</div><span class="nav" style="transform:scaleX(-1)">${I.left}</span><span class="chip-today">Hôm nay</span></div>
+  <div class="seg"><span>Ngày</span><span>Tuần</span><span class="on">Tháng</span><span>Năm</span></div>
+  <div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d, i) => `<span class="${i === 6 ? 'sun' : ''}">${d}</span>`).join('')}</div>
+  <div class="month" style="grid-template-rows:repeat(5,1fr)">${Array.from({ length: 35 }, (_, i) => { const d = i - 2; if (d < 1 || d > 31) return '<div class="cell"></div>'; return `<div class="cell ${d === 15 ? 'today' : ''} ${i % 7 === 6 ? 'sun' : ''}"><div class="top"><span class="d">${d}</span></div>${d === 12 ? '<div class="bar ev-sky">Họp</div>' : d === 20 ? '<div class="bar ev-pink">Sinh nhật</div>' : ''}</div>`; }).join('')}</div>
+</div>`;
+const noteScreen = () => `<div class="content"><div class="screen-title">Ghi chú</div><div class="settings" style="gap:10px">${['Việc tuần này', 'Danh sách mua', 'Ý tưởng'].map((t, i) => `<div class="card" style="padding:14px 16px"><div style="font-size:17px;font-weight:700">${t}</div><div class="cap muted" style="margin-top:4px">Nội dung ghi chú mẫu</div></div>`).join('')}</div></div>`;
+const expScreen = () => `<div class="content"><div class="screen-title">Chi tiêu</div><div class="settings" style="gap:12px"><div class="card" style="padding:16px;text-align:center"><div class="cap muted">Tháng 10</div><div style="font-size:22px;font-weight:800">7.800.000đ</div></div>${[['Ăn uống', '2.400.000đ'], ['Đi lại', '900.000đ'], ['Hoá đơn', '1.500.000đ']].map(([n, v]) => `<div class="card">${sr(I.tag, n, `<b>${v}</b>`)}</div>`).join('')}</div></div>`;
+const withBanner = (screen, tab, loading) => phone(`<div class="under">${screen}${tabbar(tab)}${banner(loading)}</div>`);
+const formScreen = () => `<div class="content"><div class="topbar"><span class="back">${I.close}</span><div class="screen-title">Thêm sự kiện</div><span></span></div>
+  <div class="form"><div class="fcard"><div class="title-in">Họp nhóm</div><div class="detail-in">Chi tiết</div></div><div class="fcard"><div class="frow"><span class="fi">${I.clock}</span><span class="grow">9:00 – 10:00</span></div><div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Thứ Năm, 15/10</span></div></div></div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div></div>`;
+
+// UMP (hộp do Google dựng; vẽ gần đúng để biết vị trí)
+const ump = `<div class="scrim"><div class="dialog" style="text-align:left;padding:20px">
+  <h3>Quyền riêng tư của bạn</h3>
+  <p style="margin-bottom:14px">Daynest và đối tác dùng dữ liệu như mã nhận dạng thiết bị để hiển thị quảng cáo.</p>
+  <div class="stack"><button class="btn btn-primary">Đồng ý</button><button class="btn btn-secondary">Quản lý tuỳ chọn</button></div></div></div>`;
+
+const phoneT = (html, cls = '') => `<div class="phone ${cls}">${status}${html}</div>`;
+const groups = [
+  ['A. Xoá tài khoản', [
+    ['1. Cài đặt', 'nhóm "Tài khoản" mới ở đầu: Daynest Pro · Đăng xuất · Xoá tài khoản (chữ đỏ) · dòng "Chính sách quyền riêng tư" ở nhóm Ứng dụng', phoneT(settings({ hi: 'del' }), 'tall')],
+    ['2. Xoá tài khoản', 'liệt kê dữ liệu bị xoá · nút đỏ cố định ở đáy', phoneT(delScreen(false))],
+    ['2b. Đang có Pro', 'thêm dòng cảnh báo: gói Pro vẫn tính phí → mở Google Play để huỷ', phoneT(delScreen(true))],
+    ['3. Hộp xác nhận', 'bấm nút ở màn 2 · không thể hoàn tác', phoneWith(delScreen(false), dlg(I.userx, 'err', 'Xoá tài khoản?', 'Toàn bộ dữ liệu sẽ bị xoá vĩnh viễn.', two('Huỷ', 'Xoá')))],
+    ['3b. Đang xoá', 'khoá mọi nút, không đóng được', phoneWith(delScreen(false), dlg('<span class="spin big"></span>', '', 'Đang xoá tài khoản', '', ''))],
+    ['3c. Lỗi', 'mất mạng hoặc máy chủ lỗi · thử lại được, dữ liệu chưa bị xoá', phoneWith(delScreen(false), dlg(I.warn, 'warn', 'Chưa xoá được', 'Vui lòng thử lại sau.', two('Đóng', 'Thử lại', false)))],
+  ]],
+  ['B. Daynest Pro', [
+    ['4. Chọn gói', 'mặc định chọn gói năm · nút "Tiếp tục" mở màn thanh toán của Google Play', phoneT(proScreen())],
+    ['4b. Đang xử lý', 'sau khi chọn gói ở Google Play · khoá nút', phoneT(proScreen({ busy: true }))],
+    ['4c. Mất mạng', 'không mua được · nút mờ', phoneT(proScreen({ offline: true }))],
+    ['5. Đã mua (năm)', 'thay màn chọn gói · mở trang quản lý gói của Google Play', phoneT(proActive('y'))],
+    ['5b. Đã mua (trọn đời)', 'không có dòng quản lý gói', phoneT(proActive('l'))],
+    ['6. Mua xong', 'toast · banner biến mất ngay ở mọi tab', phoneWith(proActive('y'), '<div class="toast">Đã bật Pro</div>')],
+    ['7. Khôi phục: không có gói', 'hộp thông báo sau khi bấm "Khôi phục giao dịch"', phoneWith(proScreen(), dlg(I.restore, 'warn', 'Không tìm thấy giao dịch', 'Tài khoản Google Play này chưa mua Pro.', '<button class="btn btn-primary">Đã hiểu</button>'))],
+    ['7b. Khôi phục: thành công', '', phoneWith(proScreen(), '<div class="toast" style="bottom:130px">Đã khôi phục Pro</div>')],
+  ]],
+  ['C. Banner quảng cáo (chưa mua Pro)', [
+    ['8. Lịch', 'banner cố định dưới cùng, dưới thanh tab', withBanner(calScreen(), 'cal')],
+    ['9. Ghi chú', '', withBanner(noteScreen(), 'man')],
+    ['10. Chi tiêu', '', withBanner(expScreen(), 'exp')],
+    ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
+    ['12. Màn soạn', 'KHÔNG banner (thêm / sửa event, note, khoản chi, todo)', phoneT(formScreen())],
+    ['13. Cài đặt', 'KHÔNG banner · cả các màn con và màn Pro', phoneT(settings({ pro: false }), 'tall')],
+    ['14. Đã mua Pro', 'không banner ở mọi tab', phoneT(`<div class="under">${calScreen()}${tabbar('cal')}</div>`)],
+  ]],
+  ['D. Đồng ý quảng cáo (EU / UK)', [
+    ['15. Lần mở app đầu', 'hộp do Google dựng (UMP) · chỉ hiện ở EU / UK · chưa đồng ý thì chưa hiện banner', phoneWith(calScreen() + tabbar('cal'), ump)],
+    ['16. Cài đặt', 'dòng "Tuỳ chọn quảng cáo" chỉ có ở EU / UK · mở lại hộp để đổi lựa chọn', phoneT(settings({ eu: true, hi: 'ump' }), 'tall')],
+  ]],
+];
+document.getElementById('root').innerHTML = groups.map(([g, list]) => `<h2 class="group">${g}</h2><div class="grid">${list.map(([t, s, html]) => `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('')}</div>`).join('');
+document.head.insertAdjacentHTML('beforeend', `<style>
+  .hl2 { box-shadow: 0 0 0 2px var(--primary); border-radius: 12px; }
+  .plans { display:flex; flex-direction:column; gap:10px; }
+  .plan { display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:20px; background:var(--surface); box-shadow:var(--shadow); border:2px solid transparent; }
+  .plan.on { border-color:var(--primary); background:var(--primary-soft); }
+  .plan .radio { width:22px; height:22px; border-radius:50%; border:2px solid var(--border); display:grid; place-items:center; flex:none; }
+  .plan.on .radio { border-color:var(--primary); } .plan .radio i { width:12px; height:12px; border-radius:50%; background:var(--primary); }
+  .plan .pn { flex:1; display:flex; flex-direction:column; gap:2px; font-size:15px; } .plan .pn em { font-style:normal; font-size:12px; color:var(--primary-dark); font-weight:800; }
+  .plan .pp { text-align:right; display:flex; flex-direction:column; } .plan .pp span { font-size:12px; color:var(--muted); }
+  .hero { padding:20px 16px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .hero .crown { width:56px; height:56px; border-radius:20px; background:var(--primary-soft); color:var(--primary-dark); display:grid; place-items:center; } .hero .crown svg { width:28px; height:28px; }
+  .hero.on { background:var(--primary-soft); }
+  .adbar { flex:none; height:50px; background:var(--surface); border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; padding:0 8px; position:relative; }
+  .adbar:empty { display:none; }
+  .adtag { position:absolute; top:0; left:0; font-size:10px; background:var(--warning-soft); color:var(--text); padding:0 6px; border-radius:0 0 8px 0; line-height:14px; }
+  .adimg { width:36px; height:36px; border-radius:8px; background:var(--border); flex:none; margin-top:6px; }
+  .adtxt { flex:1; display:flex; flex-direction:column; font-size:12px; margin-top:6px; } .adtxt span { color:var(--muted); }
+  .adbtn { height:30px; padding:0 14px; border-radius:8px; background:var(--primary); color:#fff; font-size:12px; font-weight:800; display:grid; place-items:center; margin-top:6px; }
+  .offbar { flex:none; height:32px; background:var(--warning-soft); display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; font-weight:700; }
+  .offbar svg { width:16px; height:16px; }
+  .spin { width:18px; height:18px; border-radius:50%; border:2.5px solid rgba(255,255,255,.5); border-top-color:#fff; display:inline-block; }
+  .spin.big { width:28px; height:28px; border-color:var(--primary-soft); border-top-color:var(--primary); }
+  .dialog .dicon:has(.spin) { background:none; }
+</style>`);
+</script>
+</body>
+</html>
