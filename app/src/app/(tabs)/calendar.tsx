@@ -6,6 +6,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AlertDialog } from '@/components/Dialog';
+import { ScreenBackground } from '@/components/ScreenBackground';
 import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { CalendarHeader } from '@/features/calendar/CalendarHeader';
@@ -176,6 +177,7 @@ export default function CalendarScreen() {
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
+      <ScreenBackground />
       <CalendarHeader title={nav.title} onPrev={() => go(-1)} onNext={() => go(1)} onTitle={() => setPickerOpen(true)} onToday={goToday} />
       <ViewModeBar value={mode} onChange={nav.setMode} />
       {mode === 'month' ? <WeekdayRow weekStart={settings.weekStart} /> : null}
@@ -234,7 +236,7 @@ export default function CalendarScreen() {
 }
 
 const useStyles = makeStyles(({ colors }) => ({
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1 },
   swipeArea: { flex: 1 },
   loading: { position: 'absolute', top: space.sm, alignSelf: 'center' },
 }));

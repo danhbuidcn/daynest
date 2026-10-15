@@ -9,6 +9,7 @@ import { ActionMenu, MoreButton } from '@/components/ActionMenu';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
+import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
 import { CategoryChips } from '@/features/notes/CategoryChips';
@@ -76,6 +77,7 @@ export default function ManageScreen() {
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
+      <ScreenBackground />
       <ScreenHeader title={t('tabs.manage')} compact action={view === 'notes' ? <MoreButton onPress={() => setMenuOpen(true)} /> : undefined} />
       <SegmentedBar options={viewOptions} value={view} onChange={setView} />
       {view === 'todo' ? (
@@ -147,7 +149,7 @@ function Empty({ text, action, onAction }: { text: string; action?: string; onAc
 }
 
 const useStyles = makeStyles(({ colors }) => ({
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1 },
   content: { paddingBottom: 120 },
   subcount: { textAlign: 'center', marginBottom: space.sm },
   count: { paddingHorizontal: 20, paddingBottom: space.sm },

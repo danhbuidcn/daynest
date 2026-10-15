@@ -18,7 +18,7 @@ import { CalendarSettings } from '@/features/settings/CalendarSettings';
 import { CycleSettings } from '@/features/settings/CycleSettings';
 import { NotificationSettings } from '@/features/settings/NotificationSettings';
 import { LANGUAGES, type Language } from '@/i18n';
-import { makeStyles, space, useTheme } from '@/theme';
+import { makeStyles, space, useAppearance, useTheme } from '@/theme';
 
 export default function SettingsScreen() {
   const { colors } = useTheme();
@@ -26,6 +26,7 @@ export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
   const { profile, signOut, saveLanguage, listDevices } = useAuth();
   const router = useRouter();
+  const { appearance } = useAppearance();
   const toast = useToast();
   const [langOpen, setLangOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
@@ -56,6 +57,17 @@ export default function SettingsScreen() {
               {profile.email}
             </AppText>
           </View>
+        </Card>
+
+        <GroupLabel text={t('appearance.title')} />
+        <Card>
+          <SettingRow
+            first
+            icon="palette"
+            label={t('settings.appearance')}
+            sublabel={t('appearance.summary', { theme: t(`appearance.themes.${appearance.theme}`), font: t(`appearance.fonts.${appearance.font}`) })}
+            onPress={() => router.push('/settings/appearance')}
+          />
         </Card>
 
         <GroupLabel text={t('settings.account')} />

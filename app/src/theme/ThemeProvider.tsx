@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { StyleSheet, useColorScheme } from 'react-native';
 
 import { saveAppearance, type StoredAppearance } from '@/features/appearance/appearanceStorage';
+import { onPhotoChange, type BackgroundPhoto } from '@/features/appearance/photoStore';
 import type { Appearance } from '@/lib/theme/appearance';
 import { resolvePalette } from '@/lib/theme/resolveTheme';
 import { FONT_FAMILIES, type FontFamilies } from './fonts';
@@ -15,6 +16,8 @@ export type Theme = {
   type: Record<keyof typeof typeSizes, TypeStyle>;
   shadow: { shadowColor: string; shadowOpacity: number; shadowRadius: number; shadowOffset: { width: number; height: number }; elevation: number };
   dark: boolean;
+  // The user's "Cỡ chữ" (0.9 / 1 / 1.15), already inside `type`.
+  fontScale: number;
 };
 
 export function buildTheme(a: Appearance, systemDark: boolean): Theme {
@@ -38,12 +41,15 @@ export function buildTheme(a: Appearance, systemDark: boolean): Theme {
       elevation: 2,
     },
     dark,
+    fontScale: a.fontScale,
   };
 }
 
 type Store = {
   appearance: Appearance;
   dirty: boolean;
+  // The picture of "Ảnh của bạn" (this device only), null when there is none.
+  photo: BackgroundPhoto | null;
   // A choice made on this device: shows at once, then is saved to the account (useAppearanceSync).
   setAppearance: (patch: Partial<Appearance>) => void;
   // What the account holds (or the account's copy after a successful save).
@@ -54,8 +60,18 @@ type Store = {
 const ThemeContext = createContext<Theme | null>(null);
 const StoreContext = createContext<Store | null>(null);
 
-export function ThemeProvider({ initial, children }: { initial: StoredAppearance; children: ReactNode }) {
+export function ThemeProvider({
+  initial,
+  initialPhoto,
+  children,
+}: {
+  initial: StoredAppearance;
+  initialPhoto: BackgroundPhoto | null;
+  children: ReactNode;
+}) {
   const [state, setState] = useState(initial);
+  const [photo, setPhoto] = useState(initialPhoto);
+  useEffect(() => onPhotoChange(setPhoto), []);
   const systemDark = useColorScheme() === 'dark';
   const stateRef = useRef(state);
 
@@ -73,6 +89,7 @@ export function ThemeProvider({ initial, children }: { initial: StoredAppearance
     () => ({
       appearance: state.appearance,
       dirty: state.dirty,
+      photo,
       setAppearance: (patch) => commit({ appearance: { ...stateRef.current.appearance, ...patch }, dirty: true }),
       applyRemote: (a) => commit({ appearance: a, dirty: false }),
       // Only clear the flag if nothing changed while the save was in flight.
@@ -80,7 +97,7 @@ export function ThemeProvider({ initial, children }: { initial: StoredAppearance
         if (JSON.stringify(a) === JSON.stringify(stateRef.current.appearance)) commit({ appearance: a, dirty: false });
       },
     }),
-    [state, commit],
+    [state, photo, commit],
   );
 
   const theme = useMemo(() => buildTheme(state.appearance, systemDark), [state.appearance, systemDark]);

@@ -59,7 +59,8 @@
     "showHolidays": "Hiển thị ngày lễ",
     "saveFailed": "Chưa lưu được. Vui lòng thử lại.",
     "cycle": "Chu kỳ kinh nguyệt",
-    "bugReport": "Báo lỗi"
+    "bugReport": "Báo lỗi",
+    "appearance": "Giao diện"
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
@@ -543,5 +544,53 @@
     "limitTitle": "Đã gửi đủ 5 báo cáo hôm nay",
     "limitText": "Hãy thử lại vào ngày mai.",
     "limitOk": "Đã hiểu"
+  },
+  "appearance": {
+    "title": "Giao diện",
+    "summary": "{{theme}} · {{font}}",
+    "theme": "Chủ đề màu",
+    "background": "Nền",
+    "font": "Font chữ",
+    "fontScale": "Cỡ chữ",
+    "themes": {
+      "mint": "Bạc hà",
+      "rose": "Hồng đào",
+      "sky": "Xanh biển",
+      "lavender": "Oải hương",
+      "clay": "Cam đất",
+      "lemon": "Vàng chanh",
+      "slate": "Xám than",
+      "dark": "Tối",
+      "system": "Theo hệ thống",
+      "custom": "Tự chọn"
+    },
+    "fonts": {
+      "nunito": "Nunito",
+      "be-vietnam-pro": "Be Vietnam Pro",
+      "quicksand": "Quicksand",
+      "baloo-2": "Baloo 2",
+      "itim": "Itim",
+      "patrick-hand": "Patrick Hand"
+    },
+    "scales": {
+      "small": "Nhỏ",
+      "medium": "Vừa",
+      "large": "Lớn"
+    },
+    "plain": "Trơn",
+    "photo": "Ảnh của bạn",
+    "colors": "Màu",
+    "gradients": "Chuyển màu",
+    "patterns": "Hoạ tiết",
+    "fade": "Độ mờ",
+    "customTitle": "Tự chọn màu chủ đạo",
+    "light": "Sáng",
+    "darkMode": "Tối",
+    "unreadable": "Màu này làm chữ khó đọc",
+    "photoFailed": "Không chọn được ảnh",
+    "previewTitle": "Ngày mới",
+    "previewNote": "Họp nhóm 9:00",
+    "previewSave": "Lưu",
+    "pickColor": "Màu khác"
   }
 }

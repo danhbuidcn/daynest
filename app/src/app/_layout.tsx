@@ -18,6 +18,7 @@ import { useGoogleSyncLifecycle } from '@/features/google/useGoogleSync';
 import { useReminderSync } from '@/features/reminders/useReminderSync';
 import { loadSavedLanguage } from '@/i18n';
 import { loadAppearance, type StoredAppearance } from '@/features/appearance/appearanceStorage';
+import { loadPhoto, type BackgroundPhoto } from '@/features/appearance/photoStore';
 import { useAppearanceSync } from '@/features/appearance/useAppearanceSync';
 import { FONT_FILES } from '@/theme/fonts';
 import { ThemeProvider, makeStyles, useTheme } from '@/theme';
@@ -32,9 +33,13 @@ export default function RootLayout() {
   const [langLoaded, setLangLoaded] = useState(false);
   // Read with the fonts, before the splash hides, so the first frame already has the saved look.
   const [stored, setStored] = useState<StoredAppearance | null>(null);
+  const [photo, setPhoto] = useState<BackgroundPhoto | null>(null);
 
   useEffect(() => {
-    loadAppearance().then(setStored);
+    Promise.all([loadAppearance(), loadPhoto()]).then(([a, p]) => {
+      setPhoto(p);
+      setStored(a);
+    });
   }, []);
 
   useEffect(() => {
@@ -50,7 +55,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <ThemeProvider initial={stored}>
+        <ThemeProvider initial={stored} initialPhoto={photo}>
           <ThemedStatusBar />
           <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
             <AuthProvider>
@@ -105,6 +110,7 @@ function AppStack({ signedIn }: { signedIn: boolean }) {
       <Stack.Protected guard={signedIn}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="settings/devices" />
+        <Stack.Screen name="settings/appearance" />
         <Stack.Screen name="settings/period" />
         <Stack.Screen name="settings/bug-report" />
         <Stack.Screen name="note/[id]" />

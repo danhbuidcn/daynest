@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AppState } from 'react-native';
 
+import { clearPhoto } from '@/features/appearance/photoStore';
 import { clearQueryCache } from '@/features/cache/queryClient';
 import { setLanguage, type Language } from '@/i18n';
 import {
@@ -16,7 +17,7 @@ import { clearSnapshot, loadSnapshot, saveSnapshot, type SessionSnapshot } from 
 
 // Signing out (or in as someone else) must not leave the last user's data on the device.
 async function clearLocalData() {
-  await Promise.all([clearQueryCache().catch(() => {}), clearSnapshot()]);
+  await Promise.all([clearQueryCache().catch(() => {}), clearSnapshot(), clearPhoto().catch(() => {})]);
 }
 
 type AuthState = {

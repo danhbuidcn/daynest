@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
+import { ScreenBackground } from '@/components/ScreenBackground';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { SegmentedBar } from '@/components/SegmentedBar';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -110,6 +111,7 @@ export default function ExpensesScreen() {
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
+      <ScreenBackground />
       <ScreenHeader
         compact
         title={t('tabs.expenses')}
@@ -170,7 +172,7 @@ function Empty({ text, action, onAction, plus }: { text: string; action: string;
 }
 
 const useStyles = makeStyles(({ colors }) => ({
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1 },
   tagButton: { width: 36, height: 36, borderRadius: radius.icon + 2, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' },
   body: { flex: 1 },
   list: { gap: space.sm, paddingHorizontal: space.lg, paddingBottom: 120 },

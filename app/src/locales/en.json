@@ -59,7 +59,8 @@
     "showHolidays": "Show holidays",
     "saveFailed": "Could not save. Please try again.",
     "cycle": "Menstrual cycle",
-    "bugReport": "Report a problem"
+    "bugReport": "Report a problem",
+    "appearance": "Appearance"
   },
   "logoutDialog": {
     "title": "Sign out?",
@@ -543,5 +544,53 @@
     "limitTitle": "You have sent 5 reports today",
     "limitText": "Please try again tomorrow.",
     "limitOk": "OK"
+  },
+  "appearance": {
+    "title": "Appearance",
+    "summary": "{{theme}} · {{font}}",
+    "theme": "Color theme",
+    "background": "Background",
+    "font": "Font",
+    "fontScale": "Text size",
+    "themes": {
+      "mint": "Mint",
+      "rose": "Rose",
+      "sky": "Sky",
+      "lavender": "Lavender",
+      "clay": "Clay",
+      "lemon": "Lemon",
+      "slate": "Slate",
+      "dark": "Dark",
+      "system": "Follow system",
+      "custom": "Custom"
+    },
+    "fonts": {
+      "nunito": "Nunito",
+      "be-vietnam-pro": "Be Vietnam Pro",
+      "quicksand": "Quicksand",
+      "baloo-2": "Baloo 2",
+      "itim": "Itim",
+      "patrick-hand": "Patrick Hand"
+    },
+    "scales": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "plain": "Plain",
+    "photo": "Your photo",
+    "colors": "Colors",
+    "gradients": "Gradients",
+    "patterns": "Patterns",
+    "fade": "Fade",
+    "customTitle": "Choose your color",
+    "light": "Light",
+    "darkMode": "Dark",
+    "unreadable": "This color makes the text hard to read",
+    "photoFailed": "Could not load the photo",
+    "previewTitle": "A new day",
+    "previewNote": "Team meeting 9:00",
+    "previewSave": "Save",
+    "pickColor": "Other color"
   }
 }
