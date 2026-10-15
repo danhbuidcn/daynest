@@ -42,10 +42,8 @@ async function run() {
   const today = jdFromDate(todayIn(c.timeZone, now));
   const range = { from: jdToDate(today - 1), to: jdToDate(today + REMINDER_HORIZON_DAYS + LONGEST_REMINDER_DAYS + 1) };
   // Fetch before cancelling: offline, the reminders already set stay in place.
-  const events = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
-  const exceptions = await api.fetchExceptions(events.map((e) => e.id));
-  const todos = await todosApi.fetchTodos(isoDate(range.from), isoDate(range.to));
-  const todoExceptions = await todosApi.fetchTodoExceptions(todos.map((x) => x.id));
+  const { events, exceptions } = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
+  const { todos, exceptions: todoExceptions } = await todosApi.fetchTodos(isoDate(range.from), isoDate(range.to));
   // S5: todos remind like events, except a lap already ticked done.
   const openTodos = occurrencesForTodos(todos, todoExceptions, range, c.timeZone).filter((o) => !o.status.done);
   const planned = pickReminders([...occurrencesForEvents(events, exceptions, range, c.timeZone), ...openTodos], now, c.timeZone);

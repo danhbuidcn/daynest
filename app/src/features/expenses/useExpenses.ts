@@ -45,10 +45,13 @@ export function useExpenseCategories() {
   return useQuery({ queryKey: [EXPENSE_CATEGORIES_KEY], queryFn: api.fetchExpenseCategories });
 }
 
-// Any write refreshes every period and the 6-month chart (all under EXPENSES_KEY).
+// Any write refreshes every period and the 6-month chart (all under EXPENSES_KEY) in the
+// background — the form closes without waiting for those reloads.
 export function useExpenseWrites() {
   const queryClient = useQueryClient();
-  const onSuccess = () => queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] });
+  const onSuccess = () => {
+    void queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] });
+  };
   const save = useMutation({
     mutationFn: ({ id, updatedAt, input }: { id: string; updatedAt?: string; input: api.ExpenseInput }) =>
       updatedAt ? api.updateExpense(id, updatedAt, input) : api.createExpense(id, input),

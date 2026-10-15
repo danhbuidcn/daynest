@@ -57,11 +57,17 @@ export function useInvalidateNotes() {
   );
 }
 
-// Wraps a notes API call: RLS rejection → re-check the session (F7); success → refetch lists.
+// Wraps a notes API call: RLS rejection → re-check the session (F7); success → refetch lists in the background.
 function useNotesMutation<V>(run: (vars: V) => Promise<unknown>) {
   const guard = useForbiddenGuard();
   const invalidate = useInvalidateNotes();
-  return useMutation({ mutationFn: (vars: V) => guard(() => run(vars)), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (vars: V) => guard(() => run(vars)),
+    // Lists reload in the background; the caller does not wait for them.
+    onSuccess: () => {
+      void invalidate();
+    },
+  });
 }
 
 export const useMoveNote = () => useNotesMutation((v: { id: string; categoryId: string | null }) => api.moveNote(v.id, v.categoryId));

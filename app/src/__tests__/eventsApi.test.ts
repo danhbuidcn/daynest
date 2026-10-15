@@ -72,6 +72,7 @@ describe('createEvent', () => {
 
 describe('upsertException', () => {
   it('upserts on (event_id, occurrence_date) so a retry does not duplicate', async () => {
+    result = { data: { id: 'x1', event_id: 'e1', occurrence_date: '2026-10-13', kind: 'skip' }, error: null };
     await upsertException('e1', '2026-10-13', 'skip');
     expect(calls.some((c) => c.startsWith('upsert(') && c.includes('"onConflict":"event_id,occurrence_date"'))).toBe(true);
   });

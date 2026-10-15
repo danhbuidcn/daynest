@@ -108,7 +108,7 @@ export function useEventFormSave({
         setConflictOpen(false);
         if (!baseEvent || !occurrence) return;
         void run(async () => {
-          const fresh = (await api.fetchEvents(occurrence.occurrenceDate, occurrence.occurrenceDate)).find((e) => e.id === baseEvent.id);
+          const fresh = (await api.fetchEvents(occurrence.occurrenceDate, occurrence.occurrenceDate)).events.find((e) => e.id === baseEvent.id);
           // Deleted on the other device meanwhile: nothing left to overwrite.
           if (!fresh) throw new Error('gone');
           await saveMutation.mutateAsync({ id: baseEvent.id, updatedAt: fresh.updatedAt, input: input() });

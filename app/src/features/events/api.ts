@@ -28,43 +28,63 @@ function classify(error: unknown): Error {
 
 // span_start/span_end of timed events hold the UTC date (event.ts), which can be a day off the
 // user's local date — so fetch one extra day each side; occurrence expansion trims to the range.
+const EXCEPTION_COLUMNS =
+  'id, event_id, occurrence_date, kind, title, note, color, all_day, starts_at, ends_at, start_date, end_date, reminder_minutes';
+
+type ExceptionTableRow = {
+  id: string;
+  event_id: string;
+  occurrence_date: string;
+  kind: string;
+  title: string | null;
+  note: string | null;
+  color: ExceptionRow['color'];
+  all_day: boolean | null;
+  starts_at: string | null;
+  ends_at: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  reminder_minutes: number[] | null;
+};
+
+const toException = (row: ExceptionTableRow): ExceptionRow => ({
+  id: row.id,
+  eventId: row.event_id,
+  occurrenceDate: row.occurrence_date,
+  kind: row.kind as ExceptionKind,
+  title: row.title,
+  note: row.note,
+  color: row.color,
+  allDay: row.all_day,
+  startsAt: row.starts_at,
+  endsAt: row.ends_at,
+  startDate: row.start_date,
+  endDate: row.end_date,
+  reminderMinutes: row.reminder_minutes,
+});
+
 const shiftIso = (iso: string, days: number) => isoDate(jdToDate(jdFromDate(parseIsoDate(iso)) + days));
 
-export async function fetchEvents(fromIso: string, toIso: string): Promise<EventRow[]> {
+// Events and their exceptions in one request (nested select).
+export async function fetchEvents(fromIso: string, toIso: string): Promise<{ events: EventRow[]; exceptions: ExceptionRow[] }> {
   const { data, error } = await supabase
     .from('events')
     .select(
-      'id, title, note, color, all_day, starts_at, ends_at, start_date, end_date, repeat, repeat_interval, repeat_until, lunar_month, lunar_day, reminder_minutes, updated_at, google_event_id, google_status, google_readonly',
+      'id, title, note, color, all_day, starts_at, ends_at, start_date, end_date, repeat, repeat_interval, repeat_until, lunar_month, lunar_day, reminder_minutes, updated_at, google_event_id, google_status, google_readonly, event_exceptions(' + EXCEPTION_COLUMNS + ')',
     )
     .is('deleted_at', null)
     .lte('span_start', shiftIso(toIso, 1))
     .gte('span_end', shiftIso(fromIso, -1));
   if (error) throw classify(error);
-  return (data ?? []).map((row) => toEvent(row as EventTableRow));
+  const rows = (data ?? []) as unknown as (EventTableRow & { event_exceptions: ExceptionTableRow[] | null })[];
+  return { events: rows.map(toEvent), exceptions: rows.flatMap((row) => (row.event_exceptions ?? []).map(toException)) };
 }
 
 export async function fetchExceptions(eventIds: string[]): Promise<ExceptionRow[]> {
   if (eventIds.length === 0) return [];
-  const { data, error } = await supabase
-    .from('event_exceptions')
-    .select('id, event_id, occurrence_date, kind, title, note, color, all_day, starts_at, ends_at, start_date, end_date, reminder_minutes')
-    .in('event_id', eventIds);
+  const { data, error } = await supabase.from('event_exceptions').select(EXCEPTION_COLUMNS).in('event_id', eventIds);
   if (error) throw classify(error);
-  return (data ?? []).map((row) => ({
-    id: row.id as string,
-    eventId: row.event_id as string,
-    occurrenceDate: row.occurrence_date as string,
-    kind: row.kind as ExceptionKind,
-    title: row.title,
-    note: row.note,
-    color: row.color,
-    allDay: row.all_day,
-    startsAt: row.starts_at,
-    endsAt: row.ends_at,
-    startDate: row.start_date,
-    endDate: row.end_date,
-    reminderMinutes: row.reminder_minutes,
-  }));
+  return ((data ?? []) as unknown as ExceptionTableRow[]).map(toException);
 }
 
 // `id` is generated once when the form opens: a retry after a lost response upserts the same
@@ -113,7 +133,7 @@ export async function upsertException(
   occurrenceDate: string,
   kind: ExceptionKind,
   override?: EventInput,
-): Promise<void> {
+): Promise<ExceptionRow> {
   const payload: Record<string, unknown> = { event_id: eventId, occurrence_date: occurrenceDate, kind };
   if (kind === 'override' && override) {
     payload.title = override.title;
@@ -126,6 +146,11 @@ export async function upsertException(
     payload.end_date = override.endDate;
     payload.reminder_minutes = override.reminderMinutes;
   }
-  const { error } = await supabase.from('event_exceptions').upsert(payload, { onConflict: 'event_id,occurrence_date' });
+  const { data, error } = await supabase
+    .from('event_exceptions')
+    .upsert(payload, { onConflict: 'event_id,occurrence_date' })
+    .select(EXCEPTION_COLUMNS)
+    .single();
   if (error) throw classify(error);
+  return toException(data as unknown as ExceptionTableRow);
 }

@@ -1,26 +1,24 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 
+import { computeSpan } from '@/features/events/event';
 import { useForbiddenGuard } from '@/features/events/useEvents';
 import { resyncReminders } from '@/features/reminders/reminderSync';
 import { narrowestCovering } from '@/lib/calendar/coveringRange';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
+import { putException, putRow, removeRow } from '@/lib/cache/applySaved';
 import type { DateRange } from '@/lib/recurrence';
 import type { TodoStatus } from '@/lib/todos';
 import * as api from './api';
-import { occurrencesForTodos, withStatus, type TodoInput, type TodosData } from './todo';
+import { occurrencesForTodos, withStatus, type TodoExceptionRow, type TodoInput, type TodoRow, type TodosData } from './todo';
 
 export const TODOS_KEY = 'todos';
 
 function todosQueryOptions(range: DateRange) {
   return {
     queryKey: [TODOS_KEY, isoDate(range.from), isoDate(range.to)] as const,
-    queryFn: async (): Promise<TodosData> => {
-      const todos = await api.fetchTodos(isoDate(range.from), isoDate(range.to));
-      const exceptions = await api.fetchTodoExceptions(todos.map((t) => t.id));
-      return { todos, exceptions };
-    },
+    queryFn: (): Promise<TodosData> => api.fetchTodos(isoDate(range.from), isoDate(range.to)),
   };
 }
 
@@ -56,11 +54,39 @@ export function usePrefetchTodos(ranges: DateRange[], enabled: boolean) {
   }, [queryClient, ranges, enabled]);
 }
 
-function useInvalidateTodos() {
+// As for events (useEvents.ts): a saved write goes into every loaded range, no refetch.
+function applyToCache(queryClient: QueryClient, edit: (data: TodosData, from: string, to: string) => TodosData) {
+  if (queryClient.isFetching({ queryKey: [TODOS_KEY] }) > 0) {
+    void queryClient.invalidateQueries({ queryKey: [TODOS_KEY] });
+    return;
+  }
+  for (const [key, data] of queryClient.getQueriesData<TodosData>({ queryKey: [TODOS_KEY] })) {
+    if (data) queryClient.setQueryData(key, edit(data, key[1] as string, key[2] as string));
+  }
+}
+
+export function useTodoCacheEdits() {
   const queryClient = useQueryClient();
-  return () => {
-    void resyncReminders();
-    return queryClient.invalidateQueries({ queryKey: [TODOS_KEY] });
+  return {
+    saved: (row: TodoRow, clearExceptions: boolean) =>
+      applyToCache(queryClient, (data, from, to) => ({
+        todos: putRow(data.todos, row, computeSpan(row), from, to),
+        exceptions: clearExceptions ? data.exceptions.filter((x) => x.todoId !== row.id) : data.exceptions,
+      })),
+    removed: (id: string) =>
+      applyToCache(queryClient, (data) => ({
+        todos: removeRow(data.todos, id),
+        exceptions: data.exceptions.filter((x) => x.todoId !== id),
+      })),
+    exception: (saved: TodoExceptionRow) =>
+      applyToCache(queryClient, (data) => ({
+        ...data,
+        exceptions: data.todos.some((t) => t.id === saved.todoId)
+          ? putException(data.exceptions, saved, (x) => x.todoId === saved.todoId && x.occurrenceDate === saved.occurrenceDate)
+          : data.exceptions,
+      })),
+    status: (todoId: string, occurrenceDate: string, status: TodoStatus) =>
+      applyToCache(queryClient, (data) => withStatus(data, todoId, occurrenceDate, status)),
   };
 }
 
@@ -68,7 +94,7 @@ export type SaveTodoVars = { id: string; updatedAt?: string; input: TodoInput; c
 
 export function useSaveTodo() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateTodos();
+  const edits = useTodoCacheEdits();
   return useMutation({
     mutationFn: (vars: SaveTodoVars) =>
       guard(() =>
@@ -76,16 +102,22 @@ export function useSaveTodo() {
           ? api.updateTodo(vars.id, vars.updatedAt, vars.input, { clearExceptions: vars.clearExceptions })
           : api.createTodo(vars.id, vars.input),
       ),
-    onSuccess: invalidate,
+    onSuccess: (row, vars) => {
+      void resyncReminders();
+      edits.saved(row, !!vars.clearExceptions);
+    },
   });
 }
 
 export function useDeleteTodo() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateTodos();
+  const edits = useTodoCacheEdits();
   return useMutation({
     mutationFn: (id: string) => guard(() => api.deleteTodo(id)),
-    onSuccess: invalidate,
+    onSuccess: (_, id) => {
+      void resyncReminders();
+      edits.removed(id);
+    },
   });
 }
 
@@ -93,10 +125,13 @@ export type SetTodoExceptionVars = { todoId: string; occurrenceDate: string; kin
 
 export function useSetTodoException() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateTodos();
+  const edits = useTodoCacheEdits();
   return useMutation({
     mutationFn: (vars: SetTodoExceptionVars) => guard(() => api.upsertTodoException(vars.todoId, vars.occurrenceDate, vars.kind, vars.override)),
-    onSuccess: invalidate,
+    onSuccess: (saved) => {
+      void resyncReminders();
+      edits.exception(saved);
+    },
   });
 }
 

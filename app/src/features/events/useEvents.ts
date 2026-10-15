@@ -7,9 +7,10 @@ import { resyncReminders } from '@/features/reminders/reminderSync';
 import { narrowestCovering } from '@/lib/calendar/coveringRange';
 import { isoDate } from '@/lib/calendar/monthGrid';
 import { DEFAULT_TIME_ZONE } from '@/lib/calendar/timeZone';
+import { putException, putRow, removeRow } from '@/lib/cache/applySaved';
 import type { DateRange } from '@/lib/recurrence';
 import * as api from './api';
-import type { EventInput, EventRow } from './event';
+import { computeSpan, type EventInput, type EventRow } from './event';
 import { occurrencesForEvents, type ExceptionKind, type ExceptionRow } from './occurrences';
 
 export const EVENTS_KEY = 'events';
@@ -23,11 +24,7 @@ type EventsData = { events: EventRow[]; exceptions: ExceptionRow[] };
 function eventsQueryOptions(range: DateRange) {
   return {
     queryKey: eventsQueryKey(range),
-    queryFn: async (): Promise<EventsData> => {
-      const events = await api.fetchEvents(isoDate(range.from), isoDate(range.to));
-      const exceptions = await api.fetchExceptions(events.map((e) => e.id));
-      return { events, exceptions };
-    },
+    queryFn: (): Promise<EventsData> => api.fetchEvents(isoDate(range.from), isoDate(range.to)),
   };
 }
 
@@ -84,11 +81,38 @@ export function useForbiddenGuard() {
   };
 }
 
-function useInvalidateEvents() {
+// A saved write goes straight into every loaded range instead of refetching them all. While a
+// fetch is in flight its result may predate the write, so that case falls back to a refetch.
+function applyToCache(queryClient: QueryClient, edit: (data: EventsData, from: string, to: string) => EventsData) {
+  if (queryClient.isFetching({ queryKey: [EVENTS_KEY] }) > 0) {
+    void queryClient.invalidateQueries({ queryKey: [EVENTS_KEY] });
+    return;
+  }
+  for (const [key, data] of queryClient.getQueriesData<EventsData>({ queryKey: [EVENTS_KEY] })) {
+    if (data) queryClient.setQueryData(key, edit(data, key[1] as string, key[2] as string));
+  }
+}
+
+function useCacheEdits() {
   const queryClient = useQueryClient();
-  return () => {
-    void resyncReminders();
-    return queryClient.invalidateQueries({ queryKey: [EVENTS_KEY] });
+  return {
+    saved: (row: EventRow, clearExceptions: boolean) =>
+      applyToCache(queryClient, (data, from, to) => ({
+        events: putRow(data.events, row, computeSpan(row), from, to),
+        exceptions: clearExceptions ? data.exceptions.filter((x) => x.eventId !== row.id) : data.exceptions,
+      })),
+    removed: (id: string) =>
+      applyToCache(queryClient, (data) => ({
+        events: removeRow(data.events, id),
+        exceptions: data.exceptions.filter((x) => x.eventId !== id),
+      })),
+    exception: (saved: ExceptionRow) =>
+      applyToCache(queryClient, (data) => ({
+        ...data,
+        exceptions: data.events.some((e) => e.id === saved.eventId)
+          ? putException(data.exceptions, saved, (x) => x.eventId === saved.eventId && x.occurrenceDate === saved.occurrenceDate)
+          : data.exceptions,
+      })),
   };
 }
 
@@ -96,7 +120,7 @@ export type SaveEventVars = { id: string; updatedAt?: string; input: EventInput;
 
 export function useSaveEvent() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateEvents();
+  const edits = useCacheEdits();
   return useMutation({
     mutationFn: (vars: SaveEventVars) =>
       guard(() =>
@@ -104,19 +128,23 @@ export function useSaveEvent() {
           ? api.updateEvent(vars.id, vars.updatedAt, vars.input, { clearExceptions: vars.clearExceptions })
           : api.createEvent(vars.id, vars.input),
       ),
-    onSuccess: (row) => {
+    onSuccess: (row, vars) => {
       googleSync.afterEventSaved(row.id);
-      return invalidate();
+      void resyncReminders();
+      edits.saved(row, !!vars.clearExceptions);
     },
   });
 }
 
 export function useDeleteEvent() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateEvents();
+  const edits = useCacheEdits();
   return useMutation({
     mutationFn: (id: string) => guard(() => googleSync.deleteEvent(id)),
-    onSuccess: invalidate,
+    onSuccess: (_, id) => {
+      void resyncReminders();
+      edits.removed(id);
+    },
   });
 }
 
@@ -125,12 +153,13 @@ export type SetExceptionVars = { eventId: string; occurrenceDate: string; kind: 
 // "Chỉ lần này" — sửa (kind 'override') hoặc xoá (kind 'skip') một lần lặp.
 export function useSetOccurrenceException() {
   const guard = useForbiddenGuard();
-  const invalidate = useInvalidateEvents();
+  const edits = useCacheEdits();
   return useMutation({
     mutationFn: (vars: SetExceptionVars) => guard(() => api.upsertException(vars.eventId, vars.occurrenceDate, vars.kind, vars.override)),
-    onSuccess: (_, vars) => {
+    onSuccess: (saved, vars) => {
       googleSync.afterExceptionSaved(vars.eventId, vars.occurrenceDate);
-      return invalidate();
+      void resyncReminders();
+      edits.exception(saved);
     },
   });
 }

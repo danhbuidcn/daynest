@@ -13,7 +13,7 @@ import { NOT_DONE } from '@/lib/todos';
 import * as api from './api';
 import type { TodoOccurrence, TodoRow } from './todo';
 import { sameStatus, toTodoInput } from './todoFormState';
-import { TODOS_KEY, useSaveTodo, useSetTodoException } from './useTodos';
+import { TODOS_KEY, useSaveTodo, useSetTodoException, useTodoCacheEdits } from './useTodos';
 
 // Save flow of the todo form — the event form's (F2) + subtasks and the tick of the lap being
 // edited: create · edit a one-off · "Chỉ lần này / Tất cả" (+ clear warning) · conflict.
@@ -38,6 +38,7 @@ export function useTodoFormSave({
 }) {
   const queryClient = useQueryClient();
   const { settings, recheckSession } = useAuth();
+  const edits = useTodoCacheEdits();
   const saveMutation = useSaveTodo();
   const exceptionMutation = useSetTodoException();
   const [newId] = useState(() => Crypto.randomUUID());
@@ -76,8 +77,10 @@ export function useTodoFormSave({
     const restarted = !baseTodo || clearExceptions || baseTodo.repeat === 'none';
     const before = restarted ? NOT_DONE : occurrence!.status;
     if (sameStatus(status, before)) return;
-    await api.setTodoStatus({ id, repeat: input.repeat }, restarted ? isoDate(form.startDate) : occurrence!.occurrenceDate, status);
-    await queryClient.invalidateQueries({ queryKey: [TODOS_KEY] });
+    const lap = restarted ? isoDate(form.startDate) : occurrence!.occurrenceDate;
+    await api.setTodoStatus({ id, repeat: input.repeat }, lap, status);
+    edits.status(id, lap, status);
+    void resyncReminders();
   };
 
   const saveAll = (clearExceptions: boolean) => run(() => writeAll(baseTodo!.id, baseTodo!.updatedAt, clearExceptions));
@@ -131,7 +134,7 @@ export function useTodoFormSave({
         setConflictOpen(false);
         if (!baseTodo || !occurrence) return;
         void run(async () => {
-          const fresh = (await api.fetchTodos(occurrence.occurrenceDate, occurrence.occurrenceDate)).find((t) => t.id === baseTodo.id);
+          const fresh = (await api.fetchTodos(occurrence.occurrenceDate, occurrence.occurrenceDate)).todos.find((t) => t.id === baseTodo.id);
           if (!fresh) throw new Error('gone');
           await writeAll(baseTodo.id, fresh.updatedAt, false);
         });
