@@ -11,6 +11,7 @@ export function CalendarHeader({
   onNext,
   onTitle,
   onToday,
+  compact = false,
 }: {
   title: string;
   onPrev: () => void;
@@ -18,6 +19,8 @@ export function CalendarHeader({
   onTitle: () => void;
   // Chi tiêu has no chip here: its "today" button sits in the period picker (S4 mockup 1b).
   onToday?: () => void;
+  // Month grid scrolled (S6 §9): one smaller line.
+  compact?: boolean;
 }) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -28,7 +31,7 @@ export function CalendarHeader({
         <Icon name="back" size={22} color={colors.text} />
       </Pressable>
       <Pressable accessibilityRole="button" onPress={onTitle} style={styles.titleWrap}>
-        <AppText variant="title" numberOfLines={1} style={styles.title}>
+        <AppText variant={compact ? 'heading' : 'title'} numberOfLines={1} style={styles.title}>
           {title}
         </AppText>
       </Pressable>

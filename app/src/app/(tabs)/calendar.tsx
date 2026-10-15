@@ -1,8 +1,8 @@
 import { SkeletonRows } from '@/components/Skeleton';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, RefreshControl, View } from 'react-native';
+import { ActivityIndicator, LayoutAnimation, RefreshControl, ScrollView, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -17,7 +17,7 @@ import { DayEventsDialog } from '@/features/calendar/DayEventsDialog';
 import { calendarOrder, isTodo, occurrencesOnDay } from '@/features/calendar/dayOccurrences';
 import { DayView } from '@/features/calendar/DayView';
 import { ListView } from '@/features/calendar/ListView';
-import { MonthView, WeekdayRow } from '@/features/calendar/MonthView';
+import { MonthView, ROW_HEIGHT, WeekdayRow } from '@/features/calendar/MonthView';
 import { MonthYearPicker } from '@/features/calendar/MonthYearPicker';
 import { useCalendarNav } from '@/features/calendar/useCalendarNav';
 import { loadError } from '@/features/network/loadError';
@@ -32,7 +32,8 @@ import { useErrorToast } from '@/features/network/useErrorToast';
 import type { TodoOccurrence } from '@/features/todos/todo';
 import { usePrefetchTodos, useSetTodoStatus, useTodosInRange } from '@/features/todos/useTodos';
 import { type BarItem } from '@/lib/calendar/eventBars';
-import { isoDate, parseIsoDate } from '@/lib/calendar/monthGrid';
+import { INITIAL_COLLAPSE, reduceCollapse, SETTLE_MS } from '@/lib/calendar/headerCollapse';
+import { isoDate, parseIsoDate, sameDay } from '@/lib/calendar/monthGrid';
 import type { SolarDate } from '@/lib/lunar';
 import { toggleTodo } from '@/lib/todos';
 import { makeStyles, space, useTheme } from '@/theme';
@@ -100,7 +101,39 @@ export default function CalendarScreen() {
     [setTodoStatus, failed],
   );
 
-  const goToday = () => setSelected(nav.goToday());
+  // Month grid (S6 §9): scrolls down, the header folds to one line; folding is remembered per month
+  // so changing month always shows the full header again.
+  const monthKey = `${cursor.year}-${cursor.month}`;
+  const [foldedMonth, setFoldedMonth] = useState<string | null>(null);
+  const folded = mode === 'month' && foldedMonth === monthKey;
+  const [scrollNonce, setScrollNonce] = useState(0);
+  const gridRef = useRef<ScrollView>(null);
+  const foldState = useRef(INITIAL_COLLAPSE);
+
+  // Opening the month, changing month or "Hôm nay": the week with today, else the top.
+  useEffect(() => {
+    if (mode !== 'month') return;
+    const index = days.findIndex((d) => sameDay(d, today));
+    const y = index >= 0 ? Math.floor(index / 7) * ROW_HEIGHT : 0;
+    foldState.current = { collapsed: false, anchor: y, until: Date.now() + SETTLE_MS };
+    const frame = requestAnimationFrame(() => gridRef.current?.scrollTo({ y, animated: false }));
+    return () => cancelAnimationFrame(frame);
+  }, [mode, monthKey, scrollNonce, days, today]);
+
+  const onGridScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const next = reduceCollapse(foldState.current, e.nativeEvent.contentOffset.y, Date.now());
+    const changed = next.collapsed !== foldState.current.collapsed;
+    foldState.current = next;
+    if (changed) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setFoldedMonth(next.collapsed ? monthKey : null);
+    }
+  };
+
+  const goToday = () => {
+    setSelected(nav.goToday());
+    setScrollNonce((n) => n + 1);
+  };
 
   const barsForDay = useCallback(
     (d: DayInfo): BarItem[] => {
@@ -184,14 +217,16 @@ export default function CalendarScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
       <ScreenBackground />
-      <CalendarHeader title={nav.title} onPrev={() => go(-1)} onNext={() => go(1)} onTitle={() => setPickerOpen(true)} onToday={goToday} />
-      <ViewModeBar value={mode} onChange={nav.setMode} />
+      <CalendarHeader title={nav.title} onPrev={() => go(-1)} onNext={() => go(1)} onTitle={() => setPickerOpen(true)} onToday={goToday} compact={folded} />
+      {folded ? null : <ViewModeBar value={mode} onChange={nav.setMode} />}
       {!loadFailure && (events.isError || todos.isError) ? <StaleLine onRetry={retryLoad} /> : null}
       {mode === 'month' ? <WeekdayRow weekStart={settings.weekStart} /> : null}
       <GestureDetector gesture={swipe}>
         <View style={styles.swipeArea} collapsable={false}>
           {mode === 'month' ? (
-            <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} cycleKind={(d) => cycle.dayOf(d)?.kind ?? null} loading={eventsLoading} />
+            <ScrollView ref={gridRef} onScroll={onGridScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}>
+              <MonthView days={days} selected={selected} onPressDay={onPressDay} onPressAdd={onPressAdd} barsForDay={barsForDay} cycleKind={(d) => cycle.dayOf(d)?.kind ?? null} loading={eventsLoading} />
+            </ScrollView>
           ) : mode === 'week' ? (
             <WeekView {...viewProps} weekStart={settings.weekStart} onSelectWeek={go} onAddAllDay={(d) => onAddAt(d, null)} cycleOf={cycle.dayOf} />
           ) : mode === 'day' ? (

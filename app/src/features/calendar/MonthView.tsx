@@ -13,6 +13,9 @@ import { makeStyles, space, useTheme } from '@/theme';
 import type { DayInfo } from './dayInfo';
 import { EventBar } from './EventBar';
 
+// 5 bars of 16 + gaps, the '+N' line, and the date row (lunar + number).
+export const ROW_HEIGHT = 150;
+
 export function WeekdayRow({ weekStart }: { weekStart: WeekStart }) {
   const { colors } = useTheme();
   const styles = useStyles();
@@ -164,8 +167,8 @@ const DayCell = memo(function DayCell({
 const useStyles = makeStyles(({ colors }) => ({
   weekdays: { flexDirection: 'row', paddingHorizontal: space.sm },
   weekday: { flex: 1, textAlign: 'center', paddingVertical: space.xs },
-  month: { flex: 1, paddingHorizontal: space.sm, paddingBottom: space.xs },
-  row: { flex: 1, flexDirection: 'row' },
+  month: { paddingHorizontal: space.sm, paddingBottom: space.xs },
+  row: { height: ROW_HEIGHT, flexDirection: 'row' },
   cell: {
     flex: 1,
     minWidth: 0,
