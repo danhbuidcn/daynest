@@ -284,7 +284,7 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 - [ ] Chi tiêu: mọi chế độ có danh sách nhóm (Ngày thêm danh sách khoản chi bên dưới, Tuần / Tháng không) · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
 - [ ] Lịch Tháng: ô 5 thanh + "+N" · cuộn dọc mượt trên máy thật · cuộn xuống thu gọn đầu, cuộn lên hiện lại · vuốt ngang đổi tháng vẫn đúng · mở Lịch cuộn tới tuần hôm nay.
 - [ ] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
-- [ ] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
+- [x] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
 - [ ] `npm run typecheck && npm run lint && npm test` qua.
 - [ ] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
 

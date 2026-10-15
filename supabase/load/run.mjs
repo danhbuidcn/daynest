@@ -1,7 +1,7 @@
 // Load test (LOCAL ONLY): VUS virtual users for DURATION_S seconds against PostgREST, each loop
-// = month read (events + exceptions) → create event → edit it → first notes page → note search
-// → (S4) month of expenses → 6-month totals → create expense → edit it → (S5) todo list (37 days)
-// + its exceptions → tick one repeat → 12 months of period days.
+// = month read (events, exceptions nested) → (S6) generate due expenses + budget → create event → edit it
+// → first notes page → note search → (S4) month of expenses → 6-month totals → create expense → edit it
+// → (S5) todo list (37 days, exceptions nested) → tick one repeat → 12 months of period days.
 // Requests mirror app/src/features/{events,notes,expenses,todos,cycle}/api.ts.
 // Env: API_URL, ANON_KEY, JWT_SECRET (from `supabase status -o env`), VUS=100, DURATION_S=300.
 // Pass: 0 errors and overall p95 < 1000 ms (docs/specs/sprint-2/design/db.md § Kiểm tra tải).
@@ -48,7 +48,8 @@ const latencies = {};
 const errors = {};
 let stop = false;
 
-async function call(op, token, path, { method = 'GET', body, prefer } = {}) {
+// `raceOk`: a 409 is fine (two virtual users picked the same user and day at once; in the app a 409 is retried as an update).
+async function call(op, token, path, { method = 'GET', body, prefer, raceOk = false } = {}) {
   const started = performance.now();
   try {
     const res = await fetch(`${REST}/${path}`, {
@@ -62,6 +63,7 @@ async function call(op, token, path, { method = 'GET', body, prefer } = {}) {
       body: body ? JSON.stringify(body) : undefined,
     });
     const text = await res.text();
+    if (raceOk && res.status === 409) return null;
     if (!res.ok) throw new Error(`${res.status} ${text.slice(0, 200)}`);
     return text ? JSON.parse(text) : null;
   } catch (e) {
@@ -77,16 +79,23 @@ async function iteration() {
   const token = tokenFor(n);
 
   // Month grid of Oct 2026, week starting Monday: 2026-09-28 … 2026-11-08
+  // One request: events with their exceptions nested (fetchEvents).
   const events = await call(
     'month events',
     token,
-    `events?select=${EVENT_COLUMNS}&deleted_at=is.null&span_start=lte.2026-11-08&span_end=gte.2026-09-28`,
+    `events?select=${EVENT_COLUMNS},event_exceptions(${EXCEPTION_COLUMNS})&deleted_at=is.null&span_start=lte.2026-11-08&span_end=gte.2026-09-28`,
   );
-  if (events?.length) {
-    await call('month exceptions', token, `event_exceptions?select=${EXCEPTION_COLUMNS}&event_id=in.(${events.map((e) => e.id).join(',')})`);
-  } else if (events) {
-    (errors['month events'] ??= []).push('empty month');
-  }
+  if (events && events.length === 0) (errors['month events'] ??= []).push('empty month');
+
+  // S6: opening Chi tiêu writes the recurring expenses that are due, then reads the budget.
+  const due = await call('generate due expenses', token, 'rpc/generate_due_expenses', { method: 'POST', body: { p_today: '2026-10-15' } });
+  if (due != null && typeof due !== 'number') (errors['generate due expenses'] ??= []).push(`expected a number, got ${JSON.stringify(due)}`);
+  const [budget, monthBudgets] = await Promise.all([
+    call('budget', token, 'user_settings?select=monthly_budget'),
+    call('month budgets', token, 'expense_month_budgets?select=month,amount'),
+  ]);
+  if (budget && budget[0]?.monthly_budget !== 15000000) (errors.budget ??= []).push('expected the general budget');
+  if (monthBudgets && monthBudgets.length !== 2) (errors['month budgets'] ??= []).push(`expected 2 months, got ${monthBudgets.length}`);
 
   const day = 1 + Math.floor(Math.random() * 28);
   const startsAt = `2026-10-${String(day).padStart(2, '0')}T10:00:00+07:00`;
@@ -152,10 +161,13 @@ async function iteration() {
   }
 
   // Todo list of the week 2026-10-12: 30 days overdue + 7 upcoming, widened a day each side.
-  const todos = await call('todo list', token, `todos?select=${TODO_COLUMNS}&deleted_at=is.null&span_start=lte.2026-10-26&span_end=gte.2026-09-11`);
+  const todos = await call(
+    'todo list',
+    token,
+    `todos?select=${TODO_COLUMNS},todo_exceptions(${TODO_EXCEPTION_COLUMNS})&deleted_at=is.null&span_start=lte.2026-10-26&span_end=gte.2026-09-11`,
+  );
   if (todos && todos.length < 10) (errors['todo list'] ??= []).push(`expected ≥ 10 todos, got ${todos.length}`);
   if (todos?.length) {
-    await call('todo exceptions', token, `todo_exceptions?select=${TODO_EXCEPTION_COLUMNS}&todo_id=in.(${todos.map((t) => t.id).join(',')})`);
     // Tick like setTodoStatus: update this repeat's exception, else add a 'status' row.
     const todo = todos.find((t) => t.repeat === 'daily');
     if (todo) {
@@ -170,6 +182,7 @@ async function iteration() {
         await call('tick todo', token, 'todo_exceptions', {
           method: 'POST',
           body: { todo_id: todo.id, occurrence_date: occurrence, kind: 'status', ...values },
+          raceOk: true,
         });
       }
     }

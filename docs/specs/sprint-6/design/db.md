@@ -94,3 +94,11 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 - Vòng lặp user ảo thêm: gọi `generate_due_expenses` → đọc event + todo 1 lượt (select lồng bảng).
 - Đạt: 0 lỗi, p95 < 1 s · `explain analyze` `generate_due_expenses` dùng index `(user_id)` của `expense_recurrences`.
 - Đo dung lượng thêm / user → cập nhật [§3 Mục tiêu tải](../../index.md#mục-tiêu-tải).
+
+### Kết quả (2026-10-15, Supabase local, 10.000 user giả)
+
+- Seed thêm: 5 quy tắc lặp / user (50.000 dòng) · ngân sách chung + 2 tháng riêng (20.000 dòng) → DB 3032 MB.
+- `supabase/db load` (100 user ảo × 300 s): **PASS** — 260.368 request, 0 lỗi, p50 103 ms, p95 268 ms, p99 424 ms, 866 req/s. Gồm `generate_due_expenses`, ngân sách, event + todo 1 lượt.
+- `explain analyze`: `generate_due_expenses` dùng `expense_recurrences_user_idx (user_id, next_on)`, 5 quy tắc / lần, ghi 10 dòng cho user seed · ngân sách dùng khoá chính · select lồng bảng event, todo dùng `*_exception_*_idx`, không quét cả bảng.
+- Dung lượng thêm / user: `expense_recurrences` 1,0 KB · `expense_month_budgets` 0,3 KB.
+- Bộ test: tick todo trùng (2 user ảo cùng user + ngày) trả 409 → coi là hợp lệ (app thử lại bằng cập nhật).
