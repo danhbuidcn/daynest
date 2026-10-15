@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -40,40 +40,54 @@ export function useAppearanceSync() {
   const { appearance, dirty, applyRemote, markSynced } = useAppearance();
   const signedIn = !!profile;
   const busy = useRef(false);
+  // A change that arrives while a save is in flight must be saved right after it, not dropped.
+  const again = useRef(false);
+  const latest = useRef({ appearance, dirty });
+  useEffect(() => {
+    latest.current = { appearance, dirty };
+  }, [appearance, dirty]);
+
+  const syncOnce = useCallback(async () => {
+    try {
+      const { data: auth } = await supabase.auth.getSession();
+      const userId = auth.session?.user.id;
+      if (!userId) return;
+      const { appearance: current, dirty: isDirty } = latest.current;
+      if (isDirty) {
+        const { error } = await supabase.from('user_settings').update(toRow(current)).eq('user_id', userId);
+        if (!error) markSynced(current);
+      } else {
+        const { data, error } = await supabase.from('user_settings').select(COLUMNS).eq('user_id', userId).single();
+        if (!error && data) {
+          const remote = fromRow(data);
+          if (JSON.stringify(remote) !== JSON.stringify(current)) applyRemote(remote);
+        }
+      }
+    } catch {
+      // offline: try again on the next change or when the app returns
+    }
+  }, [applyRemote, markSynced]);
+
+  const sync = useCallback(async () => {
+    if (busy.current) {
+      again.current = true;
+      return;
+    }
+    busy.current = true;
+    try {
+      do {
+        again.current = false;
+        await syncOnce();
+      } while (again.current);
+    } finally {
+      busy.current = false;
+    }
+  }, [syncOnce]);
 
   useEffect(() => {
     if (!signedIn) return;
-    let cancelled = false;
-
-    const sync = async () => {
-      if (busy.current) return;
-      busy.current = true;
-      try {
-        const { data: auth } = await supabase.auth.getSession();
-        const userId = auth.session?.user.id;
-        if (!userId) return;
-        if (dirty) {
-          const { error } = await supabase.from('user_settings').update(toRow(appearance)).eq('user_id', userId);
-          if (!error && !cancelled) markSynced(appearance);
-        } else {
-          const { data, error } = await supabase.from('user_settings').select(COLUMNS).eq('user_id', userId).single();
-          if (!error && data && !cancelled) {
-            const remote = fromRow(data);
-            if (JSON.stringify(remote) !== JSON.stringify(appearance)) applyRemote(remote);
-          }
-        }
-      } catch {
-        // offline: try again on the next change or when the app returns
-      } finally {
-        busy.current = false;
-      }
-    };
-
     void sync();
     const sub = AppState.addEventListener('change', (s) => s === 'active' && void sync());
-    return () => {
-      cancelled = true;
-      sub.remove();
-    };
-  }, [signedIn, appearance, dirty, applyRemote, markSynced]);
+    return () => sub.remove();
+  }, [signedIn, appearance, dirty, sync]);
 }
