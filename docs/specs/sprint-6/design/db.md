@@ -32,7 +32,7 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 
 | Cột | Quy tắc |
 | --- | --- |
-| `theme text not null default 'mint'` | check in 8 bộ màu + `system` + `custom` |
+| `theme text not null default 'mint'` | check in (`mint`, `rose`, `sky`, `lavender`, `clay`, `lemon`, `slate`, `dark`, `system`, `custom`) = Bạc hà, Hồng đào, Xanh biển, Oải hương, Cam đất, Vàng chanh, Xám than, Tối, Theo hệ thống, Tự chọn |
 | `theme_primary text` | Màu chủ đạo tự chọn `#RRGGBB` (khi `theme = 'custom'`) · check dạng hex |
 | `theme_dark boolean not null default false` | Tự chọn: nền Tối |
 | `background text not null default 'plain'` | `plain` · `color-1` … `color-8` · `color` (Màu khác) · `gradient-1` … `gradient-8` · `pattern-1` … `pattern-6` · `photo` (ảnh chỉ trên máy; máy không có ảnh → coi như `plain`) |
@@ -52,11 +52,11 @@ Lưu nhanh, tải nhanh, lỗi mạng, rung, khung xương, Hoàn tác: không �
 | `amount bigint not null` | check 1 → 100.000.000.000 (như `expenses`) |
 | `note text not null default ''` | ≤ 200 ký tự |
 | `frequency text not null` | check in (`weekly`, `monthly`) |
-| `anchor_day smallint not null` | `weekly`: thứ 1–7 (ISO) · `monthly`: ngày 1–31 · lấy từ ngày bắt đầu, giữ để tháng ngắn không làm "trôi" ngày (31 → 30 → vẫn 31 tháng sau) |
+| `anchor_day smallint not null` | check 1–31, `weekly` ≤ 7 · `weekly`: thứ 1–7 (ISO) · `monthly`: ngày 1–31 · lấy từ ngày bắt đầu, giữ để tháng ngắn không làm "trôi" ngày (31 → 30 → vẫn 31 tháng sau) |
 | `next_on date not null` | Ngày tới hạn kế tiếp chưa ghi |
 | `created_at`, `updated_at` | Như các bảng khác · trigger `set_updated_at` |
 
-- Index `(user_id)` — màn danh sách quy tắc · hàm tự ghi lọc theo `user_id` + `next_on`.
+- Index `(user_id, next_on)` — màn danh sách quy tắc · hàm tự ghi lọc theo `user_id` + `next_on`.
 - RLS: đọc / thêm / sửa / xoá khi `user_id = auth.uid()` + `session_active()` · `category_id` phải thuộc cùng user (check như `expenses`).
 - Sửa quy tắc: khoá lạc quan theo `updated_at` (như khoản chi).
 
