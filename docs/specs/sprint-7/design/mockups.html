@@ -371,7 +371,6 @@
 <div id="root"></div>
 <script>
 // Icon nét tròn. App dùng đúng các path này: app/src/components/Icon.tsx.
-// Icon nét tròn. App dùng đúng các path này: app/src/components/Icon.tsx.
 const sv = (d, w = 1.9) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const I = {
   logo: '<svg viewBox="0 0 52 52" fill="none"><rect x="12" y="7" width="31" height="39" rx="7" fill="#fff"/><path d="M20 18h16M20 25h16M20 32h10" stroke="#5BBE98" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="38" r="3.5" fill="#F4A6C0"/><g stroke="#3E9E7A" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M9 13h6M9 22h6M9 31h6M9 40h6"/></g></svg>',
@@ -479,7 +478,644 @@ const phone = (inner, cls = '') => `<div class="phone ${cls}">${status}${inner}<
 const colorPick = (on, custom) => `<div class="colors" style="padding:4px 0 0;justify-content:center;gap:10px">${['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'].map((c) => `<span class="cdot ev-${c} ${c === on ? 'on' : ''}"></span>`).join('')}<span class="cdot ${on === 'custom' ? 'on' : ''}" style="background:${custom || 'conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)'};display:grid;place-items:center">${custom ? '' : '<span style="width:14px;height:14px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;line-height:1">+</span>'}</span></div>`;
 
 // S5 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  todo: sv('<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/>'),
+  bug: sv('<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9.5 8a2.5 2.5 0 0 1 5 0M12 12v8M7 13H3.5M20.5 13H17M7.5 17.5l-3 2M16.5 17.5l3 2M7.5 9.5l-3-2M16.5 9.5l3-2"/>'),
+  image: sv('<rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="9.5" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/>'),
+  drop: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/></svg>`,
+  cycle: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>'),
+  ruler: sv('<rect x="3.5" y="8" width="17" height="8" rx="2"/><path d="M7.5 8v3M11 8v4M14.5 8v3M18 8v2"/>'),
+});
+// Ô tròn todo: xong = tròn đặc màu primary + ✓ trắng · chưa = viền primary
+const tk = (on, size = 22) => `<span class="tick ${on ? 'on' : ''}" style="width:${size}px;height:${size}px">${on ? I.checkW : ''}</span>`;
+// Ô vuông việc trong danh sách (dùng lại Dòng checklist của note)
+const sq = (on) => `<span class="tick ${on ? 'on' : ''}" style="border-radius:6px">${on ? I.checkW : ''}</span>`;
 
+// ---- Dữ liệu mẫu (hôm nay: Thứ Ba 13/10/2026 · tuần bắt đầu Thứ Hai) ----
+// [ngày, tiêu đề, màu, xong, việc trong danh sách xong/tổng, giờ]
+const T = [
+  [13, 'Học tiếng Anh — Ngày 3', 'lavender', false, [2, 4], 'Cả ngày'],
+  [13, 'Nộp hồ sơ bảo hiểm', 'sky', false, null, '14:00'],
+  [13, 'Mua quà sinh nhật mẹ', 'pink', true, null, 'Cả ngày'],
+  [12, 'Học tiếng Anh — Ngày 2', 'lavender', false, [3, 4], 'Cả ngày'],
+  [9, 'Gọi điện cho bác sĩ', 'mint', false, null, '9:00'],
+  [14, 'Học tiếng Anh — Ngày 4', 'lavender', false, [0, 3], 'Cả ngày'],
+  [16, 'Đóng tiền học bơi', 'peach', false, null, 'Cả ngày'],
+  [19, 'Dọn tủ quần áo', 'lemon', false, [0, 5], 'Cả ngày'],
+];
+const EV = [[13, 'Họp nhóm', 'mint', '9:00 – 10:00'], [16, 'Sinh nhật Lan', 'pink', 'Cả ngày'], [20, 'Khám răng', 'sky', '15:00 – 16:00']];
+const PERIOD = [1, 2, 3, 4, 5];              // ngày đã ghi (tháng 10)
+const PRED = [29, 30, 31, 32, 33];           // dự đoán: 29/10 → 2/11 (32 = 1/11, 33 = 2/11)
+const WD = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+const dlabel = (d) => (d === 13 ? 'Hôm nay' : d === 12 ? 'Hôm qua' : d === 14 ? 'Ngày mai' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`);
+const lunar = (date) => { // âm lịch tháng 9–11/2026 (mùng 1 tháng 9 âm = 10/10)
+  const n = Math.round((date - new Date(2026, 9, 10)) / 864e5);
+  if (n < 0) return [30 + n, 8];
+  return n < 30 ? [n + 1, 9] : [n - 29, 10];
+};
+
+const s5css = `<style>
+  .tbar { display: flex; align-items: center; gap: 3px; }
+  .tbar .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--text); flex: none; opacity: .7; }
+  .tbar.done { opacity: .55; text-decoration: line-through; } .tbar.done .o { background: var(--text); }
+  .pdot { width: 11px; height: 11px; position: absolute; right: 2px; top: 19px; color: var(--error); display: grid; }
+  .pdot svg { width: 100%; height: 100%; } .pdot.pred { opacity: .6; }
+  .trow { display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 56px; }
+  .trow + .trow { border-top: 1px solid var(--border); }
+  .trow .mid { flex: 1; min-width: 0; }
+  .trow .mid div { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .trow .mid span { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+  .trow.done .mid div { text-decoration: line-through; color: var(--muted); }
+  .trow .cd { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .sub { color: var(--primary-dark); font-weight: 800; display: inline-flex; gap: 3px; align-items: center; }
+  .sub svg { width: 13px; height: 13px; }
+  .late { color: var(--error); font-weight: 800; }
+  .seg.two { grid-template-columns: repeat(2, 1fr); }
+  /* Form tạo: tiêu đề là nút "Todo ▾" → pop-up 4 ô như nút + (chỉ khi tạo mới) */
+  .kind-title { margin: 0 auto; height: 40px; padding: 0 12px 0 16px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 22px; font-weight: 800; }
+  .kind-title svg { width: 20px; height: 20px; color: var(--muted); }
+  .qbtn.cur { box-shadow: inset 0 0 0 2px var(--primary); position: relative; }
+  .qbtn.cur .ck { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 10px; background: var(--primary); display: grid; place-items: center; }
+  .qbtn.cur .ck svg { width: 12px; height: 12px; }
+  .cyc { display: flex; align-items: center; gap: 10px; background: var(--error-soft); border-radius: 16px; padding: 10px 12px; font-size: 15px; text-align: left; }
+  .cyc .ci { width: 32px; height: 32px; border-radius: 10px; background: var(--surface); color: var(--error); display: grid; place-items: center; flex: none; }
+  .cyc .ci svg { width: 18px; height: 18px; }
+  .cyc b { font-weight: 800; } .cyc .grow { flex: 1; }
+  .cyc .go { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--surface); color: var(--text); font-size: 12px; font-weight: 800; display: flex; align-items: center; }
+  .pm { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 6px; padding: 0 12px; }
+  .pm .c { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 15px; }
+  .pm .c.fut { color: var(--muted); opacity: .45; }
+  .pm .c.today b { color: var(--primary-dark); font-weight: 800; }
+  .pm .o { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; }
+  .pm .o.on { background: var(--error); border-color: var(--error); }
+  .pm .o svg { width: 14px; height: 14px; }
+  .pmh { text-align: center; font-size: 17px; font-weight: 700; padding: 14px 0 8px; }
+  .thumbs { display: flex; gap: 10px; }
+  .thumb { width: 92px; height: 92px; border-radius: 16px; position: relative; flex: none; }
+  .thumb .rmx { position: absolute; right: -6px; top: -6px; width: 24px; height: 24px; border-radius: 50%; background: var(--text); color: #fff; display: grid; place-items: center; }
+  .thumb .rmx svg { width: 14px; height: 14px; }
+  .hl { box-shadow: inset 0 0 0 2px var(--primary); border-radius: 12px; }
+  .go.hl { box-shadow: 0 0 0 2px var(--primary); }
+  .ds.today:not(.on) b { color: var(--primary-dark); }
+  .tpick { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; max-height: 260px; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent); }
+  .tpick > div { display: flex; flex-direction: column; }
+  .tpick .opt { justify-content: center; }
+</style>`;
+
+// ---- Lịch tháng 10/2026 ----
+const monthCal = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>
+  <div class="month">${cells.map((dt) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate();
+    const key = inM ? d : dt.getMonth() === 10 ? 31 + d : -1;
+    const [ld, lm] = lunar(dt);
+    const evs = inM ? EV.filter((e) => e[0] === d).map((e) => `<div class="bar ev-${e[2]}">${e[1]}</div>`) : [];
+    const tds = inM ? T.filter((t) => t[0] === d).map((t) => `<div class="bar ev-${t[2]} tbar ${t[3] ? 'done' : ''}"><span class="o"></span>${t[1]}</div>`) : [];
+    const all = [...evs, ...tds];
+    const dot = inM && PERIOD.includes(d) ? `<span class="pdot">${I.drop(true)}</span>` : PRED.includes(key) ? `<span class="pdot pred">${I.drop(false)}</span>` : '';
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}">
+      <div class="top"><span class="d">${d}</span><span class="l ${ld === 1 || ld === 15 ? 'key' : ''}">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${dot}
+      ${all.slice(0, 3).join('')}${all.length > 3 ? `<div class="more">+${all.length - 3}</div>` : ''}</div>`;
+  }).join('')}</div>`;
+};
+const calHead = (t) => `<div class="cal-head"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`;
+const seg4 = (on) => `<div class="seg">${['Tháng', 'Danh sách', 'Tuần', 'Ngày'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const monthScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg4('Tháng')}${monthCal()}
+  <div class="cap muted" style="display:flex;gap:14px;justify-content:center;padding:4px 0 8px"><span style="display:flex;gap:6px;align-items:center"><span class="pdot" style="position:static">${I.drop(true)}</span>Kỳ kinh</span><span style="display:flex;gap:6px;align-items:center"><span class="pdot pred" style="position:static">${I.drop(false)}</span>Dự đoán</span><span style="display:flex;gap:6px;align-items:center"><span class="tbar"><span class="o"></span></span>Todo</span></div>
+</div>${tabbar('cal')}`;
+
+// ---- Danh sách (dải 7 ngày + thẻ) ----
+const ecard = (title, color, tm, todo) => `<div class="ecard"><span class="stripe ev-${color}"></span>
+  ${todo ? `<span style="display:grid;place-items:center;padding-left:10px">${tk(todo.done)}</span>` : ''}
+  <div class="body"><div class="ttl" style="${todo && todo.done ? 'text-decoration:line-through;color:var(--muted)' : ''}">${title}</div><div class="tm">${tm}${todo && todo.sub ? ` · <span class="sub">${I.checklist}${todo.sub[0]}/${todo.sub[1]}</span>` : ''}</div></div></div>`;
+const agendaScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg4('Danh sách')}
+  <div class="daystrip">${[12, 13, 14, 15, 16, 17, 18].map((d) => `<div class="ds ${d === 13 ? 'on' : ''}"><i>${WD[new Date(2026, 9, d).getDay()]}</i><b>${d}</b><em>&nbsp;</em></div>`).join('')}</div>
+  <div class="agenda">
+    <div class="cyc"><span class="ci">${I.cycle}</span><span class="grow">Kỳ kinh dự kiến sau <b>16 ngày</b></span></div>
+    <div class="ag"><div class="times"><b>9:00</b>10:00</div>${ecard('Họp nhóm', 'mint', '9:00 – 10:00')}</div>
+    <div class="ag"><div class="times"><b>14:00</b></div>${ecard('Nộp hồ sơ bảo hiểm', 'sky', '14:00', { done: false })}</div>
+    <div class="ag"><div class="times"><b>Cả ngày</b></div>${ecard('Học tiếng Anh — Ngày 3', 'lavender', 'Lặp hằng ngày', { done: false, sub: [2, 4] })}</div>
+    <div class="ag"><div class="times"><b>Cả ngày</b></div>${ecard('Mua quà sinh nhật mẹ', 'pink', 'Cả ngày', { done: true })}</div>
+  </div>
+</div>${tabbar('cal')}`;
+
+// ================= S6 =================
+// Màu ✓ theo bộ màu (S5 viết cứng #5BBE98)
+I.check = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" style="color:var(--primary)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+// S6 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  wifiOff: sv('<path d="M3 9.5a13 13 0 0 1 4.5-2.8M10.5 5.6A13 13 0 0 1 21 9.5M6 12.8a8.5 8.5 0 0 1 4-2.1M14.5 10.9a8.5 8.5 0 0 1 3.5 1.9M9 16a4 4 0 0 1 6 0M12 19.5h.01M3.5 3.5l17 17"/>'),
+  cloudOff: sv('<path d="M7 18.5h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.3 4.6 4.6 0 0 0 7 18.5z"/><path d="M12 10.5v3M12 16h.01"/>'),
+  font: sv('<path d="M4.5 19l5-13.5h1L15.5 19M6.5 14h7"/><path d="M17.5 12.5c.6-.6 1.3-.9 2.1-.9 1.2 0 1.9.7 1.9 1.9V19M21.5 15.5h-2.2c-1.3 0-2.3.6-2.3 1.8s.9 1.7 1.9 1.7c1.1 0 2.6-.8 2.6-2.3"/>', 1.7),
+  budget: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6 6"/>'),
+});
+
+// ---- Bộ màu (S6 §9) · token như design-system · chữ trên nền màu event luôn tối cố định ----
+const THEMES = {
+  mint: ['Bạc hà', { primary: '#5BBE98', 'primary-dark': '#3E9E7A', 'primary-soft': '#E3F5EC', bg: '#FAF8F5', surface: '#FFFFFF', border: '#EFEAE3', text: '#2F2D33', muted: '#8C8794' }],
+  peach: ['Hồng đào', { primary: '#EE8FA9', 'primary-dark': '#C9607F', 'primary-soft': '#FDE9EF', bg: '#FFF8F9', surface: '#FFFFFF', border: '#F5E3E8', text: '#33282C', muted: '#94838A' }],
+  sky: ['Xanh biển', { primary: '#5AAEE0', 'primary-dark': '#3A87B8', 'primary-soft': '#E3F1FA', bg: '#F6F9FC', surface: '#FFFFFF', border: '#E2EAF1', text: '#263039', muted: '#7E8A95' }],
+  lavender: ['Oải hương', { primary: '#9C88E0', 'primary-dark': '#7660C2', 'primary-soft': '#EEEAFB', bg: '#F9F8FD', surface: '#FFFFFF', border: '#E9E5F4', text: '#2E2B38', muted: '#8A8597' }],
+  clay: ['Cam đất', { primary: '#E39A6B', 'primary-dark': '#B96D42', 'primary-soft': '#FBEDE3', bg: '#FCF8F4', surface: '#FFFFFF', border: '#F0E5DB', text: '#33291F', muted: '#928579' }],
+  lemon: ['Vàng chanh', { primary: '#E0B63A', 'primary-dark': '#9C7A12', 'primary-soft': '#FBF3D8', bg: '#FDFBF3', surface: '#FFFFFF', border: '#EFE9D3', text: '#2F2C22', muted: '#8C8671' }],
+  slate: ['Xám than', { primary: '#66788A', 'primary-dark': '#4A5A6A', 'primary-soft': '#E8ECF0', bg: '#F6F7F8', surface: '#FFFFFF', border: '#E5E7EA', text: '#24272B', muted: '#80868D' }],
+  dark: ['Tối', { primary: '#5BBE98', 'primary-dark': '#7FD1B0', 'primary-soft': '#1F3A30', bg: '#17171B', surface: '#232328', border: '#34343B', text: '#EDEBF0', muted: '#A29EAB', 'error-soft': '#3D2628', 'warning-soft': '#3B3122', toast: '#3A3A42' }],
+};
+const FONTS = { nunito: ['Nunito', "'Nunito'"], bvp: ['Be Vietnam Pro', "'Be Vietnam Pro'"], quicksand: ['Quicksand', "'Quicksand'"], baloo: ['Baloo 2', "'Baloo 2'"], itim: ['Itim', "'Itim'"], patrick: ['Patrick Hand', "'Patrick Hand'"] };
+// Nền chuyển màu: tự làm từ token + màu event (không chép hình của app khác)
+const mix = (c, p) => `color-mix(in srgb, var(--${c}) ${p}%, var(--bg))`;
+const GRADS = [
+  `linear-gradient(180deg, var(--primary-soft), var(--bg) 60%)`,
+  `linear-gradient(160deg, ${mix('pink', 35)}, var(--bg) 55%, ${mix('sky', 30)})`,
+  `radial-gradient(circle at 15% 8%, ${mix('lemon', 55)}, transparent 45%), radial-gradient(circle at 95% 95%, ${mix('lavender', 45)}, transparent 50%), var(--bg)`,
+  `linear-gradient(180deg, ${mix('sky', 40)}, var(--bg) 70%)`,
+  `linear-gradient(135deg, ${mix('peach', 35)}, ${mix('pink', 25)})`,
+  `linear-gradient(180deg, ${mix('lavender', 35)}, ${mix('mint', 25)})`,
+  `linear-gradient(180deg, ${mix('mint', 35)}, ${mix('sky', 30)})`,
+  `radial-gradient(circle at 50% 0%, ${mix('peach', 45)}, transparent 55%), radial-gradient(circle at 50% 100%, ${mix('lavender', 40)}, transparent 55%), var(--bg)`,
+];
+// Màu nền có sẵn (S6 §8): 8 pastel cho bộ sáng · 8 màu tối cho bộ Tối
+const BGC_LIGHT = ['#FDF6E3', '#FCE8EF', '#E6F2FB', '#E9F6EF', '#F1ECFB', '#FFF0E0', '#FFF8D6', '#EFEFEC'];
+const BGC_DARK = ['#24201A', '#2A1F24', '#1B2430', '#1C2A24', '#231F2E', '#2B2219', '#2A2716', '#222225'];
+// Hoạ tiết tự vẽ: chấm bi · kẻ ô · kẻ dòng · sọc chéo · sao · tim — màu nhạt theo primary / màu event
+const tint = (n) => `color-mix(in srgb, var(--primary) ${n}%, transparent)`;
+// Bộ Tối: hoạ tiết mờ hơn (op thấp) để không lấn chữ
+const svgTile = (path, fill, op = 0.55) => `url('data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="${path}" fill="#${fill}" fill-opacity="${op}"/></svg>`)}') 0 0/40px 40px`;
+const STAR = 'M14 6l2 5h5l-4 3 1.6 5L14 16l-4.6 3L11 14l-4-3h5z';
+const PATTERNS = [
+  `radial-gradient(${tint(30)} 1.6px, transparent 1.8px) 0 0/16px 16px, var(--bg)`,
+  `linear-gradient(${tint(16)} 1px, transparent 1px) 0 0/18px 18px, linear-gradient(90deg, ${tint(16)} 1px, transparent 1px) 0 0/18px 18px, var(--bg)`,
+  `repeating-linear-gradient(180deg, transparent 0 23px, ${tint(22)} 23px 24px), var(--bg)`,
+  `repeating-linear-gradient(135deg, ${tint(10)} 0 10px, transparent 10px 20px), var(--bg)`,
+  `${svgTile(STAR, 'F2D67A')}, var(--bg)`,
+  `${svgTile('M14 20s-6-3.6-6-8a3.4 3.4 0 0 1 6-2 3.4 3.4 0 0 1 6 2c0 4.4-6 8-6 8z', 'F4A6C0')}, var(--bg)`,
+];
+// "Ảnh của bạn": minh hoạ bằng CSS (biển, nắng) · lớp phủ màu nền theo độ mờ
+const PHOTO = 'radial-gradient(circle at 78% 18%, #FFF4C9 0 7%, transparent 8%), linear-gradient(180deg, #8EC9EC 0%, #CBE7F6 42%, #7FB8D8 43%, #5E9CC2 58%, #F3E2C0 59%, #E6CB98 100%)';
+const photoBg = (fade) => `linear-gradient(color-mix(in srgb, var(--bg) ${fade}%, transparent), color-mix(in srgb, var(--bg) ${fade}%, transparent)), ${PHOTO}`;
+
+const themeCss = `<style>
+  ${Object.entries(THEMES).map(([k, [, v]]) => `[data-theme="${k}"] { ${Object.entries({ toast: v.text, ...v }).map(([t, c]) => `--${t}: ${c};`).join(' ')} }`).join('\n  ')}
+  :root { --toast: #2F2D33; --on-color: #2F2D33; --font: 'Nunito'; }
+  ${Object.entries(FONTS).map(([k, [, f]]) => `[data-font="${k}"] { --font: ${f}; }`).join('\n  ')}
+  header.page, h2.group, figcaption, .controls { color: #2F2D33; }
+  figcaption span, header.page p { color: #8C8794; }
+  .phone { font-family: var(--font), Nunito, system-ui, sans-serif; color: var(--text); background: var(--wall, var(--bg)); }
+  .toast { background: var(--toast); }
+  .bar, .cico, .block .ttl, .ecard .stripe { color: var(--on-color); }
+  .controls { max-width: 1200px; margin: 0 auto 8px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 15px; }
+  .controls button { font: inherit; font-weight: 700; height: 34px; padding: 0 12px; border-radius: 999px; border: 1.5px solid #D9D3CB; background: #fff; color: #2F2D33; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .controls button.on { border-color: #2F2D33; }
+  .controls i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  /* Banner mất mạng (dòng cảnh báo, đầu màn) */
+  .offline { margin: 4px 16px 4px; background: var(--warning-soft); border-radius: 16px; padding: 8px 12px; font-size: 12px; line-height: 16px; display: flex; gap: 8px; align-items: center; flex: none; }
+  .offline svg { width: 18px; height: 18px; color: var(--warning); flex: none; }
+  .btn[disabled] { opacity: .45; }
+  .stale { text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); margin: 0 0 8px; flex: none; }
+  .stale b { color: var(--primary-dark); font-weight: 800; }
+  .errcard { margin: 24px 16px; padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .errcard .ei { width: 64px; height: 64px; border-radius: 22px; background: var(--error-soft); color: var(--error); display: grid; place-items: center; margin-bottom: 6px; }
+  .errcard .ei svg { width: 32px; height: 32px; }
+  .errcard h3 { font-size: 17px; font-weight: 700; } .errcard p { color: var(--muted); font-size: 15px; line-height: 22px; margin-bottom: 10px; }
+  /* Khung xương: khối xám nhấp nháy nhẹ */
+  .sk { background: linear-gradient(90deg, var(--border) 25%, color-mix(in srgb, var(--border) 35%, var(--surface)) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 6px; }
+  @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  /* Ngân sách */
+  .bud { margin-top: 10px; }
+  .bud .progress { height: 10px; margin: 0 0 6px; }
+  .bud .line { display: flex; justify-content: space-between; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .bud .line b { color: var(--text); font-weight: 800; }
+  .bud .line b.over { color: var(--error); }
+  .setbud { margin-top: 10px; height: 36px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .setbud svg { width: 18px; height: 18px; }
+  .hl2 { box-shadow: 0 0 0 2px var(--primary); border-radius: 12px; }
+  .rep { color: var(--muted); display: inline-flex; vertical-align: -2px; margin-left: 4px; } .rep svg { width: 13px; height: 13px; }
+  .toast.wrap { white-space: normal; width: 300px; line-height: 20px; border-radius: 20px; }
+  .toast .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  /* Giao diện */
+  .swgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px 4px; padding: 12px 8px; }
+  .swi { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; text-align: center; cursor: pointer; }
+  .swc { width: 44px; height: 44px; border-radius: 50%; position: relative; display: grid; place-items: center; border: 1px solid rgba(0,0,0,.08); }
+  .swc i { width: 18px; height: 18px; border-radius: 50%; }
+  .swi.on .swc { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--text); }
+  .swi.on { font-weight: 800; }
+  .tiles { display: flex; gap: 8px; padding: 12px; overflow: hidden; }
+  .tile { flex: none; width: 54px; height: 76px; border-radius: 14px; border: 1px solid var(--border); display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+  .tiles.sm { padding: 6px 12px 10px; } .tiles.sm .tile { width: 42px; height: 58px; border-radius: 12px; }
+  .bgsec { font-size: 12px; line-height: 16px; font-weight: 800; color: var(--muted); padding: 4px 12px 0; }
+  .bgdot { width: 28px; height: 28px; border-radius: 50%; flex: none; border: 1px solid var(--border); }
+  .tile.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
+  .tile svg { width: 22px; height: 22px; color: var(--primary-dark); }
+  .frow2 { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; cursor: pointer; }
+  .frow2 + .frow2 { border-top: 1px solid var(--border); }
+  .frow2 .aa { font-size: 22px; width: 40px; } .frow2 .grow { flex: 1; }
+  .slider { height: 6px; border-radius: 999px; background: var(--border); position: relative; flex: 1; }
+  .slider i { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: var(--primary); border-radius: 999px; }
+  .slider b { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+  .pv { margin: 0 16px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); background: var(--wall, var(--bg)); padding: 10px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; flex: none; }
+  .pv .mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px 0; font-size: 10px; line-height: 16px; text-align: center; }
+  .pv .mini .t { background: var(--primary); color: #fff; border-radius: 50%; font-weight: 800; }
+  .pv .mini .s { color: var(--error); }
+  .pv .mbar { grid-column: span 3; height: 8px; border-radius: 3px; margin: 1px 2px; }
+</style>`;
+
+// ---- Lịch (S6: nút 🔍 cạnh thanh chế độ) ----
+const segRow = (on) => seg4(on);
+const offline = `<div class="offline">${I.wifiOff}<span>Không có kết nối mạng.</span></div>`;
+const calMonth = ({ banner = '', grid = monthCal() } = {}) => `<div class="content">${banner}${calHead('Tháng 10, 2026')}${segRow('Tháng')}${grid}</div>${tabbar('cal')}`;
+
+// Khung xương lịch tháng: lưới, số ngày, ngày âm có ngay (tính trên máy) · chỉ thanh event chờ tải
+const monthSkeleton = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>
+  <div class="month">${cells.map((dt, i) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate(); const [ld, lm] = lunar(dt);
+    const n = inM ? [1, 0, 2, 0, 1, 0, 0, 1, 2, 0][i % 10] : 0;
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}"><div class="top"><span class="d">${d}</span><span class="l">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${Array.from({ length: n }, (_, j) => `<div class="sk" style="height:12px;width:${j ? 60 : 90}%"></div>`).join('')}</div>`;
+  }).join('')}</div>`;
+};
+
+// Lịch Tháng rộng hơn (S6 §9): ô 5 thanh, lưới cuộn dọc, cuộn xuống → đầu thu gọn
+const EV2 = [[12, 'Tập yoga', 'mint'], [13, 'Gọi mẹ', 'peach'], [14, 'Tập yoga', 'mint'], [16, 'Đi siêu thị', 'mint'], [16, 'Trả sách', 'sky'], [16, 'Tập yoga', 'mint'], [20, 'Họp phụ huynh', 'lemon'], [21, 'Tập yoga', 'mint'], [23, 'Cắt tóc', 'lavender'], [27, 'Tập yoga', 'mint']];
+const tallGrid = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="month" style="flex:none;grid-template-rows:repeat(6,118px)">${cells.map((dt) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate(); const key = inM ? d : dt.getMonth() === 10 ? 31 + d : -1; const [ld, lm] = lunar(dt);
+    const evs = inM ? [...EV, ...EV2].filter((e) => e[0] === d).map((e) => `<div class="bar ev-${e[2]}">${e[1]}</div>`) : [];
+    const tds = inM ? T.filter((t) => t[0] === d).map((t) => `<div class="bar ev-${t[2]} tbar ${t[3] ? 'done' : ''}"><span class="o"></span>${t[1]}</div>`) : [];
+    const all = [...evs, ...tds];
+    const dot = inM && PERIOD.includes(d) ? `<span class="pdot">${I.drop(true)}</span>` : PRED.includes(key) ? `<span class="pdot pred">${I.drop(false)}</span>` : '';
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}"><div class="top"><span class="d">${d}</span><span class="l ${ld === 1 || ld === 15 ? 'key' : ''}">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${dot}
+      ${all.slice(0, 5).join('')}${all.length > 5 ? `<div class="more">+${all.length - 5}</div>` : ''}</div>`;
+  }).join('')}</div>`;
+};
+const wkRow = `<div class="wk" style="background:var(--wall, var(--bg));position:relative;z-index:1">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>`;
+const calTall = (scrolled) => `<div class="content">${scrolled
+  ? `<div class="cal-head" style="padding:4px 12px 2px 8px"><span class="nav">${I.left}</span><div class="t" style="font-size:17px;line-height:24px">Tháng 10, 2026</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`
+  : `${calHead('Tháng 10, 2026')}${seg4('Tháng')}`}
+  ${wkRow}<div style="flex:1;overflow:hidden;position:relative"><div style="transform:translateY(${scrolled ? -236 : 0}px)">${tallGrid()}</div>
+  <span style="position:absolute;right:2px;top:${scrolled ? 34 : 4}%;width:3px;height:38%;border-radius:3px;background:var(--muted);opacity:.45"></span></div>
+</div>${tabbar('cal')}`;
+
+// ---- Lỗi ----
+const errCard = (icon, title, text) => `<div class="card errcard"><span class="ei">${icon}</span><h3>${title}</h3><p>${text}</p><button class="btn btn-secondary" style="width:auto;padding:0 28px">${I.restore}Thử lại</button></div>`;
+const calError = `<div class="content">${calHead('Tháng 10, 2026')}${segRow('Danh sách')}
+  ${errCard(I.cloudOff, 'Máy chủ đang gặp sự cố.', 'Hãy thử lại sau ít phút.')}
+</div>${tabbar('cal')}`;
+const calStale = agendaScreen.replace(seg4('Danh sách'), `${seg4('Danh sách')}<div class="stale">Chưa cập nhật được · <b>Thử lại</b></div>`);
+
+// ---- Ghi chú ----
+const notesHead = (on) => `<div class="screen-title">Ghi chú</div><div class="seg two" style="margin-top:0">${['Todo', 'Ghi chú'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const NOTES = [
+  ['Ý tưởng quà Tết', 'Bố: khăn len · Mẹ: máy massage cầm tay · Bé Na: bộ lego', 'pink', true],
+  ['Đi chợ cuối tuần', null, 'mint', false, [2, 6]],
+  ['Sách muốn đọc', 'Atomic Habits, Sapiens, Nhà giả kim, Đắc nhân tâm…', 'lavender', false],
+  ['Mật khẩu wifi nhà bà', 'Hỏi lại chú Tâm', 'sky', false],
+  ['Công thức bánh flan', '4 trứng, 400 ml sữa, 80 g đường, vani. Hấp lửa nhỏ 25 phút.', 'peach', false],
+  ['Kế hoạch Đà Lạt', null, 'lemon', false, [5, 9]],
+];
+const ncard = ([t, b, c, pin, prog]) => `<div class="ncard" style="border-left-color:var(--${c})">${pin ? `<span class="pin">${I.pin}</span>` : ''}<h4>${t}</h4>${b ? `<p>${b}</p>` : `<span class="prog">${I.checklist}${prog[0]}/${prog[1]} mục</span>`}<div class="foot"><span class="cap muted">12/10</span><span class="more">${I.more}</span></div></div>`;
+const notesTop = `${notesHead('Ghi chú')}<div class="search">${I.search}Tìm ghi chú</div>
+  <div class="chips"><span class="chip on">Tất cả <span class="num">24</span></span><span class="chip"><span class="cd ev-pink"></span><span class="cn">Gia đình</span></span><span class="chip"><span class="cd ev-mint"></span><span class="cn">Mua sắm</span></span></div>`;
+const notesScreen = `<div class="content">${notesTop}
+  <div class="nlist"><div class="ncols"><div>${NOTES.filter((_, i) => i % 2 === 0).map(ncard).join('')}</div><div>${NOTES.filter((_, i) => i % 2).map(ncard).join('')}</div></div></div>
+</div>${tabbar('man')}`;
+const skCard = (h) => `<div class="card" style="padding:14px;display:flex;flex-direction:column;gap:8px"><div class="sk" style="height:16px;width:70%"></div>${Array.from({ length: h }, (_, i) => `<div class="sk" style="height:12px;width:${i === h - 1 ? 50 : 95}%"></div>`).join('')}<div class="sk" style="height:10px;width:30%;margin-top:4px"></div></div>`;
+const notesSkeleton = `<div class="content">${notesHead('Ghi chú')}<div class="search">${I.search}Tìm ghi chú</div>
+  <div class="chips">${[64, 80, 72].map((w) => `<span class="sk" style="flex:none;width:${w}px;height:32px;border-radius:999px"></span>`).join('')}</div>
+  <div class="nlist"><div class="ncols"><div>${skCard(3)}${skCard(1)}${skCard(2)}</div><div>${skCard(1)}${skCard(3)}${skCard(2)}</div></div></div>
+</div>${tabbar('man')}`;
+
+// ---- Chi tiêu (dữ liệu S4, hôm nay 13/10) ----
+const C = { food: ['peach', 'food', 'Ăn uống'], transport: ['sky', 'car', 'Di chuyển'], bills: ['lemon', 'bill', 'Hoá đơn'], coffee: ['pink', 'coffee', 'Cà phê'], kid: ['lavender', 'tag', 'Con nhỏ'] };
+// [ngày, nhóm, số tiền, ghi chú, tự ghi từ khoản lặp]
+const X = [
+  [13, 'food', 45000, 'Bún riêu'], [13, 'transport', 30000, 'Grab đi làm'], [13, 'coffee', 35000, 'Cà phê sáng', true],
+  [12, 'food', 320000, 'Ăn tối cả nhà'], [11, 'kid', 150000, 'Sữa'], [10, 'bills', 450000, 'Tiền điện tháng 9'], [10, 'food', 60000, 'Phở'],
+  [9, 'transport', 80000, 'Đổ xăng'], [8, 'food', 55000, 'Cơm trưa'], [7, 'bills', 220000, 'Internet', true],
+  [6, 'coffee', 35000, 'Cà phê sáng', true], [5, 'kid', 300000, 'Học phí bơi', true], [3, 'food', 1200000, 'Đi chợ cả tuần'], [1, 'bills', 2500000, 'Tiền nhà', true],
+];
+const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`;
+const cico = (k, size) => `<span class="cico ev-${C[k][0]}"${size ? ` style="width:${size}px;height:${size}px"` : ''}>${I[C[k][1]]}</span>`;
+const total = X.reduce((s, r) => s + r[2], 0);
+const expHead = (hlTag) => `<div class="topbar"><span></span><div class="screen-title">Chi tiêu</div><span class="act ${hlTag ? 'hl2' : ''}" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:12px">${I.tag}</span></div>`;
+const seg3 = (on) => `<div class="seg three">${['Ngày', 'Tuần', 'Tháng'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const periodHead = (t) => `<div class="cal-head" style="grid-template-columns:32px 1fr 32px"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span></div>`;
+const byCat = (rows) => {
+  const sum = rows.reduce((s, r) => s + r[2], 0); const m = {};
+  rows.forEach((r) => { m[r[1]] = (m[r[1]] || 0) + r[2]; });
+  return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => { const pc = Math.round((v / sum) * 100);
+    return `<div class="crow">${cico(k)}<span class="nm">${C[k][2]}</span><span class="am">${vnd(v)}</span><span class="pbar"><i class="ev-${C[k][0]}" style="width:${pc}%"></i></span><span class="pc">${pc}%</span></div>`; }).join('');
+};
+const xrow = ([, k, a, note, auto]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${C[k][2]}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div>${note ? `<span>${note}</span>` : ''}</div><span class="am">${vnd(a)}</span></div>`;
+const short = (n) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}tr` : `${Math.round(n / 1000)}k`);
+// Biểu đồ cột (S6 §13): bấm cột → dòng đọc số tiền của cột đó · ít cột (≤ 10) → mọi cột ghi số tiền · nhiều cột (cả tháng) → chỉ ghi cột cao nhất, chọn khoảng ngày để xem rõ hơn
+const barChart = (title, vals, labs, onIdx, { showLab = () => true, all = true, readout = '', chips = '' } = {}) => { const max = Math.max(...vals, 1); const top = vals.indexOf(Math.max(...vals));
+  return `<div class="card"><div class="sec">${title}</div>${chips}${readout ? `<div class="readout">${readout}</div>` : ''}<div class="bars">${vals.map((v, i) => `<div>${v && (all || i === top) ? `<b>${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * 92, 3) : 0}px"></i></div>`).join('')}</div>
+    <div class="xlab">${labs.map((l, i) => `<span class="${i === onIdx ? 'on' : ''}">${showLab(i) ? l : ''}</span>`).join('')}</div></div>`; };
+const days31 = Array.from({ length: 31 }, (_, i) => i + 1);
+const dayTotal = (d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0);
+const dayRead = (d) => `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10 · <b>${vnd(dayTotal(d))}</b>`;
+const RANGES = [['Cả tháng', 1, 31], ['1–10', 1, 10], ['11–20', 11, 20], ['21–31', 21, 31]];
+// range: chỉ số trong RANGES · sel: ngày đang chọn
+const dayChart = (range = 0, sel = 13) => { const [, from, to] = RANGES[range]; const ds = days31.filter((d) => d >= from && d <= to);
+  return barChart('Theo ngày', ds.map(dayTotal), ds.map(String), ds.indexOf(sel), {
+    all: range > 0, showLab: range > 0 ? () => true : (i) => [0, 4, 9, 14, 19, 24, 30].includes(i), readout: dayRead(sel),
+    chips: `<div class="rchips">${RANGES.map(([t], i) => `<span class="${i === range ? 'on' : ''}">${t}</span>`).join('')}</div>` }); };
+const weekDays = [12, 13, 14, 15, 16, 17, 18];
+const weekChart = barChart('Theo ngày', weekDays.map(dayTotal), ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], 1, { readout: dayRead(13) });
+const monthsChart = barChart('6 tháng gần nhất', [6200000, 5400000, 7100000, 6800000, 5900000, total], ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], 5, { readout: `Tháng 10/2026 · <b>${vnd(total)}</b>` });
+// Ngân sách: < 80% primary · 80–100% warning · > 100% error
+const budgetCard = (budget, spent = total, own = false) => {
+  if (!budget) return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div><div class="setbud hl2">${I.budget}Đặt ngân sách tháng</div></div>`;
+  const pc = Math.round((spent / budget) * 100); const color = pc > 100 ? 'error' : pc >= 80 ? 'warning' : 'primary';
+  return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div>
+    <div class="bud"><div class="progress"><i style="width:${Math.min(pc, 100)}%;background:var(--${color})"></i></div>
+    <div class="line"><span>${pc}% ngân sách ${own ? 'riêng ' : ''}${vnd(budget)}</span>${pc > 100 ? `<b class="over">Vượt ${vnd(spent - budget)}</b>` : `<b>Còn ${vnd(budget - spent)}</b>`}</div></div></div>`;
+};
+const expMonth = (budget, { hlTag = false, spent, own = false, scrolled = false, range = 0 } = {}) => `<div class="content">${expHead(hlTag)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
+  <div class="xlist">${scrolled ? '' : budgetCard(budget, spent, own) + dayChart(range)}${monthsChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
+</div>${tabbar('exp')}`;
+const dayRows = X.filter((r) => r[0] === 13);
+const weekRows = X.filter((r) => weekDays.includes(r[0]));
+const expWeek = `<div class="content">${expHead()}${seg3('Tuần')}${periodHead('12 – 18/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(weekRows.reduce((t, r) => t + r[2], 0))}</div></div>${weekChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(weekRows)}</div></div>
+</div>${tabbar('exp')}`;
+// Chi tiêu theo nhóm (S6 §10): danh sách nhóm (Ngày thêm danh sách khoản chi) · bấm nhóm → pop-up khoản chi của nhóm
+const groupCard = (rows, hl) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(rows).replace('<div class="crow">', hl ? '<div class="crow hl2">' : '<div class="crow">')}</div>`;
+const expDay = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(dayRows.reduce((t, r) => t + r[2], 0))}</div></div>${groupCard(dayRows, true)}<div class="card">${dayRows.map(xrow).join('')}</div></div>
+</div>${tabbar('exp')}`;
+const groupPopup = (k, rows, period, under, toast = '') => {
+  const sum = rows.reduce((t, r) => t + r[2], 0);
+  const days = [...new Set(rows.map((r) => r[0]))].sort((a, b) => b - a);
+  return `<div class="under">${under}</div>
+  <div class="scrim big"><div class="dialog big" style="text-align:left;padding:16px 14px 18px">
+    <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:10px"><span class="x">${I.close}</span>
+      <h3 style="display:flex;gap:8px;align-items:center;justify-content:center">${cico(k, 28)}${C[k][2]}</h3><span class="round-plus">${I.plus}</span></div>
+    <div style="text-align:center;margin-bottom:12px"><div class="cap muted">${period}</div><div style="font-size:22px;line-height:28px;font-weight:800">${vnd(sum)}</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">${days.map((d) => `${days.length > 1 || period.startsWith('Tháng') ? `<div class="dhead" style="padding:2px 4px 0"><b>${d === 13 ? 'Hôm nay' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`}</b></div>` : ''}<div class="card" style="box-shadow:none;border:1px solid var(--border)">${rows.filter((r) => r[0] === d).map(prow).join('')}</div>`).join('')}</div>
+  </div></div>${toast}`;
+};
+// Dòng trong pop-up nhóm: không lặp lại icon + tên nhóm (đã ở tiêu đề) · chỉ ghi chú + số tiền
+const prow = ([, , a, note, auto]) => `<div class="xrow" style="min-height:48px"><div class="mid"><div class="${note ? '' : 'muted'}">${note || 'Không có ghi chú'}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div></div><span class="am">${vnd(a)}</span></div>`;
+const undoToast = '<div class="toast" style="z-index:7">Đã xoá<span class="act">Hoàn tác</span></div>';
+const expDayUndo = groupPopup('food', X.filter((r) => r[1] === 'food' && r[0] !== 13), 'Tháng 10, 2026', expMonth(7800000), undoToast);
+
+const budgetDialog = (all) => `<div class="under">${expMonth(all ? 7800000 : 15000000, { own: !all })}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon">${I.budget}</span><h3>Ngân sách tháng 10</h3>
+    <div class="amtin" style="padding:14px 0 6px"><div class="v"><span class="u">${all ? '7.800.000' : '15.000.000'} ₫<span class="caret"></span></span></div></div>
+    <div class="frow2" style="padding:0 4px;cursor:default;text-align:left"><span class="grow">Dùng cho mọi tháng</span><span class="sw ${all ? 'on' : ''}"></span></div>
+    <div style="height:14px"></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+
+// Form khoản chi có dòng "Lặp lại" (chỉ khi tạo mới)
+const expForm = ({ offline: off = false } = {}) => `<div class="content">${off ? offline : ''}
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thêm khoản chi</div><span></span></div>
+  <div class="form" style="padding-bottom:120px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">2.500.000 ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('bills', 24)}<span class="grow">Hoá đơn</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow ${off ? '' : 'hl2'}" style="${off ? '' : 'margin:0 -8px;padding:0 8px'}"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="${off ? 'muted' : 'b'}">${off ? 'Không' : 'Hằng tháng, ngày 13'}</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">Tiền nhà</span></div>
+    </div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary" ${off ? 'disabled' : ''}>Lưu</button></div>
+</div>`;
+const repeatPick = `<div class="under">${expForm()}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left"><h3 style="text-align:center;margin-bottom:12px">Lặp lại</h3>
+    ${[['Không', ''], ['Hằng tuần', 'Thứ Ba'], ['Hằng tháng', 'Ngày 13']].map(([l, s]) => `<div class="opt ${l === 'Hằng tháng' ? 'on' : ''}"><span class="label">${l}${s ? `<div class="cap muted" style="font-weight:600">${s}</div>` : ''}</span>${l === 'Hằng tháng' ? I.check : ''}</div>`).join('')}
+  </div></div>`;
+
+const RULES = [['bills', 'Tiền nhà', 2500000, 'Hằng tháng', '01/11'], ['bills', 'Internet', 220000, 'Hằng tháng', '07/11'], ['kid', 'Học phí bơi', 300000, 'Hằng tháng', '05/11'], ['coffee', 'Cà phê sáng', 35000, 'Hằng tuần', 'T3, 20/10']];
+const rulesScreen = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Khoản chi lặp lại</div><span></span></div>
+  <div class="xlist" style="padding-bottom:90px"><div class="card">${RULES.map(([k, n, a, f, next]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${n}</div><span>${f} · lần tới ${next}</span></div><span class="am">${vnd(a)}</span></div>`).join('')}</div></div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm khoản chi lặp lại</button></div>
+</div>`;
+const ruleEdit = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Sửa khoản chi lặp lại</div><span></span></div>
+  <div class="form" style="padding-bottom:150px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">2.500.000 ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('bills', 24)}<span class="grow">Hoá đơn</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="b">Hằng tháng, ngày 1</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.arrowR}</span><span class="grow">Lần tới</span><span class="b">01/11/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">Tiền nhà</span></div>
+    </div>
+  </div>
+  <div class="form-footer" style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-danger">${I.trash}Xoá</button><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const ruleDel = `<div class="under">${ruleEdit}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon err">${I.trash}</span><h3 style="margin-bottom:20px">Xoá khoản chi lặp lại này?</h3>
+  <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div></div></div>`;
+
+// Màn Nhóm chi tiêu (S4) — S6 thêm dòng đầu "Khoản chi lặp lại ›"
+const catLine = (k, own) => `<div class="row">${cico(k)}<span class="label">${C[k][2]}</span>${own ? `<span class="muted" style="width:24px;height:24px">${I.more}</span>` : `<span class="lock">${I.lock}</span>`}</div>`;
+const catsScreen = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>
+</div>`;
+
+
+// ---- Icon + nhóm gợi ý cho người Việt (S6 §11) ----
+Object.assign(I, {
+  phone: I.phoneI,
+  water: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  boba: sv('<path d="M6.5 8h11l-1.2 11a1.5 1.5 0 0 1-1.5 1.3H9.2a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M5.5 8h13M13 8l1.5-4.5h2"/><path d="M9.5 16h.01M12 17h.01M14.5 16h.01"/>'),
+  beer: sv('<path d="M5.5 8h10v10a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z"/><path d="M15.5 10h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M5.5 8a2.5 2.5 0 0 1 2.5-3 3 3 0 0 1 5-.5 2.5 2.5 0 0 1 2.5 3.5M9 12v4M12 12v4"/>'),
+  flame: sv('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .2 1.5 1 2 1.8 2C10.5 8 11 5.5 12 3z"/>'),
+  motorbike: sv('<circle cx="6" cy="16.5" r="3"/><circle cx="18" cy="16.5" r="3"/><path d="M6 16.5l3-6h5l4 6M14 10.5l-1-3h-2.5M9 10.5H6.5"/>'),
+  parking: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M10 16.5V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
+  hospital: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>'),
+  bookOpen: sv('<path d="M5 4.5h9a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/>'),
+  shield: sv('<path d="M12 3.5l7 2.5v5.5c0 4.3-3 7.5-7 9-4-1.5-7-4.7-7-9V6z"/><path d="M9 12l2.2 2.2L15 10"/>'),
+  redpacket: sv('<rect x="6.5" y="3.5" width="11" height="17" rx="2.5"/><path d="M6.5 9.5c3 2.5 8 2.5 11 0"/><circle cx="12" cy="12.5" r="1.6"/>'),
+  flower: sv('<circle cx="12" cy="12" r="2.2"/><path d="M12 9.8c-2-2-2-5 0-6 2 1 2 4 0 6zM12 14.2c2 2 2 5 0 6-2-1-2-4 0-6zM9.8 12c-2 2-5 2-6 0 1-2 4-2 6 0zM14.2 12c2-2 5-2 6 0-1 2-4 2-6 0z"/>'),
+  building: sv('<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8h.01M12 8h.01M15 8h.01M9 12h.01M12 12h.01M15 12h.01M10 20.5v-3h4v3"/>'),
+});
+// 42 icon chọn được cho nhóm tự tạo (đổi từ 36): bỏ wine, bike, heart, umbrella, ticket, camera, ball, tree · icon đã lưu cũ vẫn hiện
+const ICON_SET = [['tag', 'Chung'], ['coffee', 'Cà phê'], ['boba', 'Trà sữa'], ['beer', 'Bia, nhậu'], ['food', 'Ăn uống'], ['cart', 'Đi chợ'],
+  ['bag', 'Mua sắm'], ['shirt', 'Quần áo'], ['home', 'Nhà'], ['bolt', 'Điện'], ['water', 'Nước'], ['flame', 'Gas'],
+  ['wifi', 'Internet'], ['phone', 'Điện thoại'], ['tool', 'Sửa chữa'], ['motorbike', 'Xe máy'], ['fuel', 'Xăng'], ['bus', 'Xe buýt'],
+  ['car', 'Taxi, Grab'], ['parking', 'Gửi xe'], ['plane', 'Du lịch'], ['pill', 'Thuốc'], ['hospital', 'Khám bệnh'], ['scissors', 'Làm đẹp'],
+  ['dumbbell', 'Thể thao'], ['baby', 'Con nhỏ'], ['paw', 'Thú cưng'], ['cap', 'Học phí'], ['bookOpen', 'Sách'], ['briefcase', 'Công việc'],
+  ['laptop', 'Máy tính'], ['card', 'Trả góp'], ['coins', 'Tiền'], ['shield', 'Bảo hiểm'], ['gift', 'Quà tặng'], ['redpacket', 'Lì xì'],
+  ['flower', 'Hiếu hỉ'], ['film', 'Xem phim'], ['game', 'Game'], ['music', 'Karaoke'], ['trash', 'Rác'], ['building', 'Chung cư']];
+// Nhóm gợi ý: chạm 1 lần là thêm (tên, icon, màu); nhóm đã có thì ẩn
+const SUG = [['Đi chợ', 'cart', 'mint'], ['Trà sữa', 'boba', 'pink'], ['Ăn nhậu', 'beer', 'lemon'], ['Tiền nhà', 'home', 'sky'], ['Điện', 'bolt', 'lemon'], ['Nước', 'water', 'sky'],
+  ['Internet', 'wifi', 'lavender'], ['Điện thoại', 'phone', 'mint'], ['Xăng xe', 'fuel', 'peach'], ['Gửi xe', 'parking', 'sky'], ['Sửa xe', 'tool', 'lemon'], ['Học phí', 'cap', 'lavender'],
+  ['Sức khoẻ', 'hospital', 'mint'], ['Thuốc', 'pill', 'pink'], ['Làm đẹp', 'scissors', 'pink'], ['Quần áo', 'shirt', 'lavender'], ['Hiếu hỉ', 'flower', 'lemon'], ['Lì xì', 'redpacket', 'peach'],
+  ['Quà tặng', 'gift', 'pink'], ['Giải trí', 'film', 'lavender'], ['Du lịch', 'plane', 'sky'], ['Thú cưng', 'paw', 'peach'], ['Bảo hiểm', 'shield', 'mint'], ['Trả góp', 'card', 'sky']];
+const vnCss = `<style>
+  .sug { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sug .chip { max-width: none; height: 36px; padding: 0 12px 0 5px; gap: 6px; }
+  .sug .mi { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; color: var(--text-fixed, #2F2D33); }
+  .sug .mi svg { width: 16px; height: 16px; }
+  .icg { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .icg span { height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icg span.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icg svg { width: 22px; height: 22px; }
+  .icl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 6px; max-height: 250px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .icl > div { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+  .icl span { width: 100%; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icl svg { width: 22px; height: 22px; }
+  .icl i { font-style: normal; font-size: 12px; line-height: 16px; color: var(--muted); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .icl .on span { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icl .on i { color: var(--primary-dark); font-weight: 800; }
+  .fab.pulse { box-shadow: 0 0 0 7px color-mix(in srgb, var(--primary) 30%, transparent), 0 6px 14px rgba(91,190,152,.45); }
+</style>`;
+const sugChip = ([n, ic, c]) => `<span class="chip"><span class="mi ev-${c}">${I[ic]}</span>${n}</span>`;
+const sugSection = (hidden = []) => `<div class="group-label">Gợi ý</div><div class="sug">${SUG.filter((x) => !hidden.includes(x[0])).slice(0, 14).map(sugChip).join('')}</div>`;
+C.market = ['mint', 'cart', 'Đi chợ'];
+const catsScreen2 = (added) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}${added ? catLine('market', true) : ''}</div>
+    ${sugSection(added ? ['Đi chợ'] : [])}
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>${added ? '<div class="toast">Đã thêm nhóm Đi chợ</div>' : ''}
+</div>`;
+const iconGridLabeled = (on) => `<div class="icl">${ICON_SET.map(([k, n]) => `<div class="${k === on ? 'on' : ''}"><span>${I[k]}</span><i>${n}</i></div>`).join('')}</div>`;
+const iconGrid = (on) => `<div class="icg">${ICON_SET.map(([k]) => `<span class="${k === on ? 'on' : ''}">${I[k]}</span>`).join('')}</div>`;
+const addCatDialog = `<div class="under">${catsScreen2(false)}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left;padding:18px 16px 16px">
+    <h3 style="text-align:center;margin-bottom:12px">Thêm nhóm</h3>
+    <div class="field"><label>Tên nhóm</label><div class="input focus">Trà sữa<span class="caret"></span></div></div>
+    <div class="field" style="margin-top:12px"><label>Icon</label>${iconGridLabeled('boba')}</div>
+    <div class="field" style="margin-top:12px"><label>Màu</label>${colorPick('sky')}</div>
+    <div class="actions" style="margin-top:16px"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+const FULL = ['coffee', 'kid', 'market', 'coffee', 'kid', 'market', 'coffee', 'kid', 'market'];
+const catsFull = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${FULL.map((k) => catLine(k, true)).join('')}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary hl2">${I.plusG}Thêm nhóm</button></div>
+</div>`;
+const limitDialog = `<div class="under">${catsFull}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon warn">${I.warn}</span><h3>Đã đủ 30 nhóm</h3><p>Hãy xoá bớt một nhóm để thêm mới.</p><button class="btn btn-primary">Đã hiểu</button></div></div>`;
+
+// ---- Nút + theo tab (S6 §12) ----
+const fabHl = (html) => html.replace('<div class="fab">', '<div class="fab pulse">');
+const numpad = `<div class="numpad">${['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map((k) => `<span class="${k === '⌫' ? 'k' : ''}">${k}</span>`).join('')}</div>`;
+const addExpForm = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thêm khoản chi</div><span></span></div>
+  <div class="form" style="padding-bottom:8px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">50.000<span class="caret"></span></span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('food', 24)}<span class="grow">Ăn uống</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="muted">Không</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow muted">Ghi chú (không bắt buộc)</span></div>
+    </div>
+  </div>
+  <div style="flex:none;padding:8px 16px;background:var(--bg)"><button class="btn btn-primary">Lưu</button></div>${numpad}
+</div>`;
+const noteEditor = `<div class="content">
+  <div class="ntop"><span class="back">${I.left}</span><span></span><span class="act" style="color:var(--primary-dark)">${I.check}</span></div>
+  <div class="nbody"><div class="nt" style="font-size:22px;line-height:28px;font-weight:800;color:var(--muted)"><span class="caret"></span>Tiêu đề</div><div class="muted" style="margin-top:10px">Ghi chú</div></div>
+  <div class="ntools"><span class="ti">${I.checklist}</span><span class="ti">${I.folder}</span><span class="ti">${I.pin}</span></div>
+</div>`;
+const todoTab = `<div class="content">${notesHead('Todo')}
+  <div class="xlist"><div class="card">${[['Mua quà sinh nhật Lan', false], ['Nộp tiền học bơi', false], ['Gọi bảo hiểm xe', true]].map(([t, d]) => `<div class="xrow">${tk(d)}<div class="mid"><div style="${d ? 'text-decoration:line-through;color:var(--muted)' : ''}">${t}</div></div></div>`).join('')}</div></div>
+</div>${tabbar('man')}`;
+const todoQuick = `<div class="content">
+  <div class="topbar"><span class="back">${I.close}</span><div class="kind-title">Todo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div><span></span></div>
+  <div class="form" style="padding-bottom:84px">
+    <div class="fcard"><div class="title-in"><span class="caret"></span><span class="muted">Tiêu đề</span></div><div class="detail-in">Chi tiết</div></div>
+    <div class="fcard">
+      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Danh sách việc</span></div>
+      <div class="addline" style="padding-left:24px">${I.plusG}Thêm việc</div>
+    </div>
+    <div class="fcard"><div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw on"></span></div>
+      <div class="frow indent"><span class="fi">${I.arrowR}</span><span class="grow">T3, 13/10/2026</span></div></div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const serverDown = `<div class="offline">${I.wifiOff}<span>Máy chủ đang gặp sự cố.</span></div>`;
+
+// ---- Cài đặt + màn Giao diện ----
+const settingsS6 = (state) => `<div class="content"><div class="screen-title">Cài đặt</div>
+  <div class="settings" style="overflow:hidden">
+    <div class="group-label">Giao diện</div>
+    <div class="card hl2">${srow(I.palette, `Giao diện<div class="cap muted">${THEMES[state.theme][0]} · Nền trơn · ${FONTS[state.font][0]} · Cỡ vừa</div>`, I.chev)}</div>
+    <div class="group-label">Lịch</div>
+    <div class="card">${srow(I.week, 'Tuần bắt đầu từ', '<span class="val">Thứ Hai</span>' + I.chev)}${srow(I.moon, 'Hiển thị ngày âm lịch', '<span class="sw on"></span>')}${srow(I.flag, 'Hiển thị ngày lễ', '<span class="sw on"></span>')}</div>
+    <div class="group-label">Ứng dụng</div>
+    <div class="card">${srow(I.globe, 'Ngôn ngữ', '<span class="val">Tiếng Việt</span>' + I.chev)}${srow(I.bug, 'Báo lỗi', I.chev)}${srow(I.info2, 'Phiên bản', '<span class="val">6.0.0</span>')}</div>
+  </div>
+</div>${tabbar('set')}`;
+const srow = (icon, label, right, cls = '') => `<div class="row ${cls}"><span class="ico">${icon}</span><span class="label">${label}</span>${right}</div>`;
+const preview = `<div class="pv"><div><div class="b" style="font-size:12px;margin-bottom:4px">Tháng 10</div><div class="mini">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="muted">${d}</span>`).join('')}${Array.from({ length: 21 }, (_, i) => { const d = i + 5; return `<span class="${d === 13 ? 't' : (i % 7 === 6 ? 's' : '')}">${d}</span>`; }).join('')}<span class="mbar ev-mint"></span><span class="mbar ev-pink" style="grid-column:span 2"></span></div></div>
+  <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:6px"><div class="b" style="font-size:15px">Ngày mới</div><div class="cap muted">Họp nhóm 9:00</div><button class="btn btn-primary" style="height:30px;font-size:12px;border-radius:10px">Lưu</button></div></div>`;
+const swatch = (k, state) => { const v = THEMES[k][1];
+  return `<div class="swi ${state.theme === k ? 'on' : ''}" onclick="setTheme('${k}')"><span class="swc" style="background:${v.bg}"><i style="background:${v.primary}"></i></span>${THEMES[k][0]}</div>`; };
+const appearance = (state) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Giao diện</div><span></span></div>
+  <div style="overflow:hidden;display:flex;flex-direction:column;gap:14px;padding-bottom:16px">
+    ${preview}
+    <div class="settings" style="gap:14px">
+      <div class="group-label">Chủ đề màu</div>
+      <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div><div class="swi"><span class="swc" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)"><i style="background:#fff;display:grid;place-items:center;font-size:14px;font-weight:800;line-height:1;color:#2F2D33">+</i></span>Tự chọn</div></div>
+      <div class="group-label">Nền</div>
+      <div class="card" style="padding-bottom:4px">
+        <div class="tiles sm"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile">${I.image}</span><span class="cap muted" style="align-self:center">Trơn · Ảnh của bạn</span></div>
+        <div class="bgsec">Màu</div><div class="tiles sm" style="gap:10px;align-items:center">${(state.theme === 'dark' ? BGC_DARK : BGC_LIGHT).map((c) => `<span class="bgdot" style="background:${c}"></span>`).join('')}<span class="bgdot" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);display:grid;place-items:center;color:#2F2D33;font-weight:800">+</span></div>
+        <div class="bgsec">Chuyển màu</div><div class="tiles sm">${GRADS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+        <div class="bgsec">Hoạ tiết</div><div class="tiles sm">${PATTERNS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+      </div>
+      <div class="group-label">Font chữ</div>
+      <div class="card">${Object.entries(FONTS).map(([k, [n, f]]) => `<div class="frow2" onclick="setFont('${k}')"><span class="aa" style="font-family:${f}">Aa</span><span class="grow" style="font-family:${f}">${n}</span>${state.font === k ? I.check : ''}</div>`).join('')}</div>
+      <div class="group-label">Cỡ chữ</div>
+      <div class="seg three" style="margin:0"><span style="font-size:13px">Nhỏ</span><span class="on">Vừa</span><span style="font-size:17px">Lớn</span></div>
+    </div>
+  </div>
+</div>`;
+// Hộp Tự chọn: hộp chọn màu S4 + Sáng / Tối · app tự tính các màu còn lại
+const customPick = `<div class="under">${'__APP__'}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left">
+    <h3 style="text-align:center;margin-bottom:12px">Tự chọn màu chủ đạo</h3>
+    <div style="height:130px;border-radius:16px;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,#FF5A36);position:relative"><span style="position:absolute;left:78%;top:18%;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></span></div>
+    <div style="height:16px;border-radius:999px;margin:12px 0;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);position:relative"><span style="position:absolute;left:3%;top:-3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span style="width:44px;height:44px;border-radius:14px;background:#FF7A59;flex:none"></span><div class="input" style="flex:1">#FF7A59</div></div>
+    <div class="seg two" style="margin:0 0 10px"><span class="on">Sáng</span><span>Tối</span></div>
+    <div style="height:6px"></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary" style="background:#FF7A59">Chọn</button></div>
+  </div></div>`;
+const CUSTOM = '--primary:#FF7A59;--primary-dark:#C4472A;--primary-soft:#FFEBE5;--bg:#FFFAF8;--surface:#FFFFFF;--border:#F3E6E1;--text:#33292A;--muted:#93827E;--toast:#33292A';
+const photoPicked = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Giao diện</div><span></span></div>
+  <div class="settings" style="gap:14px">
+    <div class="group-label">Nền</div>
+    <div class="card"><div class="tiles"><span class="tile" style="background:var(--bg)">Trơn</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile on" style="background:${photoBg(40)}"></span><span class="tile">${I.image}</span></div>
+      <div class="frow2" style="cursor:default"><span class="grow" style="flex:none">Độ mờ</span><span class="slider"><i></i><b></b></span><span class="b" style="width:40px;text-align:right">40%</span></div></div>
+  </div>
+</div>`;
+
+// Màn đặt bộ màu riêng (không theo nút thử ở đầu trang)
+const phoneT = (inner, { theme, font, wall, vars = '', cls = '' } = {}) => `<div class="phone ${cls}" ${theme ? `data-theme="${theme}"` : ''} ${font ? `data-font="${font}"` : ''} style="${wall ? `--wall:${wall};` : ''}${vars}">${status}${inner}</div>`;
+const state = { theme: 'mint', font: 'nunito' };
+
+document.head.insertAdjacentHTML('beforeend', s5css + themeCss + vnCss);
+{
 // ---- S7 ----
 Object.assign(I, {
     bug: sv('<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9.5 8a2.5 2.5 0 0 1 5 0M12 12v8M7 13H3.5M20.5 13H17M7.5 17.5l-3 2M16.5 17.5l3 2M7.5 9.5l-3-2M16.5 9.5l3-2"/>'),
@@ -561,15 +1197,15 @@ const proActive = (kind) => `<div class="content">
 
 // Banner
 const banner = (loading) => `<div class="adbar">${loading ? '' : `<span class="adtag">Quảng cáo</span><div class="adimg"></div><div class="adtxt"><b>Tên quảng cáo mẫu</b><span>Nội dung do AdMob chọn</span></div><span class="adbtn">Mở</span>`}</div>`;
-const calScreen = () => `<div class="content"><div class="cal-head"><span class="nav">${I.left}</span><div class="t">Tháng 10</div><span class="nav" style="transform:scaleX(-1)">${I.left}</span><span class="chip-today">Hôm nay</span></div>
-  <div class="seg"><span>Ngày</span><span>Tuần</span><span class="on">Tháng</span><span>Năm</span></div>
-  <div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d, i) => `<span class="${i === 6 ? 'sun' : ''}">${d}</span>`).join('')}</div>
-  <div class="month" style="grid-template-rows:repeat(5,1fr)">${Array.from({ length: 35 }, (_, i) => { const d = i - 2; if (d < 1 || d > 31) return '<div class="cell"></div>'; return `<div class="cell ${d === 15 ? 'today' : ''} ${i % 7 === 6 ? 'sun' : ''}"><div class="top"><span class="d">${d}</span></div>${d === 12 ? '<div class="bar ev-sky">Họp</div>' : d === 20 ? '<div class="bar ev-pink">Sinh nhật</div>' : ''}</div>`; }).join('')}</div>
-</div>`;
+const calScreen = () => calMonth();
 const nativeAd = `<div class="card" style="padding:12px 16px;display:flex;gap:12px;align-items:center;position:relative"><span class="adtag" style="border-radius:8px 0 8px 0">Quảng cáo</span><div class="adimg" style="width:44px;height:44px;margin-top:8px"></div><div class="adtxt" style="margin-top:8px"><b style="font-size:15px">Tên quảng cáo mẫu</b><span>Nội dung do AdMob chọn</span></div><span class="adbtn">Mở</span></div>`;
-const noteScreen = (ad) => `<div class="content"><div class="screen-title">Ghi chú</div><div class="settings" style="gap:10px">${['Việc tuần này', 'Danh sách mua', 'Ý tưởng', 'Sách cần đọc', 'Quà sinh nhật'].map((t, i) => `<div class="card" style="padding:14px 16px"><div style="font-size:17px;font-weight:700">${t}</div><div class="cap muted" style="margin-top:4px">Nội dung ghi chú mẫu</div></div>${i === 3 && ad ? nativeAd : ''}`).join('')}</div></div>`;
-const expScreen = (ad) => `<div class="content"><div class="screen-title">Chi tiêu</div><div class="settings" style="gap:12px"><div class="card" style="padding:16px;text-align:center"><div class="cap muted">Tháng 10</div><div style="font-size:22px;font-weight:800">7.800.000đ</div></div>${[['Ăn uống', '2.400.000đ'], ['Đi lại', '900.000đ'], ['Hoá đơn', '1.500.000đ'], ['Giải trí', '600.000đ'], ['Quà tặng', '300.000đ']].map(([n, v], i) => `<div class="card">${sr(I.tag, n, `<b>${v}</b>`)}</div>${i === 3 && ad ? nativeAd : ''}`).join('')}</div></div>`;
-const withBanner = (screen, tab, loading) => phone(`<div class="under">${screen}${tabbar(tab)}${banner(loading)}</div>`);
+const noteScreen = (ad) => {
+  if (!ad) return notesScreen;
+  const col = (list) => `<div class="ncols"><div>${list.filter((_, n) => n % 2 === 0).map(ncard).join('')}</div><div>${list.filter((_, n) => n % 2).map(ncard).join('')}</div></div>`;
+  return `<div class="content">${notesTop}<div class="nlist">${col(NOTES.slice(0, 4))}<div style="margin:2px 0 10px">${nativeAd}</div>${col(NOTES.slice(4))}</div></div>${tabbar('man')}`;
+};
+const expScreen = (ad) => { const h = expMonth(7800000); return ad ? h.replace('<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm', nativeAd.replace('<div class="card"', '<div class="card" style="margin-bottom:12px;') + '<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm') : h; };
+const withBanner = (screen, tab, loading) => phone(`<div class="under">${screen}${banner(loading)}</div>`);
 const formScreen = () => `<div class="content"><div class="topbar"><span class="back">${I.close}</span><div class="screen-title">Thêm sự kiện</div><span></span></div>
   <div class="form"><div class="fcard"><div class="title-in">Họp nhóm</div><div class="detail-in">Chi tiết</div></div><div class="fcard"><div class="frow"><span class="fi">${I.clock}</span><span class="grow">9:00 – 10:00</span></div><div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Thứ Năm, 15/10</span></div></div></div>
   <div class="form-footer"><button class="btn btn-primary">Lưu</button></div></div>`;
@@ -580,22 +1216,22 @@ const ump = `<div class="scrim"><div class="dialog" style="text-align:left;paddi
   <p style="margin-bottom:14px">Daynest và đối tác dùng dữ liệu như mã nhận dạng thiết bị để hiển thị quảng cáo.</p>
   <div class="stack"><button class="btn btn-primary">Đồng ý</button><button class="btn btn-secondary">Quản lý tuỳ chọn</button></div></div></div>`;
 
-const phoneT = (html, cls = '') => `<div class="phone ${cls}">${status}${html}</div>`;
+const ph = (html, cls = '') => `<div class="phone ${cls}">${status}${html}</div>`;
 const groups = [
   ['A. Xoá tài khoản', [
-    ['1. Cài đặt', 'nhóm "Tài khoản" mới ở đầu: Daynest Pro · dòng "Chính sách quyền riêng tư" ở nhóm Ứng dụng · Đăng xuất và Xoá tài khoản (chữ đỏ) nằm cuối cùng', phoneT(settings({ hi: 'del' }), 'tall')],
-    ['2. Xoá tài khoản', 'liệt kê dữ liệu bị xoá · nút đỏ cố định ở đáy', phoneT(delScreen(false))],
-    ['2b. Đang có Pro', 'thêm dòng cảnh báo: gói Pro vẫn tính phí → mở Google Play để huỷ', phoneT(delScreen(true))],
+    ['1. Cài đặt', 'nhóm "Tài khoản" mới ở đầu: Daynest Pro · dòng "Chính sách quyền riêng tư" ở nhóm Ứng dụng · Đăng xuất và Xoá tài khoản (chữ đỏ) nằm cuối cùng', ph(settings({ hi: 'del' }), 'tall')],
+    ['2. Xoá tài khoản', 'liệt kê dữ liệu bị xoá · nút đỏ cố định ở đáy', ph(delScreen(false))],
+    ['2b. Đang có Pro', 'thêm dòng cảnh báo: gói Pro vẫn tính phí → mở Google Play để huỷ', ph(delScreen(true))],
     ['3. Hộp xác nhận', 'bấm nút ở màn 2 · không thể hoàn tác', phoneWith(delScreen(false), dlg(I.userx, 'err', 'Xoá tài khoản?', 'Toàn bộ dữ liệu sẽ bị xoá vĩnh viễn.', two('Huỷ', 'Xoá')))],
     ['3b. Đang xoá', 'khoá mọi nút, không đóng được', phoneWith(delScreen(false), dlg('<span class="spin big"></span>', '', 'Đang xoá tài khoản', '', ''))],
     ['3c. Lỗi', 'mất mạng hoặc máy chủ lỗi · thử lại được, dữ liệu chưa bị xoá', phoneWith(delScreen(false), dlg(I.warn, 'warn', 'Chưa xoá được', 'Vui lòng thử lại sau.', two('Đóng', 'Thử lại', false)))],
   ]],
   ['B. Daynest Pro', [
-    ['4. Chọn gói', 'mặc định chọn gói năm · nút "Tiếp tục" mở màn thanh toán của Google Play', phoneT(proScreen())],
-    ['4b. Đang xử lý', 'sau khi chọn gói ở Google Play · khoá nút', phoneT(proScreen({ busy: true }))],
-    ['4c. Mất mạng', 'không mua được · nút mờ', phoneT(proScreen({ offline: true }))],
-    ['5. Đã mua (năm)', 'thay màn chọn gói · mở trang quản lý gói của Google Play', phoneT(proActive('y'))],
-    ['5b. Đã mua (trọn đời)', 'không có dòng quản lý gói', phoneT(proActive('l'))],
+    ['4. Chọn gói', 'mặc định chọn gói năm · nút "Tiếp tục" mở màn thanh toán của Google Play', ph(proScreen())],
+    ['4b. Đang xử lý', 'sau khi chọn gói ở Google Play · khoá nút', ph(proScreen({ busy: true }))],
+    ['4c. Mất mạng', 'không mua được · nút mờ', ph(proScreen({ offline: true }))],
+    ['5. Đã mua (năm)', 'thay màn chọn gói · mở trang quản lý gói của Google Play', ph(proActive('y'))],
+    ['5b. Đã mua (trọn đời)', 'không có dòng quản lý gói', ph(proActive('l'))],
     ['6. Mua xong', 'toast · mọi quảng cáo biến mất ngay', phoneWith(proActive('y'), '<div class="toast">Đã bật Pro</div>')],
     ['7. Khôi phục: không có gói', 'hộp thông báo sau khi bấm "Khôi phục giao dịch"', phoneWith(proScreen(), dlg(I.restore, 'warn', 'Không tìm thấy giao dịch', 'Tài khoản Google Play này chưa mua Pro.', '<button class="btn btn-primary">Đã hiểu</button>'))],
     ['7b. Khôi phục: thành công', '', phoneWith(proScreen(), '<div class="toast" style="bottom:130px">Đã khôi phục Pro</div>')],
@@ -605,20 +1241,20 @@ const groups = [
     ['9. Ghi chú', 'có thẻ quảng cáo gốc (E1)', withBanner(noteScreen(true), 'man')],
     ['10. Chi tiêu', 'có thẻ quảng cáo gốc (E2)', withBanner(expScreen(true), 'exp')],
     ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
-    ['12. Màn soạn', 'KHÔNG quảng cáo nào (thêm / sửa event, note, khoản chi, todo)', phoneT(formScreen())],
-    ['13. Cài đặt', 'KHÔNG quảng cáo nào · cả các màn con và màn Pro', phoneT(settings({ pro: false }), 'tall')],
-    ['13b. Cài đặt (đã mua Pro)', 'thẻ tài khoản có huy hiệu Pro cạnh tên + viền quanh avatar · dòng Daynest Pro ghi "Đang dùng · gói năm"', phoneT(settings({ pro: true, hi: 'pro' }), 'tall')],
-    ['14. Đã mua Pro', 'không banner ở mọi tab', phoneT(`<div class="under">${calScreen()}${tabbar('cal')}</div>`)],
+    ['12. Màn soạn', 'KHÔNG quảng cáo nào (thêm / sửa event, note, khoản chi, todo)', ph(formScreen())],
+    ['13. Cài đặt', 'KHÔNG quảng cáo nào · cả các màn con và màn Pro', ph(settings({ pro: false }), 'tall')],
+    ['13b. Cài đặt (đã mua Pro)', 'thẻ tài khoản có huy hiệu Pro cạnh tên + viền quanh avatar · dòng Daynest Pro ghi "Đang dùng · gói năm"', ph(settings({ pro: true, hi: 'pro' }), 'tall')],
+    ['14. Đã mua Pro', 'không banner ở mọi tab', ph(`<div class="under">${calScreen()}</div>`)],
   ]],
   ['E. Quảng cáo gốc, xem để tắt', [
     ['17. Quảng cáo gốc', 'thẻ xen sau mục thứ 4 của danh sách Ghi chú (và Chi tiêu, màn 9, 10) · cùng kiểu thẻ của app, có nhãn "Quảng cáo"', withBanner(noteScreen(true), 'man')],
-    ['18. Xem để tắt 24 giờ', 'nút ở màn Daynest Pro (màn 4) → xem 1 quảng cáo có thưởng', phoneT(proScreen())],
-    ['18b. Đã tắt 24 giờ', 'toast sau khi xem xong · mọi quảng cáo tắt, hết hạn thì hiện lại', phoneWith(calScreen() + tabbar('cal'), '<div class="toast" style="bottom:90px">Đã tắt quảng cáo 24 giờ</div>')],
+    ['18. Xem để tắt 24 giờ', 'nút ở màn Daynest Pro (màn 4) → xem 1 quảng cáo có thưởng', ph(proScreen())],
+    ['18b. Đã tắt 24 giờ', 'toast sau khi xem xong · mọi quảng cáo tắt, hết hạn thì hiện lại', phoneWith(calScreen(), '<div class="toast" style="bottom:90px">Đã tắt quảng cáo 24 giờ</div>')],
     ['18c. Chưa có quảng cáo để xem', 'khi AdMob chưa trả quảng cáo', phoneWith(proScreen(), dlg(I.warn, 'warn', 'Chưa có quảng cáo', 'Vui lòng thử lại sau.', '<button class="btn btn-primary">Đã hiểu</button>'))],
   ]],
   ['D. Đồng ý quảng cáo (EU / UK)', [
-    ['15. Lần mở app đầu', 'hộp do Google dựng (UMP) · chỉ hiện ở EU / UK · chưa đồng ý thì chưa hiện banner', phoneWith(calScreen() + tabbar('cal'), ump)],
-    ['16. Cài đặt', 'dòng "Tuỳ chọn quảng cáo" chỉ có ở EU / UK · mở lại hộp để đổi lựa chọn', phoneT(settings({ eu: true, hi: 'ump' }), 'tall')],
+    ['15. Lần mở app đầu', 'hộp do Google dựng (UMP) · chỉ hiện ở EU / UK · chưa đồng ý thì chưa hiện banner', phoneWith(calScreen(), ump)],
+    ['16. Cài đặt', 'dòng "Tuỳ chọn quảng cáo" chỉ có ở EU / UK · mở lại hộp để đổi lựa chọn', ph(settings({ eu: true, hi: 'ump' }), 'tall')],
   ]],
 ];
 document.getElementById('root').innerHTML = groups.map(([g, list]) => `<h2 class="group">${g}</h2><div class="grid">${list.map(([t, s, html]) => `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('')}</div>`).join('');
@@ -649,6 +1285,8 @@ document.head.insertAdjacentHTML('beforeend', `<style>
   .spin.big { width:28px; height:28px; border-color:var(--primary-soft); border-top-color:var(--primary); }
   .dialog .dicon:has(.spin) { background:none; }
 </style>`);
+
+}
 </script>
 </body>
 </html>
