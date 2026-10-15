@@ -82,7 +82,7 @@ Biểu đồ đầy đủ (dữ liệu, phiên, xung đột, đồng bộ, traff
 | [S4](sprint-4/index.md) | Chi tiêu: thêm/sửa/xoá khoản chi, nhóm, xem Ngày/Tuần/Tháng, thống kê · chọn màu bất kỳ (toàn app) | Xong GĐ1 |
 | [S5](sprint-5/index.md) | Todo trên Lịch (việc cần làm theo ngày, giống CalendarCute) · Chu kỳ kinh nguyệt (chỉ dự đoán kỳ sau) · bật/tắt trong Cài đặt · Báo lỗi trong Cài đặt (gửi email nhà phát triển) · sửa 2 lỗi từ S4 ([màu gần nhất lên Google, số ít "1 note"](../../wip/2026-10-13-s4-real-device-test.md#finding--sửa-ở-s5)) | Quản lý việc cần làm theo ngày + theo dõi chu kỳ trên Lịch |
 | [S6](sprint-6/index.md) | Nhanh, bền và tính năng: Lưu hiện ngay, gộp lượt gọi API · xử lý lỗi API / server / mất mạng (thời gian chờ, banner chung, lỗi trên Lịch, thông báo rõ) · rung nhẹ, khung xương khi tải, Hoàn tác sau khi xoá · ngân sách tháng, khoản chi lặp lại · đổi giao diện (màu, chế độ tối, nền, font) ([lộ trình](../../wip/2026-10-14-speed-ux-improvements-plan.md)) | App lưu/tải nhanh, chịu được lỗi mạng/server, có thêm 3 tính năng |
-| [S7](sprint-7/index.md) | Quảng cáo (banner AdMob) + Pro tắt quảng cáo (RevenueCat) + lên Google Play | App công khai trên Play, có quảng cáo, mua được Pro |
+| [S7](sprint-7/index.md) | Quảng cáo AdMob (banner, toàn màn hình, quảng cáo gốc, xem để tắt 24 giờ) + Pro tắt quảng cáo (RevenueCat) + lên Google Play | App công khai trên Play, có quảng cáo, mua được Pro |
 
 ### Cuối sprint (mọi sprint)
 
