@@ -1,10 +1,10 @@
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { CycleDrop } from '@/components/CycleDrop';
-import { colors, radius, space } from '@/theme';
+import { makeStyles, radius, space, useTheme } from '@/theme';
 import type { CycleDay } from '@/lib/cycle';
 
 export function cycleRowText(t: TFunction, c: CycleDay): string {
@@ -20,6 +20,8 @@ export function cycleSummaryText(t: TFunction, c: CycleDay): string {
 
 // One line under the date in the Day and List views.
 export function CycleLine({ cycle }: { cycle: CycleDay }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <View style={styles.line}>
@@ -33,6 +35,8 @@ export function CycleLine({ cycle }: { cycle: CycleDay }) {
 
 // Day popup: summary on the left, "Kỳ kinh" button opening the logging screen.
 export function CycleSummary({ cycle, onOpen }: { cycle: CycleDay | null; onOpen: () => void }) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { t } = useTranslation();
   return (
     <View style={styles.summary}>
@@ -49,9 +53,9 @@ export function CycleSummary({ cycle, onOpen }: { cycle: CycleDay | null; onOpen
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles(({ colors }) => ({
   line: { flexDirection: 'row', alignItems: 'center', gap: space.xs, paddingHorizontal: space.lg, paddingBottom: 6 },
   summary: { flexDirection: 'row', alignItems: 'center', gap: space.sm, marginHorizontal: space.lg, marginBottom: space.sm, paddingVertical: 6, paddingLeft: space.md, paddingRight: 6, borderRadius: radius.button, backgroundColor: colors.errorSoft },
   flex: { flex: 1, minWidth: 0 },
   button: { height: 28, paddingHorizontal: space.md, borderRadius: radius.pill, backgroundColor: colors.white, justifyContent: 'center' },
-});
+}));
