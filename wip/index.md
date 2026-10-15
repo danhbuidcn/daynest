@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-15 | S7 bước 2: Bản `.aab` đầu cho thử nghiệm kín (v6.1.0, chữ ký Play, đăng nhập Google từ Play) | ⏳ chờ bạn duyệt | [2026-10-15-s7-step-2-closed-test-build.md](2026-10-15-s7-step-2-closed-test-build.md) |
 | 2026-10-15 | S7 bước 1: Xoá tài khoản (Edge Function `delete-account`, màn trong app, chính sách quyền riêng tư) | 🔄 đã code + test local, chờ thử xoá thật (cần tài khoản phụ) | [2026-10-15-s7-step-1-delete-account.md](2026-10-15-s7-step-1-delete-account.md) |
 | 2026-10-15 | S7: lộ trình code (xoá tài khoản, bản kín, quảng cáo, Pro, lên Play, release v7.0.0) | ⏳ chờ bạn duyệt | [2026-10-15-s7-code-plan.md](2026-10-15-s7-code-plan.md) |
 | 2026-10-15 | S7: thiết kế (DB, mockup) + lộ trình code (xoá tài khoản, quảng cáo, Pro, lên Play) | ✅ xong (DB, trang web, mockup, lộ trình code; tiếp: duyệt lộ trình) | [2026-10-15-s7-design-and-code-plan.md](2026-10-15-s7-design-and-code-plan.md) |
