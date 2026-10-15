@@ -1205,6 +1205,7 @@ const noteScreen = (ad) => {
   return `<div class="content">${notesTop}<div class="nlist">${col(NOTES.slice(0, 4))}<div style="margin:2px 0 10px">${nativeAd}</div>${col(NOTES.slice(4))}</div></div>${tabbar('man')}`;
 };
 const expScreen = (ad) => { const h = expMonth(7800000); return ad ? h.replace('<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm', nativeAd.replace('<div class="card"', '<div class="card" style="margin-bottom:12px;') + '<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm') : h; };
+const calMonthAd = () => { const g = monthCal().replace('<div class="month">', '<div class="mscr"><div class="month" style="flex:none;height:600px">') + `<div style="padding:6px 8px 8px;background:var(--bg)">${nativeAd}</div></div>`; return calMonth({ grid: g }); };
 const withBanner = (screen, tab, loading, cls = '') => phone(`<div class="under">${screen}${banner(loading)}</div>`, cls);
 const agendaAd = agendaScreen.replace('\n  </div>\n</div><nav', `<div class="ag" style="grid-template-columns:1fr">${nativeAd}</div>\n  </div>\n</div><nav`);
 const todoAd = todoTab.replace('</div></div>\n</div><nav', `</div>${nativeAd}</div>\n</div><nav`);
@@ -1239,7 +1240,7 @@ const groups = [
     ['7b. Khôi phục: thành công', '', phoneWith(proScreen(), '<div class="toast" style="bottom:130px">Đã khôi phục Pro</div>')],
   ]],
   ['C. Banner quảng cáo (chưa mua Pro)', [
-    ['8. Lịch', 'banner cố định dưới cùng, dưới thanh tab', withBanner(calScreen(), 'cal')],
+    ['8. Lịch › Tháng', 'đã cuộn tới cuối: thẻ quảng cáo gốc nằm sau hàng tuần cuối, không che ô ngày · banner cố định dưới cùng', withBanner(calMonthAd(), 'cal')],
     ['9. Ghi chú', 'có thẻ quảng cáo gốc sau ghi chú thứ 4', withBanner(noteScreen(true), 'man')],
     ['10. Chi tiêu', 'có thẻ quảng cáo gốc trước thẻ "Theo nhóm"', withBanner(expScreen(true), 'exp')],
     ['11. Chưa tải được', 'không chừa chỗ trống · hiện khi tải xong, không báo lỗi', withBanner(calScreen(), 'cal', true)],
@@ -1267,6 +1268,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
   .probadge { display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; margin-left:8px; border-radius:999px; background:var(--primary-soft); color:var(--primary-dark); font-size:12px; font-weight:800; vertical-align:2px; }
   .probadge svg { width:14px; height:14px; }
   .avatar.pro { box-shadow:0 0 0 3px var(--surface), 0 0 0 5px var(--primary); }
+  .mscr { flex:1; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; }
   .plans { display:flex; flex-direction:column; gap:10px; }
   .plan { display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:20px; background:var(--surface); box-shadow:var(--shadow); border:2px solid transparent; }
   .plan.on { border-color:var(--primary); background:var(--primary-soft); }

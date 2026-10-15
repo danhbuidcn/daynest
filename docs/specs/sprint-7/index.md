@@ -17,7 +17,7 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 | Người thử | 1 Google Group, mời 12–15 người (Gmail + máy Android) · khi OAuth chưa được duyệt, email người thử phải có trong **Test users** của OAuth consent screen (tối đa 100) |
 | Quảng cáo | AdMob · 3 loại, khi phát triển chỉ dùng quảng cáo thử · hiện ở **mọi màn xem** · **không** hiện ở màn soạn / sửa / nhập liệu (kể cả Báo lỗi), màn Pro, Xoá tài khoản |
 | — Banner | Dưới thanh tab ở mọi màn xem: Lịch (mọi chế độ), Ghi chú, Todo, Chi tiêu, Cài đặt và các màn con chỉ xem (Giao diện, Ngôn ngữ…) |
-| — Quảng cáo gốc | 1 thẻ xen vào mọi màn dạng danh sách: Ghi chú, Todo, Lịch › Danh sách (sau mục thứ 4), Chi tiêu (trước thẻ "Theo nhóm") · cùng kiểu thẻ của app, nhãn "Quảng cáo" · không ở lưới Lịch Ngày / Tuần / Tháng, Cài đặt |
+| — Quảng cáo gốc | 1 thẻ xen vào mọi màn dạng danh sách: Ghi chú, Todo, Lịch › Danh sách (sau mục thứ 4), Chi tiêu (trước thẻ "Theo nhóm") · lưới Lịch Tháng / Tuần / Ngày: 1 thẻ ở **cuối vùng cuộn**, sau hàng tuần / ngày / giờ cuối, không ở đầu, không che ô · cùng kiểu thẻ của app, nhãn "Quảng cáo" · không ở Cài đặt |
 | — Xem để tắt quảng cáo | Người dùng chủ động xem 1 quảng cáo có thưởng → **tắt mọi quảng cáo 24 giờ** · nút ở màn Daynest Pro · lưu trên máy |
 | Pro | Chỉ để tắt quảng cáo · mọi user dùng đủ tính năng · **không có dùng thử** |
 | Giá | Tháng **29.000đ** · Năm **299.000đ** · Trọn đời **599.000đ** · giá gốc VND, nước khác Play tự đổi · Google giữ 15% |
@@ -58,7 +58,7 @@ Thuộc: [Spec tổng](../index.md) · S7 (trước đây là S6). Chốt phạm
 - [ ] Xoá tài khoản trong app chạy đúng · chính sách quyền riêng tư + trang xoá tài khoản có URL công khai.
 - [ ] App đã qua thử nghiệm kín 14 ngày với ≥ 12 người và được duyệt bản công khai.
 - [ ] Google đã xác minh OAuth: tài khoản ngoài danh sách Test users đăng nhập + đồng bộ Google được.
-- [ ] Banner hiện ở mọi màn xem · thẻ quảng cáo gốc trong Ghi chú, Todo, Lịch › Danh sách, Chi tiêu · không quảng cáo nào ở màn soạn, Báo lỗi, màn Pro, Xoá tài khoản · user EU/UK thấy hộp hỏi đồng ý.
+- [ ] Banner hiện ở mọi màn xem · thẻ quảng cáo gốc trong Ghi chú, Todo, Lịch (cả 4 chế độ), Chi tiêu · không quảng cáo nào ở màn soạn, Báo lỗi, màn Pro, Xoá tài khoản · user EU/UK thấy hộp hỏi đồng ý.
 - [ ] Xem quảng cáo có thưởng → mọi quảng cáo tắt 24 giờ, hết hạn thì hiện lại.
 - [ ] Mua 1 gói (môi trường thử của Play) → mọi quảng cáo tắt trên cả 2 máy · cài lại app → khôi phục giao dịch được.
 - [ ] Play Console đã khai: có quảng cáo, Data safety, `AD_ID`, độ tuổi 18+.
