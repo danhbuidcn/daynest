@@ -10,6 +10,8 @@ export type Expense = {
   spentOn: string;
   note: string;
   updatedAt: string;
+  // Set on expenses the app wrote from a recurring rule (null once the rule is deleted).
+  recurrenceId: string | null;
 };
 
 export type ExpenseCategory = {

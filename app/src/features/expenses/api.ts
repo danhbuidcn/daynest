@@ -21,12 +21,12 @@ function classify(error: unknown): Error {
   return new Error(JSON.stringify(error));
 }
 
-const COLUMNS = 'id, category_id, amount, spent_on, note, updated_at';
+const COLUMNS = 'id, category_id, amount, spent_on, note, updated_at, recurrence_id';
 
-type ExpenseTableRow = { id: string; category_id: string; amount: number | string; spent_on: string; note: string; updated_at: string };
+type ExpenseTableRow = { id: string; category_id: string; amount: number | string; spent_on: string; note: string; updated_at: string; recurrence_id: string | null };
 
 function toExpense(r: ExpenseTableRow): Expense {
-  return { id: r.id, categoryId: r.category_id, amount: Number(r.amount), spentOn: r.spent_on, note: r.note, updatedAt: r.updated_at };
+  return { id: r.id, categoryId: r.category_id, amount: Number(r.amount), spentOn: r.spent_on, note: r.note, updatedAt: r.updated_at, recurrenceId: r.recurrence_id };
 }
 
 export type ExpenseInput = { categoryId: string; amount: number; spentOn: string; note: string };

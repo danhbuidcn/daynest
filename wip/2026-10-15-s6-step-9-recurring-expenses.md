@@ -14,12 +14,12 @@ Bước này lớn (form + tự ghi + 2 màn quản lý), chia **2 phần trong 
 
 **Phần A — tạo, tự ghi, hiện icon**
 
-- [ ] 1. `lib/expenses/recurrence.ts` (hàm thuần): `nextDueDate(frequency, anchorDay, from)` → ngày kế tiếp (hằng tháng: cùng ngày, tháng thiếu ngày → ngày cuối tháng, `anchorDay` giữ nguyên nên 31 → 30 → 31) · `anchorOf(frequency, date)` (thứ ISO 1–7 hoặc ngày 1–31) · `nextLabelDate` cho dòng "lần tới". Test khớp các ca của `rls_s6.sql` (ngày 31, tháng 2 nhuận, hằng tuần).
-- [ ] 2. `features/expenses/recurrenceApi.ts` + hook: `createRecurrence({ id, categoryId, amount, note, frequency, startOn })` (tính `anchor_day`, `next_on` = ngày bắt đầu; id sinh khi mở form, gửi lại không trùng) · `generateDue(today)` gọi `rpc('generate_due_expenses', { p_today })` → số dòng đã ghi.
-- [ ] 3. Form khoản chi (`app/expense/edit.tsx`, chỉ khi **tạo mới**): dòng "Lặp lại" — Không · Hằng tuần · Hằng tháng (hộp chọn có sẵn kiểu `ChoiceDialog`) · Lưu với lặp = tạo quy tắc rồi gọi `generateDue` (khoản chi đầu tiên được ghi ngay nếu ngày bắt đầu ≤ hôm nay; **không** tạo thêm khoản chi thường, tránh trùng) · ngày bắt đầu ở tương lai thì chỉ tạo quy tắc · khoá Lưu khi mất mạng như bước 4 · i18n VI + EN.
-- [ ] 4. Tự ghi: hook `useGenerateRecurring` ở màn Chi tiêu — gọi khi mở tab và khi app quay lại từ nền (`AppState`, như `useExpensesNav`) · hôm nay theo múi giờ Cài đặt · số dòng > 0 → làm mới danh sách khoản chi + tổng 6 tháng · lỗi thì im lặng (lần sau gọi lại) · không gọi khi mất mạng.
-- [ ] 5. Icon lặp nhỏ ở khoản chi tự ghi trong danh sách Chi tiêu › Ngày: đọc thêm cột `recurrence_id` trong `fetchExpenses` (`Expense.recurrenceId`), dùng icon `repeat` (có sẵn ở Lịch).
-- [ ] 6. `typecheck` + `lint` + `npm test` · thử trên máy ảo: tạo khoản chi hằng tháng ngày hôm nay → có 1 khoản + icon · tạo hằng tuần ngày đã qua 3 tuần → ghi bù 4 khoản · tạo ngày tương lai → chưa có khoản · ra nền rồi quay lại không ghi trùng · xoá khoản tự ghi → không bị ghi lại · kiểm DB · commit + push.
+- [x] 1. `lib/expenses/recurrence.ts` (hàm thuần): `nextDueDate(frequency, anchorDay, from)` → ngày kế tiếp (hằng tháng: cùng ngày, tháng thiếu ngày → ngày cuối tháng, `anchorDay` giữ nguyên nên 31 → 30 → 31) · `anchorOf(frequency, date)` (thứ ISO 1–7 hoặc ngày 1–31) · `nextLabelDate` cho dòng "lần tới". Test khớp các ca của `rls_s6.sql` (ngày 31, tháng 2 nhuận, hằng tuần).
+- [x] 2. `features/expenses/recurrenceApi.ts` + hook: `createRecurrence({ id, categoryId, amount, note, frequency, startOn })` (tính `anchor_day`, `next_on` = ngày bắt đầu; id sinh khi mở form, gửi lại không trùng) · `generateDue(today)` gọi `rpc('generate_due_expenses', { p_today })` → số dòng đã ghi.
+- [x] 3. Form khoản chi (`app/expense/edit.tsx`, chỉ khi **tạo mới**): dòng "Lặp lại" — Không · Hằng tuần · Hằng tháng (hộp chọn có sẵn kiểu `ChoiceDialog`) · Lưu với lặp = tạo quy tắc rồi gọi `generateDue` (khoản chi đầu tiên được ghi ngay nếu ngày bắt đầu ≤ hôm nay; **không** tạo thêm khoản chi thường, tránh trùng) · ngày bắt đầu ở tương lai thì chỉ tạo quy tắc · khoá Lưu khi mất mạng như bước 4 · i18n VI + EN.
+- [x] 4. Tự ghi: hook `useGenerateRecurring` ở màn Chi tiêu — gọi khi mở tab và khi app quay lại từ nền (`AppState`, như `useExpensesNav`) · hôm nay theo múi giờ Cài đặt · số dòng > 0 → làm mới danh sách khoản chi + tổng 6 tháng · lỗi thì im lặng (lần sau gọi lại) · không gọi khi mất mạng.
+- [x] 5. Icon lặp nhỏ ở khoản chi tự ghi trong danh sách Chi tiêu › Ngày: đọc thêm cột `recurrence_id` trong `fetchExpenses` (`Expense.recurrenceId`), dùng icon `repeat` (có sẵn ở Lịch).
+- [~] 6. `typecheck` + `lint` + `npm test` · thử trên máy ảo: tạo khoản chi hằng tháng ngày hôm nay → có 1 khoản + icon · tạo hằng tuần ngày đã qua 3 tuần → ghi bù 4 khoản · tạo ngày tương lai → chưa có khoản · ra nền rồi quay lại không ghi trùng · xoá khoản tự ghi → không bị ghi lại · kiểm DB · commit + push.
 
 **Phần B — quản lý**
 
@@ -34,3 +34,5 @@ Bước này lớn (form + tự ghi + 2 màn quản lý), chia **2 phần trong 
 2. Test cho `recurrence.ts`: spec và CLAUDE.md đều yêu cầu có → tôi thêm (như bước 8).
 
 ## Kết quả
+
+- **Phần A (commit riêng):** `lib/expenses/recurrence.ts` (+3 nhóm test, tổng 258) · `recurrenceApi.ts` · `useGenerateRecurring.ts` (mỗi lần tab vào màn hình + app quay lại) · dòng "Lặp lại" ở form tạo · icon lặp ở danh sách. Máy ảo: tạo hằng tháng hôm nay → 1 khoản + icon, ra nền quay lại không ghi trùng. **Còn thử cùng phần B** (cần màn quản lý để dọn): hằng tuần ghi bù, ngày tương lai, xoá khoản tự ghi không bị ghi lại, kiểm DB. Dữ liệu thử đang có: 1 quy tắc hằng tháng 12.345 ₫ + 1 khoản chi hôm nay — **phải xoá sau khi thử**.

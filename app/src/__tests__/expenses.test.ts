@@ -17,6 +17,7 @@ import {
   totalsByCategory,
 } from '@/lib/expenses';
 import { budgetForMonth, budgetProgress, monthKey } from '@/lib/expenses/budget';
+import { anchorOf, nextDueDate } from '@/lib/expenses/recurrence';
 import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
@@ -185,5 +186,23 @@ describe('budget', () => {
     expect(budgetProgress(800, 1000).level).toBe('warn');
     expect(budgetProgress(1000, 1000).level).toBe('warn');
     expect(budgetProgress(1001, 1000)).toMatchObject({ level: 'over', remaining: -1 });
+  });
+});
+
+describe('recurrence', () => {
+  it('weekly anchor is the ISO weekday', () => {
+    expect(anchorOf('weekly', { year: 2025, month: 10, day: 6 })).toBe(1); // Monday
+    expect(anchorOf('weekly', { year: 2025, month: 10, day: 5 })).toBe(7); // Sunday
+    expect(anchorOf('monthly', { year: 2025, month: 10, day: 31 })).toBe(31);
+  });
+  it('weekly moves 7 days, across a month end', () => {
+    expect(nextDueDate('weekly', 1, { year: 2025, month: 10, day: 27 })).toEqual({ year: 2025, month: 11, day: 3 });
+  });
+  it('monthly keeps the anchor day, falls back to the last day of a short month', () => {
+    expect(nextDueDate('monthly', 31, { year: 2025, month: 10, day: 31 })).toEqual({ year: 2025, month: 11, day: 30 });
+    expect(nextDueDate('monthly', 31, { year: 2025, month: 11, day: 30 })).toEqual({ year: 2025, month: 12, day: 31 });
+    expect(nextDueDate('monthly', 30, { year: 2024, month: 1, day: 30 })).toEqual({ year: 2024, month: 2, day: 29 });
+    expect(nextDueDate('monthly', 30, { year: 2025, month: 1, day: 30 })).toEqual({ year: 2025, month: 2, day: 28 });
+    expect(nextDueDate('monthly', 15, { year: 2025, month: 12, day: 15 })).toEqual({ year: 2026, month: 1, day: 15 });
   });
 });

@@ -23,6 +23,7 @@ import { BudgetDialog } from '@/features/expenses/BudgetDialog';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
 import { useExpenseCategories, useExpensesInRange, useMonthlyTotals, usePrefetchExpenses } from '@/features/expenses/useExpenses';
 import { useBudget } from '@/features/expenses/useBudget';
+import { useGenerateRecurring } from '@/features/expenses/useGenerateRecurring';
 import { useExpensesNav } from '@/features/expenses/useExpensesNav';
 import { loadError } from '@/features/network/loadError';
 import {
@@ -50,6 +51,7 @@ export default function ExpensesScreen() {
   const { settings } = useAuth();
   const nav = useExpensesNav(settings.timeZone, settings.weekStart);
   const { mode, cursor } = nav;
+  useGenerateRecurring(settings.timeZone);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [budgetOpen, setBudgetOpen] = useState(false);
   const budgetQuery = useBudget();

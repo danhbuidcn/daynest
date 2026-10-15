@@ -101,6 +101,7 @@ export function ExpenseListCard({
                 </AppText>
               ) : null}
             </View>
+            {e.recurrenceId ? <Icon name="repeat" size={16} color={colors.textMuted} /> : null}
             <AppText weight="bold" style={styles.rowText}>{formatVnd(e.amount)}</AppText>
           </Pressable>
         );

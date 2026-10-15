@@ -454,7 +454,13 @@
       "saveFailed": "Could not save. Please try again.",
       "delete": "Delete",
       "deleteFailed": "Could not delete. Please try again.",
-      "deleted": "Deleted"
+      "deleted": "Deleted",
+      "repeat": "Repeat",
+      "repeatOptions": {
+        "none": "No",
+        "weekly": "Weekly",
+        "monthly": "Monthly"
+      }
     },
     "categoryDialog": {
       "addTitle": "Add category",

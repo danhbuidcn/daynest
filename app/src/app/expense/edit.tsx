@@ -8,6 +8,7 @@ import { Pressable, TextInput, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
+import { ChoiceDialog } from '@/components/Dialog';
 import { FormScreen } from '@/components/FormScreen';
 import { Icon, type IconName } from '@/components/Icon';
 import { useToast } from '@/components/Toast';
@@ -16,6 +17,7 @@ import { useUndoableDelete } from '@/features/cache/useUndoableDelete';
 import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { ConflictDialog } from '@/features/events/OccurrenceDialogs';
 import * as api from '@/features/expenses/api';
+import * as recurrenceApi from '@/features/expenses/recurrenceApi';
 import { categoryName, defaultCategoryId, type Expense } from '@/features/expenses/expense';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
@@ -27,6 +29,7 @@ import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { success } from '@/lib/haptics';
 import { formatAmountInput, groupThousands, NOTE_MAX, parseAmount, relativeDay } from '@/lib/expenses';
+import { anchorOf, type Frequency } from '@/lib/expenses/recurrence';
 import type { SolarDate } from '@/lib/lunar';
 import { makeStyles, radius, space, useTheme } from '@/theme';
 
@@ -90,6 +93,8 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
   const [pickCategory, setPickCategory] = useState(false);
   const [pickDate, setPickDate] = useState(false);
   const [conflict, setConflict] = useState(false);
+  const [repeat, setRepeat] = useState<Frequency | 'none'>('none');
+  const [pickRepeat, setPickRepeat] = useState(false);
 
   const today = todayIn(settings.timeZone);
   const offline = !canWrite;
@@ -121,8 +126,28 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
     }
   };
 
+  // A repeating expense becomes a rule; the DB function then writes what is already due (the first
+  // one when the start date is today or earlier), so no plain expense is saved next to it.
+  const saveRule = async (frequency: Frequency) => {
+    await recurrenceApi.createRecurrence(newId, {
+      categoryId: form.categoryId,
+      amount: amount!,
+      note: form.note.trim(),
+      frequency,
+      anchorDay: anchorOf(frequency, form.spentOn),
+      nextOn: isoDate(form.spentOn),
+    });
+    await recurrenceApi.generateDue(isoDate(today));
+    await queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] });
+  };
+
   const onSave = () =>
     void run(async () => {
+      if (!expense && repeat !== 'none') {
+        await saveRule(repeat);
+        AsyncStorage.setItem(LAST_CATEGORY_KEY, form.categoryId).catch(() => {});
+        return;
+      }
       await save.mutateAsync({ id: expense?.id ?? newId, updatedAt: expense?.updatedAt, input: input() });
       AsyncStorage.setItem(LAST_CATEGORY_KEY, form.categoryId).catch(() => {});
     }, 'expenses.form.saved');
@@ -203,6 +228,14 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
           </AppText>
           <Icon name="chevron" size={18} color={colors.textMuted} />
         </Row>
+        {expense ? null : (
+          <Row icon="repeat" onPress={() => setPickRepeat(true)}>
+            <AppText numberOfLines={1} style={styles.grow}>
+              {t('expenses.form.repeat')}: {t(`expenses.form.repeatOptions.${repeat}`)}
+            </AppText>
+            <Icon name="chevron" size={18} color={colors.textMuted} />
+          </Row>
+        )}
         <Row icon="note">
           <TextInput
             value={form.note}
@@ -239,6 +272,17 @@ function ExpenseForm({ initial, expense }: { initial: FormState; expense?: Expen
           setPickDate(false);
         }}
         onClose={() => setPickDate(false)}
+      />
+      <ChoiceDialog
+        visible={pickRepeat}
+        title={t('expenses.form.repeat')}
+        options={(['none', 'weekly', 'monthly'] as const).map((value) => ({ value, label: t(`expenses.form.repeatOptions.${value}`) }))}
+        selected={repeat}
+        onSelect={(value) => {
+          setRepeat(value);
+          setPickRepeat(false);
+        }}
+        onClose={() => setPickRepeat(false)}
       />
       <ConflictDialog
         visible={conflict}

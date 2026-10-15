@@ -454,7 +454,13 @@
       "saveFailed": "Lưu không thành công. Vui lòng thử lại.",
       "delete": "Xoá",
       "deleteFailed": "Xoá không thành công. Vui lòng thử lại.",
-      "deleted": "Đã xoá"
+      "deleted": "Đã xoá",
+      "repeat": "Lặp lại",
+      "repeatOptions": {
+        "none": "Không",
+        "weekly": "Hằng tuần",
+        "monthly": "Hằng tháng"
+      }
     },
     "categoryDialog": {
       "addTitle": "Thêm nhóm",
