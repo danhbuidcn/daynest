@@ -502,7 +502,6 @@ const settings = ({ pro = false, eu = false, hi = '' } = {}) => `<div class="con
     <div class="card account"><span class="avatar">D</span><div class="who"><div class="name">Danh Bùi</div><div class="mail">danhbuidcn@gmail.com</div></div></div>
     <div class="group-label">Tài khoản</div>
     <div class="card ${hl(hi === 'pro')}">${sr(I.crown, `Daynest Pro${sub(pro ? 'Đang dùng · gói năm' : 'Tắt quảng cáo')}`, chev)}</div>
-    <div class="card">${sr(I.logout, 'Đăng xuất', '', 'danger')}<div class="${hl(hi === 'del')}" style="border-radius:12px">${sr(I.userx, 'Xoá tài khoản', chev, 'danger')}</div></div>
     <div class="group-label">Giao diện</div>
     <div class="card">${sr(I.palette, `Giao diện${sub('Xanh bạc hà · Nền trơn')}`, chev)}</div>
     <div class="group-label">Lịch</div>
@@ -512,6 +511,7 @@ const settings = ({ pro = false, eu = false, hi = '' } = {}) => `<div class="con
       <div class="${hl(hi === 'priv')}" style="border-radius:12px">${sr(I.shieldS, 'Chính sách quyền riêng tư', chev)}</div>
       ${eu ? `<div class="${hl(hi === 'ump')}" style="border-radius:12px">${sr(I.lock, 'Tuỳ chọn quảng cáo', chev)}</div>` : ''}
       ${sr(I.info2, 'Phiên bản', '<span class="val">7.0.0</span>')}</div>
+    <div class="card">${sr(I.logout, 'Đăng xuất', '', 'danger')}<div class="${hl(hi === 'del')}" style="border-radius:12px">${sr(I.userx, 'Xoá tài khoản', chev, 'danger')}</div></div>
   </div>
 </div>${tabbar('set')}`;
 
@@ -580,7 +580,7 @@ const ump = `<div class="scrim"><div class="dialog" style="text-align:left;paddi
 const phoneT = (html, cls = '') => `<div class="phone ${cls}">${status}${html}</div>`;
 const groups = [
   ['A. Xoá tài khoản', [
-    ['1. Cài đặt', 'nhóm "Tài khoản" mới ở đầu: Daynest Pro · Đăng xuất · Xoá tài khoản (chữ đỏ) · dòng "Chính sách quyền riêng tư" ở nhóm Ứng dụng', phoneT(settings({ hi: 'del' }), 'tall')],
+    ['1. Cài đặt', 'nhóm "Tài khoản" mới ở đầu: Daynest Pro · dòng "Chính sách quyền riêng tư" ở nhóm Ứng dụng · Đăng xuất và Xoá tài khoản (chữ đỏ) nằm cuối cùng', phoneT(settings({ hi: 'del' }), 'tall')],
     ['2. Xoá tài khoản', 'liệt kê dữ liệu bị xoá · nút đỏ cố định ở đáy', phoneT(delScreen(false))],
     ['2b. Đang có Pro', 'thêm dòng cảnh báo: gói Pro vẫn tính phí → mở Google Play để huỷ', phoneT(delScreen(true))],
     ['3. Hộp xác nhận', 'bấm nút ở màn 2 · không thể hoàn tác', phoneWith(delScreen(false), dlg(I.userx, 'err', 'Xoá tài khoản?', 'Toàn bộ dữ liệu sẽ bị xoá vĩnh viễn.', two('Huỷ', 'Xoá')))],
