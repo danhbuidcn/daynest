@@ -270,23 +270,23 @@ Cài đặt: nhóm "Giao diện" (đầu) → màn Giao diện: xem trước · 
 
 ## Xong khi (DoD)
 
-- [ ] Lưu form không tải lại; Xoá, tick hiện ngay · số đo trước / sau (a), (b), (c) ghi trong wip, (b) và (c) nhanh hơn ≥ 30%.
-- [ ] Tải event, todo 1 lượt gọi · hàm đặt dòng đã lưu vào dữ liệu trên máy có test.
-- [ ] Bật chế độ máy bay: banner hiện ở mọi màn, mọi nút ghi bị khoá, vẫn xem dữ liệu đã lưu · tắt chế độ máy bay → banner ẩn, dữ liệu tự tải lại.
-- [ ] Giả lập server chậm / sai địa chỉ Supabase: sau ≤ 15 s hiện banner "Máy chủ đang gặp sự cố.", không treo · vẫn xem được dữ liệu đã lưu trên máy, nút tạo / sửa / xoá bị khoá · hết sự cố → banner ẩn, nút mở khoá · máy chưa có dữ liệu → thẻ lỗi + Thử lại.
-- [ ] Rung nhẹ, khung xương thấy trên máy thật.
-- [ ] Hoàn tác: xoá event (cả event đồng bộ Google), todo, khoản chi → Hoàn tác → còn nguyên, Google không bị xoá · không Hoàn tác → xoá thật sau 4 s · ra nền trong 4 s → vẫn xoá.
-- [ ] Ngân sách: đặt / sửa / bỏ chung và riêng 1 tháng (tháng riêng ghi đè, tháng khác dùng chung) · thanh đúng màu theo % · 2 máy thấy cùng ngân sách.
-- [ ] Khoản chi lặp: tạo hằng tuần / hằng tháng (cả ngày 31) · tự ghi khi mở tab, ghi bù kỳ đã qua · 2 máy cùng mở không ghi trùng · sửa / xoá quy tắc không đổi khoản chi đã ghi · xoá khoản chi tự ghi không bị ghi lại.
-- [ ] Giao diện: đổi bộ màu (cả Tối, Theo hệ thống, Tự chọn với màu rất nhạt / rất đậm vẫn đọc được chữ), nền màu tự chọn, nền (chuyển màu, ảnh + độ mờ), font, cỡ chữ → áp dụng ngay mọi màn, không màn nào còn màu / font cũ · mở lại app đúng giao diện, không nháy · máy thứ 2 nhận cùng giao diện (trừ ảnh).
-- [ ] Nút `+`: tab Chi tiêu mở thẳng Thêm khoản chi · Ghi chú › Ghi chú mở note mới · Ghi chú › Todo mở Todo mới · Lịch, Cài đặt vẫn pop-up 4 ô.
-- [ ] Nhóm gợi ý: chạm → thêm đúng icon, màu · trùng tên thì ẩn · đủ 30 nhóm → hộp báo · bộ 42 icon hiện đủ, nhóm cũ dùng icon đã bỏ vẫn hiện đúng.
-- [ ] Chi tiêu: mọi chế độ có danh sách nhóm (Ngày thêm danh sách khoản chi bên dưới, Tuần / Tháng không) · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
-- [ ] Lịch Tháng: ô 5 thanh + "+N" · cuộn dọc mượt trên máy thật · cuộn xuống thu gọn đầu, cuộn lên hiện lại · vuốt ngang đổi tháng vẫn đúng · mở Lịch cuộn tới tuần hôm nay.
-- [ ] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
+- [x] Lưu form không tải lại; Xoá, tick hiện ngay · số đo trước / sau (a), (b), (c) ghi trong wip, (b) và (c) nhanh hơn ≥ 30%.
+- [x] Tải event, todo 1 lượt gọi · hàm đặt dòng đã lưu vào dữ liệu trên máy có test.
+- [x] Bật chế độ máy bay: banner hiện ở mọi màn, mọi nút ghi bị khoá, vẫn xem dữ liệu đã lưu · tắt chế độ máy bay → banner ẩn, dữ liệu tự tải lại.
+- [x] Giả lập server chậm / sai địa chỉ Supabase: sau ≤ 15 s hiện banner "Máy chủ đang gặp sự cố.", không treo · vẫn xem được dữ liệu đã lưu trên máy, nút tạo / sửa / xoá bị khoá · hết sự cố → banner ẩn, nút mở khoá · máy chưa có dữ liệu → thẻ lỗi + Thử lại.
+- [x] Rung nhẹ, khung xương thấy trên máy thật.
+- [x] Hoàn tác: xoá event (cả event đồng bộ Google), todo, khoản chi → Hoàn tác → còn nguyên, Google không bị xoá · không Hoàn tác → xoá thật sau 4 s · ra nền trong 4 s → vẫn xoá.
+- [x] Ngân sách: đặt / sửa / bỏ chung và riêng 1 tháng (tháng riêng ghi đè, tháng khác dùng chung) · thanh đúng màu theo % · 2 máy thấy cùng ngân sách.
+- [x] Khoản chi lặp: tạo hằng tuần / hằng tháng (cả ngày 31) · tự ghi khi mở tab, ghi bù kỳ đã qua · 2 máy cùng mở không ghi trùng · sửa / xoá quy tắc không đổi khoản chi đã ghi · xoá khoản chi tự ghi không bị ghi lại.
+- [x] Giao diện: đổi bộ màu (cả Tối, Theo hệ thống, Tự chọn với màu rất nhạt / rất đậm vẫn đọc được chữ), nền màu tự chọn, nền (chuyển màu, ảnh + độ mờ), font, cỡ chữ → áp dụng ngay mọi màn, không màn nào còn màu / font cũ · mở lại app đúng giao diện, không nháy · máy thứ 2 nhận cùng giao diện (trừ ảnh).
+- [x] Nút `+`: tab Chi tiêu mở thẳng Thêm khoản chi · Ghi chú › Ghi chú mở note mới · Ghi chú › Todo mở Todo mới · Lịch, Cài đặt vẫn pop-up 4 ô.
+- [x] Nhóm gợi ý: chạm → thêm đúng icon, màu · trùng tên thì ẩn · đủ 30 nhóm → hộp báo · bộ 42 icon hiện đủ, nhóm cũ dùng icon đã bỏ vẫn hiện đúng.
+- [x] Chi tiêu: mọi chế độ có danh sách nhóm (Ngày thêm danh sách khoản chi bên dưới, Tuần / Tháng không) · bấm nhóm → pop-up đúng khoản chi của nhóm trong kỳ · sửa / xoá / thêm từ pop-up rồi về lại pop-up.
+- [x] Lịch Tháng: ô 5 thanh + "+N" · cuộn dọc mượt trên máy thật · cuộn xuống thu gọn đầu, cuộn lên hiện lại · vuốt ngang đổi tháng vẫn đúng · mở Lịch cuộn tới tuần hôm nay.
+- [x] Hàm thuần mới có test: phân loại lỗi, ngân sách của tháng, ngày tới hạn khoản chi lặp, tương phản bộ màu, tính bộ màu tự chọn.
 - [x] Test RLS cho bảng / cột mới · test tải đạt (0 lỗi, p95 < 1 s).
-- [ ] `npm run typecheck && npm run lint && npm test` qua.
-- [ ] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
+- [x] `npm run typecheck && npm run lint && npm test` qua.
+- [x] Cuối sprint: release theo [Spec tổng §4](../index.md#cuối-sprint-mọi-sprint).
 
 ## Đã chốt (2026-10-14)
 

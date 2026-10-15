@@ -1,4 +1,4 @@
-# 2026-10-15 — S6 bước 15: Cuối sprint — release v6.0.0 — ⏳ chờ bạn duyệt
+# 2026-10-15 — S6 bước 15: Cuối sprint — release v6.0.0 — ✅ xong (v6.0.0, bạn thử trên máy thật rồi ok)
 
 Thuộc: [S6 lộ trình code](2026-10-14-s6-code-plan.md) · [Spec tổng §4 Cuối sprint](../docs/specs/index.md) · bước trước: [bước 14](2026-10-15-s6-step-14-load-test.md).
 
@@ -14,14 +14,14 @@ Thuộc: [S6 lộ trình code](2026-10-14-s6-code-plan.md) · [Spec tổng §4 C
 
 ## Plan
 
-- [ ] 1. Tick DoD trong `docs/specs/sprint-6/index.md` các mục tôi đã thử trên máy ảo / test; mục cần máy thật để trống cho bước 5.
-- [ ] 2. `app/app.config.ts`: `version` 6.0.0, `versionCode` 9.
-- [ ] 3. `npm run typecheck && npm run lint && npm test` → `npm run release` → `app/dist/daynest-6.0.0-9.apk` (chỉ APK).
-- [ ] 4. `adb install -r` lên máy thật (R5CX924PQ1V) → mở app, kiểm vẫn đăng nhập.
-- [ ] 5. **Bạn thử** theo DoD S6 (danh sách mục còn trống) → báo kết quả; tôi sửa nếu có lỗi (build lại, cài lại).
-- [ ] 6. Bạn ok → tick nốt DoD · commit `chore(release): v6.0.0` · `git tag v6.0.0 && git push origin main v6.0.0`.
-- [ ] 7. `gh release create v6.0.0 app/dist/daynest-6.0.0-9.apk --title v6.0.0 --notes "<tóm tắt S6>"` → `gh release view v6.0.0` thấy `.apk`.
-- [ ] 8. Cập nhật `wip/index.md`, lộ trình S6 (tick bước 15), Spec tổng §2 (S6 hoàn thành).
+- [x] 1. Tick DoD trong `docs/specs/sprint-6/index.md` các mục tôi đã thử trên máy ảo / test; mục cần máy thật để trống cho bước 5.
+- [x] 2. `app/app.config.ts`: `version` 6.0.0, `versionCode` 9.
+- [x] 3. `npm run typecheck && npm run lint && npm test` → `npm run release` → `app/dist/daynest-6.0.0-9.apk` (chỉ APK).
+- [x] 4. `adb install -r` lên máy thật (R5CX924PQ1V) → mở app, kiểm vẫn đăng nhập.
+- [x] 5. **Bạn thử** theo DoD S6 (danh sách mục còn trống) → báo kết quả; tôi sửa nếu có lỗi (build lại, cài lại).
+- [x] 6. Bạn ok → tick nốt DoD · commit `chore(release): v6.0.0` · `git tag v6.0.0 && git push origin main v6.0.0`.
+- [x] 7. `gh release create v6.0.0 app/dist/daynest-6.0.0-9.apk --title v6.0.0 --notes "<tóm tắt S6>"` → `gh release view v6.0.0` thấy `.apk`.
+- [x] 8. Cập nhật `wip/index.md`, lộ trình S6 (tick bước 15), Spec tổng §2 (S6 hoàn thành).
 
 ## Cần bạn quyết
 
@@ -29,4 +29,4 @@ Thuộc: [S6 lộ trình code](2026-10-14-s6-code-plan.md) · [Spec tổng §4 C
 
 ## Kết quả
 
-- (chưa làm)
+- v6.0.0 (versionCode 9): `typecheck`, `lint` (0 lỗi), 271 test qua · `npm run release` → `daynest-6.0.0-9.apk` · cài đè máy thật OK · bạn thử và `ok` · commit, tag `v6.0.0`, GitHub Release kèm APK.
