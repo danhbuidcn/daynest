@@ -11,13 +11,14 @@ import { useAuth } from '@/features/auth/AuthProvider';
 import { clockLabel } from '@/features/events/format';
 import { timeOfDayIn, todayIn } from '@/lib/calendar/timeZone';
 import { toRelativeMoment } from '@/lib/relativeDate';
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 import { disableSync, enableSync, reconnect, syncNow, type SyncOutcome } from './sync';
 import { SyncProgressDialog } from './SyncProgressDialog';
 import { useGoogleSync } from './useGoogleSync';
 
 // F6 nhóm Google Calendar (màn 21, 21b, 21c, 22).
 export function GoogleSettings() {
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const toast = useToast();
   const { settings } = useAuth();
