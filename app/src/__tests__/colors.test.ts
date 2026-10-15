@@ -2,7 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import { contrast, hexToHsv, hsvToHex, isAppColor, isValidHex, parseHex, textOn, toHex } from '@/lib/colors';
 import { keepLocalColor, toGoogleColorId } from '@/lib/google/mapping';
-import { colors, eventColors } from '@/theme';
+import { eventColors, ON_COLOR } from '@/theme/tokens';
 
 describe('colour values', () => {
   it('accepts the 6 names and upper-case #RRGGBB only (same rule as the DB check)', () => {
@@ -30,19 +30,19 @@ describe('colour values', () => {
 
 describe('textOn', () => {
   it('keeps dark text on the 6 light named colours', () => {
-    for (const c of ['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'] as const) expect(textOn(c)).toBe(colors.text);
+    for (const c of ['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'] as const) expect(textOn(c)).toBe(ON_COLOR);
   });
 
   it('switches to white on a dark colour', () => {
-    expect(textOn('#C2582F')).toBe(colors.white);
-    expect(textOn('#2F6FC2')).toBe(colors.white);
-    expect(textOn('#000000')).toBe(colors.white);
+    expect(textOn('#C2582F')).toBe('#FFFFFF');
+    expect(textOn('#2F6FC2')).toBe('#FFFFFF');
+    expect(textOn('#000000')).toBe('#FFFFFF');
   });
 
   it('picks the colour with more contrast', () => {
     for (const bg of ['#FFFFFF', '#FFEB3B', '#808080', '#1B5E20', '#D50000']) {
       const fg = textOn(bg);
-      const other = fg === colors.text ? colors.white : colors.text;
+      const other = fg === ON_COLOR ? '#FFFFFF' : ON_COLOR;
       expect(contrast(bg, fg)).toBeGreaterThanOrEqual(contrast(bg, other));
     }
   });

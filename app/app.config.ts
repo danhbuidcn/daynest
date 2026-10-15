@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   version: '5.0.1',
   orientation: 'portrait',
   icon: './assets/icon.png',
-  userInterfaceStyle: 'light',
+  userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: 'com.danhbuidcn.daynest',
     supportsTablet: false,
@@ -33,7 +33,12 @@ const config: ExpoConfig = {
     ['expo-notifications', { icon: './assets/android-icon-monochrome.png', color: '#5BBE98' }],
     [
       'expo-splash-screen',
-      { image: './assets/splash-icon.png', imageWidth: 120, backgroundColor: '#FAF8F5' },
+      {
+        image: './assets/splash-icon.png',
+        imageWidth: 120,
+        backgroundColor: '#FAF8F5',
+        dark: { image: './assets/splash-icon.png', backgroundColor: '#17171B' },
+      },
     ],
   ],
   experiments: { typedRoutes: true },

@@ -1,4 +1,4 @@
-import { colors, eventColors } from '@/theme';
+import { eventColors, ON_COLOR } from '@/theme/tokens';
 
 // S4 § Màu bất kỳ: one of the 6 named colours, or any colour as upper-case `#RRGGBB` (DB check).
 export type NamedColor = keyof typeof eventColors;
@@ -53,7 +53,7 @@ export function contrast(a: string, b: string): number {
 // Text on a coloured background: dark `text` or white, whichever reads better (≥ 4.5:1 when possible).
 export function textOn(c: AppColor | string): string {
   const bg = toHex(c);
-  return contrast(bg, colors.text) >= contrast(bg, colors.white) ? colors.text : colors.white;
+  return contrast(bg, ON_COLOR) >= contrast(bg, '#FFFFFF') ? ON_COLOR : '#FFFFFF';
 }
 
 // CIE Lab (D65): raw RGB distance sent dark red to grey, Lab follows what the eye sees.

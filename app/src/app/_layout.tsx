@@ -1,13 +1,8 @@
-import {
-  Nunito_600SemiBold,
-  Nunito_700Bold,
-  Nunito_800ExtraBold,
-  useFonts,
-} from '@expo-google-fonts/nunito';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { Stack, TransitionPresets } from 'expo-router/js-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
 import { useEffect, useState } from 'react';
 import { LogBox, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -22,7 +17,10 @@ import { persistOptions, queryClient } from '@/features/cache/queryClient';
 import { useGoogleSyncLifecycle } from '@/features/google/useGoogleSync';
 import { useReminderSync } from '@/features/reminders/useReminderSync';
 import { loadSavedLanguage } from '@/i18n';
-import { colors } from '@/theme';
+import { loadAppearance, type StoredAppearance } from '@/features/appearance/appearanceStorage';
+import { useAppearanceSync } from '@/features/appearance/useAppearanceSync';
+import { FONT_FILES } from '@/theme/fonts';
+import { ThemeProvider, makeStyles, useTheme } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,40 +28,54 @@ SplashScreen.preventAutoHideAsync();
 LogBox.ignoreLogs(['InteractionManager has been deprecated']);
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({ Nunito_600SemiBold, Nunito_700Bold, Nunito_800ExtraBold });
+  const [fontsLoaded] = useFonts(FONT_FILES);
   const [langLoaded, setLangLoaded] = useState(false);
+  // Read with the fonts, before the splash hides, so the first frame already has the saved look.
+  const [stored, setStored] = useState<StoredAppearance | null>(null);
+
+  useEffect(() => {
+    loadAppearance().then(setStored);
+  }, []);
 
   useEffect(() => {
     loadSavedLanguage().finally(() => setLangLoaded(true));
   }, []);
 
   useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
+    if (fontsLoaded && stored) SplashScreen.hideAsync();
+  }, [fontsLoaded, stored]);
 
-  if (!fontsLoaded) return null;
+  if (!fontsLoaded || !stored) return null;
 
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
-          <AuthProvider>
-            <ToastProvider>
-              <RootStack ready={langLoaded} />
-            </ToastProvider>
-          </AuthProvider>
-        </PersistQueryClientProvider>
+        <ThemeProvider initial={stored}>
+          <ThemedStatusBar />
+          <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+            <AuthProvider>
+              <ToastProvider>
+                <RootStack ready={langLoaded} />
+              </ToastProvider>
+            </AuthProvider>
+          </PersistQueryClientProvider>
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
 
+function ThemedStatusBar() {
+  return <StatusBar style={useTheme().dark ? 'light' : 'dark'} />;
+}
+
 function RootStack({ ready }: { ready: boolean }) {
+  const styles = useStyles();
   const { loading, profile } = useAuth();
   const updateRequired = useUpdateRequired();
   useReminderSync();
   useGoogleSyncLifecycle();
+  useAppearanceSync();
   if (updateRequired) return <UpdateRequiredScreen {...updateRequired} />;
   if (!ready || loading) return <SplashView />;
 
@@ -76,6 +88,7 @@ function RootStack({ ready }: { ready: boolean }) {
 }
 
 function AppStack({ signedIn }: { signedIn: boolean }) {
+  const { colors } = useTheme();
   return (
     // JS stack: swipe from the left edge to go back on both Android and iOS.
     <Stack
@@ -102,7 +115,5 @@ function AppStack({ signedIn }: { signedIn: boolean }) {
   );
 }
 
-const styles = StyleSheet.create({
-  root: { flex: 1 },
-  frame: { flex: 1, backgroundColor: colors.bg },
-});
+const styles = StyleSheet.create({ root: { flex: 1 } });
+const useStyles = makeStyles(({ colors }) => ({ frame: { flex: 1, backgroundColor: colors.bg } }));
