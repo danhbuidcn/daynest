@@ -4,6 +4,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 
 | Ngày | Việc | Trạng thái | File |
 | --- | --- | --- | --- |
+| 2026-10-16 | S7: Bỏ nhóm chi tiêu mặc định, lặp lại khi sửa khoản chi, todo chỉ 1 ngày (v7.0.0 / versionCode 11) | 🔄 build xong, chờ bạn thử trên máy | [2026-10-16-s7-no-default-categories-repeat-todo-window.md](2026-10-16-s7-no-default-categories-repeat-todo-window.md) |
 | 2026-10-15 | S7 bước 2: Bản `.aab` đầu cho thử nghiệm kín (v7.0.0 / versionCode 10, chữ ký Play, đăng nhập Google từ Play) | 🔄 build xong, chờ Play Console (việc của bạn) | [2026-10-15-s7-step-2-closed-test-build.md](2026-10-15-s7-step-2-closed-test-build.md) |
 | 2026-10-15 | S7 bước 1: Xoá tài khoản (Edge Function `delete-account`, màn trong app, chính sách quyền riêng tư) | 🔄 đã code + test local, chờ thử xoá thật (cần tài khoản phụ) | [2026-10-15-s7-step-1-delete-account.md](2026-10-15-s7-step-1-delete-account.md) |
 | 2026-10-15 | S7: lộ trình code (xoá tài khoản, bản kín, quảng cáo, Pro, lên Play, release v7.0.0) | ⏳ chờ bạn duyệt | [2026-10-15-s7-code-plan.md](2026-10-15-s7-code-plan.md) |
