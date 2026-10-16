@@ -1,8 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQueryClient } from '@tanstack/react-query';
 import * as Crypto from 'expo-crypto';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, TextInput, View } from 'react-native';
 
@@ -18,7 +17,7 @@ import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { ConflictDialog } from '@/features/events/OccurrenceDialogs';
 import * as api from '@/features/expenses/api';
 import * as recurrenceApi from '@/features/expenses/recurrenceApi';
-import { categoryName, defaultCategoryId, type Expense } from '@/features/expenses/expense';
+import { categoryName, type Expense } from '@/features/expenses/expense';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
@@ -29,14 +28,13 @@ import { isoDate, parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
 import { todayIn } from '@/lib/calendar/timeZone';
 import { success } from '@/lib/haptics';
 import { formatAmountInput, groupThousands, NOTE_MAX, parseAmount, relativeDay } from '@/lib/expenses';
-import { anchorOf, type Frequency } from '@/lib/expenses/recurrence';
+import { anchorOf, nextDueDate, type Frequency } from '@/lib/expenses/recurrence';
 import type { SolarDate } from '@/lib/lunar';
 import { makeStyles, radius, space, useTheme } from '@/theme';
 
-const LAST_CATEGORY_KEY = 'expenses.lastCategory';
 const NO_DATE = { year: 1900, month: 1, day: 1 };
 
-type FormState = { amount: string; categoryId: string; spentOn: SolarDate; note: string };
+type FormState = { amount: string; categoryId: string | null; spentOn: SolarDate; note: string };
 
 // S4 màn 7, 8 — create: `?date=YYYY-MM-DD` (default today) · edit: `?id=…&date=<spent_on>`.
 export default function ExpenseFormScreen() {
@@ -51,12 +49,6 @@ export default function ExpenseFormScreen() {
   const loaded = useExpensesInRange(range, isEdit);
   const expense = isEdit ? loaded.data?.find((e) => e.id === params.id) : undefined;
   const categories = useExpenseCategories().data;
-  const [lastUsed, setLastUsed] = useState<string | null | undefined>(undefined);
-  useEffect(() => {
-    AsyncStorage.getItem(LAST_CATEGORY_KEY)
-      .then(setLastUsed)
-      .catch(() => setLastUsed(null));
-  }, []);
 
   const initial = useMemo<FormState | null>(() => {
     if (isEdit) {
@@ -64,11 +56,10 @@ export default function ExpenseFormScreen() {
         ? { amount: groupThousands(expense.amount), categoryId: expense.categoryId, spentOn: parseIsoDate(expense.spentOn), note: expense.note }
         : null;
     }
-    if (!categories || lastUsed === undefined) return null;
-    const categoryId = categories.some((c) => c.id === params.category) ? params.category! : defaultCategoryId(categories, lastUsed);
-    if (!categoryId) return null;
+    if (!categories) return null;
+    const categoryId = categories.some((c) => c.id === params.category) ? params.category! : null;
     return { amount: '', categoryId, spentOn: params.date ? range.from : todayIn(settings.timeZone), note: '' };
-  }, [isEdit, expense, categories, lastUsed, params.date, params.category, range, settings.timeZone]);
+  }, [isEdit, expense, categories, params.date, params.category, range, settings.timeZone]);
 
   if (!initial) return null;
   return <ExpenseForm key={params.id ?? 'create'} initial={initial} expense={expense} initialRepeat={params.repeat === 'monthly' ? 'monthly' : 'none'} />;
@@ -99,11 +90,11 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
   const today = todayIn(settings.timeZone);
   const offline = !canWrite;
   const amount = parseAmount(form.amount);
-  const canSave = amount !== null && !busy && !offline;
+  const canSave = amount !== null && form.categoryId !== null && !busy && !offline;
   const category = categories.find((c) => c.id === form.categoryId);
 
   const input = (): api.ExpenseInput => ({
-    categoryId: form.categoryId,
+    categoryId: form.categoryId!,
     amount: amount!,
     spentOn: isoDate(form.spentOn),
     note: form.note.trim(),
@@ -128,14 +119,14 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
 
   // A repeating expense becomes a rule; the DB function then writes what is already due (the first
   // one when the start date is today or earlier), so no plain expense is saved next to it.
-  const saveRule = async (frequency: Frequency) => {
+  const saveRule = async (frequency: Frequency, nextOn: SolarDate = form.spentOn) => {
     await recurrenceApi.createRecurrence(newId, {
-      categoryId: form.categoryId,
+      categoryId: form.categoryId!,
       amount: amount!,
       note: form.note.trim(),
       frequency,
       anchorDay: anchorOf(frequency, form.spentOn),
-      nextOn: isoDate(form.spentOn),
+      nextOn: isoDate(nextOn),
     });
     await recurrenceApi.generateDue(isoDate(today));
     await queryClient.invalidateQueries({ queryKey: [EXPENSES_KEY] });
@@ -145,11 +136,11 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
     void run(async () => {
       if (!expense && repeat !== 'none') {
         await saveRule(repeat);
-        AsyncStorage.setItem(LAST_CATEGORY_KEY, form.categoryId).catch(() => {});
         return;
       }
       await save.mutateAsync({ id: expense?.id ?? newId, updatedAt: expense?.updatedAt, input: input() });
-      AsyncStorage.setItem(LAST_CATEGORY_KEY, form.categoryId).catch(() => {});
+      // Editing a plain expense: it stays as it is and the rule continues from the next period.
+      if (expense && repeat !== 'none') await saveRule(repeat, nextDueDate(repeat, anchorOf(repeat, form.spentOn), form.spentOn));
     }, 'expenses.form.saved');
 
   // Gone at once with "Hoàn tác"; the write goes out when the undo window ends (spec S6 §5).
@@ -217,8 +208,8 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
       <View style={styles.card}>
         <Pressable accessibilityRole="button" onPress={() => setPickCategory(true)} style={styles.row}>
           <CategoryIcon category={category} size={24} />
-          <AppText numberOfLines={1} style={styles.grow}>
-            {categoryName(t, category)}
+          <AppText numberOfLines={1} color={category ? undefined : colors.textMuted} style={styles.grow}>
+            {category ? categoryName(t, category) : t('expenses.form.pickCategory')}
           </AppText>
           <Icon name="chevron" size={18} color={colors.textMuted} />
         </Pressable>
@@ -228,7 +219,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
           </AppText>
           <Icon name="chevron" size={18} color={colors.textMuted} />
         </Row>
-        {expense ? null : (
+        {expense?.recurrenceId ? null : (
           <Row icon="repeat" onPress={() => setPickRepeat(true)}>
             <AppText numberOfLines={1} style={styles.grow}>
               {t('expenses.form.repeat')}: {t(`expenses.form.repeatOptions.${repeat}`)}

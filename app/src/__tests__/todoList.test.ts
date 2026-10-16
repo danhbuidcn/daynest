@@ -26,12 +26,12 @@ const group = (items: Item[]) => {
 };
 
 describe('groupTodoList', () => {
-  it('keeps overdue to the 30 days before and upcoming to the 7 days after the chosen day', () => {
+  it('keeps overdue to the day before and upcoming to the day after the chosen day', () => {
     const items = [item('-31', -31), item('-30', -30), item('-1', -1), item('0', 0), item('1', 1), item('7', 7), item('8', 8)];
     expect(group(items)).toEqual({
-      overdue: ['-1', '-30'],
+      overdue: ['-1'],
       day: ['0'],
-      upcoming: ['1', '7'],
+      upcoming: ['1'],
     });
   });
 
@@ -48,15 +48,14 @@ describe('groupTodoList', () => {
     const items = [
       item('late-9', -1, { order: '12026-10-12T02:00' }),
       item('late-allday', -1),
-      item('older', -5),
-      item('soon-9', 3, { order: '12026-10-16T02:00' }),
-      item('soon-8', 3, { order: '12026-10-16T01:00' }),
-      item('sooner', 2, { order: '1z' }),
+      item('soon-9', 1, { order: '12026-10-16T02:00' }),
+      item('soon-8', 1, { order: '12026-10-16T01:00' }),
+      item('sooner', 1, { order: '1z' }),
     ];
     expect(group(items)).toEqual({
-      overdue: ['late-allday', 'late-9', 'older'],
+      overdue: ['late-allday', 'late-9'],
       day: [],
-      upcoming: ['sooner', 'soon-8', 'soon-9'],
+      upcoming: ['soon-8', 'soon-9', 'sooner'],
     });
   });
 

@@ -20,7 +20,7 @@ import { budgetForMonth, budgetProgress, monthKey } from '@/lib/expenses/budget'
 import { groupByDay } from '@/lib/expenses/groupByDay';
 import { anchorOf, nextDueDate } from '@/lib/expenses/recurrence';
 import { SUGGESTED_CATEGORIES, visibleSuggestions } from '@/features/expenses/suggestedCategories';
-import { defaultCategoryId, PICKABLE_ICONS } from '@/features/expenses/expense';
+import { PICKABLE_ICONS } from '@/features/expenses/expense';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
 
@@ -149,19 +149,6 @@ describe('expense form', () => {
     expect(defaultSpentOn('month', d(2026, 10, 1), today, 1)).toEqual(today);
     expect(defaultSpentOn('month', d(2026, 9, 13), today, 1)).toEqual(d(2026, 9, 1));
     expect(defaultSpentOn('week', d(2026, 10, 5), today, 1)).toEqual(d(2026, 10, 5));
-  });
-});
-
-describe('expense default category', () => {
-  const cat = (id: string, key: string | null) => ({ id, key, name: key ? null : id, icon: 'tag', color: 'mint' as const });
-  const list = [cat('b', 'bills'), cat('f', 'food'), cat('mine', null)];
-
-  it('uses the last one, else Food, else the first', () => {
-    expect(defaultCategoryId(list, 'mine')).toBe('mine');
-    expect(defaultCategoryId(list, 'deleted')).toBe('f');
-    expect(defaultCategoryId(list, null)).toBe('f');
-    expect(defaultCategoryId([cat('x', null)], null)).toBe('x');
-    expect(defaultCategoryId([], null)).toBeUndefined();
   });
 });
 

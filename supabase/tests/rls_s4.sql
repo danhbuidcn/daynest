@@ -5,14 +5,18 @@ begin;
 create extension if not exists pgtap with schema extensions;
 select plan(22);
 
--- 2 fake users -> triggers create profiles, user_settings and 3 built-in categories each
+-- 2 fake users -> triggers create profiles and user_settings; S7: no categories
 insert into auth.users (id, email, raw_user_meta_data) values
   ('00000000-0000-0000-0000-00000000aaaa', 'a@test.dev', '{"full_name": "User A"}'),
   ('00000000-0000-0000-0000-00000000bbbb', 'b@test.dev', '{"full_name": "User B"}');
 
-select is(
-  (select array_agg(key order by key) from public.expense_categories where user_id = '00000000-0000-0000-0000-00000000aaaa'),
-  array['bills', 'food', 'transport'], 'new user gets the 3 built-in categories');
+select is_empty($$ select * from public.expense_categories $$, 'new users get no categories');
+
+-- Rows with a key are no longer created, but the schema still guards them: add them as owner.
+insert into public.expense_categories (user_id, key, icon, color)
+select u, k, 'tag', 'mint'
+from (values ('00000000-0000-0000-0000-00000000aaaa'::uuid), ('00000000-0000-0000-0000-00000000bbbb'::uuid)) a(u)
+cross join unnest(array['food', 'transport', 'bills']) k;
 
 -- One active session per user
 set local role authenticated;

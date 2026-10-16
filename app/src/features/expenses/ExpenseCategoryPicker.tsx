@@ -19,7 +19,7 @@ export function ExpenseCategoryPicker({
   onClose,
 }: {
   visible: boolean;
-  selected: string;
+  selected: string | null;
   onSelect: (id: string) => void;
   onClose: () => void;
 }) {

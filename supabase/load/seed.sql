@@ -1,5 +1,5 @@
 -- Load-test seed (LOCAL ONLY): 10,000 fake users, each with 1 signed-in device, 50 events
--- (10 repeating, 2 exceptions), 3 note categories, 20 notes and (S4) 3 built-in + 2 own expense
+-- (10 repeating, 2 exceptions), 3 note categories, 20 notes and (S4) 5 own expense
 -- categories with 730 expenses, (S6) 5 recurring expenses + budgets, (S5) 60 todos (10 repeating daily, 5 subtasks each), 300 status
 -- exceptions and 60 period days (12 periods).
 -- Spec: docs/specs/sprint-2/design/db.md, docs/specs/sprint-4/design/db.md, docs/specs/sprint-5/design/db.md
@@ -63,11 +63,11 @@ left join lateral (
   select id from public.note_categories where user_id = x.u order by name limit 1
 ) c on true;
 
--- S4: the 3 built-in expense categories come from the auth.users trigger; add 2 of the user's own.
+-- S4: 5 expense categories of the user's own (S7: no built-in ones any more).
 insert into public.expense_categories (user_id, name, icon, color)
 select pg_temp.uid('00000000', n), c, 'coffee', '#C2582F'
 from generate_series(1, 10000) n
-cross join unnest(array['Cà phê', 'Con nhỏ']) c;
+cross join unnest(array['Ăn uống', 'Di chuyển', 'Hoá đơn', 'Cà phê', 'Con nhỏ']) c;
 
 -- 730 expenses: 2 a day through 2026, spread over the 5 categories.
 insert into public.expenses (user_id, category_id, amount, spent_on, note)

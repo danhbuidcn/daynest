@@ -468,6 +468,7 @@
       "editTitle": "Edit expense",
       "amount": "Amount",
       "category": "Category",
+      "pickCategory": "Choose category",
       "addCategory": "Add category",
       "today": "Today",
       "yesterday": "Yesterday",

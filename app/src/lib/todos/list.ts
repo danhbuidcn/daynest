@@ -8,8 +8,8 @@ export type ListSpan = {
 };
 export type TodoListGroups<T> = { overdue: T[]; day: T[]; upcoming: T[] };
 
-export const OVERDUE_DAYS = 30;
-export const UPCOMING_DAYS = 7;
+export const OVERDUE_DAYS = 1;
+export const UPCOMING_DAYS = 1;
 
 export function groupTodoList<T>(items: T[], span: (item: T) => ListSpan, x: number): TodoListGroups<T> {
   const all = items.map((item) => ({ item, s: span(item) }));
