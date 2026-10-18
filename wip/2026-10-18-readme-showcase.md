@@ -1,4 +1,4 @@
-# 2026-10-18 — README giới thiệu app (ảnh chụp) và quét bí mật trước khi public — ⏳ chờ làm sau nhắc todo
+# 2026-10-18 — README giới thiệu app (ảnh chụp) và quét bí mật trước khi public — 🔄 đang làm
 
 ## Input
 
@@ -6,7 +6,7 @@
 
 ## Plan
 
-- [ ] Quét lịch sử git tìm bí mật (khoá, mật khẩu keystore, `.env`, token); báo kết quả trước khi đổi sang public.
+- [x] Quét lịch sử git tìm bí mật: không có `.env`, keystore, khoá nào từng commit; chỉ có tên biến và alias trong tài liệu. Repo đã là public.
 - [ ] Chụp màn hình app trên máy ảo → `docs/screenshots/`.
 - [ ] Viết lại `README.md` (tiếng Anh): huy hiệu, tính năng, tech stack, bảng ảnh, link tải APK (GitHub Releases).
 - [ ] Bạn duyệt, rồi tự đổi repo sang public (tôi không đổi).

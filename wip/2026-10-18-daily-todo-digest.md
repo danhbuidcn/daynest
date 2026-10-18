@@ -1,4 +1,4 @@
-# 2026-10-18 — Nhắc todo đầu ngày và cuối ngày — 🔄 đã code, chờ bạn thử trên máy
+# 2026-10-18 — Nhắc todo đầu ngày và cuối ngày — ✅ xong (thử trên máy thật, build v7.0.0 / versionCode 12)
 
 ## Input
 
@@ -15,10 +15,11 @@
 - [x] Bấm thông báo → mở tab Ghi chú, chế độ Todo, ngày hôm nay.
 - [x] Cài đặt: 2 dòng "Nhắc đầu ngày" / "Nhắc cuối ngày" (công tắc + chọn giờ), i18n VI + EN.
 - [x] `npm run typecheck && npm run lint && npm test`.
-- [ ] Thử trên máy ảo: đặt giờ gần, thấy thông báo, bấm mở đúng màn.
+- [x] Thử trên máy thật (Samsung): đặt giờ gần, thấy thông báo, bấm mở đúng màn.
 
 ## Kết quả
 
 - Đã `supabase/db migrate` (4 cột, mặc định tắt). `typecheck`, `lint`, `npm test` (270) đạt. Không viết thêm Jest test (theo yêu cầu của bạn).
-- Chưa thử trên máy: tôi không đăng nhập Google được. Cần bạn: cài bản mới, Cài đặt → Thông báo → bật "Nhắc đầu ngày"/"Nhắc cuối ngày", chọn giờ vài phút nữa, kiểm tra nội dung và bấm vào thông báo mở Ghi chú › Todo.
+- Build `app/dist/daynest-7.0.0-12.apk/.aab`, cài lên máy thật `R5CX924PQ1V`. Sáng 11:45 → thông báo "Hôm nay bạn có 7 việc" + 3 tên việc đầu; bấm vào mở Ghi chú › Todo hôm nay ("2/7 xong"). Tối 11:50 → "Hôm nay bạn đã hoàn thành 2/7 việc" (ngày nay chưa tick thêm).
+- Máy Samsung trì hoãn báo thức ~2 phút (thông báo sáng 11:45 hiện lúc 11:47); tối đúng giờ. Đã đưa giờ về 08:00 / 21:00 và để cả hai công tắc bật.
 - Giới hạn: thông báo tối chỉ đặt khi app đặt lại thông báo trong ngày (mở app, thêm/sửa/tick todo); ngày không mở app thì không có thông báo tối.
