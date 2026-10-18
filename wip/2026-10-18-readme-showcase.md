@@ -1,4 +1,4 @@
-# 2026-10-18 — README giới thiệu app (ảnh chụp) và quét bí mật trước khi public — 🔄 đang làm
+# 2026-10-18 — README giới thiệu app (ảnh chụp) và quét bí mật trước khi public — ✅ xong (chờ bạn xem README)
 
 ## Input
 
@@ -7,10 +7,11 @@
 ## Plan
 
 - [x] Quét lịch sử git tìm bí mật: không có `.env`, keystore, khoá nào từng commit; chỉ có tên biến và alias trong tài liệu. Repo đã là public.
-- [ ] Chụp màn hình app trên máy ảo → `docs/screenshots/`.
-- [ ] Viết lại `README.md` (tiếng Anh): huy hiệu, tính năng, tech stack, bảng ảnh, link tải APK (GitHub Releases).
-- [ ] Bạn duyệt, rồi tự đổi repo sang public (tôi không đổi).
+- [x] Chụp màn hình từ máy thật → `docs/screenshots/` (Todo, Giao diện, Cài đặt › Thông báo, đã cắt email).
+- [x] Viết lại `README.md` (tiếng Anh): huy hiệu, tính năng, tech stack, bảng ảnh, link tải APK (GitHub Releases).
+- [x] Repo đã là public sẵn (`gh repo view`), không cần đổi.
 
 ## Kết quả
 
-(chưa có)
+- Không chụp màn Lịch tháng (có dấu chu kỳ) và Chi tiêu (có số tiền thật) để khỏi đưa dữ liệu cá nhân lên repo public. Nếu muốn thêm, cần tài khoản demo.
+- Link tải trỏ tới `releases/latest` = v6.0.0 (v7.0.0 đang là pre-release) nên bản đó chưa có nhắc đầu/cuối ngày; sẽ có khi release v7.0.0.
