@@ -64,7 +64,9 @@
     "bugReport": "Report a problem",
     "appearance": "Appearance",
     "deleteAccount": "Delete account",
-    "privacyPolicy": "Privacy policy"
+    "privacyPolicy": "Privacy policy",
+    "dailyMorning": "Morning reminder",
+    "dailyEvening": "Evening reminder"
   },
   "logoutDialog": {
     "title": "Sign out?",
@@ -717,5 +719,12 @@
     "loadFailed": "Could not load. Please try again.",
     "retry": "Try again",
     "stale": "Not updated"
+  },
+  "digest": {
+    "morningTitle_one": "Today you have {{count}} task",
+    "morningTitle_other": "Today you have {{count}} tasks",
+    "evening": "Today you completed {{done}}/{{total}} tasks",
+    "eveningAll_one": "Today you completed your {{count}} task",
+    "eveningAll_other": "Today you completed all {{count}} tasks"
   }
 }

@@ -9,9 +9,9 @@ import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const ROW = 40;
 const DAYS = [1, 2, 3, 4, 5, 6, 7];
-const HOURS = Array.from({ length: 24 }, (_, i) => i);
-const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5);
-const pad = (n: number) => String(n).padStart(2, '0');
+export const HOURS = Array.from({ length: 24 }, (_, i) => i);
+export const MINUTES = Array.from({ length: 12 }, (_, i) => i * 5);
+export const pad = (n: number) => String(n).padStart(2, '0');
 
 export const formatReminderTime = (hour: number, minute: number) => `${pad(hour)}:${pad(minute)}`;
 
@@ -77,7 +77,7 @@ function ReminderPicker({
   );
 }
 
-function Column({
+export function Column({
   values,
   value,
   format,

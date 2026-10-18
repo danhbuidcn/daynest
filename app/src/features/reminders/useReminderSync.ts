@@ -23,6 +23,10 @@ export function useReminderSync() {
         settings.cycleEnabled && settings.periodReminder
           ? { cycleLength: settings.cycleLength, periodLength: settings.periodLength, daysBefore: settings.periodReminderDays, time: settings.periodReminderTime }
           : null,
+      digest: {
+        morning: settings.dailyMorning ? settings.dailyMorningTime : null,
+        evening: settings.dailyEvening ? settings.dailyEveningTime : null,
+      },
     });
     void resyncReminders();
   }, [
@@ -36,6 +40,10 @@ export function useReminderSync() {
     settings.periodReminder,
     settings.periodReminderDays,
     settings.periodReminderTime,
+    settings.dailyMorning,
+    settings.dailyMorningTime,
+    settings.dailyEvening,
+    settings.dailyEveningTime,
     t,
     i18n.language,
   ]);

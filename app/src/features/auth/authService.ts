@@ -25,6 +25,10 @@ export type UserSettings = {
   periodReminderDays: number;
   // "HH:MM", 5-minute steps.
   periodReminderTime: string;
+  dailyMorning: boolean;
+  dailyMorningTime: string;
+  dailyEvening: boolean;
+  dailyEveningTime: string;
 };
 export const DEFAULT_SETTINGS: UserSettings = {
   language: null,
@@ -40,6 +44,10 @@ export const DEFAULT_SETTINGS: UserSettings = {
   periodReminder: true,
   periodReminderDays: 2,
   periodReminderTime: '09:00',
+  dailyMorning: false,
+  dailyMorningTime: '08:00',
+  dailyEvening: false,
+  dailyEveningTime: '21:00',
 };
 // Everything F6 lets the Settings screen change; language has its own path (saved on device first).
 export type SettingsPatch = Partial<Omit<UserSettings, 'language'>>;
@@ -57,6 +65,10 @@ const SETTING_COLUMNS: Record<keyof SettingsPatch, string> = {
   periodReminder: 'period_reminder',
   periodReminderDays: 'period_reminder_days',
   periodReminderTime: 'period_reminder_time',
+  dailyMorning: 'daily_morning',
+  dailyMorningTime: 'daily_morning_time',
+  dailyEvening: 'daily_evening',
+  dailyEveningTime: 'daily_evening_time',
 };
 
 // F7 — max 2 devices per account; signing in on a 3rd kicks the earliest one out.
@@ -218,7 +230,7 @@ export const supabaseAuthService: AuthService = {
     if (!userId) return DEFAULT_SETTINGS;
     const { data, error } = await supabase
       .from('user_settings')
-      .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays, cycle_enabled, cycle_length, period_length, period_reminder, period_reminder_days, period_reminder_time')
+      .select('language, week_start, time_zone, use_24h, notifications_enabled, show_lunar, show_holidays, cycle_enabled, cycle_length, period_length, period_reminder, period_reminder_days, period_reminder_time, daily_morning, daily_morning_time, daily_evening, daily_evening_time')
       .eq('user_id', userId)
       .single();
     // No row yet (PGRST116) means defaults; any other error (e.g. offline) must not
@@ -238,6 +250,10 @@ export const supabaseAuthService: AuthService = {
       periodReminder: data?.period_reminder ?? true,
       periodReminderDays: data?.period_reminder_days ?? 2,
       periodReminderTime: String(data?.period_reminder_time ?? '09:00').slice(0, 5),
+      dailyMorning: data?.daily_morning ?? false,
+      dailyMorningTime: String(data?.daily_morning_time ?? '08:00').slice(0, 5),
+      dailyEvening: data?.daily_evening ?? false,
+      dailyEveningTime: String(data?.daily_evening_time ?? '21:00').slice(0, 5),
     };
   },
 

@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, RefreshControl, ScrollView, View } from 'react-native';
@@ -35,6 +35,7 @@ export default function ManageScreen() {
   const styles = useStyles();
   const { t } = useTranslation();
   const router = useRouter();
+  const params = useLocalSearchParams<{ digest?: string }>();
   const [view, setViewState] = useState<ManageView>('notes');
   const [menuOpen, setMenuOpen] = useState(false);
   const [chosen, setFilter] = useState<string | null>(null);
@@ -64,6 +65,13 @@ export default function ManageScreen() {
       })
       .catch(() => {});
   }, []);
+
+  // A daily digest notification opens the todo view, even when the tab is already mounted (each tap carries a new stamp).
+  const [seenDigest, setSeenDigest] = useState(params.digest);
+  if (params.digest !== seenDigest) {
+    setSeenDigest(params.digest);
+    if (params.digest) setViewState('todo');
+  }
 
   const setView = (next: ManageView) => {
     setViewState(next);

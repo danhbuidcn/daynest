@@ -64,7 +64,9 @@
     "bugReport": "Báo lỗi",
     "appearance": "Giao diện",
     "deleteAccount": "Xoá tài khoản",
-    "privacyPolicy": "Chính sách quyền riêng tư"
+    "privacyPolicy": "Chính sách quyền riêng tư",
+    "dailyMorning": "Nhắc đầu ngày",
+    "dailyEvening": "Nhắc cuối ngày"
   },
   "logoutDialog": {
     "title": "Đăng xuất?",
@@ -717,5 +719,12 @@
     "loadFailed": "Chưa tải được. Hãy thử lại.",
     "retry": "Thử lại",
     "stale": "Chưa cập nhật được"
+  },
+  "digest": {
+    "morningTitle_one": "Hôm nay bạn có {{count}} việc",
+    "morningTitle_other": "Hôm nay bạn có {{count}} việc",
+    "evening": "Hôm nay bạn đã hoàn thành {{done}}/{{total}} việc",
+    "eveningAll_one": "Hôm nay bạn đã hoàn thành cả {{count}} việc",
+    "eveningAll_other": "Hôm nay bạn đã hoàn thành cả {{count}} việc"
   }
 }
