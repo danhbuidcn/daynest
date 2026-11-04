@@ -15,7 +15,7 @@ const config: ExpoConfig = {
   },
   android: {
     package: 'com.danhbuidcn.daynest',
-    versionCode: 13,
+    versionCode: 14,
     adaptiveIcon: {
       backgroundColor: '#5BBE98',
       foregroundImage: './assets/android-icon-foreground.png',

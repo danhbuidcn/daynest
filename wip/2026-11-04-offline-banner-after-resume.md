@@ -19,10 +19,11 @@
 - ~~2. Viết test~~ — bỏ theo yêu cầu, test trực tiếp trên app.
 - [x] 3. Sửa: khi `AppState` thành `active`, gọi `getNetworkStateAsync()` rồi `setDeviceOnline(...)`.
 - [x] 4. `npm run typecheck && npm run lint && npm test`.
-- [ ] 5. Build APK trên Ubuntu, cài máy thật, thử lại kịch bản.
+- [x] 5. Build APK trên Ubuntu, cài máy thật, thử lại kịch bản.
 - [x] 6. Commit `fix(app): ...` + push.
 
 ## Kết quả
 - 2026-11-04: thêm `AppState` vào `useConnectionMonitor.ts` — khi app quay về `active` thì đọc lại mạng bằng `getNetworkStateAsync()`.
 - typecheck, lint, test (272) đều qua.
-- Chưa làm: bước 1 (kiểm chứng trên máy thật) và bước 5 (build APK, thử lại kịch bản).
+- Máy thật (build 13, chưa có bản sửa): banner "Không có kết nối mạng" hiện, dù Android báo wifi VALIDATED.
+- Build 14 (v8.0.0, versionCode 14) cài máy thật: mở app → sang Cài đặt 30 s → quay lại: không còn banner.
