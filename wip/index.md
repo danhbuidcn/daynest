@@ -6,7 +6,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | --- | --- | --- | --- |
 | 2026-11-04 | Bỏ tên gói `com.danhbuidcn.daynest` khỏi trang chính sách và xoá tài khoản | ✅ xong | [2026-11-04-remove-package-name-from-site.md](2026-11-04-remove-package-name-from-site.md) |
 | 2026-11-04 | Thu / chi: chọn loại khi tạo bản ghi, mặc định Chi | ✅ xong (v8.0.0 / build 13, thử trên máy thật) | [2026-11-04-income-expense-type.md](2026-11-04-income-expense-type.md) |
-| 2026-11-04 | Sửa banner "mất wifi" hiện sai khi quay lại app từ app khác | 📝 đã điều tra, người dùng tự xử lý |  [2026-11-04-offline-banner-after-resume.md](2026-11-04-offline-banner-after-resume.md) |
+| 2026-11-04 | Sửa banner "mất wifi" hiện sai khi quay lại app từ app khác | 🔄 đã sửa code, chờ build và thử trên máy thật |  [2026-11-04-offline-banner-after-resume.md](2026-11-04-offline-banner-after-resume.md) |
 | 2026-10-18 | Nhắc todo đầu ngày và cuối ngày (giờ tuỳ chỉnh, bấm mở danh sách todo) | ✅ xong (thử trên máy thật, build 12) | [2026-10-18-daily-todo-digest.md](2026-10-18-daily-todo-digest.md) |
 | 2026-10-18 | Gộp trang chính sách / xoá tài khoản vào repo `daynest`, bỏ repo `daynest-site` | 🔄 đang làm | [2026-10-18-merge-site-into-repo.md](2026-10-18-merge-site-into-repo.md) |
 | 2026-10-18 | README giới thiệu app (ảnh chụp) và quét bí mật trước khi public | ✅ xong (chờ bạn xem README) | [2026-10-18-readme-showcase.md](2026-10-18-readme-showcase.md) |

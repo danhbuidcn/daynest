@@ -1,6 +1,7 @@
 import { addNetworkStateListener, getNetworkStateAsync, type NetworkState } from 'expo-network';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 
 import { getIssue, setDeviceOnline, subscribeConnection } from '@/lib/connection';
 import { timedFetch } from '@/lib/supabase';
@@ -17,9 +18,18 @@ export function useConnectionMonitor() {
   const hadIssue = useRef(false);
 
   useEffect(() => {
-    getNetworkStateAsync().then((n) => setDeviceOnline(isOnline(n)), () => {});
+    const read = () => getNetworkStateAsync().then((n) => setDeviceOnline(isOnline(n)), () => {});
+    read();
     const sub = addNetworkStateListener((n) => setDeviceOnline(isOnline(n)));
-    return () => sub.remove();
+    // Android may report "no network" while the app is in the background and send no event
+    // when it comes back, so the offline state would stick until the network changes again.
+    const appState = AppState.addEventListener('change', (s) => {
+      if (s === 'active') read();
+    });
+    return () => {
+      sub.remove();
+      appState.remove();
+    };
   }, []);
 
   useEffect(() => {

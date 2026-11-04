@@ -17,10 +17,12 @@
 ## Plan
 - [ ] 1. Kiểm chứng giả thuyết: `npm install` (thiếu `node_modules`), chạy app, log trạng thái mạng lúc quay lại.
 - ~~2. Viết test~~ — bỏ theo yêu cầu, test trực tiếp trên app.
-- [ ] 3. Sửa: khi `AppState` thành `active`, gọi `getNetworkStateAsync()` rồi `setDeviceOnline(...)`.
-- [ ] 4. `npm run typecheck && npm run lint && npm test`.
+- [x] 3. Sửa: khi `AppState` thành `active`, gọi `getNetworkStateAsync()` rồi `setDeviceOnline(...)`.
+- [x] 4. `npm run typecheck && npm run lint && npm test`.
 - [ ] 5. Build APK trên Ubuntu, cài máy thật, thử lại kịch bản.
-- [ ] 6. Commit `fix(app): ...` + push.
+- [x] 6. Commit `fix(app): ...` + push.
 
 ## Kết quả
-(chưa làm)
+- 2026-11-04: thêm `AppState` vào `useConnectionMonitor.ts` — khi app quay về `active` thì đọc lại mạng bằng `getNetworkStateAsync()`.
+- typecheck, lint, test (272) đều qua.
+- Chưa làm: bước 1 (kiểm chứng trên máy thật) và bước 5 (build APK, thử lại kịch bản).
