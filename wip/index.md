@@ -8,7 +8,7 @@ Mỗi việc 1 file `<ngày>-<tên-tiếng-anh>.md`. Việc mới: tạo file m�
 | 2026-11-04 | Thu / chi: chọn loại khi tạo bản ghi, mặc định Chi | ✅ xong (v8.0.0 / build 13, thử trên máy thật) | [2026-11-04-income-expense-type.md](2026-11-04-income-expense-type.md) |
 | 2026-11-04 | Sửa banner "mất wifi" hiện sai khi quay lại app từ app khác | ✅ xong (build 14, thử trên máy thật) |  [2026-11-04-offline-banner-after-resume.md](2026-11-04-offline-banner-after-resume.md) |
 | 2026-10-18 | Nhắc todo đầu ngày và cuối ngày (giờ tuỳ chỉnh, bấm mở danh sách todo) | ✅ xong (thử trên máy thật, build 12) | [2026-10-18-daily-todo-digest.md](2026-10-18-daily-todo-digest.md) |
-| 2026-10-18 | Gộp trang chính sách / xoá tài khoản vào repo `daynest`, bỏ repo `daynest-site` | 🔄 đang làm | [2026-10-18-merge-site-into-repo.md](2026-10-18-merge-site-into-repo.md) |
+| 2026-10-18 | Gộp trang chính sách / xoá tài khoản vào repo `daynest`, bỏ repo `daynest-site` | ✅ xong | [2026-10-18-merge-site-into-repo.md](2026-10-18-merge-site-into-repo.md) |
 | 2026-10-18 | README giới thiệu app (ảnh chụp) và quét bí mật trước khi public | ✅ xong (chờ bạn xem README) | [2026-10-18-readme-showcase.md](2026-10-18-readme-showcase.md) |
 | 2026-10-16 | S7: Bỏ nhóm chi tiêu mặc định, lặp lại khi sửa khoản chi, todo chỉ 1 ngày (v7.0.0 / versionCode 11) | 🔄 build xong, chờ bạn thử trên máy | [2026-10-16-s7-no-default-categories-repeat-todo-window.md](2026-10-16-s7-no-default-categories-repeat-todo-window.md) |
 | 2026-10-15 | S7 bước 2: Bản `.aab` đầu cho thử nghiệm kín (v7.0.0 / versionCode 10, chữ ký Play, đăng nhập Google từ Play) | 🔄 build xong, chờ Play Console (việc của bạn) | [2026-10-15-s7-step-2-closed-test-build.md](2026-10-15-s7-step-2-closed-test-build.md) |
