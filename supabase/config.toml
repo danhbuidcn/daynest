@@ -41,7 +41,7 @@ allowed_cidrs_v6 = ["::/0"]
 enabled = false
 
 [studio]
-enabled = true
+enabled = false
 port = 54323
 api_url = "http://127.0.0.1"
 openai_api_key = "env(OPENAI_API_KEY)"
@@ -155,7 +155,7 @@ authorization_url_path = "/oauth/consent"
 allow_dynamic_registration = false
 
 [edge_runtime]
-enabled = true
+enabled = false
 policy = "per_worker"
 inspector_port = 8083
 deno_version = 2
