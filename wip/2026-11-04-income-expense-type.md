@@ -21,7 +21,7 @@
 3. Khoản lặp lại: **có** chọn Thu / Chi. Mặc định Chi.
 4. Màu/dấu của Thu: theo đề xuất, làm trong mockup ở bước 1 (cần duyệt mockup).
 
-## Plan (chờ `ok`)
+## Plan
 - [x] 1a. Spec: [sprint-8/index.md](../docs/specs/sprint-8/index.md) + [db.md](../docs/specs/sprint-8/design/db.md) (2026-11-04).
 - [x] 1b. Mockup vẽ xong: [mockups.html](../docs/specs/sprint-8/design/mockups.html) (11 màn, đã mở thử bằng Chrome, không lỗi) (2026-11-04).
 - [x] 1c. Mockup đã được duyệt (2026-11-04).
@@ -30,11 +30,14 @@
 - [x] 4. Logic `lib/expenses`: tách tổng Thu / Chi; test (logic thuần phải có test).
 - [x] 5. Màn tổng, biểu đồ, danh sách: hiện Thu và Chi; còn lại của ngân sách = hạn mức + Thu − Chi.
 - [x] 6a. `npm run typecheck` sạch · `npm run lint` 0 lỗi · `npm test` 272/272 qua (2026-11-04; đã `npm ci` lại vì `node_modules` cũ thiếu file).
-- [ ] 6b. Thử trên máy thật — cần release: bump 8.0.0 / versionCode 13 → chuyển migration từ `supabase/pending/` sang `migrations/` (+ test sang `tests/`) → `supabase/db test` → `supabase/db migrate` → `npm run release` → cài đè máy.
-- [ ] 7. Commit + push theo quy trình cuối sprint.
+- [x] 6b. (2026-11-04: xong.) Thử trên máy thật — cần release: bump 8.0.0 / versionCode 13 → chuyển migration từ `supabase/pending/` sang `migrations/` (+ test sang `tests/`) → `supabase/db test` → `supabase/db migrate` → `npm run release` → cài đè máy.
+- [x] 7. Commit + push theo quy trình cuối sprint (tag `v8.0.0`, GitHub Release kèm APK).
 
 ## Kết quả
-Code xong, chưa commit, chưa release (2026-11-04).
+Release v8.0.0 / versionCode 13 (2026-11-04).
+- Release: migration chuyển từ `pending/` sang `migrations/` (+ `tests/rls_s8.sql`), `db test` 150/150, `db migrate` lên DB thật, `npm run release`, cài đè máy thật (vẫn đăng nhập).
+- Thử trên máy: mặc định Chi · tạo Thu 2.000 đ (tiêu đề "Thêm khoản thu", dấu `+`, màu xanh) · tổng Thu / Chi tháng và ngày đúng · chip Thu ở Theo ngày, Theo nhóm · biểu đồ 6 tháng có cột Thu · sửa Thu → Chi đúng · xoá + hoàn tác hiện đúng · dữ liệu cũ đều là Chi, tổng không đổi. Đã xoá khoản thử.
+- Chưa thử trên máy: ngân sách cộng Thu (có test Jest), khoản lặp Thu tự ghi (có test DB), màn "Cần cập nhật" ở bản cũ.
 - DB: [migration](../supabase/pending/20261104000000_s8_income_expense_kind.sql), [test](../supabase/pending/rls_s8.sql).
 - App: `KindSwitch` (Chi | Thu ở form), `TotalCard` 2 tổng, `BudgetBar` cộng Thu, `BarChart` 2 cột/tháng, chip Chi | Thu ở Theo ngày và Theo nhóm, dấu `+` ở khoản Thu.
 - Khác mockup: chip Chi | Thu dùng chung 1 trạng thái cho thẻ Theo ngày và Theo nhóm; thẻ ngân sách nằm trong thẻ tổng (như S6), không tách thẻ riêng.

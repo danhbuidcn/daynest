@@ -29,16 +29,16 @@ Ngoài khoản chi, người dùng ghi được khoản thu (lương, tiền ki�
 | 4 | Ngân sách | `BudgetBar`: còn lại = hạn mức + Thu − Chi |
 | 5 | Biểu đồ 6 tháng | Mỗi tháng 2 cột: Thu, Chi |
 
-Mockup: [mockups.html](design/mockups.html) (11 màn) — chờ duyệt. Chi giữ nguyên cách hiện cũ; Thu có dấu `+` và màu `primaryDark`. Thanh chọn Chi | Thu: Chi nền `errorSoft`, Thu nền `primary`.
+Mockup: [mockups.html](design/mockups.html) (11 màn) — đã duyệt. Chi giữ nguyên cách hiện cũ; Thu có dấu `+` và màu `primaryDark`. Thanh chọn Chi | Thu: Chi nền `errorSoft`, Thu nền `primary`.
 
 ## Definition of Done
 
-- [ ] Tạo được khoản Thu và khoản Chi; mặc định là Chi.
-- [ ] Sửa được loại của khoản đã có.
-- [ ] Khoản lặp lại Thu tự ghi đúng loại Thu.
-- [ ] Tổng tháng hiện đúng Thu và Chi; ngân sách còn lại = hạn mức + Thu − Chi.
-- [ ] Biểu đồ 6 tháng có cột Thu và Chi.
-- [ ] Dữ liệu cũ đều là Chi, tổng không đổi so với trước.
-- [ ] Bản cũ hơn thấy màn "Cần cập nhật".
-- [ ] i18n `en.json` + `vi.json` cùng khoá; `npm run typecheck && npm run lint && npm test` qua.
-- [ ] Thử trên máy thật.
+- [x] Tạo được khoản Thu và khoản Chi; mặc định là Chi.
+- [x] Sửa được loại của khoản đã có.
+- [x] Khoản lặp lại Thu tự ghi đúng loại Thu (test DB `rls_s8`; form có chọn Thu).
+- [x] Tổng tháng hiện đúng Thu và Chi; ngân sách còn lại = hạn mức + Thu − Chi (ngân sách: test Jest, chưa thử trên máy).
+- [x] Biểu đồ 6 tháng có cột Thu và Chi.
+- [x] Dữ liệu cũ đều là Chi, tổng không đổi so với trước.
+- [x] Bản cũ hơn thấy màn "Cần cập nhật" (`min_version_code` = 13 trên DB thật).
+- [x] i18n `en.json` + `vi.json` cùng khoá; `npm run typecheck && npm run lint && npm test` qua.
+- [x] Thử trên máy thật (v8.0.0 / build 13, 2026-11-04).

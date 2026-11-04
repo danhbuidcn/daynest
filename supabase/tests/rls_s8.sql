@@ -1,5 +1,5 @@
 -- Sprint 8 test: expenses.kind, expense_recurrences.kind, generate_due_expenses, expense_monthly_totals(_by_kind),
--- min_version_code. Lives with its migration in supabase/pending/ until the S8 release.
+-- min_version_code. Moved out of supabase/pending/ at the S8 release.
 begin;
 create extension if not exists pgtap with schema extensions;
 select plan(11);
