@@ -6,7 +6,7 @@ import { DialogShell } from '@/components/Dialog';
 import { Icon } from '@/components/Icon';
 import { PopupHeader } from '@/components/PopupHeader';
 import { parseIsoDate, weekdayOf } from '@/lib/calendar/monthGrid';
-import { formatVnd, sumAmounts, type PeriodMode } from '@/lib/expenses';
+import { formatKindVnd, sumAmounts, type Kind, type PeriodMode } from '@/lib/expenses';
 import { groupByDay } from '@/lib/expenses/groupByDay';
 import { makeStyles, space, useTheme } from '@/theme';
 import { categoryName, type Expense, type ExpenseCategory } from './expense';
@@ -16,6 +16,7 @@ import { CategoryIcon } from './ExpenseSummary';
 export function CategoryExpensesDialog({
   category,
   expenses,
+  kind,
   mode,
   periodLabel,
   canAdd,
@@ -25,6 +26,7 @@ export function CategoryExpensesDialog({
 }: {
   category: ExpenseCategory | undefined;
   expenses: readonly Expense[];
+  kind: Kind;
   mode: PeriodMode;
   periodLabel: string;
   canAdd: boolean;
@@ -56,7 +58,7 @@ export function CategoryExpensesDialog({
         {periodLabel}
       </AppText>
       <AppText variant="title" style={[styles.center, styles.total]}>
-        {formatVnd(total)}
+        {formatKindVnd(total, kind)}
       </AppText>
       <ScrollView style={styles.list}>
         {groups.map((g) => {
@@ -65,7 +67,7 @@ export function CategoryExpensesDialog({
             <View key={g.date}>
               {mode !== 'day' ? (
                 <AppText variant="caption" weight="extrabold" color={colors.textMuted} style={styles.dayLine}>
-                  {`${t(`calendar.weekdays.${weekdayOf(d)}`)}, ${d.day}/${d.month} · ${formatVnd(g.total)}`}
+                  {`${t(`calendar.weekdays.${weekdayOf(d)}`)}, ${d.day}/${d.month} · ${formatKindVnd(g.total, kind)}`}
                 </AppText>
               ) : null}
               {g.items.map((e) => (
@@ -74,7 +76,7 @@ export function CategoryExpensesDialog({
                     {e.note || t('expenses.noNote')}
                   </AppText>
                   {e.recurrenceId ? <Icon name="repeat" size={16} color={colors.textMuted} /> : null}
-                  <AppText weight="bold">{formatVnd(e.amount)}</AppText>
+                  <AppText weight="bold" color={e.kind === 'income' ? colors.primaryDark : undefined}>{formatKindVnd(e.amount, e.kind)}</AppText>
                 </Pressable>
               ))}
             </View>

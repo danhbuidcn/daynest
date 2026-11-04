@@ -7,7 +7,9 @@ import {
   formatAmountInput,
   formatVnd,
   isMonthAxisDay,
+  formatKindVnd,
   monthlyTotals,
+  ofKind,
   parseAmount,
   periodRange,
   recentMonthsRange,
@@ -45,6 +47,19 @@ describe('expenses periods', () => {
     expect(shiftPeriod('week', d(2026, 10, 12), -1)).toEqual(d(2026, 10, 5));
     expect(shiftPeriod('month', d(2026, 10, 31), 1)).toEqual(d(2026, 11, 30));
     expect(shiftPeriod('month', d(2026, 1, 15), -1)).toEqual(d(2025, 12, 15));
+  });
+});
+
+describe('income and expense', () => {
+  it('keeps one kind of rows', () => {
+    const rows = [{ kind: 'expense' as const, amount: 1 }, { kind: 'income' as const, amount: 2 }, { kind: 'expense' as const, amount: 3 }];
+    expect(ofKind(rows, 'expense').map((r) => r.amount)).toEqual([1, 3]);
+    expect(ofKind(rows, 'income').map((r) => r.amount)).toEqual([2]);
+  });
+
+  it('puts a plus sign on income only', () => {
+    expect(formatKindVnd(50_000, 'income')).toBe('+50.000 ₫');
+    expect(formatKindVnd(50_000, 'expense')).toBe('50.000 ₫');
   });
 });
 
@@ -103,13 +118,17 @@ describe('expense charts', () => {
     expect(recentMonthsRange(d(2026, 3, 15))).toEqual({ from: d(2025, 10, 1), to: d(2026, 3, 31) });
   });
 
-  it('places monthly totals on the six chart months', () => {
+  it('places monthly totals on the six chart months, split by kind', () => {
     const rows = [
-      { month: '2025-10-01', total: 100 },
-      { month: '2026-01-01', total: 300 },
-      { month: '2026-03-01', total: 500 },
+      { month: '2025-10-01', kind: 'expense', total: 100 },
+      { month: '2026-01-01', kind: 'expense', total: 300 },
+      { month: '2026-01-01', kind: 'income', total: 900 },
+      { month: '2026-03-01', kind: 'expense', total: 500 },
     ];
-    expect(monthlyTotals(rows, d(2026, 3, 15))).toEqual([100, 0, 0, 300, 0, 500]);
+    expect(monthlyTotals(rows, d(2026, 3, 15))).toEqual({
+      expense: [100, 0, 0, 300, 0, 500],
+      income: [0, 0, 0, 900, 0, 0],
+    });
   });
 
   it('labels 1, 5, 10, 15, 20, 25 and the last day', () => {

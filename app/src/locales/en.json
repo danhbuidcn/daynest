@@ -453,12 +453,17 @@
       "month": "This month"
     },
     "total": "Total spent",
+    "totalIncome": "Total income",
+    "kind": {
+      "expense": "Expense",
+      "income": "Income"
+    },
     "byCategory": "By category",
     "byDay": "By day",
     "rangeAll": "Whole month",
     "recentMonths": "Last 6 months",
     "categories": "Expense categories",
-    "empty": "No expenses yet",
+    "empty": "No expenses or income yet",
     "add": "Add expense",
     "defaultCategories": {
       "food": "Food",
@@ -468,6 +473,8 @@
     "form": {
       "addTitle": "Add expense",
       "editTitle": "Edit expense",
+      "addIncomeTitle": "Add income",
+      "editIncomeTitle": "Edit income",
       "amount": "Amount",
       "category": "Category",
       "pickCategory": "Choose category",
@@ -513,19 +520,21 @@
       "used": "{{percent}}% of budget {{amount}}",
       "usedMonth": "{{percent}}% of this month's budget {{amount}}",
       "left": "{{amount}} left",
+      "breakdown": "Limit {{limit}} + income {{income}}",
+      "incomeHint": "Income in the month is added to the budget.",
       "over": "Over by {{amount}}",
       "saved": "Budget saved",
       "saveFailed": "Could not save the budget. Please try again.",
       "invalid": "Enter an amount up to 100,000,000,000"
     },
     "recurring": {
-      "title": "Recurring expenses",
-      "empty": "No recurring expenses yet.",
-      "add": "Add recurring expense",
+      "title": "Recurring entries",
+      "empty": "No recurring entries yet.",
+      "add": "Add recurring entry",
       "next": "{{frequency}} · next {{date}}",
-      "editTitle": "Edit recurring expense",
+      "editTitle": "Edit recurring entry",
       "nextDate": "Next",
-      "deleteTitle": "Delete this recurring expense?"
+      "deleteTitle": "Delete this recurring entry?"
     },
     "noNote": "No note",
     "suggested": {

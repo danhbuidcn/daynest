@@ -6,7 +6,7 @@ import { AppText } from '@/components/AppText';
 import { Card } from '@/components/Card';
 import { Icon } from '@/components/Icon';
 import { textOn, toHex } from '@/lib/colors';
-import { formatVnd, type CategoryTotal } from '@/lib/expenses';
+import { formatKindVnd, formatVnd, type CategoryTotal, type Kind } from '@/lib/expenses';
 import { makeStyles, radius, space, useTheme } from '@/theme';
 import { categoryIcon, categoryName, type Expense, type ExpenseCategory } from './expense';
 
@@ -20,40 +20,74 @@ export function CategoryIcon({ category, size = 28 }: { category: ExpenseCategor
   );
 }
 
-export function TotalCard({ total, children }: { total: number; children?: ReactNode }) {
+// Two totals side by side (spec S8): income on the left in `primaryDark`, expense on the right.
+export function TotalCard({ income, expense, children }: { income: number; expense: number; children?: ReactNode }) {
   const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
   return (
     <Card style={styles.total}>
-      <AppText variant="caption" color={colors.textMuted}>
-        {t('expenses.total')}
-      </AppText>
-      <AppText variant="title" numberOfLines={1} adjustsFontSizeToFit style={styles.totalText}>
-        {formatVnd(total)}
-      </AppText>
+      <View style={styles.totalRow}>
+        <View style={styles.totalCell}>
+          <AppText variant="caption" color={colors.textMuted}>
+            {t('expenses.totalIncome')}
+          </AppText>
+          <AppText variant="title" color={colors.primaryDark} numberOfLines={1} adjustsFontSizeToFit style={styles.totalText}>
+            {formatKindVnd(income, 'income')}
+          </AppText>
+        </View>
+        <View style={styles.totalDivider} />
+        <View style={styles.totalCell}>
+          <AppText variant="caption" color={colors.textMuted}>
+            {t('expenses.total')}
+          </AppText>
+          <AppText variant="title" numberOfLines={1} adjustsFontSizeToFit style={styles.totalText}>
+            {formatVnd(expense)}
+          </AppText>
+        </View>
+      </View>
       {children}
     </Card>
   );
 }
 
+// The Chi | Thu chips of the "Theo ngày" and "Theo nhóm" cards.
+export function useKindChips(kind: Kind, onKind: (k: Kind) => void) {
+  const { t } = useTranslation();
+  return (['expense', 'income'] as const).map((k) => ({ label: t(`expenses.kind.${k}`), active: k === kind, onPress: () => onKind(k) }));
+}
+
 export function CategoryTotalsCard({
   totals,
   categories,
+  kind,
+  onKind,
   onPress,
 }: {
   totals: CategoryTotal[];
   categories: Map<string, ExpenseCategory>;
+  kind: Kind;
+  onKind: (k: Kind) => void;
   onPress: (categoryId: string) => void;
 }) {
   const { colors } = useTheme();
   const styles = useStyles();
   const { t } = useTranslation();
+  const chips = useKindChips(kind, onKind);
   return (
     <Card style={styles.byCategory}>
       <AppText variant="heading" style={[styles.section, styles.sectionText]}>
         {t('expenses.byCategory')}
       </AppText>
+      <View style={styles.chips}>
+        {chips.map((c) => (
+          <Pressable key={c.label} accessibilityRole="button" accessibilityState={{ selected: c.active }} onPress={c.onPress} style={[styles.chip, c.active && styles.chipOn]}>
+            <AppText variant="caption" weight="bold" color={c.active ? colors.white : colors.primaryDark}>
+              {c.label}
+            </AppText>
+          </Pressable>
+        ))}
+      </View>
       {totals.map((c) => {
         const category = categories.get(c.categoryId);
         return (
@@ -64,7 +98,7 @@ export function CategoryTotalsCard({
                 <AppText numberOfLines={1} style={[styles.grow, styles.rowText]}>
                   {categoryName(t, category)}
                 </AppText>
-                <AppText weight="bold" style={styles.rowText}>{formatVnd(c.amount)}</AppText>
+                <AppText weight="bold" color={kind === 'income' ? colors.primaryDark : undefined} style={styles.rowText}>{formatKindVnd(c.amount, kind)}</AppText>
               </View>
               <View style={styles.line}>
                 <View style={styles.track}>
@@ -110,7 +144,7 @@ export function ExpenseListCard({
               ) : null}
             </View>
             {e.recurrenceId ? <Icon name="repeat" size={16} color={colors.textMuted} /> : null}
-            <AppText weight="bold" style={styles.rowText}>{formatVnd(e.amount)}</AppText>
+            <AppText weight="bold" color={e.kind === 'income' ? colors.primaryDark : undefined} style={styles.rowText}>{formatKindVnd(e.amount, e.kind)}</AppText>
           </Pressable>
         );
       })}
@@ -120,8 +154,14 @@ export function ExpenseListCard({
 
 const useStyles = makeStyles(({ colors }) => ({
   icon: { borderRadius: radius.icon, alignItems: 'center', justifyContent: 'center' },
-  total: { paddingVertical: 10, paddingHorizontal: space.lg, alignItems: 'center' },
-  totalText: { fontSize: 20, lineHeight: 26 },
+  total: { paddingVertical: 10, paddingHorizontal: space.lg },
+  totalRow: { flexDirection: 'row', alignItems: 'center' },
+  totalCell: { flex: 1, alignItems: 'center', minWidth: 0 },
+  totalDivider: { width: 1, alignSelf: 'stretch', backgroundColor: colors.border },
+  totalText: { fontSize: 17, lineHeight: 24 },
+  chips: { flexDirection: 'row', gap: 6, paddingHorizontal: space.lg, paddingBottom: space.xs },
+  chip: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: 999, backgroundColor: colors.primarySoft },
+  chipOn: { backgroundColor: colors.primary },
   rowText: { fontSize: 14, lineHeight: 20 },
   sectionText: { fontSize: 15, lineHeight: 20 },
   byCategory: { paddingBottom: space.sm },

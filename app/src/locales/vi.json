@@ -453,12 +453,17 @@
       "month": "Tháng này"
     },
     "total": "Tổng chi",
+    "totalIncome": "Tổng thu",
+    "kind": {
+      "expense": "Chi",
+      "income": "Thu"
+    },
     "byCategory": "Theo nhóm",
     "byDay": "Theo ngày",
     "rangeAll": "Cả tháng",
     "recentMonths": "6 tháng gần đây",
     "categories": "Nhóm chi tiêu",
-    "empty": "Chưa có khoản chi",
+    "empty": "Chưa có khoản thu chi",
     "add": "Thêm khoản chi",
     "defaultCategories": {
       "food": "Ăn uống",
@@ -468,6 +473,8 @@
     "form": {
       "addTitle": "Thêm khoản chi",
       "editTitle": "Sửa khoản chi",
+      "addIncomeTitle": "Thêm khoản thu",
+      "editIncomeTitle": "Sửa khoản thu",
       "amount": "Số tiền",
       "category": "Nhóm",
       "pickCategory": "Chọn nhóm",
@@ -513,19 +520,21 @@
       "used": "{{percent}}% ngân sách {{amount}}",
       "usedMonth": "{{percent}}% ngân sách riêng {{amount}}",
       "left": "Còn {{amount}}",
+      "breakdown": "Hạn mức {{limit}} + thu {{income}}",
+      "incomeHint": "Khoản thu trong tháng được cộng vào ngân sách.",
       "over": "Vượt {{amount}}",
       "saved": "Đã lưu ngân sách",
       "saveFailed": "Không lưu được ngân sách. Vui lòng thử lại.",
       "invalid": "Nhập số tiền đến 100.000.000.000"
     },
     "recurring": {
-      "title": "Khoản chi lặp lại",
-      "empty": "Chưa có khoản chi lặp lại.",
-      "add": "Thêm khoản chi lặp lại",
+      "title": "Khoản lặp lại",
+      "empty": "Chưa có khoản lặp lại.",
+      "add": "Thêm khoản lặp lại",
       "next": "{{frequency}} · lần tới {{date}}",
-      "editTitle": "Sửa khoản chi lặp lại",
+      "editTitle": "Sửa khoản lặp lại",
       "nextDate": "Lần tới",
-      "deleteTitle": "Xoá khoản chi lặp lại này?"
+      "deleteTitle": "Xoá khoản lặp lại này?"
     },
     "noNote": "Không có ghi chú",
     "suggested": {

@@ -1,7 +1,7 @@
 import { ConflictError, ForbiddenError } from '@/features/events/api';
 import type { AppColor } from '@/lib/colors';
 import { supabase } from '@/lib/supabase';
-import type { Expense, ExpenseCategory } from './expense';
+import type { Expense, ExpenseCategory, ExpenseKind } from './expense';
 
 // db.md: one period never holds more than this many rows.
 const PERIOD_LIMIT = 1000;
@@ -21,21 +21,22 @@ function classify(error: unknown): Error {
   return new Error(JSON.stringify(error));
 }
 
-const COLUMNS = 'id, category_id, amount, spent_on, note, updated_at, recurrence_id';
+const COLUMNS = 'id, category_id, amount, spent_on, note, kind, updated_at, recurrence_id';
 
-type ExpenseTableRow = { id: string; category_id: string; amount: number | string; spent_on: string; note: string; updated_at: string; recurrence_id: string | null };
+type ExpenseTableRow = { id: string; category_id: string; amount: number | string; spent_on: string; note: string; kind: ExpenseKind; updated_at: string; recurrence_id: string | null };
 
 function toExpense(r: ExpenseTableRow): Expense {
-  return { id: r.id, categoryId: r.category_id, amount: Number(r.amount), spentOn: r.spent_on, note: r.note, updatedAt: r.updated_at, recurrenceId: r.recurrence_id };
+  return { id: r.id, categoryId: r.category_id, amount: Number(r.amount), spentOn: r.spent_on, note: r.note, kind: r.kind, updatedAt: r.updated_at, recurrenceId: r.recurrence_id };
 }
 
-export type ExpenseInput = { categoryId: string; amount: number; spentOn: string; note: string };
+export type ExpenseInput = { categoryId: string; amount: number; spentOn: string; note: string; kind: ExpenseKind };
 
 const toColumns = (input: ExpenseInput) => ({
   category_id: input.categoryId,
   amount: input.amount,
   spent_on: input.spentOn,
   note: input.note,
+  kind: input.kind,
 });
 
 export async function fetchExpenses(from: string, to: string): Promise<Expense[]> {
@@ -81,11 +82,11 @@ export async function deleteExpense(id: string): Promise<void> {
   if (error) throw classify(error);
 }
 
-// "6 tháng gần đây": the DB sums each month (`expense_monthly_totals`), no rows are downloaded.
-export async function fetchMonthlyTotals(from: string, to: string): Promise<{ month: string; total: number }[]> {
-  const { data, error } = await supabase.rpc('expense_monthly_totals', { p_from: from, p_to: to });
+// "6 tháng gần đây": the DB sums each month and kind (`expense_monthly_totals_by_kind`), no rows are downloaded.
+export async function fetchMonthlyTotals(from: string, to: string): Promise<{ month: string; kind: ExpenseKind; total: number }[]> {
+  const { data, error } = await supabase.rpc('expense_monthly_totals_by_kind', { p_from: from, p_to: to });
   if (error) throw classify(error);
-  return ((data ?? []) as { month: string; total: number | string }[]).map((r) => ({ month: r.month, total: Number(r.total) }));
+  return ((data ?? []) as { month: string; kind: ExpenseKind; total: number | string }[]).map((r) => ({ month: r.month, kind: r.kind, total: Number(r.total) }));
 }
 
 export async function fetchExpenseCategories(): Promise<ExpenseCategory[]> {

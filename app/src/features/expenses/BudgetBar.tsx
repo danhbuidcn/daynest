@@ -9,10 +9,13 @@ import { makeStyles, radius, space, useTheme } from '@/theme';
 // Under "Tổng chi" in Chi tiêu › Tháng (spec S6 §6). Pressing it opens the budget dialog.
 export function BudgetBar({
   spent,
+  income,
   budget,
   onPress,
 }: {
   spent: number;
+  // Income of the month is added to the budget (spec S8).
+  income: number;
   budget: { amount: number; kind: 'general' | 'month' } | null;
   onPress: () => void;
 }) {
@@ -28,7 +31,8 @@ export function BudgetBar({
       </Pressable>
     );
   }
-  const { percent, remaining, level } = budgetProgress(spent, budget.amount);
+  const available = budget.amount + income;
+  const { percent, remaining, level } = budgetProgress(spent, available);
   const fill = level === 'over' ? colors.error : level === 'warn' ? colors.warning : colors.primary;
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.bar}>
@@ -37,12 +41,17 @@ export function BudgetBar({
       </View>
       <View style={styles.line}>
         <AppText variant="caption" color={colors.textMuted} numberOfLines={1} style={styles.grow}>
-          {t(budget.kind === 'month' ? 'expenses.budget.usedMonth' : 'expenses.budget.used', { percent, amount: formatVnd(budget.amount) })}
+          {t(budget.kind === 'month' ? 'expenses.budget.usedMonth' : 'expenses.budget.used', { percent, amount: formatVnd(available) })}
         </AppText>
         <AppText variant="caption" weight="bold" color={level === 'over' ? colors.error : colors.text}>
           {level === 'over' ? t('expenses.budget.over', { amount: formatVnd(-remaining) }) : t('expenses.budget.left', { amount: formatVnd(remaining) })}
         </AppText>
       </View>
+      {income > 0 ? (
+        <AppText variant="caption" color={colors.textMuted} numberOfLines={1}>
+          {t('expenses.budget.breakdown', { limit: formatVnd(budget.amount), income: formatVnd(income) })}
+        </AppText>
+      ) : null}
     </Pressable>
   );
 }

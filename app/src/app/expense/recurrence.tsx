@@ -13,7 +13,8 @@ import { useToast } from '@/components/Toast';
 import { useAuth } from '@/features/auth/AuthProvider';
 import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { ConflictDialog } from '@/features/events/OccurrenceDialogs';
-import { categoryName } from '@/features/expenses/expense';
+import { categoryName, type ExpenseKind } from '@/features/expenses/expense';
+import { KindSwitch } from '@/features/expenses/KindSwitch';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
@@ -53,6 +54,7 @@ function RecurrenceForm({ rule }: { rule: Recurrence }) {
   const [amountText, setAmountText] = useState(groupThousands(rule.amount));
   const [categoryId, setCategoryId] = useState(rule.categoryId);
   const [note, setNote] = useState(rule.note);
+  const [kind, setKind] = useState<ExpenseKind>(rule.kind);
   const [frequency, setFrequency] = useState<Frequency>(rule.frequency);
   const [nextOn, setNextOn] = useState<SolarDate>(parseIsoDate(rule.nextOn));
   const [pickCategory, setPickCategory] = useState(false);
@@ -76,6 +78,7 @@ function RecurrenceForm({ rule }: { rule: Recurrence }) {
           categoryId,
           amount: amount!,
           note: note.trim(),
+          kind,
           frequency,
           anchorDay: anchorOf(frequency, nextOn),
           nextOn: isoDate(nextOn),
@@ -123,6 +126,7 @@ function RecurrenceForm({ rule }: { rule: Recurrence }) {
           <Button label={t('expenses.form.save')} onPress={() => void write(rule.updatedAt)} disabled={amount === null || busy || offline} />
         </View>
       }>
+      <KindSwitch value={kind} onChange={setKind} />
       <View style={styles.amountBox}>
         <AppText variant="caption" color={colors.textMuted}>
           {t('expenses.form.amount')}
@@ -134,7 +138,7 @@ function RecurrenceForm({ rule }: { rule: Recurrence }) {
           placeholder="0"
           placeholderTextColor={colors.textMuted}
           accessibilityLabel={t('expenses.form.amount')}
-          style={styles.amountInput}
+          style={[styles.amountInput, kind === 'income' && styles.amountIncome]}
         />
       </View>
       <View style={styles.card}>
@@ -254,6 +258,7 @@ const useStyles = makeStyles(({ colors, shadow, type }) => ({
     borderBottomWidth: 2,
     borderBottomColor: colors.primary,
   },
+  amountIncome: { color: colors.primaryDark },
   card: { backgroundColor: colors.surface, borderRadius: radius.card, paddingVertical: space.xs, paddingHorizontal: space.lg, ...shadow },
   row: { minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: space.md },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },

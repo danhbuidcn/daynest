@@ -1,6 +1,6 @@
 import { Pressable, View } from 'react-native';
 
-import { makeStyles, space, useTheme } from '@/theme';
+import { eventColors, makeStyles, space, useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { Card } from './Card';
 
@@ -20,6 +20,10 @@ type Props = {
   showAll: boolean;
   // Full text of the highlighted bar, under the title.
   readout?: string;
+  // A second series drawn beside each bar (income next to expense); no numbers over the bars then.
+  compare?: number[];
+  // A row of chips above `chips` (the Chi | Thu switch).
+  topChips?: { label: string; active: boolean; onPress: () => void }[];
   // Range buttons under the title ("Cả tháng", "1–10", …).
   chips?: { label: string; active: boolean; onPress: () => void }[];
   // Full text for one bar: screen readers.
@@ -28,19 +32,20 @@ type Props = {
 };
 
 // design-system "Biểu đồ cột": one series, one colour.
-export function BarChart({ title, values, labels, highlight, formatTop, showAll, readout, chips, describe, onPress }: Props) {
+export function BarChart({ title, values, labels, highlight, formatTop, showAll, readout, chips, topChips, compare, describe, onPress }: Props) {
   const { colors } = useTheme();
   const styles = useStyles();
-  const max = Math.max(...values, 0);
+  const max = Math.max(...values, ...(compare ?? []), 0);
   const top = max > 0 ? values.indexOf(max) : -1;
   return (
     <Card>
       <AppText variant="heading" style={styles.title}>
         {title}
       </AppText>
-      {chips ? (
-        <View style={styles.chips}>
-          {chips.map((c) => (
+      {[topChips, chips].map((row, r) =>
+        row ? (
+        <View key={r} style={styles.chips}>
+          {row.map((c) => (
             <Pressable key={c.label} accessibilityRole="button" accessibilityState={{ selected: c.active }} onPress={c.onPress} style={[styles.chip, c.active && styles.chipOn]}>
               <AppText variant="caption" weight="bold" color={c.active ? colors.white : colors.primaryDark}>
                 {c.label}
@@ -48,7 +53,8 @@ export function BarChart({ title, values, labels, highlight, formatTop, showAll,
             </Pressable>
           ))}
         </View>
-      ) : null}
+        ) : null,
+      )}
       {readout ? (
         <AppText variant="caption" color={colors.textMuted} style={styles.readout}>
           {readout}
@@ -63,20 +69,38 @@ export function BarChart({ title, values, labels, highlight, formatTop, showAll,
             onPress={() => onPress(i)}
             style={styles.slot}
           >
-            {v > 0 && (showAll || i === top || i === highlight) ? (
-              <AppText variant="micro" weight="extrabold" numberOfLines={1} style={[styles.overflowText, styles.topValue]}>
-                {formatTop(v)}
-              </AppText>
-            ) : null}
-            {v > 0 ? (
-              <View
-                style={[
-                  styles.bar,
-                  i === highlight ? styles.barOn : styles.barOff,
-                  { height: Math.max((v / max) * BAR_MAX, BAR_MIN) },
-                ]}
-              />
-            ) : null}
+            {compare ? (
+              <View style={styles.pair}>
+                {[v, compare[i] ?? 0].map((x, k) => (
+                  <View
+                    key={k}
+                    style={[
+                      styles.bar,
+                      styles.pairBar,
+                      k === 0 ? (i === highlight ? styles.barOn : styles.barOff) : i === highlight ? styles.compareOn : styles.compareOff,
+                      { height: x > 0 ? Math.max((x / max) * BAR_MAX, BAR_MIN) : 0 },
+                    ]}
+                  />
+                ))}
+              </View>
+            ) : (
+              <>
+                {v > 0 && (showAll || i === top || i === highlight) ? (
+                  <AppText variant="micro" weight="extrabold" numberOfLines={1} style={[styles.overflowText, styles.topValue]}>
+                    {formatTop(v)}
+                  </AppText>
+                ) : null}
+                {v > 0 ? (
+                  <View
+                    style={[
+                      styles.bar,
+                      i === highlight ? styles.barOn : styles.barOff,
+                      { height: Math.max((v / max) * BAR_MAX, BAR_MIN) },
+                    ]}
+                  />
+                ) : null}
+              </>
+            )}
           </Pressable>
         ))}
       </View>
@@ -123,5 +147,10 @@ const useStyles = makeStyles(({ colors }) => ({
   // "primary nhạt 55%" on the white card.
   barOff: { backgroundColor: colors.primary, opacity: 0.55 },
   barOn: { backgroundColor: colors.primaryDark },
+  pair: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 2, width: '100%' },
+  pairBar: { flex: 1, width: undefined, maxWidth: 14 },
+  // Second series: the peach event colour, like the mockup.
+  compareOff: { backgroundColor: eventColors.peach, opacity: 0.85 },
+  compareOn: { backgroundColor: eventColors.peach },
   axis: { flexDirection: 'row', gap: 2, paddingTop: space.xs, paddingBottom: space.md, paddingHorizontal: space.lg },
 }));

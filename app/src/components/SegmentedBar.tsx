@@ -9,7 +9,8 @@ export function SegmentedBar<T extends string>({
   value,
   onChange,
 }: {
-  options: readonly { value: T; label: string }[];
+  // `tone: 'error'` paints the selected item in the soft error colour (the "Chi" side of Chi | Thu).
+  options: readonly { value: T; label: string; tone?: 'error' }[];
   value: T;
   onChange: (value: T) => void;
 }) {
@@ -25,8 +26,8 @@ export function SegmentedBar<T extends string>({
             accessibilityRole="tab"
             accessibilityState={{ selected: on }}
             onPress={() => onChange(o.value)}
-            style={[styles.item, on && styles.on]}>
-            <AppText weight={on ? 'bold' : undefined} color={on ? colors.white : colors.text} numberOfLines={1}>
+            style={[styles.item, on && (o.tone === 'error' ? styles.onError : styles.on)]}>
+            <AppText weight={on ? 'bold' : undefined} color={on ? (o.tone === 'error' ? colors.error : colors.white) : colors.text} numberOfLines={1}>
               {o.label}
             </AppText>
           </Pressable>
@@ -49,4 +50,5 @@ const useStyles = makeStyles(({ colors }) => ({
   },
   item: { flex: 1, alignItems: 'center', justifyContent: 'center', borderRadius: 13 },
   on: { backgroundColor: colors.primary },
+  onError: { backgroundColor: colors.errorSoft },
 }));

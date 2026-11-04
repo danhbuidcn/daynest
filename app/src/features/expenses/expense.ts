@@ -3,12 +3,16 @@ import type { TFunction } from 'i18next';
 import type { IconName } from '@/components/Icon';
 import type { AppColor } from '@/lib/colors';
 
+// Income and expense share the table and the categories (spec S8).
+export type ExpenseKind = 'expense' | 'income';
+
 export type Expense = {
   id: string;
   categoryId: string;
   amount: number;
   spentOn: string;
   note: string;
+  kind: ExpenseKind;
   updatedAt: string;
   // Set on expenses the app wrote from a recurring rule (null once the rule is deleted).
   recurrenceId: string | null;

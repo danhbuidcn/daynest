@@ -48,6 +48,15 @@ export function sumAmounts(expenses: readonly { amount: number }[]): number {
   return expenses.reduce((s, e) => s + e.amount, 0);
 }
 
+export type Kind = 'expense' | 'income';
+
+export const ofKind = <T extends { kind: Kind }>(rows: readonly T[], kind: Kind): T[] => rows.filter((r) => r.kind === kind);
+
+// "+50.000 ₫" for income, "50.000 ₫" for expense (spec S8).
+export function formatKindVnd(n: number, kind: Kind): string {
+  return `${kind === 'income' ? '+' : ''}${formatVnd(n)}`;
+}
+
 // Hermes ships without full Intl locale data, so the "50.000" grouping is done by hand.
 export function groupThousands(n: number): string {
   return String(Math.trunc(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -89,10 +98,15 @@ export function recentMonthsRange(cursor: SolarDate): { from: SolarDate; to: Sol
   return { from: { ...first, day: 1 }, to: { year: cursor.year, month: cursor.month, day: daysInMonth(cursor.year, cursor.month) } };
 }
 
-// DB rows (`month` = first day, ISO) → one total per chart month; months without rows are 0.
-export function monthlyTotals(rows: readonly { month: string; total: number }[], cursor: SolarDate): number[] {
-  const sums = new Map(rows.map((r) => [r.month.slice(0, 7), r.total]));
-  return recentMonths(cursor).map(({ year, month }) => sums.get(isoDate({ year, month, day: 1 }).slice(0, 7)) ?? 0);
+// DB rows (`month` = first day, ISO) → one total per chart month and kind; months without rows are 0.
+export function monthlyTotals(
+  rows: readonly { month: string; kind: string; total: number }[],
+  cursor: SolarDate,
+): { expense: number[]; income: number[] } {
+  const sums = new Map(rows.map((r) => [`${r.month.slice(0, 7)}/${r.kind}`, r.total]));
+  const series = (kind: string) =>
+    recentMonths(cursor).map(({ year, month }) => sums.get(`${isoDate({ year, month, day: 1 }).slice(0, 7)}/${kind}`) ?? 0);
+  return { expense: series('expense'), income: series('income') };
 }
 
 // Month axis: 1, 5, 10, 15, 20, 25 and the last day (spec).

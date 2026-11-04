@@ -32,6 +32,8 @@ import { loadError } from '@/features/network/loadError';
 import {
   defaultSpentOn,
   monthlyTotals,
+  ofKind,
+  type Kind,
   periodRange,
   recentMonthsRange,
   shiftPeriod,
@@ -58,6 +60,8 @@ export default function ExpensesScreen() {
   useGenerateRecurring(settings.timeZone);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [budgetOpen, setBudgetOpen] = useState(false);
+  // Which kind "Theo ngày" and "Theo nhóm" show (spec S8).
+  const [kind, setKind] = useState<Kind>('expense');
   // The category pop-up closes while a form is open (a Modal would sit on top of it) and comes back
   // when this screen is in front again.
   const [openCategory, setOpenCategory] = useState<string | null>(null);
@@ -93,7 +97,10 @@ export default function ExpensesScreen() {
     () => new Map<string, ExpenseCategory>((categoriesQuery.data ?? []).map((c) => [c.id, c])),
     [categoriesQuery.data],
   );
-  const totals = useMemo(() => totalsByCategory(expenses ?? []), [expenses]);
+  const ofShownKind = useMemo(() => ofKind(expenses ?? [], kind), [expenses, kind]);
+  const totals = useMemo(() => totalsByCategory(ofShownKind), [ofShownKind]);
+  const incomeSum = useMemo(() => sumAmounts(ofKind(expenses ?? [], 'income')), [expenses]);
+  const expenseSum = useMemo(() => sumAmounts(ofKind(expenses ?? [], 'expense')), [expenses]);
   const months = useMemo(() => (monthlyQuery.data ? monthlyTotals(monthlyQuery.data, cursor) : null), [monthlyQuery.data, cursor]);
 
   const openDay = (day: SolarDate) => {
@@ -113,7 +120,7 @@ export default function ExpensesScreen() {
     reopenCategory.current = openCategory;
     router.push({
       pathname: '/expense/edit',
-      params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)), category: openCategory },
+      params: { date: isoDate(defaultSpentOn(mode, cursor, nav.today, settings.weekStart)), category: openCategory, kind },
     });
     setOpenCategory(null);
   };
@@ -145,14 +152,14 @@ export default function ExpensesScreen() {
   } else {
     body = (
       <ScrollView contentContainerStyle={styles.list}>
-        <TotalCard total={sumAmounts(expenses)}>
-          {mode === 'month' && budgetQuery.data ? <BudgetBar spent={sumAmounts(expenses)} budget={budget} onPress={() => setBudgetOpen(true)} /> : null}
+        <TotalCard income={incomeSum} expense={expenseSum}>
+          {mode === 'month' && budgetQuery.data ? <BudgetBar spent={expenseSum} income={incomeSum} budget={budget} onPress={() => setBudgetOpen(true)} /> : null}
         </TotalCard>
-        {mode !== 'day' ? <DailyChart mode={mode} range={nav.range} expenses={expenses} today={nav.today} onDay={openDay} /> : null}
+        {mode !== 'day' ? <DailyChart mode={mode} range={nav.range} expenses={expenses} kind={kind} onKind={setKind} today={nav.today} onDay={openDay} /> : null}
         {mode === 'month' && months ? (
           <MonthlyChart cursor={cursor} totals={months} onMonth={(m) => nav.setCursor({ ...m, day: 1 })} />
         ) : null}
-        <CategoryTotalsCard totals={totals} categories={categories} onPress={setOpenCategory} />
+        <CategoryTotalsCard totals={totals} categories={categories} kind={kind} onKind={setKind} onPress={setOpenCategory} />
         {mode === 'day' ? <ExpenseListCard expenses={expenses} categories={categories} onPress={editExpense} /> : null}
       </ScrollView>
     );
@@ -203,7 +210,8 @@ export default function ExpensesScreen() {
       )}
       <CategoryExpensesDialog
         category={openCategory ? categories.get(openCategory) : undefined}
-        expenses={expenses ?? []}
+        expenses={ofShownKind}
+        kind={kind}
         mode={mode}
         periodLabel={nav.title}
         canAdd={canWrite}

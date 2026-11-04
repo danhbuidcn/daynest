@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { BarChart } from '@/components/BarChart';
 import { sameDay, weekdayOf } from '@/lib/calendar/monthGrid';
 import { addDays } from '@/lib/calendar/week';
-import { compactVnd, dailyTotals, formatVnd, isMonthAxisDay, recentMonths } from '@/lib/expenses';
+import { compactVnd, dailyTotals, formatKindVnd, formatVnd, isMonthAxisDay, ofKind, recentMonths, type Kind } from '@/lib/expenses';
 import type { SolarDate } from '@/lib/lunar';
 import type { Expense } from './expense';
+import { useKindChips } from './ExpenseSummary';
 
 // Ranges of the month chart: whole month, then 1–10, 11–20 and 21–end (up to 11 days) — fewer, wider bars that all show their amount.
 function rangeBounds(dayCount: number): [number, number][] {
@@ -19,19 +20,24 @@ export function DailyChart({
   mode,
   range,
   expenses,
+  kind,
+  onKind,
   today,
   onDay,
 }: {
   mode: 'week' | 'month';
   range: { from: SolarDate; to: SolarDate };
   expenses: Expense[];
+  kind: Kind;
+  onKind: (k: Kind) => void;
   today: SolarDate;
   onDay: (day: SolarDate) => void;
 }) {
   const { t } = useTranslation();
   const [rangeIndex, setRangeIndex] = useState(0);
   const [picked, setPicked] = useState<SolarDate | null>(null);
-  const allValues = useMemo(() => dailyTotals(expenses, range.from, range.to), [expenses, range]);
+  const topChips = useKindChips(kind, onKind);
+  const allValues = useMemo(() => dailyTotals(ofKind(expenses, kind), range.from, range.to), [expenses, kind, range]);
   const allDays = useMemo(() => allValues.map((_, i) => addDays(range.from, i)), [allValues, range.from]);
   const bounds = useMemo(() => (mode === 'month' ? rangeBounds(allDays.length) : null), [mode, allDays.length]);
   const activeRange = bounds ? rangeIndex : 0;
@@ -45,7 +51,7 @@ export function DailyChart({
   const labels = days.map((d) =>
     mode === 'week' ? t(`calendar.weekdays.${weekdayOf(d)}`) : showAll || isMonthAxisDay(d.day, allDays.length) ? String(d.day) : '',
   );
-  const describe = (i: number) => `${days[i].day}/${days[i].month}: ${formatVnd(values[i])}`;
+  const describe = (i: number) => `${days[i].day}/${days[i].month}: ${formatKindVnd(values[i], kind)}`;
   const readout = shown >= 0 ? `${t(`calendar.weekdays.${weekdayOf(days[shown])}`)}, ${describe(shown).replace(':', ' ·')}` : undefined;
   const chips = bounds?.map(([a, b], i) => ({
     label: i === 0 ? t('expenses.rangeAll') : `${a + 1}–${b + 1}`,
@@ -61,6 +67,7 @@ export function DailyChart({
       formatTop={compactVnd}
       showAll={showAll}
       readout={readout}
+      topChips={topChips}
       chips={chips}
       describe={describe}
       onPress={(i) => (i === pickedIndex ? onDay(days[i]) : setPicked(days[i]))}
@@ -76,7 +83,7 @@ export function MonthlyChart({
   onMonth,
 }: {
   cursor: SolarDate;
-  totals: number[];
+  totals: { expense: number[]; income: number[] };
   onMonth: (month: { year: number; month: number }) => void;
 }) {
   const { t } = useTranslation();
@@ -84,11 +91,12 @@ export function MonthlyChart({
   const [picked, setPicked] = useState<number | null>(null);
   const shown = picked ?? months.length - 1;
   const describe = (i: number) =>
-    `${t('calendar.monthTitle', { month: t(`calendar.months.${months[i].month}`), year: months[i].year })} · ${formatVnd(totals[i])}`;
+    `${t('calendar.monthTitle', { month: t(`calendar.months.${months[i].month}`), year: months[i].year })} · ${t('expenses.kind.income')} ${formatKindVnd(totals.income[i], 'income')} · ${t('expenses.kind.expense')} ${formatVnd(totals.expense[i])}`;
   return (
     <BarChart
       title={t('expenses.recentMonths')}
-      values={totals}
+      values={totals.income}
+      compare={totals.expense}
       labels={months.map((m) => t(`calendar.monthsShort.${m.month}`))}
       highlight={shown}
       formatTop={compactVnd}

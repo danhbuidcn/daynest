@@ -15,7 +15,7 @@ import { useRecurrences } from '@/features/expenses/useRecurrences';
 import { useExpenseCategories } from '@/features/expenses/useExpenses';
 import { loadError } from '@/features/network/loadError';
 import { useOnline } from '@/features/network/useOnline';
-import { formatVnd } from '@/lib/expenses';
+import { formatKindVnd } from '@/lib/expenses';
 import { makeStyles, space, useTheme } from '@/theme';
 
 // Spec S6 §7 "Quản lý": rules in order of the next date · tap = edit · button = new monthly rule.
@@ -58,7 +58,7 @@ export default function RecurrencesScreen() {
                       {t('expenses.recurring.next', { frequency: t(`expenses.form.repeatOptions.${r.frequency}`), date: `${day}/${month}` })}
                     </AppText>
                   </View>
-                  <AppText weight="bold">{formatVnd(r.amount)}</AppText>
+                  <AppText weight="bold" color={r.kind === 'income' ? colors.primaryDark : undefined}>{formatKindVnd(r.amount, r.kind)}</AppText>
                   <Icon name="chevron" size={18} color={colors.textMuted} />
                 </Pressable>
               );

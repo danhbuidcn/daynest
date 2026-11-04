@@ -17,7 +17,8 @@ import { ConflictError, ForbiddenError } from '@/features/events/api';
 import { ConflictDialog } from '@/features/events/OccurrenceDialogs';
 import * as api from '@/features/expenses/api';
 import * as recurrenceApi from '@/features/expenses/recurrenceApi';
-import { categoryName, type Expense } from '@/features/expenses/expense';
+import { categoryName, type Expense, type ExpenseKind } from '@/features/expenses/expense';
+import { KindSwitch } from '@/features/expenses/KindSwitch';
 import { CategoryIcon } from '@/features/expenses/ExpenseSummary';
 import { ExpenseCategoryPicker } from '@/features/expenses/ExpenseCategoryPicker';
 import { MiniCalendarPicker } from '@/features/expenses/MiniCalendarPicker';
@@ -34,12 +35,12 @@ import { makeStyles, radius, space, useTheme } from '@/theme';
 
 const NO_DATE = { year: 1900, month: 1, day: 1 };
 
-type FormState = { amount: string; categoryId: string | null; spentOn: SolarDate; note: string };
+type FormState = { amount: string; categoryId: string | null; spentOn: SolarDate; note: string; kind: ExpenseKind };
 
 // S4 màn 7, 8 — create: `?date=YYYY-MM-DD` (default today) · edit: `?id=…&date=<spent_on>`.
 export default function ExpenseFormScreen() {
   const { settings } = useAuth();
-  const params = useLocalSearchParams<{ id?: string; date?: string; repeat?: string; category?: string }>();
+  const params = useLocalSearchParams<{ id?: string; date?: string; repeat?: string; category?: string; kind?: string }>();
   const isEdit = !!params.id;
   const range = useMemo(() => {
     const d = params.date ? parseIsoDate(params.date) : NO_DATE;
@@ -53,13 +54,13 @@ export default function ExpenseFormScreen() {
   const initial = useMemo<FormState | null>(() => {
     if (isEdit) {
       return expense
-        ? { amount: groupThousands(expense.amount), categoryId: expense.categoryId, spentOn: parseIsoDate(expense.spentOn), note: expense.note }
+        ? { amount: groupThousands(expense.amount), categoryId: expense.categoryId, spentOn: parseIsoDate(expense.spentOn), note: expense.note, kind: expense.kind }
         : null;
     }
     if (!categories) return null;
     const categoryId = categories.some((c) => c.id === params.category) ? params.category! : null;
-    return { amount: '', categoryId, spentOn: params.date ? range.from : todayIn(settings.timeZone), note: '' };
-  }, [isEdit, expense, categories, params.date, params.category, range, settings.timeZone]);
+    return { amount: '', categoryId, spentOn: params.date ? range.from : todayIn(settings.timeZone), note: '', kind: params.kind === 'income' ? 'income' : 'expense' };
+  }, [isEdit, expense, categories, params.date, params.category, params.kind, range, settings.timeZone]);
 
   if (!initial) return null;
   return <ExpenseForm key={params.id ?? 'create'} initial={initial} expense={expense} initialRepeat={params.repeat === 'monthly' ? 'monthly' : 'none'} />;
@@ -98,6 +99,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
     amount: amount!,
     spentOn: isoDate(form.spentOn),
     note: form.note.trim(),
+    kind: form.kind,
   });
 
   // Save errors keep the form open (spec §5); a conflict asks "Tải bản mới / Ghi đè".
@@ -124,6 +126,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
       categoryId: form.categoryId!,
       amount: amount!,
       note: form.note.trim(),
+      kind: form.kind,
       frequency,
       anchorDay: anchorOf(frequency, form.spentOn),
       nextOn: isoDate(nextOn),
@@ -173,7 +176,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
 
   return (
     <FormScreen
-      title={t(expense ? 'expenses.form.editTitle' : 'expenses.form.addTitle')}
+      title={t(form.kind === 'income' ? (expense ? 'expenses.form.editIncomeTitle' : 'expenses.form.addIncomeTitle') : expense ? 'expenses.form.editTitle' : 'expenses.form.addTitle')}
       onBack={() => router.back()}
       footer={
         <View style={styles.footer}>
@@ -189,6 +192,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
           <Button label={t('expenses.form.save')} onPress={onSave} disabled={!canSave} />
         </View>
       }>
+      <KindSwitch value={form.kind} onChange={(kind) => setForm({ ...form, kind })} />
       <View style={styles.amountBox}>
         <AppText variant="caption" color={colors.textMuted}>
           {t('expenses.form.amount')}
@@ -201,7 +205,7 @@ function ExpenseForm({ initial, expense, initialRepeat }: { initial: FormState; 
           placeholder="0"
           placeholderTextColor={colors.textMuted}
           accessibilityLabel={t('expenses.form.amount')}
-          style={styles.amountInput}
+          style={[styles.amountInput, form.kind === 'income' && styles.amountIncome]}
         />
       </View>
 
@@ -313,6 +317,7 @@ const useStyles = makeStyles(({ colors, shadow, type }) => ({
     borderBottomWidth: 2,
     borderBottomColor: colors.primary,
   },
+  amountIncome: { color: colors.primaryDark },
   card: { backgroundColor: colors.surface, borderRadius: radius.card, paddingVertical: space.xs, paddingHorizontal: space.lg, ...shadow },
   row: { minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: space.md },
   divider: { borderTopWidth: 1, borderTopColor: colors.border },

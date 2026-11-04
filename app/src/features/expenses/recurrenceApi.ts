@@ -1,11 +1,13 @@
 import { ConflictError } from '@/features/events/api';
 import { supabase } from '@/lib/supabase';
 import type { Frequency } from '@/lib/expenses/recurrence';
+import type { ExpenseKind } from './expense';
 
 export type RecurrenceInput = {
   categoryId: string;
   amount: number;
   note: string;
+  kind: ExpenseKind;
   frequency: Frequency;
   anchorDay: number;
   nextOn: string;
@@ -19,6 +21,7 @@ export async function createRecurrence(id: string, input: RecurrenceInput): Prom
       category_id: input.categoryId,
       amount: input.amount,
       note: input.note,
+      kind: input.kind,
       frequency: input.frequency,
       anchor_day: input.anchorDay,
       next_on: input.nextOn,
@@ -42,13 +45,14 @@ type RecurrenceRow = {
   category_id: string;
   amount: number | string;
   note: string;
+  kind: ExpenseKind;
   frequency: Frequency;
   anchor_day: number;
   next_on: string;
   updated_at: string;
 };
 
-const COLUMNS = 'id, category_id, amount, note, frequency, anchor_day, next_on, updated_at';
+const COLUMNS = 'id, category_id, amount, note, kind, frequency, anchor_day, next_on, updated_at';
 
 export async function fetchRecurrences(): Promise<Recurrence[]> {
   const { data, error } = await supabase.from('expense_recurrences').select(COLUMNS).order('next_on', { ascending: true });
@@ -58,6 +62,7 @@ export async function fetchRecurrences(): Promise<Recurrence[]> {
     categoryId: r.category_id,
     amount: Number(r.amount),
     note: r.note,
+    kind: r.kind,
     frequency: r.frequency,
     anchorDay: r.anchor_day,
     nextOn: r.next_on,
@@ -73,6 +78,7 @@ export async function updateRecurrence(id: string, readUpdatedAt: string | null,
       category_id: input.categoryId,
       amount: input.amount,
       note: input.note,
+      kind: input.kind,
       frequency: input.frequency,
       anchor_day: input.anchorDay,
       next_on: input.nextOn,

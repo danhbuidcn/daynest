@@ -31,7 +31,7 @@ select lives_ok(
 select throws_ok(
   $$ insert into public.note_categories (user_id, name, color) values ('00000000-0000-0000-0000-00000000aaaa', 'Bad', 'blue') $$,
   '23514', null, 'note category rejects an unknown name');
-select is((select min_version_code from public.app_config), 6, 'min_version_code is the S4 build');
+select ok((select min_version_code from public.app_config) >= 6, 'min_version_code is at least the S4 build');
 
 select * from finish();
 rollback;

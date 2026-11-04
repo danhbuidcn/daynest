@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daynest — Mockup Sprint 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Be+Vietnam+Pro:wght@600;700;800&family=Quicksand:wght@600;700&family=Itim&family=Baloo+2:wght@600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  /* Token — đồng bộ với docs/specs/design-system.md */
+  :root {
+    --primary: #5BBE98; --primary-dark: #3E9E7A; --primary-soft: #E3F5EC;
+    --bg: #FAF8F5; --surface: #FFFFFF; --border: #EFEAE3;
+    --text: #2F2D33; --muted: #8C8794;
+    --error: #E9787B; --error-soft: #FCE8E8; --warning: #F2B45C; --warning-soft: #FDF1DE;
+    --mint: #7FD1B0; --sky: #8CC8EE; --lavender: #B9A6EC;
+    --pink: #F4A6C0; --peach: #F7BE8A; --lemon: #F2D67A;
+    --shadow: 0 4px 12px rgba(47,45,51,.06);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Nunito, system-ui, sans-serif; font-weight: 600; color: var(--text); background: #ECE8E2; padding: 32px 16px 64px; }
+  header.page { max-width: 1200px; margin: 0 auto 12px; }
+  header.page h1 { font-size: 26px; font-weight: 800; }
+  header.page p { color: var(--muted); margin-top: 6px; }
+  h2.group { max-width: 1600px; margin: 36px auto 16px; font-size: 22px; font-weight: 800; padding-left: 8px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 36px 28px; justify-content: center; max-width: 1600px; margin: 0 auto; align-items: flex-start; }
+  figure { display: flex; flex-direction: column; gap: 10px; }
+  figcaption { font-weight: 800; font-size: 15px; max-width: 360px; }
+  figcaption span { color: var(--muted); font-weight: 600; font-size: 13px; margin-left: 6px; }
+
+  /* Khung điện thoại 360×780 */
+  .phone { width: 360px; height: 780px; background: var(--bg); border-radius: 36px; border: 8px solid #2F2D33; overflow: hidden; position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,.12); }
+  .phone.tall { height: 1180px; }
+  .status { height: 28px; flex: none; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 12px; font-weight: 700; }
+  .content { flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .screen-title { font-size: 22px; line-height: 28px; font-weight: 800; text-align: center; padding: 14px 16px 12px; }
+  .muted { color: var(--muted); }
+  .cap { font-size: 12px; line-height: 16px; }
+  .b { font-weight: 800; }
+
+  /* Thanh tab (S1) */
+  .tabbar { flex: none; height: 64px; background: var(--surface); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; box-shadow: 0 -4px 12px rgba(47,45,51,.05); position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; color: var(--muted); }
+  .tab.on { color: var(--primary); font-weight: 800; }
+  .tab svg { width: 24px; height: 24px; }
+  .fab { justify-self: center; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; margin-top: -30px; box-shadow: 0 6px 14px rgba(91,190,152,.45); border: 4px solid var(--bg); }
+  .fab svg { width: 28px; height: 28px; }
+
+  /* Thành phần S1 */
+  .btn { height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; width: 100%; border: 0; font-family: inherit; color: var(--text); }
+    .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: var(--surface); border: 1.5px solid var(--border); }
+  .btn-danger { background: var(--error-soft); color: var(--error); }
+  .btn-danger-solid { background: var(--error); color: #fff; }
+  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); }
+  .toast { position: absolute; left: 50%; transform: translateX(-50%); bottom: 80px; background: var(--text); color: #fff; font-size: 15px; padding: 10px 18px; border-radius: 999px; white-space: nowrap; display: flex; align-items: center; gap: 12px; z-index: 6; }
+  .toast .act { color: var(--mint); font-weight: 800; }
+  .topbar { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; padding: 8px 12px; flex: none; }
+  .topbar .back, .topbar .act { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--text); }
+  .topbar svg { width: 24px; height: 24px; }
+  .topbar .screen-title { padding: 6px 0; }
+  .group-label { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .6px; margin: 0 4px -8px; }
+  .row { min-height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .row .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--primary-soft); color: var(--primary-dark); }
+  .row.danger { color: var(--error); }
+  .row.danger .ico { background: var(--error-soft); color: var(--error); }
+  .row .ico svg { width: 20px; height: 20px; }
+  .row .label { flex: 1; }
+  .row .val { color: var(--muted); font-size: 15px; }
+  .row.sub { font-size: 12px; line-height: 16px; min-height: 0; padding: 0 16px 12px 62px; border-top: 0 !important; margin-top: -8px; }
+  .scrim { position: absolute; inset: 0; background: rgba(47,45,51,.4); display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 5; }
+  .dialog { background: var(--surface); border-radius: 24px; padding: 24px 20px 20px; width: 100%; text-align: center; }
+  .dialog .dicon { width: 56px; height: 56px; border-radius: 20px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; margin: 0 auto 14px; }
+  .dialog .dicon.err { background: var(--error-soft); color: var(--error); }
+  .dialog .dicon.warn { background: var(--warning-soft); color: var(--warning); }
+  .dialog .dicon svg { width: 28px; height: 28px; }
+  .dialog h3 { font-size: 17px; font-weight: 700; }
+  .dialog p { color: var(--muted); font-size: 15px; line-height: 22px; margin: 6px 0 20px; }
+  .dialog .actions { display: flex; gap: 10px; }
+  .dialog .stack { display: flex; flex-direction: column; gap: 10px; }
+  .under { position: absolute; inset: 28px 0 0; display: flex; flex-direction: column; }
+  .opt { height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-radius: 16px; font-size: 15px; text-align: left; }
+  .opt .label { flex: 1; }
+  .opt.on { background: var(--primary-soft); font-weight: 800; }
+  .input { height: 48px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 0 16px; font-size: 15px; }
+  .input.focus { border-color: var(--primary); }
+  .field label { display: block; font-size: 12px; font-weight: 800; color: var(--muted); margin: 0 4px 6px; text-align: left; }
+  .form-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 16px 16px; background: var(--bg); }
+
+  /* S2 — Lịch */
+  .cal-head { display: grid; grid-template-columns: 32px 1fr 32px auto; align-items: center; gap: 4px; padding: 10px 12px 6px 8px; flex: none; }
+  .cal-head .nav { width: 32px; height: 32px; display: grid; place-items: center; color: var(--text); }
+  .cal-head .nav svg { width: 22px; height: 22px; }
+  .cal-head .t { font-size: 22px; line-height: 28px; font-weight: 800; text-align: center; }
+  .chip-today { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; display: flex; align-items: center; }
+  .seg { margin: 4px 16px 8px; height: 40px; border-radius: 16px; background: var(--border); display: grid; grid-template-columns: repeat(4, 1fr); padding: 3px; flex: none; }
+  .seg span { display: grid; place-items: center; font-size: 15px; border-radius: 13px; }
+  .seg span.on { background: var(--primary); color: #fff; font-weight: 700; }
+  .wk { display: grid; grid-template-columns: repeat(7, 1fr); padding: 0 8px; flex: none; }
+  .wk span { text-align: center; font-size: 12px; font-weight: 800; color: var(--muted); padding: 4px 0; }
+  .wk span.sun { color: var(--error); }
+  .month { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(6, 1fr); padding: 0 8px 4px; }
+  .cell { position: relative; border-top: 1px solid var(--border); padding: 3px 2px 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
+  .cell:nth-child(7n+1) { border-left: 0; }
+  .cell .top { display: flex; flex-direction: column-reverse; padding: 0 1px; }
+  .cell .d { align-self: flex-start; font-size: 15px; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
+  .cell .l { align-self: flex-end; height: 12px; font-size: 10px; line-height: 12px; color: var(--muted); }
+  .cell .l.key { color: var(--primary-dark); font-weight: 800; }
+  .cell.sun .d, .cell.hol .d { color: var(--error); }
+  .cell.today .d { background: var(--primary); color: #fff; font-weight: 800; }
+  .cell.sel { background: var(--primary-soft); border-radius: 10px; }
+  .cell .addb { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 16px; line-height: 1; }
+  .scrim.big { padding: 12px; }
+  .dialog.big { max-height: 85%; }
+  .cell.out { opacity: .4; }
+  .bar { height: 16px; border-radius: 6px; font-size: 12px; line-height: 16px; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .more { font-size: 12px; line-height: 14px; color: var(--muted); padding-left: 2px; }
+  .ev-mint { background: var(--mint); } .ev-sky { background: var(--sky); } .ev-lavender { background: var(--lavender); }
+  .ev-pink { background: var(--pink); } .ev-peach { background: var(--peach); } .ev-lemon { background: var(--lemon); }
+  .ev-hol { background: var(--error); color: #fff; }
+
+  .ecard { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: stretch; overflow: hidden; }
+  .ecard .stripe { width: 4px; flex: none; }
+  .ecard .body { flex: 1; padding: 8px 10px; min-width: 0; }
+  .ecard .ttl { font-size: 15px; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .ecard .tm { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .ecard .st { display: flex; gap: 4px; align-items: center; padding-right: 10px; color: var(--muted); }
+  .st svg { width: 14px; height: 14px; }
+
+  .weekbar { display: flex; gap: 8px; padding: 0 16px 8px; overflow: hidden; flex: none; }
+  .wchip { flex: none; width: 76px; height: 52px; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .wchip b { font-size: 15px; font-weight: 800; } .wchip i { font-style: normal; font-size: 12px; color: var(--muted); }
+  .wchip.on { background: var(--primary); color: #fff; } .wchip.on i { color: #fff; }
+  .wrows { flex: 1; overflow: hidden; padding: 0 16px; }
+  .wrow { display: grid; grid-template-columns: 52px 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); min-height: 66px; }
+  .wrow .dd { display: flex; flex-direction: column; justify-content: center; }
+  .wrow .dd b { font-size: 17px; font-weight: 800; } .wrow .dd span { font-size: 12px; color: var(--muted); }
+  .wrow.today .dd { color: var(--primary-dark); }
+  .wrow .evs { display: flex; gap: 6px; align-items: center; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .wrow .evs::-webkit-scrollbar { display: none; }
+  .wrow .evs .ecard { flex: none; }
+  .wrow .none { font-size: 12px; color: var(--muted); align-self: center; }
+
+  .dayhead { padding: 0 16px 6px; display: flex; justify-content: space-between; align-items: baseline; flex: none; }
+  .allday { margin: 0 16px; display: grid; grid-template-columns: 44px 1fr; gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); flex: none; }
+  .hours { flex: 1; position: relative; margin: 0 16px; overflow: hidden; padding-top: 8px; }
+  .hr { height: 56px; display: grid; grid-template-columns: 44px 1fr; border-top: 1px solid var(--border); }
+  .hr span { font-size: 12px; color: var(--muted); margin-top: -8px; background: var(--bg); width: 36px; }
+  .block { position: absolute; left: 50px; border-radius: 12px; padding: 6px 8px; overflow: hidden; border-left: 4px solid; }
+  .block .ttl { font-size: 15px; line-height: 18px; } .block .tm { font-size: 12px; color: var(--muted); }
+  .nowline { position: absolute; left: 44px; right: 0; height: 2px; background: var(--error); }
+  .nowline::before { content: ''; position: absolute; left: -4px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--error); }
+
+  .daystrip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 12px 10px; flex: none; }
+  .ds { position: relative; height: 60px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .ds i { font-style: normal; font-size: 12px; color: var(--muted); } .ds b { font-size: 17px; font-weight: 800; } .ds em { font-style: normal; font-size: 12px; color: var(--muted); }
+  .ds.on { background: var(--primary); color: #fff; } .ds.on i, .ds.on em { color: #fff; }
+  .agenda { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+  .ag { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: stretch; }
+  .ag .times { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; justify-content: center; text-align: right; }
+  .ag .times b { color: var(--text); font-size: 15px; font-weight: 700; }
+
+  /* Sheet từ đáy */
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 24px 24px 0 0; z-index: 6; padding-bottom: 16px; }
+  .sheet .grab { width: 36px; height: 4px; border-radius: 4px; background: var(--border); margin: 8px auto 4px; }
+  .sheet .shead { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 8px 16px 12px; }
+  .sheet .shead .h { font-size: 17px; font-weight: 700; text-align: center; }
+  .sheet .shead .l { color: var(--muted); font-size: 15px; } .sheet .shead .r { color: var(--primary-dark); font-weight: 800; text-align: right; font-size: 15px; }
+  .round-plus { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; justify-self: end; }
+  .round-plus svg { width: 22px; height: 22px; }
+  .x { width: 40px; height: 40px; display: grid; place-items: center; color: var(--text); }
+  .x svg { width: 24px; height: 24px; }
+  .sheet .list { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
+  .pick { height: 52px; display: flex; align-items: center; justify-content: center; position: relative; font-size: 15px; }
+  .pick .ck { position: absolute; right: 20px; top: 14px; }
+  .pick + .pick { border-top: 1px solid var(--border); }
+
+  .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 8px; }
+  .qbtn { height: 112px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; }
+  .qbtn .qi { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; background: var(--surface); }
+  .qbtn .qi svg { width: 28px; height: 28px; }
+
+  /* Form */
+  .form { padding: 0 16px 90px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .fcard { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 4px 16px; }
+  .frow { min-height: 52px; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .frow + .frow { border-top: 1px solid var(--border); }
+  .frow .fi { color: var(--primary-dark); display: grid; place-items: center; width: 24px; }
+  .frow .fi svg { width: 22px; height: 22px; }
+  .frow .grow { flex: 1; }
+  .frow.indent { padding-left: 36px; min-height: 44px; border-top: 0 !important; }
+  .frow.indent .fi { color: var(--primary); }
+  .frow .hint { color: var(--muted); font-size: 12px; }
+  .title-in { font-size: 17px; font-weight: 700; padding: 12px 0 4px; }
+  .detail-in { font-size: 15px; color: var(--muted); padding: 4px 0 12px; }
+  .sw { width: 44px; height: 26px; border-radius: 999px; background: var(--border); position: relative; flex: none; }
+  .sw::after { content: ''; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(47,45,51,.25); }
+  .sw.on { background: var(--primary); } .sw.on::after { left: 20px; }
+  .info { width: 22px; height: 22px; color: var(--muted); }
+  .colors { display: flex; gap: 14px; padding: 4px 0 12px 36px; }
+  .cdot { width: 28px; height: 28px; border-radius: 50%; }
+  .cdot.on { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--text); }
+
+  .numbox { width: 44px; height: 40px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; font-weight: 800; font-size: 17px; }
+  .checkbox { width: 22px; height: 22px; border-radius: 7px; border: 2px solid var(--border); flex: none; }
+  .note-hint { background: var(--primary-soft); color: var(--primary-dark); border-radius: 16px; padding: 10px 12px; font-size: 15px; text-align: left; display: flex; gap: 8px; align-items: center; }
+  .note-hint svg { width: 18px; height: 18px; flex: none; }
+
+  /* Chi tiết */
+  .detail { padding: 4px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .dtitle { display: flex; gap: 12px; align-items: center; padding: 8px 4px; }
+  .dtitle .sq { width: 20px; height: 20px; border-radius: 7px; flex: none; }
+  .dtitle h2 { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--border); color: var(--muted); font-size: 12px; font-weight: 800; }
+  .tag svg { width: 12px; height: 12px; }
+  .menu { position: absolute; right: 16px; top: 76px; width: 160px; background: var(--surface); border-radius: 16px; box-shadow: 0 8px 24px rgba(47,45,51,.16); padding: 6px; z-index: 6; }
+  .menu div { height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-radius: 12px; font-size: 15px; }
+  .menu div svg { width: 20px; height: 20px; }
+  .menu .del { color: var(--error); }
+
+  /* Notes */
+  .search { margin: 0 16px 10px; height: 44px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--border); display: flex; align-items: center; gap: 8px; padding: 0 14px; color: var(--muted); font-size: 15px; flex: none; }
+  .search svg { width: 18px; height: 18px; }
+  .chips { display: flex; gap: 8px; padding: 0 16px 12px; overflow: hidden; flex: none; }
+  .chip { flex: none; height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--border); background: var(--surface); display: flex; align-items: center; gap: 6px; font-size: 15px; }
+  .chip .cd { width: 8px; height: 8px; border-radius: 50%; }
+  .chip.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .ngrid { padding: 0 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: start; overflow: hidden; flex: 1; }
+  .ncard { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 12px 12px 10px 14px; border-left: 4px solid var(--border); position: relative; display: flex; flex-direction: column; gap: 6px; }
+  .ncard h4 { font-size: 17px; line-height: 22px; font-weight: 700; padding-right: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ncard p { font-size: 15px; line-height: 20px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .ncard .pin { position: absolute; right: 10px; top: 12px; color: var(--primary-dark); }
+  .ncard .pin svg { width: 16px; height: 16px; }
+  .ncard .prog { font-size: 12px; color: var(--primary-dark); font-weight: 800; display: flex; align-items: center; gap: 4px; }
+  .ncard .prog svg { width: 14px; height: 14px; }
+  .ncard .foot { display: flex; align-items: center; justify-content: space-between; }
+  .ncard .more { color: var(--muted); }
+  .ncard .more svg { width: 18px; height: 18px; }
+
+  .editor { padding: 0 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow: hidden; }
+  .editor .et { font-size: 22px; line-height: 28px; font-weight: 800; padding: 6px 0; }
+  .editor .eb { font-size: 15px; line-height: 22px; }
+  .cl { min-height: 44px; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .tick { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--primary); flex: none; display: grid; place-items: center; }
+  .tick.on { background: var(--primary); }
+  .cl .tick { border-radius: 6px; }
+  .tick svg { width: 14px; height: 14px; }
+  .cl.done span { text-decoration: line-through; color: var(--muted); }
+  .cl .grow { flex: 1; }
+  .cl .grip { color: var(--muted); margin-right: -6px; } .cl .grip svg { width: 18px; height: 18px; }
+  .cl .rm { color: var(--muted); } .cl .rm svg { width: 18px; height: 18px; }
+  .addline { color: var(--primary-dark); font-weight: 700; font-size: 15px; display: flex; gap: 10px; align-items: center; min-height: 44px; }
+  .addline svg { width: 22px; height: 22px; }
+  .toolbar { flex: none; height: 56px; border-top: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; padding: 0 16px; gap: 8px; }
+  .tool { height: 36px; padding: 0 12px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); display: flex; gap: 6px; align-items: center; font-size: 15px; font-weight: 700; }
+  .tool svg { width: 18px; height: 18px; }
+  .catchip { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--border); display: inline-flex; gap: 6px; align-items: center; font-size: 15px; justify-self: center; }
+  .catchip .cd { width: 8px; height: 8px; border-radius: 50%; }
+
+  .trash { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+  .trow { display: flex; gap: 8px; }
+  .trow .btn { height: 40px; font-size: 15px; }
+
+  .warnrow { margin: 8px 16px 12px; background: var(--warning-soft); border-radius: 16px; padding: 10px 12px; font-size: 15px; line-height: 20px; display: flex; gap: 10px; align-items: flex-start; }
+  .warnrow svg { width: 20px; height: 20px; color: var(--warning); flex: none; margin-top: 1px; }
+  .warnrow a { color: var(--primary-dark); font-weight: 800; display: block; margin-top: 2px; }
+  .settings { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+  .account { padding: 16px; display: flex; align-items: center; gap: 14px; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 22px; flex: none; }
+  .account .who { flex: 1; } .account .name { font-size: 17px; font-weight: 700; } .account .mail { color: var(--muted); font-size: 12px; }
+  .progress { height: 8px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 4px 0 8px; }
+  .progress i { display: block; height: 100%; width: 40%; background: var(--primary); border-radius: 999px; }
+  /* Chữ dài */
+  .ncard p, .editor .eb, .cl span { overflow-wrap: anywhere; }
+  .chip { max-width: 140px; } .chip .cn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .counter { font-size: 12px; color: var(--muted); text-align: right; margin: 4px 4px 0; }
+  .counter.max { color: var(--error); }
+  .ta { min-height: 48px; border-radius: 16px; background: var(--surface); border: 1.5px solid var(--primary); padding: 12px 16px; font-size: 15px; line-height: 22px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .logo { width: 88px; height: 88px; border-radius: 26px; background: var(--primary); display: grid; place-items: center; box-shadow: 0 10px 22px rgba(91,190,152,.35); }
+  .logo svg { width: 52px; height: 52px; }
+  .wordmark { font-size: 30px; font-weight: 800; }
+  .login { flex: 1; display: flex; flex-direction: column; padding: 0 24px 40px; }
+  .login .hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
+  .g-icon { width: 20px; height: 20px; background: #fff; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--primary-dark); font-size: 12px; }
+  .tagme { height: 22px; padding: 0 8px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; margin-left: 6px; }
+  /* S3 — Ghi chú: số note, nhóm theo tháng */
+  .subcount { text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); margin: -8px 0 10px; flex: none; }
+  .chip .num { color: var(--muted); font-size: 12px; }
+  .chip.on .num { color: #fff; opacity: .85; }
+  .nlist { flex: 1; overflow: hidden; padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .nhead { font-size: 15px; line-height: 22px; font-weight: 800; padding: 2px 4px 0; display: flex; align-items: center; gap: 6px; }
+  .nhead svg { width: 14px; height: 14px; color: var(--primary-dark); }
+  .ncols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+  .ncols > div { display: flex; flex-direction: column; gap: 12px; }
+  /* S3 — bàn phím hệ điều hành (chỉ minh hoạ) */
+  .kbd { flex: none; height: 250px; background: #E4E1DC; display: grid; grid-template-rows: repeat(4, 1fr); gap: 8px; padding: 10px 6px 14px; }
+  .kbd div { display: flex; gap: 5px; justify-content: center; }
+  .kbd span { flex: 1; max-width: 30px; background: #fff; border-radius: 6px; font-size: 15px; display: grid; place-items: center; }
+  .kbd span.w { max-width: 170px; flex: 6; font-size: 12px; color: var(--muted); }
+  .caret { display: inline-block; width: 2px; height: 20px; background: var(--primary); vertical-align: middle; margin-left: 1px; }
+  /* S3 — editor kiểu Samsung Notes */
+  .ntop { flex: none; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 4px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .ntop .back, .ntop .act { width: 40px; height: 40px; display: grid; place-items: center; }
+  .ntop svg { width: 24px; height: 24px; }
+  .ntop .nt { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .nbody { flex: 1; padding: 14px 20px; font-size: 15px; line-height: 22px; }
+  .ntools { flex: none; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-top: 1px solid var(--border); background: var(--surface); }
+  .ntools .ti { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--text); }
+  .ntools .ti svg { width: 22px; height: 22px; }
+  /* S3 — khối ≤ 1 giờ: chữ căn giữa theo chiều dọc → trên dưới đều nhau */
+  .block.mid { display: flex; flex-direction: column; justify-content: center; }
+  /* S3 — khối event ngắn ở chế độ Ngày (< 30 dp): chữ caption, đệm 2 dp */
+  .block.short { padding: 2px 8px; } .block.short .ttl { font-size: 12px; line-height: 16px; }
+  /* S4 — Chi tiêu */
+  .seg.three { grid-template-columns: repeat(3, 1fr); }
+  .xlist { flex: 1; overflow: hidden; padding: 0 16px 12px; display: flex; flex-direction: column; gap: 12px; }
+  .total { padding: 14px 16px; text-align: center; }
+  .total .lbl { font-size: 12px; line-height: 16px; color: var(--muted); }
+  .total .amt { font-size: 22px; line-height: 28px; font-weight: 800; white-space: nowrap; }
+  .sec { font-size: 17px; line-height: 24px; font-weight: 700; padding: 12px 16px 4px; }
+  .crow { display: grid; grid-template-columns: 34px 1fr auto; gap: 4px 12px; align-items: center; padding: 8px 16px; }
+  .crow .nm { font-size: 15px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .crow .am { font-size: 15px; font-weight: 700; text-align: right; white-space: nowrap; }
+  .crow .pbar { grid-column: 2; height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; }
+  .crow .pbar i { display: block; height: 100%; border-radius: 999px; }
+  .crow .pc { font-size: 12px; color: var(--muted); text-align: right; }
+  .cico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; color: var(--text); grid-row: span 2; }
+  .cico svg { width: 20px; height: 20px; }
+  .dhead { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 16px 4px; }
+  .dhead b { font-size: 15px; font-weight: 800; } .dhead span { font-size: 12px; color: var(--muted); }
+  .xrow { display: flex; align-items: center; gap: 12px; padding: 8px 16px; min-height: 56px; }
+  .xrow + .xrow { border-top: 1px solid var(--border); }
+  .xrow .cico { grid-row: auto; }
+  .xrow .mid { flex: 1; min-width: 0; }
+  .xrow .mid div { font-size: 15px; } .xrow .mid span { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .xrow .am { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 0 40px 40px; text-align: center; }
+  .empty .ei { width: 72px; height: 72px; border-radius: 24px; background: var(--primary-soft); color: var(--primary-dark); display: grid; place-items: center; }
+  .empty .ei svg { width: 36px; height: 36px; }
+  .amtin { padding: 8px 16px 16px; text-align: center; }
+  .amtin .v { font-size: 22px; line-height: 28px; font-weight: 800; }
+  .amtin .v.big { font-size: 22px; }
+  .amtin .u { border-bottom: 2px solid var(--primary); display: inline-block; padding: 0 8px 6px; }
+  .numpad { flex: none; height: 232px; background: #E4E1DC; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px; }
+  .numpad span { background: #fff; border-radius: 8px; display: grid; place-items: center; font-size: 17px; }
+  .numpad span.k { background: transparent; color: var(--muted); font-size: 15px; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; padding: 0 16px; border-bottom: 1px solid var(--border); }
+  .bars > div { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; }
+  .bars i { display: block; width: 100%; max-width: 28px; background: color-mix(in srgb, var(--primary) 55%, var(--surface)); border-radius: 4px 4px 0 0; }
+  .bars i.on { background: var(--primary-dark); }
+  .rchips { display: flex; gap: 6px; padding: 0 16px 8px; }
+  .rchips span { padding: 4px 10px; border-radius: 999px; background: var(--primary-soft); color: var(--primary-dark); font-size: 12px; line-height: 16px; font-weight: 700; white-space: nowrap; }
+  .rchips span.on { background: var(--primary); color: #fff; }
+  .readout { padding: 0 16px 8px; font-size: 13px; line-height: 18px; color: var(--muted); }
+  .readout b { color: var(--text); font-weight: 800; }
+  .bars b { font-size: 10px; line-height: 12px; color: var(--text); font-weight: 800; margin-bottom: 2px; white-space: nowrap; }
+  .xlab { display: flex; gap: 2px; padding: 4px 16px 12px; }
+  .xlab span { flex: 1; text-align: center; font-size: 12px; color: var(--muted); min-width: 0; white-space: nowrap; }
+  .xlab span.on { color: var(--primary-dark); font-weight: 800; }
+  .lock { color: var(--muted); } .lock svg { width: 18px; height: 18px; }
+  @media (max-width: 400px) { .phone { transform: scale(.9); transform-origin: top left; margin-bottom: -78px; } }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>Daynest — Mockup Sprint 8: Thu / Chi</h1>
+  <p>Chỉ vẽ màn mới hoặc đổi ở S8 (<a href="../index.md">spec S8</a>); màn khác giữ như <a href="../../sprint-7/design/mockups.html">mockup S7</a>. Chi giữ nguyên cách hiện cũ; Thu có dấu <b>+</b> và màu xanh.</p>
+</header>
+<div id="root"></div>
+
+<script>
+// Icon nét tròn. App dùng đúng các path này: app/src/components/Icon.tsx.
+const sv = (d, w = 1.9) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I = {
+  logo: '<svg viewBox="0 0 52 52" fill="none"><rect x="12" y="7" width="31" height="39" rx="7" fill="#fff"/><path d="M20 18h16M20 25h16M20 32h10" stroke="#5BBE98" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="38" r="3.5" fill="#F4A6C0"/><g stroke="#3E9E7A" stroke-width="2.6" stroke-linecap="round" fill="none"><path d="M9 13h6M9 22h6M9 31h6M9 40h6"/></g></svg>',
+  cal: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M8 3v4M16 3v4" fill="none"/><path d="M3.5 10h17" stroke="${f ? '#fff' : 'currentColor'}"/></svg>`,
+  book: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15H7.5A2.5 2.5 0 0 0 5 20.5z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 21H19v-3" fill="none"/></svg>`,
+  chart: (f) => sv('<path d="M5 20V12M12 20V5M19 20v-5"/>', f ? 2.6 : 1.8),
+  gear: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M12 2.8l2 1.6 2.5-.4 1 2.4 2.4 1-.4 2.5 1.6 2-1.6 2 .4 2.5-2.4 1-1 2.4-2.5-.4-2 1.6-2-1.6-2.5.4-1-2.4-2.4-1 .4-2.5L2.8 12l1.6-2-.4-2.5 2.4-1 1-2.4 2.5.4z" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="${f ? '#fff' : 'none'}"/></svg>`,
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  plusG: sv('<path d="M12 5v14M5 12h14"/>', 2.2),
+  left: sv('<path d="M15 5l-7 7 7 7"/>', 2.2),
+  right: sv('<path d="M9 5l7 7-7 7"/>', 2.2),
+  close: sv('<path d="M6 6l12 12M18 6L6 18"/>', 2.2),
+  grip: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>',
+  more: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+  repeat: sv('<path d="M17 3l3 3-3 3"/><path d="M4 12V9a3 3 0 0 1 3-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 12v3a3 3 0 0 1-3 3H4"/>'),
+  bell: sv('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>'),
+  google: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M19 12.2h-7M19 12.2A7 7 0 1 1 16.8 7"/></svg>',
+  pending: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  phoneI: sv('<rect x="7" y="3" width="10" height="18" rx="3"/><path d="M11 18h2"/>'),
+  clock: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  allday: sv('<circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 1.5M10 2.5h4"/>'),
+  arrowR: sv('<path d="M4 12h15M14 7l5 5-5 5"/>'),
+  arrowL: sv('<path d="M20 12H5M10 7l-5 5 5 5"/>'),
+  palette: sv('<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.4 0 1.8-1 1.4-2-.5-1.2.2-2.5 1.6-2.5H17a3.5 3.5 0 0 0 3.5-3.5c0-5-3.8-9-8.5-9z"/><circle cx="8" cy="11" r="1"/><circle cx="11" cy="7.5" r="1"/><circle cx="15.5" cy="8.5" r="1"/>'),
+  info: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5M12 16h.01"/>'),
+  warn: sv('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'),
+  battery: sv('<rect x="3" y="7" width="16" height="10" rx="3"/><path d="M21 10.5v3M7 10.5v3M10.5 10.5v3"/>'),
+  pen: sv('<path d="M14.5 5.5l4 4M4 20l1-4.5L15.5 5a2.1 2.1 0 0 1 3 0l.5.5a2.1 2.1 0 0 1 0 3L8.5 19z"/>', 2),
+  trash: sv('<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>'),
+  restore: sv('<path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/>'),
+  search: sv('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>', 2),
+  pin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3l6 6-3 1-3.5 3.5L15 18l-2 2-4-4-5 5-1-1 5-5-4-4 2-2 4.5.5L14 6z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#5BBE98" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  checkW: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  checklist: sv('<path d="M4 6.5l1.5 1.5L8.5 5M4 12.5l1.5 1.5 3-3M4 18.5l1.5 1.5 3-3M12 7h8M12 13h8M12 19h8"/>'),
+  folder: sv('<path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h4l2 2h6a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5z"/>'),
+  note: sv('<path d="M6 3.5h9l4 4V20a.5.5 0 0 1-.5.5h-12A.5.5 0 0 1 6 20z"/><path d="M14.5 3.5V8H19M9 12h7M9 16h5"/>'),
+  sync: sv('<path d="M20 11a8 8 0 0 0-14.5-4M4 13a8 8 0 0 0 14.5 4"/><path d="M5 3v4h4M19 21v-4h-4"/>'),
+  week: sv('<rect x="3.5" y="5" width="17" height="15" rx="4"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M12 14h2M16 14h.5"/>'),
+  time24: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12h4"/>'),
+  moon: sv('<path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/>'),
+  flag: sv('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
+  info2: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>'),
+  mail: sv('<rect x="3.5" y="5.5" width="17" height="13" rx="3.5"/><path d="M4.5 7.5l7.5 5.5 7.5-5.5"/>'),
+  globe: sv('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>'),
+  logout: sv('<path d="M14 4h3a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-3"/><path d="M10 8l-4 4 4 4M6 12h10"/>'),
+  chev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" style="color:var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+  devices: sv('<rect x="3" y="5" width="12" height="9" rx="2"/><rect x="15" y="9" width="6" height="11" rx="2"/><path d="M6 18h6"/>'),
+};
+
+const status = '<div class="status"><span>9:41</span><span>● ▲ ▮</span></div>';
+// S4 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  wallet: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8V7a2.5 2.5 0 0 1 2.5-2.5H16V8" fill="none"/><rect x="3.5" y="8" width="17" height="12" rx="3.5"/><circle cx="16" cy="14" r="1.3" fill="${f ? '#fff' : 'currentColor'}" stroke="none"/></svg>`,
+  food: sv('<path d="M4 11.5h16a8 8 0 0 1-16 0z"/><path d="M9.5 8c0-1.2 1-1.6 1-2.8M13.5 8c0-1.2 1-1.6 1-2.8"/>'),
+  car: sv('<path d="M6 11.5l1.6-4A2 2 0 0 1 9.5 6h5a2 2 0 0 1 1.9 1.5l1.6 4"/><rect x="3.5" y="11.5" width="17" height="6" rx="2.5"/><path d="M7 17.5v2M17 17.5v2M7.5 14.5h1M15.5 14.5h1"/>'),
+  bill: sv('<path d="M6 3.5h12v17l-2.4-1.6-2.4 1.6-2.4-1.6-2.4 1.6L6 20.5z"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>'),
+  tag: sv('<path d="M3.5 12.3V5a1.5 1.5 0 0 1 1.5-1.5h7.3l8.2 8.2-8.8 8.8z"/><circle cx="8.5" cy="8.5" r="1.4"/>'),
+  // 12 icon cho nhóm tự tạo
+  coffee: sv('<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16"/><path d="M9 3.5c0 1.2-1 1.6-1 2.8M12.5 3.5c0 1.2-1 1.6-1 2.8"/>'),
+  bag: sv('<path d="M5 8h14l-1 12H6z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/>'),
+  heart: sv('<path d="M12 20s-7.5-4.5-7.5-10A4.2 4.2 0 0 1 12 7.5 4.2 4.2 0 0 1 19.5 10c0 5.5-7.5 10-7.5 10z"/>'),
+  cap: sv('<path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4c1.5 1.5 3.5 2 5.5 2s4-.5 5.5-2v-4M21.5 9.5v5"/>'),
+  home: sv('<path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>'),
+  gift: sv('<rect x="4" y="9" width="16" height="11" rx="2"/><path d="M3.5 9h17M12 9v11M12 9c-1-3-5-4-5-1.5S12 9 12 9zm0 0c1-3 5-4 5-1.5S12 9 12 9z"/>'),
+  paw: sv('<circle cx="7" cy="10.5" r="1.8"/><circle cx="10.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18" cy="10.5" r="1.8"/><path d="M8 17a4 4 0 0 1 8 0c0 2-2 2.5-4 2.5S8 19 8 17z"/>'),
+  plane: sv('<path d="M21 4L3 11l7 2.5L12.5 21z"/><path d="M10 13.5L21 4"/>'),
+  film: sv('<rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M8 5v14M16 5v14M3.5 12h17"/>'),
+  shirt: sv('<path d="M8 4L3.5 7l2 4L8 10v10h8V10l2.5 1 2-4L16 4c-.5 1.5-2 2.5-4 2.5S8.5 5.5 8 4z"/>'),
+  music: sv('<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>'),
+  game: sv('<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M7.5 11.5v3M6 13h3M15.5 12h.01M17.5 14h.01"/>'),
+  dumbbell: sv('<path d="M6.5 7.5v9M17.5 7.5v9M3.5 10v4M20.5 10v4M6.5 12h11"/>'),
+  pill: sv('<rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/>'),
+  baby: sv('<circle cx="12" cy="12.5" r="7.5"/><path d="M9.5 12h.01M14.5 12h.01M10 15.5c1.2.8 2.8.8 4 0M12 5c-1 0-1.5-1-1-1.8"/>'),
+  bus: sv('<rect x="5" y="3.5" width="14" height="14" rx="3"/><path d="M5 11h14M8 17.5v2.5M16 17.5v2.5M8.5 14.5h.01M15.5 14.5h.01"/>'),
+  bike: sv('<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h5l3 7M10 9l3 7h-7M14 6h2.5"/>'),
+  fuel: sv('<path d="M5 20V5.5A1.5 1.5 0 0 1 6.5 4h6A1.5 1.5 0 0 1 14 5.5V20M3.5 20h12M5 10h9"/><path d="M14 8.5l3 2v6.5a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/>'),
+  bolt: sv('<path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/>'),
+  drop: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  wifi: sv('<path d="M3 9.5a13 13 0 0 1 18 0M6 12.8a8.5 8.5 0 0 1 12 0M9 16a4 4 0 0 1 6 0M12 19.5h.01"/>'),
+  tool: sv('<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 0-2-2z"/>'),
+  scissors: sv('<circle cx="6.5" cy="7" r="2.5"/><circle cx="6.5" cy="17" r="2.5"/><path d="M8.5 8.5L20 18M8.5 15.5L20 6"/>'),
+  wine: sv('<path d="M8 3.5h8l-.5 5a3.5 3.5 0 0 1-7 0zM12 12v8M8.5 20.5h7"/>'),
+  cart: sv('<path d="M3.5 4.5h2l2 11h10l2-7.5H7"/><circle cx="9" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/>'),
+  card: sv('<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M3 10h18M7 14.5h3"/>'),
+  coins: sv('<ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/>'),
+  umbrella: sv('<path d="M3 12a9 9 0 0 1 18 0zM12 12v6.5a2 2 0 0 1-4 0"/>'),
+  ticket: sv('<path d="M3.5 8.5V6.5a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v2a3.5 3.5 0 0 0 0 7v2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-2a3.5 3.5 0 0 0 0-7zM14 5.5v13" stroke-dasharray="0"/>'),
+  camera: sv('<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.5"/>'),
+  laptop: sv('<rect x="5" y="5" width="14" height="10" rx="2"/><path d="M2.5 18.5h19"/>'),
+  briefcase: sv('<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V5.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3.5 12.5h17"/>'),
+  ball: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6c3 2.5 3 9.5 0 12M18 6c-3 2.5-3 9.5 0 12"/>'),
+  tree: sv('<path d="M12 3.5l6 8h-3.5l4 5.5h-13l4-5.5H6zM12 17v3.5"/>'),
+  lock: sv('<rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>'),
+});
+
+const tabbar = (on) => `<nav class="tabbar">
+  <div class="tab ${on === 'cal' ? 'on' : ''}">${I.cal(on === 'cal')}Lịch</div>
+  <div class="tab ${on === 'man' ? 'on' : ''}">${I.book(on === 'man')}Ghi chú</div>
+  <div class="fab">${I.plus}</div>
+  <div class="tab ${on === 'exp' ? 'on' : ''}">${I.wallet(on === 'exp')}Chi tiêu</div>
+  <div class="tab ${on === 'set' ? 'on' : ''}">${I.gear(on === 'set')}Cài đặt</div>
+</nav>`;
+const phone = (inner, cls = '') => `<div class="phone ${cls}">${status}${inner}</div>`;
+const colorPick = (on, custom) => `<div class="colors" style="padding:4px 0 0;justify-content:center;gap:10px">${['mint', 'sky', 'lavender', 'pink', 'peach', 'lemon'].map((c) => `<span class="cdot ev-${c} ${c === on ? 'on' : ''}"></span>`).join('')}<span class="cdot ${on === 'custom' ? 'on' : ''}" style="background:${custom || 'conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)'};display:grid;place-items:center">${custom ? '' : '<span style="width:14px;height:14px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;line-height:1">+</span>'}</span></div>`;
+
+// S5 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  todo: sv('<circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/>'),
+  bug: sv('<rect x="7" y="8" width="10" height="12" rx="5"/><path d="M9.5 8a2.5 2.5 0 0 1 5 0M12 12v8M7 13H3.5M20.5 13H17M7.5 17.5l-3 2M16.5 17.5l3 2M7.5 9.5l-3-2M16.5 9.5l3-2"/>'),
+  image: sv('<rect x="3.5" y="4.5" width="17" height="15" rx="3.5"/><circle cx="9" cy="9.5" r="1.6"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4"/>'),
+  drop: (f) => `<svg viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/></svg>`,
+  cycle: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/>'),
+  ruler: sv('<rect x="3.5" y="8" width="17" height="8" rx="2"/><path d="M7.5 8v3M11 8v4M14.5 8v3M18 8v2"/>'),
+});
+// Ô tròn todo: xong = tròn đặc màu primary + ✓ trắng · chưa = viền primary
+const tk = (on, size = 22) => `<span class="tick ${on ? 'on' : ''}" style="width:${size}px;height:${size}px">${on ? I.checkW : ''}</span>`;
+// Ô vuông việc trong danh sách (dùng lại Dòng checklist của note)
+const sq = (on) => `<span class="tick ${on ? 'on' : ''}" style="border-radius:6px">${on ? I.checkW : ''}</span>`;
+
+// ---- Dữ liệu mẫu (hôm nay: Thứ Ba 13/10/2026 · tuần bắt đầu Thứ Hai) ----
+// [ngày, tiêu đề, màu, xong, việc trong danh sách xong/tổng, giờ]
+const T = [
+  [13, 'Học tiếng Anh — Ngày 3', 'lavender', false, [2, 4], 'Cả ngày'],
+  [13, 'Nộp hồ sơ bảo hiểm', 'sky', false, null, '14:00'],
+  [13, 'Mua quà sinh nhật mẹ', 'pink', true, null, 'Cả ngày'],
+  [12, 'Học tiếng Anh — Ngày 2', 'lavender', false, [3, 4], 'Cả ngày'],
+  [9, 'Gọi điện cho bác sĩ', 'mint', false, null, '9:00'],
+  [14, 'Học tiếng Anh — Ngày 4', 'lavender', false, [0, 3], 'Cả ngày'],
+  [16, 'Đóng tiền học bơi', 'peach', false, null, 'Cả ngày'],
+  [19, 'Dọn tủ quần áo', 'lemon', false, [0, 5], 'Cả ngày'],
+];
+const EV = [[13, 'Họp nhóm', 'mint', '9:00 – 10:00'], [16, 'Sinh nhật Lan', 'pink', 'Cả ngày'], [20, 'Khám răng', 'sky', '15:00 – 16:00']];
+const PERIOD = [1, 2, 3, 4, 5];              // ngày đã ghi (tháng 10)
+const PRED = [29, 30, 31, 32, 33];           // dự đoán: 29/10 → 2/11 (32 = 1/11, 33 = 2/11)
+const WD = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+const dlabel = (d) => (d === 13 ? 'Hôm nay' : d === 12 ? 'Hôm qua' : d === 14 ? 'Ngày mai' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`);
+const lunar = (date) => { // âm lịch tháng 9–11/2026 (mùng 1 tháng 9 âm = 10/10)
+  const n = Math.round((date - new Date(2026, 9, 10)) / 864e5);
+  if (n < 0) return [30 + n, 8];
+  return n < 30 ? [n + 1, 9] : [n - 29, 10];
+};
+
+const s5css = `<style>
+  .tbar { display: flex; align-items: center; gap: 3px; }
+  .tbar .o { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--text); flex: none; opacity: .7; }
+  .tbar.done { opacity: .55; text-decoration: line-through; } .tbar.done .o { background: var(--text); }
+  .pdot { width: 11px; height: 11px; position: absolute; right: 2px; top: 19px; color: var(--error); display: grid; }
+  .pdot svg { width: 100%; height: 100%; } .pdot.pred { opacity: .6; }
+  .trow { display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 56px; }
+  .trow + .trow { border-top: 1px solid var(--border); }
+  .trow .mid { flex: 1; min-width: 0; }
+  .trow .mid div { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .trow .mid span { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+  .trow.done .mid div { text-decoration: line-through; color: var(--muted); }
+  .trow .cd { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .sub { color: var(--primary-dark); font-weight: 800; display: inline-flex; gap: 3px; align-items: center; }
+  .sub svg { width: 13px; height: 13px; }
+  .late { color: var(--error); font-weight: 800; }
+  .seg.two { grid-template-columns: repeat(2, 1fr); }
+  /* Form tạo: tiêu đề là nút "Todo ▾" → pop-up 4 ô như nút + (chỉ khi tạo mới) */
+  .kind-title { margin: 0 auto; height: 40px; padding: 0 12px 0 16px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-size: 22px; font-weight: 800; }
+  .kind-title svg { width: 20px; height: 20px; color: var(--muted); }
+  .qbtn.cur { box-shadow: inset 0 0 0 2px var(--primary); position: relative; }
+  .qbtn.cur .ck { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 10px; background: var(--primary); display: grid; place-items: center; }
+  .qbtn.cur .ck svg { width: 12px; height: 12px; }
+  .cyc { display: flex; align-items: center; gap: 10px; background: var(--error-soft); border-radius: 16px; padding: 10px 12px; font-size: 15px; text-align: left; }
+  .cyc .ci { width: 32px; height: 32px; border-radius: 10px; background: var(--surface); color: var(--error); display: grid; place-items: center; flex: none; }
+  .cyc .ci svg { width: 18px; height: 18px; }
+  .cyc b { font-weight: 800; } .cyc .grow { flex: 1; }
+  .cyc .go { height: 32px; padding: 0 12px; border-radius: 999px; background: var(--surface); color: var(--text); font-size: 12px; font-weight: 800; display: flex; align-items: center; }
+  .pm { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 6px; padding: 0 12px; }
+  .pm .c { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 15px; }
+  .pm .c.fut { color: var(--muted); opacity: .45; }
+  .pm .c.today b { color: var(--primary-dark); font-weight: 800; }
+  .pm .o { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; }
+  .pm .o.on { background: var(--error); border-color: var(--error); }
+  .pm .o svg { width: 14px; height: 14px; }
+  .pmh { text-align: center; font-size: 17px; font-weight: 700; padding: 14px 0 8px; }
+  .thumbs { display: flex; gap: 10px; }
+  .thumb { width: 92px; height: 92px; border-radius: 16px; position: relative; flex: none; }
+  .thumb .rmx { position: absolute; right: -6px; top: -6px; width: 24px; height: 24px; border-radius: 50%; background: var(--text); color: #fff; display: grid; place-items: center; }
+  .thumb .rmx svg { width: 14px; height: 14px; }
+  .hl { box-shadow: inset 0 0 0 2px var(--primary); border-radius: 12px; }
+  .go.hl { box-shadow: 0 0 0 2px var(--primary); }
+  .ds.today:not(.on) b { color: var(--primary-dark); }
+  .tpick { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; max-height: 260px; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 25%, #000 75%, transparent); }
+  .tpick > div { display: flex; flex-direction: column; }
+  .tpick .opt { justify-content: center; }
+</style>`;
+
+// ---- Lịch tháng 10/2026 ----
+const monthCal = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>
+  <div class="month">${cells.map((dt) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate();
+    const key = inM ? d : dt.getMonth() === 10 ? 31 + d : -1;
+    const [ld, lm] = lunar(dt);
+    const evs = inM ? EV.filter((e) => e[0] === d).map((e) => `<div class="bar ev-${e[2]}">${e[1]}</div>`) : [];
+    const tds = inM ? T.filter((t) => t[0] === d).map((t) => `<div class="bar ev-${t[2]} tbar ${t[3] ? 'done' : ''}"><span class="o"></span>${t[1]}</div>`) : [];
+    const all = [...evs, ...tds];
+    const dot = inM && PERIOD.includes(d) ? `<span class="pdot">${I.drop(true)}</span>` : PRED.includes(key) ? `<span class="pdot pred">${I.drop(false)}</span>` : '';
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}">
+      <div class="top"><span class="d">${d}</span><span class="l ${ld === 1 || ld === 15 ? 'key' : ''}">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${dot}
+      ${all.slice(0, 3).join('')}${all.length > 3 ? `<div class="more">+${all.length - 3}</div>` : ''}</div>`;
+  }).join('')}</div>`;
+};
+const calHead = (t) => `<div class="cal-head"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`;
+const seg4 = (on) => `<div class="seg">${['Tháng', 'Danh sách', 'Tuần', 'Ngày'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const monthScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg4('Tháng')}${monthCal()}
+  <div class="cap muted" style="display:flex;gap:14px;justify-content:center;padding:4px 0 8px"><span style="display:flex;gap:6px;align-items:center"><span class="pdot" style="position:static">${I.drop(true)}</span>Kỳ kinh</span><span style="display:flex;gap:6px;align-items:center"><span class="pdot pred" style="position:static">${I.drop(false)}</span>Dự đoán</span><span style="display:flex;gap:6px;align-items:center"><span class="tbar"><span class="o"></span></span>Todo</span></div>
+</div>${tabbar('cal')}`;
+
+// ---- Danh sách (dải 7 ngày + thẻ) ----
+const ecard = (title, color, tm, todo) => `<div class="ecard"><span class="stripe ev-${color}"></span>
+  ${todo ? `<span style="display:grid;place-items:center;padding-left:10px">${tk(todo.done)}</span>` : ''}
+  <div class="body"><div class="ttl" style="${todo && todo.done ? 'text-decoration:line-through;color:var(--muted)' : ''}">${title}</div><div class="tm">${tm}${todo && todo.sub ? ` · <span class="sub">${I.checklist}${todo.sub[0]}/${todo.sub[1]}</span>` : ''}</div></div></div>`;
+const agendaScreen = `<div class="content">${calHead('Tháng 10, 2026')}${seg4('Danh sách')}
+  <div class="daystrip">${[12, 13, 14, 15, 16, 17, 18].map((d) => `<div class="ds ${d === 13 ? 'on' : ''}"><i>${WD[new Date(2026, 9, d).getDay()]}</i><b>${d}</b><em>&nbsp;</em></div>`).join('')}</div>
+  <div class="agenda">
+    <div class="cyc"><span class="ci">${I.cycle}</span><span class="grow">Kỳ kinh dự kiến sau <b>16 ngày</b></span></div>
+    <div class="ag"><div class="times"><b>9:00</b>10:00</div>${ecard('Họp nhóm', 'mint', '9:00 – 10:00')}</div>
+    <div class="ag"><div class="times"><b>14:00</b></div>${ecard('Nộp hồ sơ bảo hiểm', 'sky', '14:00', { done: false })}</div>
+    <div class="ag"><div class="times"><b>Cả ngày</b></div>${ecard('Học tiếng Anh — Ngày 3', 'lavender', 'Lặp hằng ngày', { done: false, sub: [2, 4] })}</div>
+    <div class="ag"><div class="times"><b>Cả ngày</b></div>${ecard('Mua quà sinh nhật mẹ', 'pink', 'Cả ngày', { done: true })}</div>
+  </div>
+</div>${tabbar('cal')}`;
+
+// ================= S6 =================
+// Màu ✓ theo bộ màu (S5 viết cứng #5BBE98)
+I.check = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" style="color:var(--primary)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+// S6 — icon mới (app thêm cùng path vào Icon.tsx)
+Object.assign(I, {
+  wifiOff: sv('<path d="M3 9.5a13 13 0 0 1 4.5-2.8M10.5 5.6A13 13 0 0 1 21 9.5M6 12.8a8.5 8.5 0 0 1 4-2.1M14.5 10.9a8.5 8.5 0 0 1 3.5 1.9M9 16a4 4 0 0 1 6 0M12 19.5h.01M3.5 3.5l17 17"/>'),
+  cloudOff: sv('<path d="M7 18.5h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.3 4.6 4.6 0 0 0 7 18.5z"/><path d="M12 10.5v3M12 16h.01"/>'),
+  font: sv('<path d="M4.5 19l5-13.5h1L15.5 19M6.5 14h7"/><path d="M17.5 12.5c.6-.6 1.3-.9 2.1-.9 1.2 0 1.9.7 1.9 1.9V19M21.5 15.5h-2.2c-1.3 0-2.3.6-2.3 1.8s.9 1.7 1.9 1.7c1.1 0 2.6-.8 2.6-2.3"/>', 1.7),
+  budget: sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6 6"/>'),
+});
+
+// ---- Bộ màu (S6 §9) · token như design-system · chữ trên nền màu event luôn tối cố định ----
+const THEMES = {
+  mint: ['Bạc hà', { primary: '#5BBE98', 'primary-dark': '#3E9E7A', 'primary-soft': '#E3F5EC', bg: '#FAF8F5', surface: '#FFFFFF', border: '#EFEAE3', text: '#2F2D33', muted: '#8C8794' }],
+  peach: ['Hồng đào', { primary: '#EE8FA9', 'primary-dark': '#C9607F', 'primary-soft': '#FDE9EF', bg: '#FFF8F9', surface: '#FFFFFF', border: '#F5E3E8', text: '#33282C', muted: '#94838A' }],
+  sky: ['Xanh biển', { primary: '#5AAEE0', 'primary-dark': '#3A87B8', 'primary-soft': '#E3F1FA', bg: '#F6F9FC', surface: '#FFFFFF', border: '#E2EAF1', text: '#263039', muted: '#7E8A95' }],
+  lavender: ['Oải hương', { primary: '#9C88E0', 'primary-dark': '#7660C2', 'primary-soft': '#EEEAFB', bg: '#F9F8FD', surface: '#FFFFFF', border: '#E9E5F4', text: '#2E2B38', muted: '#8A8597' }],
+  clay: ['Cam đất', { primary: '#E39A6B', 'primary-dark': '#B96D42', 'primary-soft': '#FBEDE3', bg: '#FCF8F4', surface: '#FFFFFF', border: '#F0E5DB', text: '#33291F', muted: '#928579' }],
+  lemon: ['Vàng chanh', { primary: '#E0B63A', 'primary-dark': '#9C7A12', 'primary-soft': '#FBF3D8', bg: '#FDFBF3', surface: '#FFFFFF', border: '#EFE9D3', text: '#2F2C22', muted: '#8C8671' }],
+  slate: ['Xám than', { primary: '#66788A', 'primary-dark': '#4A5A6A', 'primary-soft': '#E8ECF0', bg: '#F6F7F8', surface: '#FFFFFF', border: '#E5E7EA', text: '#24272B', muted: '#80868D' }],
+  dark: ['Tối', { primary: '#5BBE98', 'primary-dark': '#7FD1B0', 'primary-soft': '#1F3A30', bg: '#17171B', surface: '#232328', border: '#34343B', text: '#EDEBF0', muted: '#A29EAB', 'error-soft': '#3D2628', 'warning-soft': '#3B3122', toast: '#3A3A42' }],
+};
+const FONTS = { nunito: ['Nunito', "'Nunito'"], bvp: ['Be Vietnam Pro', "'Be Vietnam Pro'"], quicksand: ['Quicksand', "'Quicksand'"], baloo: ['Baloo 2', "'Baloo 2'"], itim: ['Itim', "'Itim'"], patrick: ['Patrick Hand', "'Patrick Hand'"] };
+// Nền chuyển màu: tự làm từ token + màu event (không chép hình của app khác)
+const mix = (c, p) => `color-mix(in srgb, var(--${c}) ${p}%, var(--bg))`;
+const GRADS = [
+  `linear-gradient(180deg, var(--primary-soft), var(--bg) 60%)`,
+  `linear-gradient(160deg, ${mix('pink', 35)}, var(--bg) 55%, ${mix('sky', 30)})`,
+  `radial-gradient(circle at 15% 8%, ${mix('lemon', 55)}, transparent 45%), radial-gradient(circle at 95% 95%, ${mix('lavender', 45)}, transparent 50%), var(--bg)`,
+  `linear-gradient(180deg, ${mix('sky', 40)}, var(--bg) 70%)`,
+  `linear-gradient(135deg, ${mix('peach', 35)}, ${mix('pink', 25)})`,
+  `linear-gradient(180deg, ${mix('lavender', 35)}, ${mix('mint', 25)})`,
+  `linear-gradient(180deg, ${mix('mint', 35)}, ${mix('sky', 30)})`,
+  `radial-gradient(circle at 50% 0%, ${mix('peach', 45)}, transparent 55%), radial-gradient(circle at 50% 100%, ${mix('lavender', 40)}, transparent 55%), var(--bg)`,
+];
+// Màu nền có sẵn (S6 §8): 8 pastel cho bộ sáng · 8 màu tối cho bộ Tối
+const BGC_LIGHT = ['#FDF6E3', '#FCE8EF', '#E6F2FB', '#E9F6EF', '#F1ECFB', '#FFF0E0', '#FFF8D6', '#EFEFEC'];
+const BGC_DARK = ['#24201A', '#2A1F24', '#1B2430', '#1C2A24', '#231F2E', '#2B2219', '#2A2716', '#222225'];
+// Hoạ tiết tự vẽ: chấm bi · kẻ ô · kẻ dòng · sọc chéo · sao · tim — màu nhạt theo primary / màu event
+const tint = (n) => `color-mix(in srgb, var(--primary) ${n}%, transparent)`;
+// Bộ Tối: hoạ tiết mờ hơn (op thấp) để không lấn chữ
+const svgTile = (path, fill, op = 0.55) => `url('data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="${path}" fill="#${fill}" fill-opacity="${op}"/></svg>`)}') 0 0/40px 40px`;
+const STAR = 'M14 6l2 5h5l-4 3 1.6 5L14 16l-4.6 3L11 14l-4-3h5z';
+const PATTERNS = [
+  `radial-gradient(${tint(30)} 1.6px, transparent 1.8px) 0 0/16px 16px, var(--bg)`,
+  `linear-gradient(${tint(16)} 1px, transparent 1px) 0 0/18px 18px, linear-gradient(90deg, ${tint(16)} 1px, transparent 1px) 0 0/18px 18px, var(--bg)`,
+  `repeating-linear-gradient(180deg, transparent 0 23px, ${tint(22)} 23px 24px), var(--bg)`,
+  `repeating-linear-gradient(135deg, ${tint(10)} 0 10px, transparent 10px 20px), var(--bg)`,
+  `${svgTile(STAR, 'F2D67A')}, var(--bg)`,
+  `${svgTile('M14 20s-6-3.6-6-8a3.4 3.4 0 0 1 6-2 3.4 3.4 0 0 1 6 2c0 4.4-6 8-6 8z', 'F4A6C0')}, var(--bg)`,
+];
+// "Ảnh của bạn": minh hoạ bằng CSS (biển, nắng) · lớp phủ màu nền theo độ mờ
+const PHOTO = 'radial-gradient(circle at 78% 18%, #FFF4C9 0 7%, transparent 8%), linear-gradient(180deg, #8EC9EC 0%, #CBE7F6 42%, #7FB8D8 43%, #5E9CC2 58%, #F3E2C0 59%, #E6CB98 100%)';
+const photoBg = (fade) => `linear-gradient(color-mix(in srgb, var(--bg) ${fade}%, transparent), color-mix(in srgb, var(--bg) ${fade}%, transparent)), ${PHOTO}`;
+
+const themeCss = `<style>
+  ${Object.entries(THEMES).map(([k, [, v]]) => `[data-theme="${k}"] { ${Object.entries({ toast: v.text, ...v }).map(([t, c]) => `--${t}: ${c};`).join(' ')} }`).join('\n  ')}
+  :root { --toast: #2F2D33; --on-color: #2F2D33; --font: 'Nunito'; }
+  ${Object.entries(FONTS).map(([k, [, f]]) => `[data-font="${k}"] { --font: ${f}; }`).join('\n  ')}
+  header.page, h2.group, figcaption, .controls { color: #2F2D33; }
+  figcaption span, header.page p { color: #8C8794; }
+  .phone { font-family: var(--font), Nunito, system-ui, sans-serif; color: var(--text); background: var(--wall, var(--bg)); }
+  .toast { background: var(--toast); }
+  .bar, .cico, .block .ttl, .ecard .stripe { color: var(--on-color); }
+  .controls { max-width: 1200px; margin: 0 auto 8px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 15px; }
+  .controls button { font: inherit; font-weight: 700; height: 34px; padding: 0 12px; border-radius: 999px; border: 1.5px solid #D9D3CB; background: #fff; color: #2F2D33; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .controls button.on { border-color: #2F2D33; }
+  .controls i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  /* Banner mất mạng (dòng cảnh báo, đầu màn) */
+  .offline { margin: 4px 16px 4px; background: var(--warning-soft); border-radius: 16px; padding: 8px 12px; font-size: 12px; line-height: 16px; display: flex; gap: 8px; align-items: center; flex: none; }
+  .offline svg { width: 18px; height: 18px; color: var(--warning); flex: none; }
+  .btn[disabled] { opacity: .45; }
+  .stale { text-align: center; font-size: 12px; line-height: 16px; color: var(--muted); margin: 0 0 8px; flex: none; }
+  .stale b { color: var(--primary-dark); font-weight: 800; }
+  .errcard { margin: 24px 16px; padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .errcard .ei { width: 64px; height: 64px; border-radius: 22px; background: var(--error-soft); color: var(--error); display: grid; place-items: center; margin-bottom: 6px; }
+  .errcard .ei svg { width: 32px; height: 32px; }
+  .errcard h3 { font-size: 17px; font-weight: 700; } .errcard p { color: var(--muted); font-size: 15px; line-height: 22px; margin-bottom: 10px; }
+  /* Khung xương: khối xám nhấp nháy nhẹ */
+  .sk { background: linear-gradient(90deg, var(--border) 25%, color-mix(in srgb, var(--border) 35%, var(--surface)) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 6px; }
+  @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  /* Ngân sách */
+  .bud { margin-top: 10px; }
+  .bud .progress { height: 10px; margin: 0 0 6px; }
+  .bud .line { display: flex; justify-content: space-between; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .bud .line b { color: var(--text); font-weight: 800; }
+  .bud .line b.over { color: var(--error); }
+  .setbud { margin-top: 10px; height: 36px; border-radius: 12px; background: var(--primary-soft); color: var(--primary-dark); font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .setbud svg { width: 18px; height: 18px; }
+  .hl2 { box-shadow: 0 0 0 2px var(--primary); border-radius: 12px; }
+  .rep { color: var(--muted); display: inline-flex; vertical-align: -2px; margin-left: 4px; } .rep svg { width: 13px; height: 13px; }
+  .toast.wrap { white-space: normal; width: 300px; line-height: 20px; border-radius: 20px; }
+  .toast .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  /* Giao diện */
+  .swgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px 4px; padding: 12px 8px; }
+  .swi { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; text-align: center; cursor: pointer; }
+  .swc { width: 44px; height: 44px; border-radius: 50%; position: relative; display: grid; place-items: center; border: 1px solid rgba(0,0,0,.08); }
+  .swc i { width: 18px; height: 18px; border-radius: 50%; }
+  .swi.on .swc { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--text); }
+  .swi.on { font-weight: 800; }
+  .tiles { display: flex; gap: 8px; padding: 12px; overflow: hidden; }
+  .tile { flex: none; width: 54px; height: 76px; border-radius: 14px; border: 1px solid var(--border); display: grid; place-items: center; font-size: 12px; color: var(--muted); }
+  .tiles.sm { padding: 6px 12px 10px; } .tiles.sm .tile { width: 42px; height: 58px; border-radius: 12px; }
+  .bgsec { font-size: 12px; line-height: 16px; font-weight: 800; color: var(--muted); padding: 4px 12px 0; }
+  .bgdot { width: 28px; height: 28px; border-radius: 50%; flex: none; border: 1px solid var(--border); }
+  .tile.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
+  .tile svg { width: 22px; height: 22px; color: var(--primary-dark); }
+  .frow2 { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 16px; font-size: 15px; cursor: pointer; }
+  .frow2 + .frow2 { border-top: 1px solid var(--border); }
+  .frow2 .aa { font-size: 22px; width: 40px; } .frow2 .grow { flex: 1; }
+  .slider { height: 6px; border-radius: 999px; background: var(--border); position: relative; flex: 1; }
+  .slider i { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: var(--primary); border-radius: 999px; }
+  .slider b { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+  .pv { margin: 0 16px; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); background: var(--wall, var(--bg)); padding: 10px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 10px; flex: none; }
+  .pv .mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px 0; font-size: 10px; line-height: 16px; text-align: center; }
+  .pv .mini .t { background: var(--primary); color: #fff; border-radius: 50%; font-weight: 800; }
+  .pv .mini .s { color: var(--error); }
+  .pv .mbar { grid-column: span 3; height: 8px; border-radius: 3px; margin: 1px 2px; }
+</style>`;
+
+// ---- Lịch (S6: nút 🔍 cạnh thanh chế độ) ----
+const segRow = (on) => seg4(on);
+const offline = `<div class="offline">${I.wifiOff}<span>Không có kết nối mạng.</span></div>`;
+const calMonth = ({ banner = '', grid = monthCal() } = {}) => `<div class="content">${banner}${calHead('Tháng 10, 2026')}${segRow('Tháng')}${grid}</div>${tabbar('cal')}`;
+
+// Khung xương lịch tháng: lưới, số ngày, ngày âm có ngay (tính trên máy) · chỉ thanh event chờ tải
+const monthSkeleton = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="wk">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>
+  <div class="month">${cells.map((dt, i) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate(); const [ld, lm] = lunar(dt);
+    const n = inM ? [1, 0, 2, 0, 1, 0, 0, 1, 2, 0][i % 10] : 0;
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}"><div class="top"><span class="d">${d}</span><span class="l">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${Array.from({ length: n }, (_, j) => `<div class="sk" style="height:12px;width:${j ? 60 : 90}%"></div>`).join('')}</div>`;
+  }).join('')}</div>`;
+};
+
+// Lịch Tháng rộng hơn (S6 §9): ô 5 thanh, lưới cuộn dọc, cuộn xuống → đầu thu gọn
+const EV2 = [[12, 'Tập yoga', 'mint'], [13, 'Gọi mẹ', 'peach'], [14, 'Tập yoga', 'mint'], [16, 'Đi siêu thị', 'mint'], [16, 'Trả sách', 'sky'], [16, 'Tập yoga', 'mint'], [20, 'Họp phụ huynh', 'lemon'], [21, 'Tập yoga', 'mint'], [23, 'Cắt tóc', 'lavender'], [27, 'Tập yoga', 'mint']];
+const tallGrid = () => {
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(2026, 8, 28 + i));
+  return `<div class="month" style="flex:none;grid-template-rows:repeat(6,118px)">${cells.map((dt) => {
+    const inM = dt.getMonth() === 9; const d = dt.getDate(); const key = inM ? d : dt.getMonth() === 10 ? 31 + d : -1; const [ld, lm] = lunar(dt);
+    const evs = inM ? [...EV, ...EV2].filter((e) => e[0] === d).map((e) => `<div class="bar ev-${e[2]}">${e[1]}</div>`) : [];
+    const tds = inM ? T.filter((t) => t[0] === d).map((t) => `<div class="bar ev-${t[2]} tbar ${t[3] ? 'done' : ''}"><span class="o"></span>${t[1]}</div>`) : [];
+    const all = [...evs, ...tds];
+    const dot = inM && PERIOD.includes(d) ? `<span class="pdot">${I.drop(true)}</span>` : PRED.includes(key) ? `<span class="pdot pred">${I.drop(false)}</span>` : '';
+    return `<div class="cell ${inM ? '' : 'out'} ${dt.getDay() === 0 ? 'sun' : ''} ${inM && d === 13 ? 'today sel' : ''}"><div class="top"><span class="d">${d}</span><span class="l ${ld === 1 || ld === 15 ? 'key' : ''}">${ld === 1 ? `${ld}/${lm}` : ld}</span></div>${dot}
+      ${all.slice(0, 5).join('')}${all.length > 5 ? `<div class="more">+${all.length - 5}</div>` : ''}</div>`;
+  }).join('')}</div>`;
+};
+const wkRow = `<div class="wk" style="background:var(--wall, var(--bg));position:relative;z-index:1">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="${d === 'CN' ? 'sun' : ''}">${d}</span>`).join('')}</div>`;
+const calTall = (scrolled) => `<div class="content">${scrolled
+  ? `<div class="cal-head" style="padding:4px 12px 2px 8px"><span class="nav">${I.left}</span><div class="t" style="font-size:17px;line-height:24px">Tháng 10, 2026</div><span class="nav">${I.right}</span><span class="chip-today">Hôm nay</span></div>`
+  : `${calHead('Tháng 10, 2026')}${seg4('Tháng')}`}
+  ${wkRow}<div style="flex:1;overflow:hidden;position:relative"><div style="transform:translateY(${scrolled ? -236 : 0}px)">${tallGrid()}</div>
+  <span style="position:absolute;right:2px;top:${scrolled ? 34 : 4}%;width:3px;height:38%;border-radius:3px;background:var(--muted);opacity:.45"></span></div>
+</div>${tabbar('cal')}`;
+
+// ---- Lỗi ----
+const errCard = (icon, title, text) => `<div class="card errcard"><span class="ei">${icon}</span><h3>${title}</h3><p>${text}</p><button class="btn btn-secondary" style="width:auto;padding:0 28px">${I.restore}Thử lại</button></div>`;
+const calError = `<div class="content">${calHead('Tháng 10, 2026')}${segRow('Danh sách')}
+  ${errCard(I.cloudOff, 'Máy chủ đang gặp sự cố.', 'Hãy thử lại sau ít phút.')}
+</div>${tabbar('cal')}`;
+const calStale = agendaScreen.replace(seg4('Danh sách'), `${seg4('Danh sách')}<div class="stale">Chưa cập nhật được · <b>Thử lại</b></div>`);
+
+// ---- Ghi chú ----
+const notesHead = (on) => `<div class="screen-title">Ghi chú</div><div class="seg two" style="margin-top:0">${['Todo', 'Ghi chú'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const NOTES = [
+  ['Ý tưởng quà Tết', 'Bố: khăn len · Mẹ: máy massage cầm tay · Bé Na: bộ lego', 'pink', true],
+  ['Đi chợ cuối tuần', null, 'mint', false, [2, 6]],
+  ['Sách muốn đọc', 'Atomic Habits, Sapiens, Nhà giả kim, Đắc nhân tâm…', 'lavender', false],
+  ['Mật khẩu wifi nhà bà', 'Hỏi lại chú Tâm', 'sky', false],
+  ['Công thức bánh flan', '4 trứng, 400 ml sữa, 80 g đường, vani. Hấp lửa nhỏ 25 phút.', 'peach', false],
+  ['Kế hoạch Đà Lạt', null, 'lemon', false, [5, 9]],
+];
+const ncard = ([t, b, c, pin, prog]) => `<div class="ncard" style="border-left-color:var(--${c})">${pin ? `<span class="pin">${I.pin}</span>` : ''}<h4>${t}</h4>${b ? `<p>${b}</p>` : `<span class="prog">${I.checklist}${prog[0]}/${prog[1]} mục</span>`}<div class="foot"><span class="cap muted">12/10</span><span class="more">${I.more}</span></div></div>`;
+const notesTop = `${notesHead('Ghi chú')}<div class="search">${I.search}Tìm ghi chú</div>
+  <div class="chips"><span class="chip on">Tất cả <span class="num">24</span></span><span class="chip"><span class="cd ev-pink"></span><span class="cn">Gia đình</span></span><span class="chip"><span class="cd ev-mint"></span><span class="cn">Mua sắm</span></span></div>`;
+const notesScreen = `<div class="content">${notesTop}
+  <div class="nlist"><div class="ncols"><div>${NOTES.filter((_, i) => i % 2 === 0).map(ncard).join('')}</div><div>${NOTES.filter((_, i) => i % 2).map(ncard).join('')}</div></div></div>
+</div>${tabbar('man')}`;
+const skCard = (h) => `<div class="card" style="padding:14px;display:flex;flex-direction:column;gap:8px"><div class="sk" style="height:16px;width:70%"></div>${Array.from({ length: h }, (_, i) => `<div class="sk" style="height:12px;width:${i === h - 1 ? 50 : 95}%"></div>`).join('')}<div class="sk" style="height:10px;width:30%;margin-top:4px"></div></div>`;
+const notesSkeleton = `<div class="content">${notesHead('Ghi chú')}<div class="search">${I.search}Tìm ghi chú</div>
+  <div class="chips">${[64, 80, 72].map((w) => `<span class="sk" style="flex:none;width:${w}px;height:32px;border-radius:999px"></span>`).join('')}</div>
+  <div class="nlist"><div class="ncols"><div>${skCard(3)}${skCard(1)}${skCard(2)}</div><div>${skCard(1)}${skCard(3)}${skCard(2)}</div></div></div>
+</div>${tabbar('man')}`;
+
+// ---- Chi tiêu (dữ liệu S4, hôm nay 13/10) ----
+const C = { food: ['peach', 'food', 'Ăn uống'], transport: ['sky', 'car', 'Di chuyển'], bills: ['lemon', 'bill', 'Hoá đơn'], coffee: ['pink', 'coffee', 'Cà phê'], kid: ['lavender', 'tag', 'Con nhỏ'] };
+// [ngày, nhóm, số tiền, ghi chú, tự ghi từ khoản lặp]
+const X = [
+  [13, 'food', 45000, 'Bún riêu'], [13, 'transport', 30000, 'Grab đi làm'], [13, 'coffee', 35000, 'Cà phê sáng', true],
+  [12, 'food', 320000, 'Ăn tối cả nhà'], [11, 'kid', 150000, 'Sữa'], [10, 'bills', 450000, 'Tiền điện tháng 9'], [10, 'food', 60000, 'Phở'],
+  [9, 'transport', 80000, 'Đổ xăng'], [8, 'food', 55000, 'Cơm trưa'], [7, 'bills', 220000, 'Internet', true],
+  [6, 'coffee', 35000, 'Cà phê sáng', true], [5, 'kid', 300000, 'Học phí bơi', true], [3, 'food', 1200000, 'Đi chợ cả tuần'], [1, 'bills', 2500000, 'Tiền nhà', true],
+];
+const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`;
+const cico = (k, size) => `<span class="cico ev-${C[k][0]}"${size ? ` style="width:${size}px;height:${size}px"` : ''}>${I[C[k][1]]}</span>`;
+const total = X.reduce((s, r) => s + r[2], 0);
+const expHead = (hlTag) => `<div class="topbar"><span></span><div class="screen-title">Chi tiêu</div><span class="act ${hlTag ? 'hl2' : ''}" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:12px">${I.tag}</span></div>`;
+const seg3 = (on) => `<div class="seg three">${['Ngày', 'Tuần', 'Tháng'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const periodHead = (t) => `<div class="cal-head" style="grid-template-columns:32px 1fr 32px"><span class="nav">${I.left}</span><div class="t">${t}</div><span class="nav">${I.right}</span></div>`;
+const byCat = (rows) => {
+  const sum = rows.reduce((s, r) => s + r[2], 0); const m = {};
+  rows.forEach((r) => { m[r[1]] = (m[r[1]] || 0) + r[2]; });
+  return Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => { const pc = Math.round((v / sum) * 100);
+    return `<div class="crow">${cico(k)}<span class="nm">${C[k][2]}</span><span class="am">${vnd(v)}</span><span class="pbar"><i class="ev-${C[k][0]}" style="width:${pc}%"></i></span><span class="pc">${pc}%</span></div>`; }).join('');
+};
+const xrow = ([, k, a, note, auto]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${C[k][2]}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div>${note ? `<span>${note}</span>` : ''}</div><span class="am">${vnd(a)}</span></div>`;
+const short = (n) => (n >= 1e6 ? `${(n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}tr` : `${Math.round(n / 1000)}k`);
+// Biểu đồ cột (S6 §13): bấm cột → dòng đọc số tiền của cột đó · ít cột (≤ 10) → mọi cột ghi số tiền · nhiều cột (cả tháng) → chỉ ghi cột cao nhất, chọn khoảng ngày để xem rõ hơn
+const barChart = (title, vals, labs, onIdx, { showLab = () => true, all = true, readout = '', chips = '' } = {}) => { const max = Math.max(...vals, 1); const top = vals.indexOf(Math.max(...vals));
+  return `<div class="card"><div class="sec">${title}</div>${chips}${readout ? `<div class="readout">${readout}</div>` : ''}<div class="bars">${vals.map((v, i) => `<div>${v && (all || i === top) ? `<b>${short(v)}</b>` : ''}<i class="${i === onIdx ? 'on' : ''}" style="height:${v ? Math.max((v / max) * 92, 3) : 0}px"></i></div>`).join('')}</div>
+    <div class="xlab">${labs.map((l, i) => `<span class="${i === onIdx ? 'on' : ''}">${showLab(i) ? l : ''}</span>`).join('')}</div></div>`; };
+const days31 = Array.from({ length: 31 }, (_, i) => i + 1);
+const dayTotal = (d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0);
+const dayRead = (d) => `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10 · <b>${vnd(dayTotal(d))}</b>`;
+const RANGES = [['Cả tháng', 1, 31], ['1–10', 1, 10], ['11–20', 11, 20], ['21–31', 21, 31]];
+// range: chỉ số trong RANGES · sel: ngày đang chọn
+const dayChart = (range = 0, sel = 13) => { const [, from, to] = RANGES[range]; const ds = days31.filter((d) => d >= from && d <= to);
+  return barChart('Theo ngày', ds.map(dayTotal), ds.map(String), ds.indexOf(sel), {
+    all: range > 0, showLab: range > 0 ? () => true : (i) => [0, 4, 9, 14, 19, 24, 30].includes(i), readout: dayRead(sel),
+    chips: `<div class="rchips">${RANGES.map(([t], i) => `<span class="${i === range ? 'on' : ''}">${t}</span>`).join('')}</div>` }); };
+const weekDays = [12, 13, 14, 15, 16, 17, 18];
+const weekChart = barChart('Theo ngày', weekDays.map(dayTotal), ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'], 1, { readout: dayRead(13) });
+const monthsChart = barChart('6 tháng gần nhất', [6200000, 5400000, 7100000, 6800000, 5900000, total], ['T5', 'T6', 'T7', 'T8', 'T9', 'T10'], 5, { readout: `Tháng 10/2026 · <b>${vnd(total)}</b>` });
+// Ngân sách: < 80% primary · 80–100% warning · > 100% error
+const budgetCard = (budget, spent = total, own = false) => {
+  if (!budget) return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div><div class="setbud hl2">${I.budget}Đặt ngân sách tháng</div></div>`;
+  const pc = Math.round((spent / budget) * 100); const color = pc > 100 ? 'error' : pc >= 80 ? 'warning' : 'primary';
+  return `<div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(spent)}</div>
+    <div class="bud"><div class="progress"><i style="width:${Math.min(pc, 100)}%;background:var(--${color})"></i></div>
+    <div class="line"><span>${pc}% ngân sách ${own ? 'riêng ' : ''}${vnd(budget)}</span>${pc > 100 ? `<b class="over">Vượt ${vnd(spent - budget)}</b>` : `<b>Còn ${vnd(budget - spent)}</b>`}</div></div></div>`;
+};
+const expMonth = (budget, { hlTag = false, spent, own = false, scrolled = false, range = 0 } = {}) => `<div class="content">${expHead(hlTag)}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
+  <div class="xlist">${scrolled ? '' : budgetCard(budget, spent, own) + dayChart(range)}${monthsChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(X)}</div></div>
+</div>${tabbar('exp')}`;
+const dayRows = X.filter((r) => r[0] === 13);
+const weekRows = X.filter((r) => weekDays.includes(r[0]));
+const expWeek = `<div class="content">${expHead()}${seg3('Tuần')}${periodHead('12 – 18/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(weekRows.reduce((t, r) => t + r[2], 0))}</div></div>${weekChart}<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(weekRows)}</div></div>
+</div>${tabbar('exp')}`;
+// Chi tiêu theo nhóm (S6 §10): danh sách nhóm (Ngày thêm danh sách khoản chi) · bấm nhóm → pop-up khoản chi của nhóm
+const groupCard = (rows, hl) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${byCat(rows).replace('<div class="crow">', hl ? '<div class="crow hl2">' : '<div class="crow">')}</div>`;
+const expDay = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
+  <div class="xlist"><div class="card total"><div class="lbl">Tổng chi</div><div class="amt">${vnd(dayRows.reduce((t, r) => t + r[2], 0))}</div></div>${groupCard(dayRows, true)}<div class="card">${dayRows.map(xrow).join('')}</div></div>
+</div>${tabbar('exp')}`;
+const groupPopup = (k, rows, period, under, toast = '') => {
+  const sum = rows.reduce((t, r) => t + r[2], 0);
+  const days = [...new Set(rows.map((r) => r[0]))].sort((a, b) => b - a);
+  return `<div class="under">${under}</div>
+  <div class="scrim big"><div class="dialog big" style="text-align:left;padding:16px 14px 18px">
+    <div style="display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:10px"><span class="x">${I.close}</span>
+      <h3 style="display:flex;gap:8px;align-items:center;justify-content:center">${cico(k, 28)}${C[k][2]}</h3><span class="round-plus">${I.plus}</span></div>
+    <div style="text-align:center;margin-bottom:12px"><div class="cap muted">${period}</div><div style="font-size:22px;line-height:28px;font-weight:800">${vnd(sum)}</div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">${days.map((d) => `${days.length > 1 || period.startsWith('Tháng') ? `<div class="dhead" style="padding:2px 4px 0"><b>${d === 13 ? 'Hôm nay' : `${WD[new Date(2026, 9, d).getDay()]}, ${d}/10`}</b></div>` : ''}<div class="card" style="box-shadow:none;border:1px solid var(--border)">${rows.filter((r) => r[0] === d).map(prow).join('')}</div>`).join('')}</div>
+  </div></div>${toast}`;
+};
+// Dòng trong pop-up nhóm: không lặp lại icon + tên nhóm (đã ở tiêu đề) · chỉ ghi chú + số tiền
+const prow = ([, , a, note, auto]) => `<div class="xrow" style="min-height:48px"><div class="mid"><div class="${note ? '' : 'muted'}">${note || 'Không có ghi chú'}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div></div><span class="am">${vnd(a)}</span></div>`;
+const undoToast = '<div class="toast" style="z-index:7">Đã xoá<span class="act">Hoàn tác</span></div>';
+const expDayUndo = groupPopup('food', X.filter((r) => r[1] === 'food' && r[0] !== 13), 'Tháng 10, 2026', expMonth(7800000), undoToast);
+
+const budgetDialog = (all) => `<div class="under">${expMonth(all ? 7800000 : 15000000, { own: !all })}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon">${I.budget}</span><h3>Ngân sách tháng 10</h3>
+    <div class="amtin" style="padding:14px 0 6px"><div class="v"><span class="u">${all ? '7.800.000' : '15.000.000'} ₫<span class="caret"></span></span></div></div>
+    <div class="frow2" style="padding:0 4px;cursor:default;text-align:left"><span class="grow">Dùng cho mọi tháng</span><span class="sw ${all ? 'on' : ''}"></span></div>
+    <div style="height:14px"></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+
+// Form khoản chi có dòng "Lặp lại" (chỉ khi tạo mới)
+const expForm = ({ offline: off = false } = {}) => `<div class="content">${off ? offline : ''}
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thêm khoản chi</div><span></span></div>
+  <div class="form" style="padding-bottom:120px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">2.500.000 ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('bills', 24)}<span class="grow">Hoá đơn</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow ${off ? '' : 'hl2'}" style="${off ? '' : 'margin:0 -8px;padding:0 8px'}"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="${off ? 'muted' : 'b'}">${off ? 'Không' : 'Hằng tháng, ngày 13'}</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">Tiền nhà</span></div>
+    </div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary" ${off ? 'disabled' : ''}>Lưu</button></div>
+</div>`;
+const repeatPick = `<div class="under">${expForm()}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left"><h3 style="text-align:center;margin-bottom:12px">Lặp lại</h3>
+    ${[['Không', ''], ['Hằng tuần', 'Thứ Ba'], ['Hằng tháng', 'Ngày 13']].map(([l, s]) => `<div class="opt ${l === 'Hằng tháng' ? 'on' : ''}"><span class="label">${l}${s ? `<div class="cap muted" style="font-weight:600">${s}</div>` : ''}</span>${l === 'Hằng tháng' ? I.check : ''}</div>`).join('')}
+  </div></div>`;
+
+const RULES = [['bills', 'Tiền nhà', 2500000, 'Hằng tháng', '01/11'], ['bills', 'Internet', 220000, 'Hằng tháng', '07/11'], ['kid', 'Học phí bơi', 300000, 'Hằng tháng', '05/11'], ['coffee', 'Cà phê sáng', 35000, 'Hằng tuần', 'T3, 20/10']];
+const rulesScreen = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Khoản chi lặp lại</div><span></span></div>
+  <div class="xlist" style="padding-bottom:90px"><div class="card">${RULES.map(([k, n, a, f, next]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${n}</div><span>${f} · lần tới ${next}</span></div><span class="am">${vnd(a)}</span></div>`).join('')}</div></div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm khoản chi lặp lại</button></div>
+</div>`;
+const ruleEdit = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Sửa khoản chi lặp lại</div><span></span></div>
+  <div class="form" style="padding-bottom:150px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">2.500.000 ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('bills', 24)}<span class="grow">Hoá đơn</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="b">Hằng tháng, ngày 1</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.arrowR}</span><span class="grow">Lần tới</span><span class="b">01/11/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">Tiền nhà</span></div>
+    </div>
+  </div>
+  <div class="form-footer" style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-danger">${I.trash}Xoá</button><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const ruleDel = `<div class="under">${ruleEdit}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon err">${I.trash}</span><h3 style="margin-bottom:20px">Xoá khoản chi lặp lại này?</h3>
+  <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-danger-solid">Xoá</button></div></div></div>`;
+
+// Màn Nhóm chi tiêu (S4) — S6 thêm dòng đầu "Khoản chi lặp lại ›"
+const catLine = (k, own) => `<div class="row">${cico(k)}<span class="label">${C[k][2]}</span>${own ? `<span class="muted" style="width:24px;height:24px">${I.more}</span>` : `<span class="lock">${I.lock}</span>`}</div>`;
+const catsScreen = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>
+</div>`;
+
+
+// ---- Icon + nhóm gợi ý cho người Việt (S6 §11) ----
+Object.assign(I, {
+  phone: I.phoneI,
+  water: sv('<path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/>'),
+  boba: sv('<path d="M6.5 8h11l-1.2 11a1.5 1.5 0 0 1-1.5 1.3H9.2a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M5.5 8h13M13 8l1.5-4.5h2"/><path d="M9.5 16h.01M12 17h.01M14.5 16h.01"/>'),
+  beer: sv('<path d="M5.5 8h10v10a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2z"/><path d="M15.5 10h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/><path d="M5.5 8a2.5 2.5 0 0 1 2.5-3 3 3 0 0 1 5-.5 2.5 2.5 0 0 1 2.5 3.5M9 12v4M12 12v4"/>'),
+  flame: sv('<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 .2 1.5 1 2 1.8 2C10.5 8 11 5.5 12 3z"/>'),
+  motorbike: sv('<circle cx="6" cy="16.5" r="3"/><circle cx="18" cy="16.5" r="3"/><path d="M6 16.5l3-6h5l4 6M14 10.5l-1-3h-2.5M9 10.5H6.5"/>'),
+  parking: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M10 16.5V8h3a2.5 2.5 0 0 1 0 5h-3"/>'),
+  hospital: sv('<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>'),
+  bookOpen: sv('<path d="M5 4.5h9a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9"/>'),
+  shield: sv('<path d="M12 3.5l7 2.5v5.5c0 4.3-3 7.5-7 9-4-1.5-7-4.7-7-9V6z"/><path d="M9 12l2.2 2.2L15 10"/>'),
+  redpacket: sv('<rect x="6.5" y="3.5" width="11" height="17" rx="2.5"/><path d="M6.5 9.5c3 2.5 8 2.5 11 0"/><circle cx="12" cy="12.5" r="1.6"/>'),
+  flower: sv('<circle cx="12" cy="12" r="2.2"/><path d="M12 9.8c-2-2-2-5 0-6 2 1 2 4 0 6zM12 14.2c2 2 2 5 0 6-2-1-2-4 0-6zM9.8 12c-2 2-5 2-6 0 1-2 4-2 6 0zM14.2 12c2-2 5-2 6 0-1 2-4 2-6 0z"/>'),
+  building: sv('<rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8h.01M12 8h.01M15 8h.01M9 12h.01M12 12h.01M15 12h.01M10 20.5v-3h4v3"/>'),
+});
+// 42 icon chọn được cho nhóm tự tạo (đổi từ 36): bỏ wine, bike, heart, umbrella, ticket, camera, ball, tree · icon đã lưu cũ vẫn hiện
+const ICON_SET = [['tag', 'Chung'], ['coffee', 'Cà phê'], ['boba', 'Trà sữa'], ['beer', 'Bia, nhậu'], ['food', 'Ăn uống'], ['cart', 'Đi chợ'],
+  ['bag', 'Mua sắm'], ['shirt', 'Quần áo'], ['home', 'Nhà'], ['bolt', 'Điện'], ['water', 'Nước'], ['flame', 'Gas'],
+  ['wifi', 'Internet'], ['phone', 'Điện thoại'], ['tool', 'Sửa chữa'], ['motorbike', 'Xe máy'], ['fuel', 'Xăng'], ['bus', 'Xe buýt'],
+  ['car', 'Taxi, Grab'], ['parking', 'Gửi xe'], ['plane', 'Du lịch'], ['pill', 'Thuốc'], ['hospital', 'Khám bệnh'], ['scissors', 'Làm đẹp'],
+  ['dumbbell', 'Thể thao'], ['baby', 'Con nhỏ'], ['paw', 'Thú cưng'], ['cap', 'Học phí'], ['bookOpen', 'Sách'], ['briefcase', 'Công việc'],
+  ['laptop', 'Máy tính'], ['card', 'Trả góp'], ['coins', 'Tiền'], ['shield', 'Bảo hiểm'], ['gift', 'Quà tặng'], ['redpacket', 'Lì xì'],
+  ['flower', 'Hiếu hỉ'], ['film', 'Xem phim'], ['game', 'Game'], ['music', 'Karaoke'], ['trash', 'Rác'], ['building', 'Chung cư']];
+// Nhóm gợi ý: chạm 1 lần là thêm (tên, icon, màu); nhóm đã có thì ẩn
+const SUG = [['Đi chợ', 'cart', 'mint'], ['Trà sữa', 'boba', 'pink'], ['Ăn nhậu', 'beer', 'lemon'], ['Tiền nhà', 'home', 'sky'], ['Điện', 'bolt', 'lemon'], ['Nước', 'water', 'sky'],
+  ['Internet', 'wifi', 'lavender'], ['Điện thoại', 'phone', 'mint'], ['Xăng xe', 'fuel', 'peach'], ['Gửi xe', 'parking', 'sky'], ['Sửa xe', 'tool', 'lemon'], ['Học phí', 'cap', 'lavender'],
+  ['Sức khoẻ', 'hospital', 'mint'], ['Thuốc', 'pill', 'pink'], ['Làm đẹp', 'scissors', 'pink'], ['Quần áo', 'shirt', 'lavender'], ['Hiếu hỉ', 'flower', 'lemon'], ['Lì xì', 'redpacket', 'peach'],
+  ['Quà tặng', 'gift', 'pink'], ['Giải trí', 'film', 'lavender'], ['Du lịch', 'plane', 'sky'], ['Thú cưng', 'paw', 'peach'], ['Bảo hiểm', 'shield', 'mint'], ['Trả góp', 'card', 'sky']];
+const vnCss = `<style>
+  .sug { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sug .chip { max-width: none; height: 36px; padding: 0 12px 0 5px; gap: 6px; }
+  .sug .mi { width: 26px; height: 26px; border-radius: 9px; display: grid; place-items: center; color: var(--text-fixed, #2F2D33); }
+  .sug .mi svg { width: 16px; height: 16px; }
+  .icg { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .icg span { height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icg span.on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icg svg { width: 22px; height: 22px; }
+  .icl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 6px; max-height: 250px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .icl > div { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+  .icl span { width: 100%; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--border); }
+  .icl svg { width: 22px; height: 22px; }
+  .icl i { font-style: normal; font-size: 12px; line-height: 16px; color: var(--muted); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .icl .on span { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .icl .on i { color: var(--primary-dark); font-weight: 800; }
+  .fab.pulse { box-shadow: 0 0 0 7px color-mix(in srgb, var(--primary) 30%, transparent), 0 6px 14px rgba(91,190,152,.45); }
+</style>`;
+const sugChip = ([n, ic, c]) => `<span class="chip"><span class="mi ev-${c}">${I[ic]}</span>${n}</span>`;
+const sugSection = (hidden = []) => `<div class="group-label">Gợi ý</div><div class="sug">${SUG.filter((x) => !hidden.includes(x[0])).slice(0, 14).map(sugChip).join('')}</div>`;
+C.market = ['mint', 'cart', 'Đi chợ'];
+const catsScreen2 = (added) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card hl2"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Có sẵn</div>
+    <div class="card">${catLine('food')}${catLine('transport')}${catLine('bills')}</div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${catLine('coffee', true)}${catLine('kid', true)}${added ? catLine('market', true) : ''}</div>
+    ${sugSection(added ? ['Đi chợ'] : [])}
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm nhóm</button></div>${added ? '<div class="toast">Đã thêm nhóm Đi chợ</div>' : ''}
+</div>`;
+const iconGridLabeled = (on) => `<div class="icl">${ICON_SET.map(([k, n]) => `<div class="${k === on ? 'on' : ''}"><span>${I[k]}</span><i>${n}</i></div>`).join('')}</div>`;
+const iconGrid = (on) => `<div class="icg">${ICON_SET.map(([k]) => `<span class="${k === on ? 'on' : ''}">${I[k]}</span>`).join('')}</div>`;
+const addCatDialog = `<div class="under">${catsScreen2(false)}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left;padding:18px 16px 16px">
+    <h3 style="text-align:center;margin-bottom:12px">Thêm nhóm</h3>
+    <div class="field"><label>Tên nhóm</label><div class="input focus">Trà sữa<span class="caret"></span></div></div>
+    <div class="field" style="margin-top:12px"><label>Icon</label>${iconGridLabeled('boba')}</div>
+    <div class="field" style="margin-top:12px"><label>Màu</label>${colorPick('sky')}</div>
+    <div class="actions" style="margin-top:16px"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+const FULL = ['coffee', 'kid', 'market', 'coffee', 'kid', 'market', 'coffee', 'kid', 'market'];
+const catsFull = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Nhóm chi tiêu</div><span></span></div>
+  <div class="settings" style="overflow:hidden;gap:12px">
+    <div class="card"><div class="row"><span class="ico">${I.repeat}</span><span class="label">Khoản chi lặp lại</span><span class="val">4</span>${I.chev}</div></div>
+    <div class="group-label">Của bạn</div>
+    <div class="card">${FULL.map((k) => catLine(k, true)).join('')}</div>
+  </div>
+  <div class="form-footer"><button class="btn btn-secondary hl2">${I.plusG}Thêm nhóm</button></div>
+</div>`;
+const limitDialog = `<div class="under">${catsFull}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon warn">${I.warn}</span><h3>Đã đủ 30 nhóm</h3><p>Hãy xoá bớt một nhóm để thêm mới.</p><button class="btn btn-primary">Đã hiểu</button></div></div>`;
+
+// ---- Nút + theo tab (S6 §12) ----
+const fabHl = (html) => html.replace('<div class="fab">', '<div class="fab pulse">');
+const numpad = `<div class="numpad">${['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map((k) => `<span class="${k === '⌫' ? 'k' : ''}">${k}</span>`).join('')}</div>`;
+const addExpForm = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Thêm khoản chi</div><span></span></div>
+  <div class="form" style="padding-bottom:8px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u">50.000<span class="caret"></span></span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('food', 24)}<span class="grow">Ăn uống</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="muted">Không</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow muted">Ghi chú (không bắt buộc)</span></div>
+    </div>
+  </div>
+  <div style="flex:none;padding:8px 16px;background:var(--bg)"><button class="btn btn-primary">Lưu</button></div>${numpad}
+</div>`;
+const noteEditor = `<div class="content">
+  <div class="ntop"><span class="back">${I.left}</span><span></span><span class="act" style="color:var(--primary-dark)">${I.check}</span></div>
+  <div class="nbody"><div class="nt" style="font-size:22px;line-height:28px;font-weight:800;color:var(--muted)"><span class="caret"></span>Tiêu đề</div><div class="muted" style="margin-top:10px">Ghi chú</div></div>
+  <div class="ntools"><span class="ti">${I.checklist}</span><span class="ti">${I.folder}</span><span class="ti">${I.pin}</span></div>
+</div>`;
+const todoTab = `<div class="content">${notesHead('Todo')}
+  <div class="xlist"><div class="card">${[['Mua quà sinh nhật Lan', false], ['Nộp tiền học bơi', false], ['Gọi bảo hiểm xe', true]].map(([t, d]) => `<div class="xrow">${tk(d)}<div class="mid"><div style="${d ? 'text-decoration:line-through;color:var(--muted)' : ''}">${t}</div></div></div>`).join('')}</div></div>
+</div>${tabbar('man')}`;
+const todoQuick = `<div class="content">
+  <div class="topbar"><span class="back">${I.close}</span><div class="kind-title">Todo<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div><span></span></div>
+  <div class="form" style="padding-bottom:84px">
+    <div class="fcard"><div class="title-in"><span class="caret"></span><span class="muted">Tiêu đề</span></div><div class="detail-in">Chi tiết</div></div>
+    <div class="fcard">
+      <div class="frow"><span class="fi">${I.checklist}</span><span class="grow b">Danh sách việc</span></div>
+      <div class="addline" style="padding-left:24px">${I.plusG}Thêm việc</div>
+    </div>
+    <div class="fcard"><div class="frow"><span class="fi">${I.allday}</span><span class="grow">Cả ngày</span><span class="sw on"></span></div>
+      <div class="frow indent"><span class="fi">${I.arrowR}</span><span class="grow">T3, 13/10/2026</span></div></div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const serverDown = `<div class="offline">${I.wifiOff}<span>Máy chủ đang gặp sự cố.</span></div>`;
+
+// ---- Cài đặt + màn Giao diện ----
+const settingsS6 = (state) => `<div class="content"><div class="screen-title">Cài đặt</div>
+  <div class="settings" style="overflow:hidden">
+    <div class="group-label">Giao diện</div>
+    <div class="card hl2">${srow(I.palette, `Giao diện<div class="cap muted">${THEMES[state.theme][0]} · Nền trơn · ${FONTS[state.font][0]} · Cỡ vừa</div>`, I.chev)}</div>
+    <div class="group-label">Lịch</div>
+    <div class="card">${srow(I.week, 'Tuần bắt đầu từ', '<span class="val">Thứ Hai</span>' + I.chev)}${srow(I.moon, 'Hiển thị ngày âm lịch', '<span class="sw on"></span>')}${srow(I.flag, 'Hiển thị ngày lễ', '<span class="sw on"></span>')}</div>
+    <div class="group-label">Ứng dụng</div>
+    <div class="card">${srow(I.globe, 'Ngôn ngữ', '<span class="val">Tiếng Việt</span>' + I.chev)}${srow(I.bug, 'Báo lỗi', I.chev)}${srow(I.info2, 'Phiên bản', '<span class="val">6.0.0</span>')}</div>
+  </div>
+</div>${tabbar('set')}`;
+const srow = (icon, label, right, cls = '') => `<div class="row ${cls}"><span class="ico">${icon}</span><span class="label">${label}</span>${right}</div>`;
+const preview = `<div class="pv"><div><div class="b" style="font-size:12px;margin-bottom:4px">Tháng 10</div><div class="mini">${['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => `<span class="muted">${d}</span>`).join('')}${Array.from({ length: 21 }, (_, i) => { const d = i + 5; return `<span class="${d === 13 ? 't' : (i % 7 === 6 ? 's' : '')}">${d}</span>`; }).join('')}<span class="mbar ev-mint"></span><span class="mbar ev-pink" style="grid-column:span 2"></span></div></div>
+  <div class="card" style="padding:10px;display:flex;flex-direction:column;gap:6px"><div class="b" style="font-size:15px">Ngày mới</div><div class="cap muted">Họp nhóm 9:00</div><button class="btn btn-primary" style="height:30px;font-size:12px;border-radius:10px">Lưu</button></div></div>`;
+const swatch = (k, state) => { const v = THEMES[k][1];
+  return `<div class="swi ${state.theme === k ? 'on' : ''}" onclick="setTheme('${k}')"><span class="swc" style="background:${v.bg}"><i style="background:${v.primary}"></i></span>${THEMES[k][0]}</div>`; };
+const appearance = (state) => `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Giao diện</div><span></span></div>
+  <div style="overflow:hidden;display:flex;flex-direction:column;gap:14px;padding-bottom:16px">
+    ${preview}
+    <div class="settings" style="gap:14px">
+      <div class="group-label">Chủ đề màu</div>
+      <div class="card swgrid">${Object.keys(THEMES).map((k) => swatch(k, state)).join('')}<div class="swi ${state.theme === 'system' ? 'on' : ''}"><span class="swc" style="background:linear-gradient(135deg,#FAF8F5 50%,#17171B 50%)"><i style="background:#5BBE98"></i></span>Theo hệ thống</div><div class="swi"><span class="swc" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B)"><i style="background:#fff;display:grid;place-items:center;font-size:14px;font-weight:800;line-height:1;color:#2F2D33">+</i></span>Tự chọn</div></div>
+      <div class="group-label">Nền</div>
+      <div class="card" style="padding-bottom:4px">
+        <div class="tiles sm"><span class="tile on" style="background:var(--bg)">Trơn</span><span class="tile">${I.image}</span><span class="cap muted" style="align-self:center">Trơn · Ảnh của bạn</span></div>
+        <div class="bgsec">Màu</div><div class="tiles sm" style="gap:10px;align-items:center">${(state.theme === 'dark' ? BGC_DARK : BGC_LIGHT).map((c) => `<span class="bgdot" style="background:${c}"></span>`).join('')}<span class="bgdot" style="background:conic-gradient(#E9787B,#F2D67A,#7FD1B0,#8CC8EE,#B9A6EC,#F4A6C0,#E9787B);display:grid;place-items:center;color:#2F2D33;font-weight:800">+</span></div>
+        <div class="bgsec">Chuyển màu</div><div class="tiles sm">${GRADS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+        <div class="bgsec">Hoạ tiết</div><div class="tiles sm">${PATTERNS.map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}</div>
+      </div>
+      <div class="group-label">Font chữ</div>
+      <div class="card">${Object.entries(FONTS).map(([k, [n, f]]) => `<div class="frow2" onclick="setFont('${k}')"><span class="aa" style="font-family:${f}">Aa</span><span class="grow" style="font-family:${f}">${n}</span>${state.font === k ? I.check : ''}</div>`).join('')}</div>
+      <div class="group-label">Cỡ chữ</div>
+      <div class="seg three" style="margin:0"><span style="font-size:13px">Nhỏ</span><span class="on">Vừa</span><span style="font-size:17px">Lớn</span></div>
+    </div>
+  </div>
+</div>`;
+// Hộp Tự chọn: hộp chọn màu S4 + Sáng / Tối · app tự tính các màu còn lại
+const customPick = `<div class="under">${'__APP__'}</div>
+  <div class="scrim"><div class="dialog" style="text-align:left">
+    <h3 style="text-align:center;margin-bottom:12px">Tự chọn màu chủ đạo</h3>
+    <div style="height:130px;border-radius:16px;background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,#FF5A36);position:relative"><span style="position:absolute;left:78%;top:18%;width:20px;height:20px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></span></div>
+    <div style="height:16px;border-radius:999px;margin:12px 0;background:linear-gradient(90deg,red,#ff0,lime,cyan,blue,#f0f,red);position:relative"><span style="position:absolute;left:3%;top:-3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span style="width:44px;height:44px;border-radius:14px;background:#FF7A59;flex:none"></span><div class="input" style="flex:1">#FF7A59</div></div>
+    <div class="seg two" style="margin:0 0 10px"><span class="on">Sáng</span><span>Tối</span></div>
+    <div style="height:6px"></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary" style="background:#FF7A59">Chọn</button></div>
+  </div></div>`;
+const CUSTOM = '--primary:#FF7A59;--primary-dark:#C4472A;--primary-soft:#FFEBE5;--bg:#FFFAF8;--surface:#FFFFFF;--border:#F3E6E1;--text:#33292A;--muted:#93827E;--toast:#33292A';
+const photoPicked = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Giao diện</div><span></span></div>
+  <div class="settings" style="gap:14px">
+    <div class="group-label">Nền</div>
+    <div class="card"><div class="tiles"><span class="tile" style="background:var(--bg)">Trơn</span>${GRADS.slice(0, 3).map((g) => `<span class="tile" style="background:${g}"></span>`).join('')}<span class="tile on" style="background:${photoBg(40)}"></span><span class="tile">${I.image}</span></div>
+      <div class="frow2" style="cursor:default"><span class="grow" style="flex:none">Độ mờ</span><span class="slider"><i></i><b></b></span><span class="b" style="width:40px;text-align:right">40%</span></div></div>
+  </div>
+</div>`;
+
+// Màn đặt bộ màu riêng (không theo nút thử ở đầu trang)
+const phoneT = (inner, { theme, font, wall, vars = '', cls = '' } = {}) => `<div class="phone ${cls}" ${theme ? `data-theme="${theme}"` : ''} ${font ? `data-font="${font}"` : ''} style="${wall ? `--wall:${wall};` : ''}${vars}">${status}${inner}</div>`;
+const darkExp = expMonth(7800000);
+
+const state = { theme: 'mint', font: 'nunito' };
+// ===== S8: Thu / Chi =====
+Object.assign(C, { salary: ['mint', 'tag', 'Lương'], extra: ['sky', 'tag', 'Làm thêm'] });
+const XI = [[1, 'salary', 15000000, 'Lương tháng 10'], [9, 'extra', 2000000, 'Làm thêm']];
+const incTotal = XI.reduce((s, r) => s + r[2], 0);
+const pct = (a, b) => Math.round((a / b) * 100);
+const kseg = (on) => `<div class="seg two kseg">${[['Chi', 'out'], ['Thu', 'in']].map(([s, k]) => `<span class="${s === on ? 'on ' + k : ''}">${s}</span>`).join('')}</div>`;
+const kindChips = (on) => `<div class="rchips">${['Chi', 'Thu'].map((s) => `<span class="${s === on ? 'on' : ''}">${s}</span>`).join('')}</div>`;
+const signed = (n, inc) => (inc ? `<span class="am in">+${vnd(n)}</span>` : `<span class="am">${vnd(n)}</span>`);
+const xrow8 = ([, k, a, note, auto], inc) => `<div class="xrow">${cico(k)}<div class="mid"><div>${C[k][2]}${auto ? `<i class="rep">${I.repeat}</i>` : ''}</div>${note ? `<span>${note}</span>` : ''}</div>${signed(a, inc)}</div>`;
+const totals2 = (thu, chi, label = '') => `<div class="card total2"><div><div class="lbl">Tổng thu${label}</div><div class="amt in">+${vnd(thu)}</div></div><div><div class="lbl">Tổng chi${label}</div><div class="amt">${vnd(chi)}</div></div></div>`;
+// Ngân sách (S8): tổng được dùng = hạn mức + Thu · còn lại = hạn mức + Thu − Chi · màu mốc như S6 (< 80% · 80–100% · > 100%)
+const budgetBar8 = (limit, thu, chi) => {
+  const eff = limit + thu; const p = pct(chi, eff); const color = p > 100 ? 'error' : p >= 80 ? 'warning' : 'primary';
+  return `<div class="card" style="padding:12px 16px"><div class="progress" style="margin-top:0"><i style="width:${Math.min(p, 100)}%;background:var(--${color})"></i></div>
+    <div class="bline"><span>${p}% của ${vnd(eff)}</span>${p > 100 ? `<b class="over">Vượt ${vnd(chi - eff)}</b>` : `<b>Còn ${vnd(eff - chi)}</b>`}</div>
+    <div class="cap muted" style="margin-top:2px">Hạn mức ${vnd(limit)} + thu ${vnd(thu)}</div></div>`;
+};
+const chiTotal = X.reduce((s, r) => s + r[2], 0);
+// 6 tháng: mỗi tháng 2 cột (Thu · Chi) · bấm cột → dòng đọc số cho cả 2
+const MON6 = [['T5', 15000000, 6200000], ['T6', 15000000, 5400000], ['T7', 17500000, 7100000], ['T8', 15000000, 6800000], ['T9', 16000000, 5900000], ['T10', incTotal, chiTotal]];
+const months2 = `<div class="card"><div class="sec">6 tháng gần nhất</div>
+  <div class="rchips" style="gap:12px"><span class="leg in">Thu</span><span class="leg out">Chi</span></div>
+  <div class="readout">Tháng 10/2026 · Thu <b class="inb">+${vnd(incTotal)}</b> · Chi <b>${vnd(chiTotal)}</b></div>
+  <div class="bars bars2">${MON6.map(([, t, c], i) => { const max = 17500000; return `<div class="${i === 5 ? 'sel' : ''}"><i class="tin" style="height:${(t / max) * 92}px"></i><i class="tout" style="height:${(c / max) * 92}px"></i></div>`; }).join('')}</div>
+  <div class="xlab">${MON6.map(([l], i) => `<span class="${i === 5 ? 'on' : ''}" style="flex:1;text-align:center">${l}</span>`).join('')}</div></div>`;
+const dayChi = (d) => X.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0);
+const dayChartK = (kind) => { const ds = days31; const vals = ds.map((d) => (kind === 'Thu' ? XI.filter((r) => r[0] === d).reduce((s, r) => s + r[2], 0) : dayChi(d)));
+  return barChart('Theo ngày', vals, ds.map(String), 12, { all: false, showLab: (i) => [0, 4, 9, 14, 19, 24, 30].includes(i), readout: kind === 'Thu' ? `T4, 9/10 · <b class="inb">+${vnd(2000000)}</b>` : dayRead(13), chips: kindChips(kind) + `<div class="rchips">${RANGES.map(([t], i) => `<span class="${i === 0 ? 'on' : ''}">${t}</span>`).join('')}</div>` }); };
+const groupCard8 = (kind) => `<div class="card" style="padding-bottom:8px"><div class="sec">Theo nhóm</div>${kindChips(kind)}${byCat(kind === 'Thu' ? XI : X).replace(/<span class="am">/g, kind === 'Thu' ? '<span class="am in">+' : '<span class="am">')}</div>`;
+const expMonth8 = (view = 'top') => `<div class="content">${expHead()}${seg3('Tháng')}${periodHead('Tháng 10, 2026')}
+  <div class="xlist">${view === 'top' ? totals2(incTotal, chiTotal) + budgetBar8(15000000, incTotal, chiTotal) + dayChartK('Chi') : view === 'mid' ? months2 + groupCard8('Chi') : groupCard8('Thu')}</div>
+</div>${tabbar('exp')}`;
+const expMonthOver = `<div class="content">${expHead()}${seg3('Tháng')}${periodHead('Tháng 11, 2026')}
+  <div class="xlist">${totals2(0, 16200000)}${budgetBar8(15000000, 0, 16200000)}<div class="card"><div class="cap muted" style="padding:14px 16px">Chưa có khoản thu nào trong tháng này. Thêm khoản thu để cộng vào ngân sách.</div></div></div>
+</div>${tabbar('exp')}`;
+const dayX = X.filter((r) => r[0] === 13);
+const expDay8 = `<div class="content">${expHead()}${seg3('Ngày')}${periodHead('Hôm nay, 13/10')}
+  <div class="xlist">${totals2(2000000, dayX.reduce((t, r) => t + r[2], 0))}<div class="card">${xrow8([13, 'extra', 2000000, 'Làm thêm tối nay'], true)}${dayX.map((r) => xrow8(r, false)).join('')}</div></div>
+</div>${tabbar('exp')}`;
+// Form thêm khoản (chi / thu) — mặc định Chi
+const expForm8 = (kind) => { const inc = kind === 'Thu'; return `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">${inc ? 'Thêm khoản thu' : 'Thêm khoản chi'}</div><span></span></div>
+  ${kseg(kind)}
+  <div class="form" style="padding-bottom:120px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u ${inc ? 'inb' : ''}">${inc ? '+' : ''}${inc ? '2.000.000' : '1.000.000'} ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico(inc ? 'extra' : 'food', 24)}<span class="grow">${inc ? 'Làm thêm' : 'Ăn uống'}</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.cal(false)}</span><span class="grow">Hôm nay, T3 13/10/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="muted">Không</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">${inc ? 'Kiếm được' : 'Việc A'}</span></div>
+    </div>
+  </div>
+  <div class="form-footer"><button class="btn btn-primary">Lưu</button></div>
+</div>`; };
+const RULES8 = [['salary', 'Lương', 15000000, 'Hằng tháng', '01/11', true], ['bills', 'Tiền nhà', 2500000, 'Hằng tháng', '01/11'], ['bills', 'Internet', 220000, 'Hằng tháng', '07/11'], ['coffee', 'Cà phê sáng', 35000, 'Hằng tuần', 'T3, 20/10']];
+const rulesScreen8 = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Khoản lặp lại</div><span></span></div>
+  <div class="xlist" style="padding-bottom:90px"><div class="card">${RULES8.map(([k, n, a, f, next, inc]) => `<div class="xrow">${cico(k)}<div class="mid"><div>${n}</div><span>${f} · lần tới ${next}</span></div>${signed(a, inc)}</div>`).join('')}</div></div>
+  <div class="form-footer"><button class="btn btn-secondary">${I.plusG}Thêm khoản lặp lại</button></div>
+</div>`;
+const ruleEdit8 = `<div class="content">
+  <div class="topbar"><span class="back">${I.left}</span><div class="screen-title">Sửa khoản lặp lại</div><span></span></div>
+  ${kseg('Thu')}
+  <div class="form" style="padding-bottom:150px">
+    <div class="amtin"><div class="cap muted" style="margin-bottom:6px">Số tiền</div><div class="v"><span class="u inb">+15.000.000 ₫</span></div></div>
+    <div class="fcard">
+      <div class="frow">${cico('salary', 24)}<span class="grow">Lương</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.repeat}</span><span class="grow">Lặp lại</span><span class="b">Hằng tháng, ngày 1</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.arrowR}</span><span class="grow">Lần tới</span><span class="b">01/11/2026</span>${I.chev}</div>
+      <div class="frow"><span class="fi">${I.note}</span><span class="grow">Lương tháng</span></div>
+    </div>
+  </div>
+  <div class="form-footer" style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-danger">${I.trash}Xoá</button><button class="btn btn-primary">Lưu</button></div>
+</div>`;
+const budgetDialog8 = `<div class="under">${expMonth8('top')}</div>
+  <div class="scrim"><div class="dialog"><span class="dicon">${I.budget}</span><h3>Ngân sách tháng 10</h3>
+    <div class="amtin" style="padding:14px 0 6px"><div class="v"><span class="u">15.000.000 ₫<span class="caret"></span></span></div></div>
+    <div class="cap muted" style="padding:0 4px 8px">Khoản thu trong tháng được cộng vào ngân sách.</div>
+    <div class="frow2" style="padding:0 4px;cursor:default;text-align:left"><span class="grow">Dùng cho mọi tháng</span><span class="sw on"></span></div>
+    <div style="height:14px"></div>
+    <div class="actions"><button class="btn btn-secondary">Huỷ</button><button class="btn btn-primary">Lưu</button></div>
+  </div></div>`;
+const s8css = `<style>
+  .kseg span.on.out { background: var(--error-soft); color: var(--error); font-weight: 800; }
+  .kseg span.on.in { background: var(--primary); color: #fff; font-weight: 800; }
+  .total2 { display: grid; grid-template-columns: 1fr 1fr; padding: 14px 8px; text-align: center; }
+  .total2 > div + div { border-left: 1px solid var(--border); }
+  .total2 .lbl { font-size: 12px; line-height: 16px; color: var(--muted); }
+  .total2 .amt { font-size: 17px; line-height: 24px; font-weight: 800; white-space: nowrap; }
+  .am.in, .amt.in, .inb, .u.inb { color: var(--primary-dark); }
+  .bline { display: flex; justify-content: space-between; font-size: 13px; line-height: 18px; } .bline b { font-weight: 800; } .bline .over { color: var(--error); }
+  .bars2 > div { flex-direction: row; align-items: flex-end; justify-content: center; gap: 2px; }
+  .bars2 i { width: 11px; max-width: none; }
+  .bars2 i.tin { background: color-mix(in srgb, var(--primary) 70%, var(--surface)); }
+  .bars2 i.tout { background: var(--event-peach, #F7BE8A); }
+  .bars2 > div.sel i.tin { background: var(--primary-dark); }
+  .bars2 > div.sel i.tout { background: #E39A57; }
+  .leg::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--primary); }
+  .leg.out::before { background: #F7BE8A; }
+</style>`;
+const groupsS8 = () => [
+  ['Thêm khoản — chọn Thu / Chi', [
+    ['1. Mặc định: Chi', 'thanh chọn <b>Chi | Thu</b> ngay dưới tiêu đề · mở form là <b>Chi</b> · tiêu đề "Thêm khoản chi" · sửa khoản đã có: chọn lại được loại', phoneT(expForm8('Chi'))],
+    ['1b. Chọn Thu', 'tiêu đề đổi "Thêm khoản thu" · số tiền có dấu <b>+</b> và màu xanh · vẫn nhập số dương · danh mục dùng chung với Chi', phoneT(expForm8('Thu'))],
+  ]],
+  ['Màn Chi tiêu — tổng, ngân sách, biểu đồ', [
+    ['2. Tháng: hai tổng + ngân sách', '2 tổng cạnh nhau: <b>Tổng thu</b> (xanh, dấu +) · <b>Tổng chi</b> · ngân sách: <b>còn lại = hạn mức + thu − chi</b>, thanh theo chi ÷ (hạn mức + thu) · màu mốc như cũ (&lt; 80% · 80–100% · &gt; 100%) · biểu đồ Theo ngày có chip <b>Chi | Thu</b>', phoneT(expMonth8('top'))],
+    ['2b. Tháng — cuộn xuống', '<b>6 tháng gần nhất</b>: mỗi tháng 2 cột (Thu xanh, Chi cam) · bấm cột → dòng đọc cả Thu và Chi của tháng · <b>Theo nhóm</b> mặc định xem Chi', phoneT(expMonth8('mid'))],
+    ['2c. Theo nhóm — chọn Thu', 'chip <b>Chi | Thu</b> trên thẻ Theo nhóm · Thu hiện danh mục + số tiền có dấu +', phoneT(expMonth8('thu'))],
+    ['2d. Ngân sách vượt, chưa có thu', 'chi 16.200.000 ₫ trên 15.000.000 ₫ → thanh đỏ, "Vượt 1.200.000 ₫" · gợi ý thêm khoản thu', phoneT(expMonthOver)],
+    ['3. Ngày: có khoản thu', '2 tổng của ngày · khoản Thu có dấu <b>+</b> và số màu xanh, khoản Chi giữ nguyên như cũ · Tuần cùng cách hiện', phoneT(expDay8)],
+    ['4. Hộp Ngân sách', 'thêm 1 dòng giải thích: khoản thu trong tháng được cộng vào ngân sách', phoneT(budgetDialog8)],
+  ]],
+  ['Khoản lặp lại', [
+    ['5. Danh sách', 'đổi tên "Khoản chi lặp lại" → <b>"Khoản lặp lại"</b> · quy tắc Thu có dấu + và màu xanh', phoneT(rulesScreen8)],
+    ['6. Sửa quy tắc Thu', 'cùng thanh <b>Chi | Thu</b> như form khoản · khoản tự ghi mang đúng loại của quy tắc', phoneT(ruleEdit8)],
+  ]],
+];
+
+const controls = (st) => `<div class="controls"><b>Thử bộ màu:</b>${Object.entries(THEMES).map(([k, [n, v]]) => `<button class="${st.theme === k ? 'on' : ''}" onclick="setTheme('${k}')"><i style="background:${v.primary};box-shadow:inset 0 0 0 4px ${v.bg}"></i>${n}</button>`).join('')}</div>
+  <div class="controls"><b>Font:</b>${Object.entries(FONTS).map(([k, [n, f]]) => `<button class="${st.font === k ? 'on' : ''}" style="font-family:${f}" onclick="setFont('${k}')">${n}</button>`).join('')}</div>`;
+function render() {
+  document.body.dataset.theme = state.theme; document.body.dataset.font = state.font;
+  document.getElementById('root').innerHTML = controls(state) + groupsS8(state).map(([g, list]) => `<h2 class="group">${g}</h2><div class="grid">${list.map(([t, s, html]) =>
+    `<figure><figcaption>${t}<span>${s}</span></figcaption>${html}</figure>`).join('')}</div>`).join('');
+}
+function setTheme(k) { state.theme = k; render(); }
+function setFont(k) { state.font = k; render(); }
+
+document.head.insertAdjacentHTML('beforeend', s5css + themeCss + vnCss + s8css);
+render();
+</script>
+</body>
+</html>
